@@ -1,0 +1,11 @@
+# `Profile` - 外部向けの区画
+[Profile]
+
+# エンジン名
+Name = 'KifuwarabeWCSC31'
+
+# エンジン著者名
+Author = 'Satoshi TAKAHASHI'
+
+# `Engine` - 思考エンジンが任意に利用する区画
+[Engine]
