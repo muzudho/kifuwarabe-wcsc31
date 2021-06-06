@@ -2,51 +2,51 @@ package take14
 
 import "fmt"
 
-// 盤上の駒、駒台の駒に対して、37個のルールを実装すればいいはず（＾～＾）
-// 数字の大きい方を先に実行しろだぜ（＾～＾）
-var genmv_k1 = []int{10, 9, 8} // 2
-var genmv_r1 = []int{23, 22, 20, 19, 13}
-var genmv_b1 = []int{21, 14}
-var genmv_g1 = []int{10, 8} // 3
-var genmv_s1 = []int{21, 19}
-var genmv_n1 = []int{15}
-var genmv_l1 = []int{22, 17}
-var genmv_p1 = []int{17}
-var genmv_pr1 = []int{10, 9, 8, 5}
-var genmv_pb1 = []int{10, 9, 8, 6}
-var genmv_ps1 = []int{10, 8}   // 3
-var genmv_pn1 = []int{10, 8}   // 3
-var genmv_pl1 = []int{10, 8}   // 3
-var genmv_pp1 = []int{10, 8}   // 3
-var genmv_k2 = []int{10, 9, 8} // 2
-var genmv_r2 = []int{23, 22, 20, 19, 13}
-var genmv_b2 = []int{21, 14}
-var genmv_g2 = []int{10, 9} // 4
-var genmv_s2 = []int{21, 20}
-var genmv_n2 = []int{16}
-var genmv_l2 = []int{23, 18}
-var genmv_p2 = []int{18}
-var genmv_pr2 = []int{10, 9, 8, 5}
-var genmv_pb2 = []int{10, 9, 8, 6}
-var genmv_ps2 = []int{10, 9} // 4
-var genmv_pn2 = []int{10, 9} // 4
-var genmv_pl2 = []int{10, 9} // 4
-var genmv_pp2 = []int{10, 9} // 4
+// 盤上の駒、駒台の駒に対して、ルールを実装すればいいはず（＾～＾）
+var genmv_k1 = []int{1, 2, 3, 4, 5}
+var genmv_k2 = genmv_k1
+var genmv_r1 = []int{5, 6, 7, 9, 10, 12, 16}
+var genmv_r2 = genmv_r1
+var genmv_pr1 = []int{1, 2, 3, 4, 5, 9, 10, 12}
+var genmv_pr2 = genmv_pr1
+var genmv_b1 = []int{1, 2, 8, 11, 15}
+var genmv_b2 = genmv_b1
+var genmv_pb1 = []int{1, 2, 3, 4, 5, 11}
+var genmv_pb2 = genmv_pb1
+var genmv_g1 = []int{1, 3, 4, 5}
+var genmv_ps1 = genmv_g1
+var genmv_pn1 = genmv_g1
+var genmv_pl1 = genmv_g1
+var genmv_pp1 = genmv_g1
+var genmv_g2 = []int{2, 3, 4, 5}
+var genmv_ps2 = genmv_g2
+var genmv_pn2 = genmv_g2
+var genmv_pl2 = genmv_g2
+var genmv_pp2 = genmv_g2
+var genmv_s1 = []int{1, 2, 3, 6, 8}
+var genmv_s2 = []int{1, 2, 4, 7, 8}
+var genmv_n1 = []int{17}
+var genmv_n2 = []int{18}
+var genmv_l1 = []int{6, 9, 13}
+var genmv_l2 = []int{7, 10, 14}
+var genmv_p1 = []int{6, 13}
+var genmv_p2 = []int{7, 14}
 
-var genmv_dr1 = []int{31}
-var genmv_db1 = []int{31}
-var genmv_dg1 = []int{31}
-var genmv_ds1 = []int{31}
-var genmv_dn1 = []int{32}
-var genmv_dl1 = []int{34}
-var genmv_dp1 = []int{36, 34}
-var genmv_dr2 = []int{31}
-var genmv_db2 = []int{31}
-var genmv_dg2 = []int{31}
-var genmv_ds2 = []int{31}
-var genmv_dn2 = []int{33}
-var genmv_dl2 = []int{35}
-var genmv_dp2 = []int{37, 35}
+// 打にはオフセット 30 足しとく
+var genmv_dr1 = []int{31, 32, 33, 34, 35, 36, 37}
+var genmv_db1 = genmv_dr1
+var genmv_dg1 = genmv_dr1
+var genmv_ds1 = genmv_dr1
+var genmv_dr2 = genmv_dr1
+var genmv_db2 = genmv_dr1
+var genmv_dg2 = genmv_dr1
+var genmv_ds2 = genmv_dr1
+var genmv_dn1 = []int{33, 34, 35, 36, 37}
+var genmv_dn2 = []int{31, 32, 33, 34, 35}
+var genmv_dl1 = []int{32, 33, 34, 35, 36, 37}
+var genmv_dl2 = []int{31, 32, 33, 34, 35, 36}
+var genmv_dp1 = []int{32, 33, 34, 35, 36, 37} // と、二歩チェック
+var genmv_dp2 = []int{31, 32, 33, 34, 35, 36} // と、二歩チェック
 
 // 成りの手は生成しません
 const NOT_PROMOTE = false
@@ -111,71 +111,71 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 
 		for _, step := range genmv_list {
 			switch step {
-			case 24:
+			case 31:
 				makeDrop(pPos, droppableFiles, 1, moveEndList)
-			case 25:
+			case 32:
 				makeDrop(pPos, droppableFiles, 2, moveEndList)
-			case 26:
+			case 33:
 				makeDrop(pPos, droppableFiles, 3, moveEndList)
-			case 27:
+			case 34:
 				makeDrop(pPos, droppableFiles, 4, moveEndList)
 				makeDrop(pPos, droppableFiles, 5, moveEndList)
 				makeDrop(pPos, droppableFiles, 6, moveEndList)
-			case 28:
-				makeDrop(pPos, droppableFiles, 7, moveEndList)
-			case 29:
-				makeDrop(pPos, droppableFiles, 8, moveEndList)
-			case 30:
-				makeDrop(pPos, droppableFiles, 9, moveEndList)
-			case 31:
-				genmv_list = append(genmv_list, 24)
-				genmv_list = append(genmv_list, 25)
-				genmv_list = append(genmv_list, 26)
-				genmv_list = append(genmv_list, 27)
-				genmv_list = append(genmv_list, 28)
-				genmv_list = append(genmv_list, 29)
-				genmv_list = append(genmv_list, 30)
-			case 32:
-				genmv_list = append(genmv_list, 26)
-				genmv_list = append(genmv_list, 27)
-				genmv_list = append(genmv_list, 28)
-				genmv_list = append(genmv_list, 29)
-				genmv_list = append(genmv_list, 30)
-			case 33:
-				genmv_list = append(genmv_list, 24)
-				genmv_list = append(genmv_list, 25)
-				genmv_list = append(genmv_list, 26)
-				genmv_list = append(genmv_list, 27)
-				genmv_list = append(genmv_list, 28)
-			case 34:
-				genmv_list = append(genmv_list, 25)
-				genmv_list = append(genmv_list, 26)
-				genmv_list = append(genmv_list, 27)
-				genmv_list = append(genmv_list, 28)
-				genmv_list = append(genmv_list, 29)
-				genmv_list = append(genmv_list, 30)
 			case 35:
-				genmv_list = append(genmv_list, 24)
-				genmv_list = append(genmv_list, 25)
-				genmv_list = append(genmv_list, 26)
-				genmv_list = append(genmv_list, 27)
-				genmv_list = append(genmv_list, 28)
-				genmv_list = append(genmv_list, 29)
+				makeDrop(pPos, droppableFiles, 7, moveEndList)
 			case 36:
-				for file := Square(9); file > 0; file -= 1 {
-					if NifuFirst(pPos, file) { // ２歩禁止
-						droppableFiles[file] = false
-					}
-				}
-
-				genmv_list = append(genmv_list, 34)
+				makeDrop(pPos, droppableFiles, 8, moveEndList)
 			case 37:
-				for file := Square(9); file > 0; file -= 1 {
-					if NifuSecond(pPos, file) { // ２歩禁止
-						droppableFiles[file] = false
-					}
-				}
-				genmv_list = append(genmv_list, 35)
+				makeDrop(pPos, droppableFiles, 9, moveEndList)
+			// case 31:
+			// 	genmv_list = append(genmv_list, 24)
+			// 	genmv_list = append(genmv_list, 25)
+			// 	genmv_list = append(genmv_list, 26)
+			// 	genmv_list = append(genmv_list, 27)
+			// 	genmv_list = append(genmv_list, 28)
+			// 	genmv_list = append(genmv_list, 29)
+			// 	genmv_list = append(genmv_list, 30)
+			// case 32:
+			// 	genmv_list = append(genmv_list, 26)
+			// 	genmv_list = append(genmv_list, 27)
+			// 	genmv_list = append(genmv_list, 28)
+			// 	genmv_list = append(genmv_list, 29)
+			// 	genmv_list = append(genmv_list, 30)
+			// case 33:
+			// 	genmv_list = append(genmv_list, 24)
+			// 	genmv_list = append(genmv_list, 25)
+			// 	genmv_list = append(genmv_list, 26)
+			// 	genmv_list = append(genmv_list, 27)
+			// 	genmv_list = append(genmv_list, 28)
+			// case 34:
+			// 	genmv_list = append(genmv_list, 25)
+			// 	genmv_list = append(genmv_list, 26)
+			// 	genmv_list = append(genmv_list, 27)
+			// 	genmv_list = append(genmv_list, 28)
+			// 	genmv_list = append(genmv_list, 29)
+			// 	genmv_list = append(genmv_list, 30)
+			// case 35:
+			// 	genmv_list = append(genmv_list, 24)
+			// 	genmv_list = append(genmv_list, 25)
+			// 	genmv_list = append(genmv_list, 26)
+			// 	genmv_list = append(genmv_list, 27)
+			// 	genmv_list = append(genmv_list, 28)
+			// 	genmv_list = append(genmv_list, 29)
+			// case 36:
+			// 	for file := Square(9); file > 0; file -= 1 {
+			// 		if NifuFirst(pPos, file) { // ２歩禁止
+			// 			droppableFiles[file] = false
+			// 		}
+			// 	}
+
+			// 	genmv_list = append(genmv_list, 34)
+			// case 37:
+			// 	for file := Square(9); file > 0; file -= 1 {
+			// 		if NifuSecond(pPos, file) { // ２歩禁止
+			// 			droppableFiles[file] = false
+			// 		}
+			// 	}
+			// 	genmv_list = append(genmv_list, 35)
 			default:
 				panic(fmt.Errorf("Unknown step=%d", step))
 			}
@@ -316,6 +316,180 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 	}
 
 	return moveEndList
+}
+
+// 1 先手から見て斜め前の利き
+func makeFrontDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
+	if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+	if to := from - 11; File(to) != 0 && Rank(to) != 0 { // 右上
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 2 先手から見て斜め後ろの利き
+func makeBackDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
+	if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+	if to := from - 9; File(to) != 0 && Rank(to) != 0 { // 右下
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 3 先手から見て１つ前への利き
+func makeFront(from Square, moveEndList []MoveEnd) {
+	//  promote bool,
+	var keepGoing = File(from) != 2
+
+	if to := from - 1; Rank(to) != 0 { // 上
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		// if promote {
+		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		// }
+	}
+}
+
+// 4 先手から見て１つ後ろへの利き
+func makeBack(from Square, moveEndList []MoveEnd) {
+	// promote bool,
+	// 移動元が８段目のときは必ずならなければならない
+	var keepGoing = File(from) != 8
+
+	if to := from + 1; Rank(to) != 0 { // 下
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		// if promote {
+		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		// }
+	}
+}
+
+// 5 先手から見て１つ横への利き
+func makeSide(from Square, promote bool, moveEndList []MoveEnd) {
+	if to := from + 10; File(to) != 0 { // 左
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+	if to := from - 10; File(to) != 0 { // 右
+		ValidateSq(to)
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 6 先手から見て１つ上への利き（成りの動き、制約なし）
+func makeFrontPromotion(from Square, promote bool, moveEndList []MoveEnd) {
+	// 移動元が２段目のときは必ずならなければならない
+	var keepGoing = File(from) != 2
+
+	if to := from - 1; Rank(to) != 0 { // 上
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 7
+func makeBackPromotion(from Square, promote bool, moveEndList []MoveEnd) {
+	// 移動元が２段目のときは必ずならなければならない
+	var keepGoing = File(from) != 2
+
+	if to := from + 1; Rank(to) != 0 { // 下
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 8 ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
+func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
+	var src_pro bool
+	if (phase == FIRST && Rank(from) < 4) || (phase == SECOND && Rank(from) > 6) {
+		src_pro = true
+	} else {
+		src_pro = false
+	}
+
+	if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
+		for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
+			ValidateSq(to)
+			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+	if File(from) > 2 && Rank(from) > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
+		for to := from - 22; File(to) != 0 && Rank(to) != 0; to -= 11 { // ２つ右上から
+			ValidateSq(to)
+			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+	if File(from) < 8 && Rank(from) < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
+		for to := from + 22; File(to) != 0 && Rank(to) != 0; to += 11 { // ２つ左下から
+			ValidateSq(to)
+			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+	if File(from) > 2 && Rank(from) < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
+		for to := from - 18; File(to) != 0 && Rank(to) != 0; to -= 9 { // ２つ右下から
+			ValidateSq(to)
+			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
 }
 
 // (6) ２つ先のマスからの斜めへの長い利き（成らず）
@@ -483,108 +657,6 @@ func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveE
 			if !pPos.IsEmptySq(to) {
 				break
 			}
-		}
-	}
-}
-
-// 先手から見て斜め前の利き
-func makeFrontDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
-	if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-	if to := from - 11; File(to) != 0 && Rank(to) != 0 { // 右上
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-}
-
-// 先手から見て斜め後ろの利き
-func makeBackDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
-	// 先手から見て斜め後ろの利き
-	if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-	if to := from - 9; File(to) != 0 && Rank(to) != 0 { // 右下
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-}
-
-// (17) 先手から見て１つ上への利き（成りの動き、移動元が２段目のときは必ずならなければならない）
-func makeFrontNotPromote(from Square, promote bool, moveEndList []MoveEnd) {
-	var keepGoing = File(from) != 2
-
-	if to := from - 1; Rank(to) != 0 { // 上
-		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-}
-
-// (19) 先手から見て１つ上への利き（成りの動き、制約なし）
-func makeFrontPromote(from Square, promote bool, moveEndList []MoveEnd) {
-	// 移動元が２段目のときは必ずならなければならない
-	var keepGoing = File(from) != 2
-
-	if to := from - 1; Rank(to) != 0 { // 上
-		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-}
-
-// 先手から見て１つ横への利き
-func makeSide(from Square, promote bool, moveEndList []MoveEnd) {
-	if to := from + 10; File(to) != 0 { // 左
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-	if to := from - 10; File(to) != 0 { // 右
-		ValidateSq(to)
-		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		}
-	}
-}
-
-// 先手から見て１つ後ろへの利き
-func makeBack(from Square, promote bool, moveEndList []MoveEnd) {
-	// 移動元が８段目のときは必ずならなければならない
-	var keepGoing = File(from) != 8
-
-	if to := from + 1; Rank(to) != 0 { // 下
-		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		if promote {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
 		}
 	}
 }
