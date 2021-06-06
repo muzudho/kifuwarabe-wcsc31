@@ -492,7 +492,39 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 	}
 }
 
-// (6) ２つ先のマスからの斜めへの長い利き（成らず）
+// 9 ２つ先のマスからの上への長い利き
+func makeFrontLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+	if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
+		for to := from - 2; Rank(to) != 0; to -= 1 { // 上
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+}
+
+// 10 ２つ先のマスからの下への長い利き
+func makeBackLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+	if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
+		for to := from + 2; Rank(to) != 0; to += 1 { // 下
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+}
+
+// 11 ２つ先のマスからの斜めへの長い利き（成らず）
 func makeDiagonalLongNotPromote(pPos *Position, from Square, moveEndList []MoveEnd) {
 	if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 		for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
@@ -533,7 +565,41 @@ func makeDiagonalLongNotPromote(pPos *Position, from Square, moveEndList []MoveE
 
 }
 
-// (14) ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
+// 12 ２つ先のマスからの横への長い利き
+func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+	// ２つ先のマスからの左への長い利き
+	if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
+		for to := from + 20; File(to) != 0; to += 10 { // 左
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+
+	// ２つ先のマスからの右への長い利き
+	if File(from) > 2 && pPos.IsEmptySq(from-10) { // 1～2筋にある駒でもなく、１つ右が空マスなら
+		for to := from - 20; File(to) != 0; to -= 10 { // 右
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+}
+
+// 13
+// 14
+
+// 15 ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
 func makeDiagonalLongPromote(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
 	var src_pro bool
 	if (phase == FIRST && Rank(from) < 4) || (phase == SECOND && Rank(from) > 6) {
@@ -588,50 +654,8 @@ func makeDiagonalLongPromote(pPos *Position, phase Phase, from Square, moveEndLi
 	}
 }
 
-func makeDrop(pPos *Position, droppableFiles [10]bool, rank Square, moveEndList []MoveEnd) {
-	for file := Square(9); file > 0; file -= 1 {
-		if droppableFiles[file] {
-			to := SquareFrom(file, rank)
-			ValidateSq(to)
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-	}
-}
-
-// ２つ先のマスからの上への長い利き
-func makeFrontLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
-	if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
-		for to := from - 2; Rank(to) != 0; to -= 1 { // 上
-			ValidateSq(to)
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-			if promote {
-				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-			}
-			if !pPos.IsEmptySq(to) {
-				break
-			}
-		}
-	}
-}
-
-// ２つ先のマスからの下への長い利き
-func makeBackLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
-	if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
-		for to := from + 2; Rank(to) != 0; to += 1 { // 下
-			ValidateSq(to)
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-			if promote {
-				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-			}
-			if !pPos.IsEmptySq(to) {
-				break
-			}
-		}
-	}
-}
-
-// ２つ先のマスからの横への長い利き
-func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+// 16 ２つ先のマスからの横への長い利き
+func makeSidePromotion(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
 	// ２つ先のマスからの左への長い利き
 	if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 		for to := from + 20; File(to) != 0; to += 10 { // 左
@@ -661,7 +685,7 @@ func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveE
 	}
 }
 
-// 先手桂の利き
+// 17 先手桂の利き
 func makeFrontKnight(from Square, promote bool, moveEndList []MoveEnd) {
 	// 移動元が３段目のときは必ずならなければならない
 	var keepGoing = File(from) != 3
@@ -690,7 +714,7 @@ func makeFrontKnight(from Square, promote bool, moveEndList []MoveEnd) {
 	}
 }
 
-// 後手桂の利き
+// 18 後手桂の利き
 func makeBackKnight(from Square, promote bool, moveEndList []MoveEnd) {
 	// 移動元が７段目のときは必ずならなければならない
 	var keepGoing = File(from) != 7
@@ -711,6 +735,16 @@ func makeBackKnight(from Square, promote bool, moveEndList []MoveEnd) {
 		}
 		if promote {
 			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+func makeDrop(pPos *Position, droppableFiles [10]bool, rank Square, moveEndList []MoveEnd) {
+	for file := Square(9); file > 0; file -= 1 {
+		if droppableFiles[file] {
+			to := SquareFrom(file, rank)
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
 		}
 	}
 }
