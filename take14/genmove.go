@@ -2,35 +2,42 @@ package take14
 
 import "fmt"
 
+// 条件
+var ca = 20
+var cb = 40
+var cc = 60
+var cd = 80
+var ce = 100
+
 // 盤上の駒、駒台の駒に対して、ルールを実装すればいいはず（＾～＾）
 var genmv_k1 = []int{1, 2, 3, 4, 5}
 var genmv_k2 = genmv_k1
-var genmv_r1 = []int{5, 6, 7, 9, 10, 12, 16}
+var genmv_r1 = []int{1, 2, 5, ca + 6, ca + 7, 9, 10, ca + 11, ca + 12, 14, ca + 16}
 var genmv_r2 = genmv_r1
-var genmv_pr1 = []int{1, 2, 3, 4, 5, 9, 10, 12}
+var genmv_pr1 = []int{1, 2, 3, 4, 5, 9, 10, 14}
 var genmv_pr2 = genmv_pr1
-var genmv_b1 = []int{1, 2, 8, 11, 15}
+var genmv_b1 = []int{3, 4, ca + 8, 13, ca + 15}
 var genmv_b2 = genmv_b1
-var genmv_pb1 = []int{1, 2, 3, 4, 5, 11}
+var genmv_pb1 = []int{1, 2, 3, 4, 5, 13}
 var genmv_pb2 = genmv_pb1
-var genmv_g1 = []int{1, 3, 4, 5}
+var genmv_g1 = []int{1, 2, 3, 5}
 var genmv_ps1 = genmv_g1
 var genmv_pn1 = genmv_g1
 var genmv_pl1 = genmv_g1
 var genmv_pp1 = genmv_g1
-var genmv_g2 = []int{2, 3, 4, 5}
+var genmv_g2 = []int{1, 2, 4, 5}
 var genmv_ps2 = genmv_g2
 var genmv_pn2 = genmv_g2
 var genmv_pl2 = genmv_g2
 var genmv_pp2 = genmv_g2
-var genmv_s1 = []int{1, 2, 3, 6, 8}
-var genmv_s2 = []int{1, 2, 4, 7, 8}
-var genmv_n1 = []int{17}
-var genmv_n2 = []int{18}
-var genmv_l1 = []int{6, 9, 13}
-var genmv_l2 = []int{7, 10, 14}
-var genmv_p1 = []int{6, 13}
-var genmv_p2 = []int{7, 14}
+var genmv_s1 = []int{1, 3, 4, ca + 6, ca + 8}
+var genmv_s2 = []int{2, 3, 4, ca + 7, ca + 8}
+var genmv_n1 = []int{cd + 17, ca + 18}
+var genmv_n2 = []int{ce + 19, ca + 20}
+var genmv_l1 = []int{cb + 1, ca + 6, 9, ca + 11}
+var genmv_l2 = []int{cc + 2, ca + 7, 10, ca + 12}
+var genmv_p1 = []int{cb + 1, ca + 6}
+var genmv_p2 = []int{cc + 2, ca + 7}
 
 // 打にはオフセット 30 足しとく
 var genmv_dr1 = []int{31, 32, 33, 34, 35, 36, 37}
@@ -59,6 +66,18 @@ func File(sq Square) Square {
 // Rank - マス番号から段（行）を取り出します
 func Rank(sq Square) Square {
 	return sq % 10
+}
+
+// 条件Aの1. 移動元が敵陣だ
+func FromOpponent(phase Phase, from Square) bool {
+	switch phase {
+	case FIRST:
+		return Rank(from) < 4
+	case SECOND:
+		return Rank(from) > 6
+	default:
+		panic(fmt.Errorf("Unknown phase=%d", phase))
+	}
 }
 
 // GenControl - 利いているマスの一覧を返します。動けるマスではありません。
@@ -251,64 +270,82 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 
 		for _, step := range genmv_list {
 			switch step {
-			case 1, 2, 3, 4, 7, 11, 12:
-				panic(fmt.Errorf("Don't execute step=%d", step))
-			case 5:
-				makeFrontLong(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
-				makeBackLong(pPos, from, NOT_PROMOTE, moveEndList)  // ２つ先のマスからの下への長い利き
-				makeSideLong(pPos, from, NOT_PROMOTE, moveEndList)  // ２つ先のマスからの横への長い利き
-			case 6:
-				makeDiagonalLongNotPromote(pPos, from, moveEndList) // ２つ先のマスからの斜めへの長い利き
-			case 8:
-				makeFrontDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め前の利き
-			case 9:
-				makeBackDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め後ろの利き
-			case 10:
-				makeFront(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ上への利き
-				makeBack(from, NOT_PROMOTE, moveEndList)  // 先手から見て１つ後ろへの利き
-				makeSide(from, NOT_PROMOTE, moveEndList)  // 先手から見て１つ横への利き
-			case 13:
-				// 移動元または移動先が敵陣なら成れる
-				var promote bool
-				switch phase {
-				case FIRST:
-					promote = Rank(from) < 4 // 移動元の段が敵陣ならOK
-				case SECOND:
-					promote = Rank(from) > 6 // 移動元の段が敵陣ならOK
-				default:
-					panic(fmt.Errorf("Unknown phase=%d", phase))
+			case 1:
+				// 先手から見て１つ上への利き
+				makeFront(from, NOT_PROMOTE, moveEndList)
+			case cb + 1:
+				if Rank(from) != 2 { // 移動元が2段目でない
+					makeFront(from, NOT_PROMOTE, moveEndList)
 				}
-				makeSideLong(pPos, from, promote, moveEndList) // ２つ先のマスからの横への長い利き
-				makeSide(from, promote, moveEndList)           // 先手から見て１つ横への利き
+			case 2:
+				// 先手から見て１つ後ろへの利き
+				makeBack(from, NOT_PROMOTE, moveEndList)
+			case cc + 2:
+				if Rank(from) != 8 { // 移動元が8段目でない
+					makeBack(from, NOT_PROMOTE, moveEndList)
+				}
+			case 3:
+				makeFrontDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め前の利き
+			case 4:
+				makeBackDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め後ろの利き
+			case 5:
+				makeSide(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ横への利き
+			case ca + 6:
+				if FromOpponent(phase, from) {
+					makeFrontPromotion()
+				}
+			case ca + 7:
+				if FromOpponent(phase, from) {
+					makeBackPromotion()
+				}
+			case ca + 8:
+				if FromOpponent(phase, from) {
+					makeDiagonalPromotion()
+				}
+			case 9:
+				makeLongFront(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
+			case 10:
+				makeLongBack(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの下への長い利き
+			case ca + 11:
+				if FromOpponent(phase, from) {
+					makeLongFrontPromotion(pPos, from, CAN_PROMOTE, moveEndList)
+				}
+			case ca + 12:
+				if FromOpponent(phase, from) {
+					makeLongBackPromotion(pPos, from, CAN_PROMOTE, moveEndList)
+				}
+			case 13:
+				makeLongDiagonal(pPos, from, moveEndList)
 			case 14:
-				makeDiagonalLongPromote(pPos, phase, from, moveEndList) // ２つ先のマスからの斜めへの長い利き
-			case 15:
-				var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
-				makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
-			case 16:
-				var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
-				makeBackKnight(from, promote, moveEndList) // 後手桂の利き
-			case 17:
-				var promote = File(from) < 5          // 移動元または移動先が敵陣なら成れる
-				makeFront(from, promote, moveEndList) // 先手から見て１つ上への利き
-			case 18:
-				var promote = File(from) > 5         // 移動元または移動先が敵陣なら成れる
-				makeBack(from, promote, moveEndList) // 先手から見て１つ後ろへの利き
-			case 19:
-				makeFront(from, moveEndList) // 先手から見て１つ上への利き
-				genmv_list = append(genmv_list, 13)
-			case 20:
-				makeBack(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ後ろへの利き
-				genmv_list = append(genmv_list, 13)
-			case 21:
-				makeFrontDiagonal(from, true, moveEndList) // 先手から見て斜め前の利き
-				makeBackDiagonal(from, true, moveEndList)  // 先手から見て斜め後ろの利き
-				genmv_list = append(genmv_list, 13)
-			case 22:
-				makeFrontLong(pPos, from, CAN_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
-				genmv_list = append(genmv_list, 13)
-			case 23:
-				genmv_list = append(genmv_list, 13)
+				makeLongSide(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの横への長い利き
+			case ca + 15:
+				if FromOpponent(phase, from) {
+					makeLongDiagonalPromotion(pPos, phase, from, moveEndList)
+				}
+			case ca + 16:
+				if FromOpponent(phase, from) {
+					makeSide(from, promote, moveEndList)
+				}
+			case cd + 17:
+				if Rank(from) != 3 { // 移動元が3段目でない
+					var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
+					makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
+				}
+			case ca + 18:
+				if FromOpponent(phase, from) {
+					var promote = File(from) < 6                         // 移動元または移動先が敵陣なら成れる
+					makeFrontKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+				}
+			case ce + 19:
+				if Rank(from) != 7 { // 移動元が7段目でない
+					var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
+					makeBackKnight(from, promote, moveEndList) // 後手桂の利き
+				}
+			case ca + 20:
+				if FromOpponent(phase, from) {
+					var promote = File(from) < 6                        // 移動元または移動先が敵陣なら成れる
+					makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+				}
 			default:
 				panic(fmt.Errorf("Unknown step=%d", step))
 			}
@@ -318,7 +355,40 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 	return moveEndList
 }
 
-// 1 先手から見て斜め前の利き
+// 1 先手から見て１つ前への利き
+func makeFront(from Square, moveEndList []MoveEnd) {
+	//  promote bool,
+	var keepGoing = File(from) != 2
+
+	if to := from - 1; Rank(to) != 0 { // 上
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		// if promote {
+		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		// }
+	}
+}
+
+// 2 先手から見て１つ後ろへの利き
+func makeBack(from Square, moveEndList []MoveEnd) {
+	// promote bool,
+	// 移動元が８段目のときは必ずならなければならない
+	var keepGoing = File(from) != 8
+
+	if to := from + 1; Rank(to) != 0 { // 下
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		// if promote {
+		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		// }
+	}
+}
+
+// 3 先手から見て斜め前の利き
 func makeFrontDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
 	if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
 		ValidateSq(to)
@@ -336,7 +406,7 @@ func makeFrontDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
 	}
 }
 
-// 2 先手から見て斜め後ろの利き
+// 4 先手から見て斜め後ろの利き
 func makeBackDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
 	if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
 		ValidateSq(to)
@@ -351,39 +421,6 @@ func makeBackDiagonal(from Square, promote bool, moveEndList []MoveEnd) {
 		if promote {
 			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
 		}
-	}
-}
-
-// 3 先手から見て１つ前への利き
-func makeFront(from Square, moveEndList []MoveEnd) {
-	//  promote bool,
-	var keepGoing = File(from) != 2
-
-	if to := from - 1; Rank(to) != 0 { // 上
-		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		// if promote {
-		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		// }
-	}
-}
-
-// 4 先手から見て１つ後ろへの利き
-func makeBack(from Square, moveEndList []MoveEnd) {
-	// promote bool,
-	// 移動元が８段目のときは必ずならなければならない
-	var keepGoing = File(from) != 8
-
-	if to := from + 1; Rank(to) != 0 { // 下
-		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		// if promote {
-		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		// }
 	}
 }
 
@@ -493,7 +530,7 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 }
 
 // 9 ２つ先のマスからの上への長い利き
-func makeFrontLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+func makeLongFront(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
 	if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
 		for to := from - 2; Rank(to) != 0; to -= 1 { // 上
 			ValidateSq(to)
@@ -509,7 +546,7 @@ func makeFrontLong(pPos *Position, from Square, promote bool, moveEndList []Move
 }
 
 // 10 ２つ先のマスからの下への長い利き
-func makeBackLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+func makeLongBack(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
 	if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
 		for to := from + 2; Rank(to) != 0; to += 1 { // 下
 			ValidateSq(to)
@@ -524,8 +561,40 @@ func makeBackLong(pPos *Position, from Square, promote bool, moveEndList []MoveE
 	}
 }
 
-// 11 ２つ先のマスからの斜めへの長い利き（成らず）
-func makeDiagonalLongNotPromote(pPos *Position, from Square, moveEndList []MoveEnd) {
+// 11
+func makeLongFrontPromotion(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+	if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
+		for to := from - 2; Rank(to) != 0; to -= 1 { // 上
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+}
+
+// 12
+func makeLongBackPromotion(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+	if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
+		for to := from + 2; Rank(to) != 0; to += 1 { // 下
+			ValidateSq(to)
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+			if !pPos.IsEmptySq(to) {
+				break
+			}
+		}
+	}
+}
+
+// 13 ２つ先のマスからの斜めへの長い利き（成らず）
+func makeLongDiagonal(pPos *Position, from Square, moveEndList []MoveEnd) {
 	if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 		for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 			ValidateSq(to)
@@ -565,8 +634,8 @@ func makeDiagonalLongNotPromote(pPos *Position, from Square, moveEndList []MoveE
 
 }
 
-// 12 ２つ先のマスからの横への長い利き
-func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
+// 14 ２つ先のマスからの横への長い利き
+func makeLongSide(pPos *Position, from Square, promote bool, moveEndList []MoveEnd) {
 	// ２つ先のマスからの左への長い利き
 	if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 		for to := from + 20; File(to) != 0; to += 10 { // 左
@@ -596,11 +665,8 @@ func makeSideLong(pPos *Position, from Square, promote bool, moveEndList []MoveE
 	}
 }
 
-// 13
-// 14
-
 // 15 ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
-func makeDiagonalLongPromote(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
+func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
 	var src_pro bool
 	if (phase == FIRST && Rank(from) < 4) || (phase == SECOND && Rank(from) > 6) {
 		src_pro = true
@@ -714,8 +780,62 @@ func makeFrontKnight(from Square, promote bool, moveEndList []MoveEnd) {
 	}
 }
 
-// 18 後手桂の利き
+// 18 先手桂の利き
+func makeFrontKnightPromotion(from Square, promote bool, moveEndList []MoveEnd) {
+	// 移動元が３段目のときは必ずならなければならない
+	var keepGoing = File(from) != 3
+
+	if 2 < Rank(from) && Rank(from) < 10 {
+		if 0 < File(from) && File(from) < 9 { // 左上桂馬飛び
+			to := from + 8
+			ValidateSq(to)
+			if keepGoing {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			}
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+		}
+		if 1 < File(from) && File(from) < 10 { // 右上桂馬飛び
+			to := from - 12
+			ValidateSq(to)
+			if keepGoing {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+			}
+			if promote {
+				moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+			}
+		}
+	}
+}
+
+// 19 後手桂の利き
 func makeBackKnight(from Square, promote bool, moveEndList []MoveEnd) {
+	// 移動元が７段目のときは必ずならなければならない
+	var keepGoing = File(from) != 7
+
+	if to := from + 12; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 左下
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+	if to := from - 8; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 右下
+		ValidateSq(to)
+		if keepGoing {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+		}
+		if promote {
+			moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+		}
+	}
+}
+
+// 20
+func makeBackKnightPromotion(from Square, promote bool, moveEndList []MoveEnd) {
 	// 移動元が７段目のときは必ずならなければならない
 	var keepGoing = File(from) != 7
 
