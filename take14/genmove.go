@@ -218,7 +218,15 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 		case PIECE_S1:
 			genmv_list = genmv_s1
 		case PIECE_N1:
-			genmv_list = genmv_n1
+			// 先手桂
+			if FromOpponent(phase, from) {
+				var promote = File(from) < 6                         // 移動元または移動先が敵陣なら成れる
+				makeFrontKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+			}
+			if Rank(from) != 3 { // 移動元が3段目でない
+				var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
+				makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
+			}
 		case PIECE_L1:
 			genmv_list = genmv_l1
 		case PIECE_P1:
@@ -246,7 +254,15 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 		case PIECE_S2:
 			genmv_list = genmv_s2
 		case PIECE_N2:
-			genmv_list = genmv_n2
+			// 後手桂
+			if Rank(from) != 7 { // 移動元が7段目でない
+				var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
+				makeBackKnight(from, promote, moveEndList) // 後手桂の利き
+			}
+			if FromOpponent(phase, from) {
+				var promote = File(from) < 6                        // 移動元または移動先が敵陣なら成れる
+				makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+			}
 		case PIECE_L2:
 			genmv_list = genmv_l2
 		case PIECE_P2:
@@ -289,15 +305,23 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 				makeBackDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め後ろの利き
 			case 5:
 				makeSide(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ横への利き
-			case ca + 6:
+			case 6:
 				if FromOpponent(phase, from) {
 					makeFrontPromotion()
 				}
-			case ca + 7:
+			case cb + 6:
+				if FromOpponent(phase, from) {
+					makeFrontPromotion()
+				}
+			case 7:
 				if FromOpponent(phase, from) {
 					makeBackPromotion()
 				}
-			case ca + 8:
+			case cc + 7:
+				if FromOpponent(phase, from) {
+					makeBackPromotion()
+				}
+			case 8:
 				if FromOpponent(phase, from) {
 					makeDiagonalPromotion()
 				}
@@ -305,11 +329,11 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 				makeLongFront(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
 			case 10:
 				makeLongBack(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの下への長い利き
-			case ca + 11:
+			case 11:
 				if FromOpponent(phase, from) {
 					makeLongFrontPromotion(pPos, from, CAN_PROMOTE, moveEndList)
 				}
-			case ca + 12:
+			case 12:
 				if FromOpponent(phase, from) {
 					makeLongBackPromotion(pPos, from, CAN_PROMOTE, moveEndList)
 				}
@@ -317,33 +341,13 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 				makeLongDiagonal(pPos, from, moveEndList)
 			case 14:
 				makeLongSide(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの横への長い利き
-			case ca + 15:
+			case 15:
 				if FromOpponent(phase, from) {
 					makeLongDiagonalPromotion(pPos, phase, from, moveEndList)
 				}
-			case ca + 16:
+			case 16:
 				if FromOpponent(phase, from) {
 					makeSide(from, promote, moveEndList)
-				}
-			case cd + 17:
-				if Rank(from) != 3 { // 移動元が3段目でない
-					var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
-					makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
-				}
-			case ca + 18:
-				if FromOpponent(phase, from) {
-					var promote = File(from) < 6                         // 移動元または移動先が敵陣なら成れる
-					makeFrontKnightPromotion(from, promote, moveEndList) // 先手桂の利き
-				}
-			case ce + 19:
-				if Rank(from) != 7 { // 移動元が7段目でない
-					var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
-					makeBackKnight(from, promote, moveEndList) // 後手桂の利き
-				}
-			case ca + 20:
-				if FromOpponent(phase, from) {
-					var promote = File(from) < 6                        // 移動元または移動先が敵陣なら成れる
-					makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
 				}
 			default:
 				panic(fmt.Errorf("Unknown step=%d", step))
