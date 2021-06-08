@@ -4,15 +4,25 @@ import "fmt"
 
 // 条件
 var ca = 20
-var cb = 40
-var cc = 60
-var cd = 80
-var ce = 100
+var cab = ca + 20
+var cac = cab + 20
+var cad = cac + 20
+var cae = cad + 20
+var cb = cae + 20
+var cc = cb + 20
+var cd = cc + 20
+var ce = cd + 20
+var cf = ce + 20
+var cg = cf + 20
+var ch = cg + 20
+var ci = ch + 20
+var cj = ci + 20
+var ck = cj + 20
 
 // 盤上の駒、駒台の駒に対して、ルールを実装すればいいはず（＾～＾）
-var genmv_k1 = []int{1, 2, 3, 4, 5}
+var genmv_k1 = []int{cb + 1, cc + 2, cb + 3, cc + 4, 5}
 var genmv_k2 = genmv_k1
-var genmv_r1 = []int{1, 2, 5, ca + 6, ca + 7, 9, 10, ca + 11, ca + 12, 14, ca + 16}
+var genmv_r1 = []int{cb + 1, cc + 2, 5, cab + 6, cac + 7, cd + 9, ce + 10, cad + 11, cae + 12, 14, ca + 16}
 var genmv_r2 = genmv_r1
 var genmv_pr1 = []int{1, 2, 3, 4, 5, 9, 10, 14}
 var genmv_pr2 = genmv_pr1
@@ -357,17 +367,9 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 
 // 1 先手から見て１つ前への利き
 func makeFront(from Square, moveEndList []MoveEnd) {
-	//  promote bool,
-	var keepGoing = File(from) != 2
-
 	if to := from - 1; Rank(to) != 0 { // 上
 		ValidateSq(to)
-		if keepGoing {
-			moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-		}
-		// if promote {
-		// 	moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
-		// }
+		moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
 	}
 }
 
