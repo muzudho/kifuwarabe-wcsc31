@@ -3,51 +3,40 @@ package take14
 import "fmt"
 
 // 条件
-var ca = 20
-var cab = ca + 20
+var cab = 20
 var cac = cab + 20
-var cad = cac + 20
-var cae = cad + 20
-var cb = cae + 20
+var cb = cac + 20
 var cc = cb + 20
 var cd = cc + 20
 var ce = cd + 20
-var cf = ce + 20
-var cg = cf + 20
-var ch = cg + 20
-var ci = ch + 20
-var cj = ci + 20
-var ck = cj + 20
 
 // 盤上の駒、駒台の駒に対して、ルールを実装すればいいはず（＾～＾）
-var genmv_k1 = []int{cb + 1, cc + 2, cb + 3, cc + 4, 5}
+var genmv_k1 = []int{cb + 1, cc + 2, 3, 4, 5}
 var genmv_k2 = genmv_k1
-var genmv_r1 = []int{cb + 1, cc + 2, 5, cab + 6, cac + 7, cd + 9, ce + 10, cad + 11, cae + 12, 14, ca + 16}
+var genmv_r1 = []int{cb + 1, cc + 2, 5, cab + 6, cac + 7, 9, 10, 11, 12, 14, 16}
 var genmv_r2 = genmv_r1
-var genmv_pr1 = []int{1, 2, 3, 4, 5, 9, 10, 14}
+var genmv_pr1 = append(genmv_k1, []int{9, 10, 14}...)
 var genmv_pr2 = genmv_pr1
-var genmv_b1 = []int{3, 4, ca + 8, 13, ca + 15}
+var genmv_b1 = []int{3, 4, 8, 13, 15}
 var genmv_b2 = genmv_b1
-var genmv_pb1 = []int{1, 2, 3, 4, 5, 13}
+var genmv_pb1 = append(genmv_k1, []int{13}...)
 var genmv_pb2 = genmv_pb1
-var genmv_g1 = []int{1, 2, 3, 5}
+var genmv_g1 = []int{cb + 1, cc + 2, 3, 5}
 var genmv_ps1 = genmv_g1
 var genmv_pn1 = genmv_g1
 var genmv_pl1 = genmv_g1
 var genmv_pp1 = genmv_g1
-var genmv_g2 = []int{1, 2, 4, 5}
+var genmv_g2 = []int{cb + 1, cc + 2, 4, 5}
 var genmv_ps2 = genmv_g2
 var genmv_pn2 = genmv_g2
 var genmv_pl2 = genmv_g2
 var genmv_pp2 = genmv_g2
-var genmv_s1 = []int{1, 3, 4, ca + 6, ca + 8}
-var genmv_s2 = []int{2, 3, 4, ca + 7, ca + 8}
-var genmv_n1 = []int{cd + 17, ca + 18}
-var genmv_n2 = []int{ce + 19, ca + 20}
-var genmv_l1 = []int{cb + 1, ca + 6, 9, ca + 11}
-var genmv_l2 = []int{cc + 2, ca + 7, 10, ca + 12}
-var genmv_p1 = []int{cb + 1, ca + 6}
-var genmv_p2 = []int{cc + 2, ca + 7}
+var genmv_s1 = []int{cb + 1, 3, 4, cab + 6, 8}
+var genmv_s2 = []int{cc + 2, 3, 4, cac + 7, 8}
+var genmv_p1 = []int{cd + 1, 6}
+var genmv_p2 = []int{ce + 2, 7}
+var genmv_l1 = append(genmv_p1, []int{9, 11}...)
+var genmv_l2 = append(genmv_p2, []int{10, 12}...)
 
 // 打にはオフセット 30 足しとく
 var genmv_dr1 = []int{31, 32, 33, 34, 35, 36, 37}
