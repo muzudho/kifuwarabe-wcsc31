@@ -38,7 +38,7 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove3 - 初期値として 移動元マス、移動先マスを指定してください
+// NewMove - 初期値として 移動元マス、移動先マスを指定してください
 func NewMove(from Square, to Square, promotion bool) Move {
 	move := RESIGN_MOVE
 

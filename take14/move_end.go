@@ -13,10 +13,10 @@ type MoveEnd uint8
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE_END = MoveEnd(0)
 
-// NewMoveEnd - 初期値として 移動元マス、成り を指定してください
-func NewMoveEnd(dst_sq Square, promote bool) MoveEnd {
-	moveEnd := MoveEnd(0)
-	moveEnd = moveEnd.ReplaceDestination(dst_sq)
+// NewMoveEnd - 移動先マス、成りの有無 を指定してください
+func NewMoveEnd(to Square, promote bool) MoveEnd {
+	moveEnd := RESIGN_MOVE_END
+	moveEnd = moveEnd.ReplaceDestination(to)
 	return moveEnd.ReplacePromotion(promote)
 }
 
@@ -65,7 +65,6 @@ func (moveEnd MoveEnd) ToString() string {
 	str := make([]byte, 0, 3)
 
 	to, _ := moveEnd.Destructure()
-
 	// 正常時は必ず２桁（＾～＾）
 	file := byte(to / 10)
 	rank := byte(to % 10)
