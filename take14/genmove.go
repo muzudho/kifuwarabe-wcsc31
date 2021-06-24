@@ -79,10 +79,10 @@ func FromOpponent(phase Phase, from Square) bool {
 	}
 }
 
-// GenControl - 利いているマスの一覧を返します。動けるマスではありません。
+// GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 // 成らないと移動できないが、成れば移動できるマスがあるので、移動先と成りの２つセットで返します。
 // TODO 成る、成らないも入れたいぜ（＾～＾）
-func GenControl(pPos *Position, from Square) []MoveEnd {
+func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
 	return moveEndList
@@ -90,7 +90,7 @@ func GenControl(pPos *Position, from Square) []MoveEnd {
 		var genmv_list []int
 
 		if from == SQUARE_EMPTY {
-			panic(fmt.Errorf("GenControl has empty square"))
+			panic(fmt.Errorf("GenMoveEnd has empty square"))
 		} else if OnHands(from) {
 			// 打なら
 			switch from {
@@ -930,7 +930,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenControl(pPos, from)
+					control_list := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
@@ -978,7 +978,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenControl(pPos, hand_sq)
+				control_list := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range control_list {
 					to, pro := moveEnd.Destructure()
@@ -1007,7 +1007,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenControl(pPos, from)
+					control_list := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
@@ -1036,7 +1036,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenControl(pPos, hand_sq)
+				control_list := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range control_list {
 					to, pro := moveEnd.Destructure()

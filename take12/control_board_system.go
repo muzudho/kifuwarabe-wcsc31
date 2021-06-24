@@ -132,7 +132,7 @@ func (pControlBoardSys *ControlBoardSystem) RecalculateControl(
 		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
-			sq_list := GenControl(pPos, from)
+			sq_list := GenMoveEnd(pPos, from)
 
 			var pCB *ControlBoard
 			switch phase {
@@ -196,7 +196,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 	phase := Who(piece)
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
-	sq_list := GenControl(pPos, from)
+	sq_list := GenMoveEnd(pPos, from)
 
 	var pCB *ControlBoard
 	switch phase {

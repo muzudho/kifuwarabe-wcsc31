@@ -106,7 +106,7 @@ func (pPos *Position) AddControlDiff(layer int, from Square, sign int8) {
 	ph := int(Who(piece)) - 1
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
-	sq_list := GenControl(pPos, from)
+	sq_list := GenMoveEnd(pPos, from)
 
 	for _, to := range sq_list {
 		// fmt.Printf("Debug: to=%d\n", to)
@@ -154,7 +154,7 @@ func (pPos *Position) RecalculateControl(layer1 int) {
 		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
-			sq_list := GenControl(pPos, from)
+			sq_list := GenMoveEnd(pPos, from)
 
 			for _, to := range sq_list {
 				pPos.ControlBoards[phase-1][layer1][to] += 1

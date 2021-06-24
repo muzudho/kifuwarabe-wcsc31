@@ -1252,7 +1252,7 @@ func (pPos *Position) AddControlDiff(layer int, from Square, sign int8) {
 	ph := int(Who(piece)) - 1
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
-	sq_list := GenControl(pPos, from)
+	sq_list := GenMoveEnd(pPos, from)
 
 	for _, to := range sq_list {
 		// fmt.Printf("Debug: to=%d\n", to)

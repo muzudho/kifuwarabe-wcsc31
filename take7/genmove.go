@@ -10,7 +10,7 @@ func Rank(sq Square) Square {
 	return sq % 10
 }
 
-func GenControl(pPos *Position, from Square) []Square {
+func GenMoveEnd(pPos *Position, from Square) []Square {
 	sq_list := []Square{}
 
 	piece := pPos.Board[from]
@@ -182,7 +182,7 @@ func GenMoveList(pPos *Position) []Move {
 		for file := 1; file < 10; file += 1 {
 			from := Square(file*10 + rank)
 			if pPos.Homo(from) {
-				sq_list := GenControl(pPos, from)
+				sq_list := GenMoveEnd(pPos, from)
 
 				for _, to := range sq_list {
 					move_list = append(move_list, NewMove2(from, to))

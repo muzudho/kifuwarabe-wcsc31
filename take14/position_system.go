@@ -740,7 +740,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 				}
-				pCB7.AddControl(MoveEndListToControlList(GenControl(pPos, sq)), sq, 1)
+				pCB7.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, sq)), sq, 1)
 			}
 		}
 	}
@@ -964,7 +964,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
+		pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, 1)
 	} else {
 		// 打でないなら
 
@@ -991,7 +991,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 				}
-				pCB.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
+				pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
 			}
 			cap_piece_type = What(captured)
 			cap_src_sq = to
@@ -1019,7 +1019,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
 		// 元位置の駒の利きを除去
-		pCB1.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, -1)
+		pCB1.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, -1)
 
 		// 行き先の駒の上書き
 		if pro {
@@ -1047,7 +1047,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB2.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
+		pCB2.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, 1)
 
 		switch captured {
 		case PIECE_EMPTY: // Ignored
@@ -1232,7 +1232,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB3.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
+		pCB3.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
 		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
@@ -1257,7 +1257,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB4.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
+		pCB4.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
 
 		// 自駒を移動元へ戻します
 		if pro {
@@ -1285,7 +1285,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
 		// 元の場所に戻した自駒の利きを復元します
-		pCB5.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, 1)
+		pCB5.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, 1)
 	}
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
@@ -1456,7 +1456,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			}
 			// 取った駒は盤上になかったので、ここで利きを復元させます
 			// 行き先にある取られていた駒の利きの復元
-			pCB6.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
+			pCB6.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, 1)
 		}
 	}
 

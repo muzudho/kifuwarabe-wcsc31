@@ -44,7 +44,7 @@ func (pCB *ControlBoard) AddControl(sq_list []Square, from Square, sign int16) {
 	// 	return
 	// }
 
-	//sq_list := GenControl(pPos, from)
+	//sq_list := GenMoveEnd(pPos, from)
 	for _, to := range sq_list {
 		// fmt.Printf("Debug: ph=%d c=%d to=%d\n", ph, c, to)
 		// 差分の方のテーブルを更新（＾～＾）

@@ -926,7 +926,7 @@ func (pPos *Position) AddControl(from Square, sign int8) {
 
 	ph := int(Who(piece)) - 1
 
-	sq_list := GenControl(pPos, from)
+	sq_list := GenMoveEnd(pPos, from)
 
 	for _, to := range sq_list {
 		pPos.ControlBoards[ph][to] += sign * 1

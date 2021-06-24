@@ -59,10 +59,11 @@ const RESIGN_MOVE = Move(0)
 
 // NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
 // TODO 成、不成も欲しいぜ（＾～＾）
-func NewMove2(from Square, to Square) Move {
+func NewMove2(from Square, to Square) Move { // , promotion bool
 	move := RESIGN_MOVE
 	move = move.ReplaceSource(from)
 	return move.ReplaceDestination(to)
+	// return move.ReplacePromotion(promotion)
 }
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します

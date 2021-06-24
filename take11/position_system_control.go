@@ -111,7 +111,7 @@ func (pPosSys *PositionSystem) AddControlDiff(pPos *Position, c ControlLayerT, f
 	ph := int(Who(piece)) - 1
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
-	sq_list := GenControl(pPos, from)
+	sq_list := GenMoveEnd(pPos, from)
 
 	for _, to := range sq_list {
 		// fmt.Printf("Debug: ph=%d c=%d to=%d\n", ph, c, to)
@@ -159,7 +159,7 @@ func (pPosSys *PositionSystem) RecalculateControl(pPos *Position, c1 ControlLaye
 		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
-			sq_list := GenControl(pPos, from)
+			sq_list := GenMoveEnd(pPos, from)
 
 			for _, to := range sq_list {
 				pPosSys.ControlBoards[phase-1][c1][to] += 1

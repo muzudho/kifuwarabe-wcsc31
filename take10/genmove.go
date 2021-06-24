@@ -12,12 +12,12 @@ func Rank(sq Square) Square {
 	return sq % 10
 }
 
-// GenControl - 利いているマスの一覧を返します。動けるマスではありません。
-func GenControl(pPos *Position, from Square) []Square {
+// GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
+func GenMoveEnd(pPos *Position, from Square) []Square {
 	sq_list := []Square{}
 
 	if from == SQUARE_EMPTY {
-		panic(fmt.Errorf("GenControl has empty square"))
+		panic(fmt.Errorf("GenMoveEnd has empty square"))
 	} else if OnHands(from) {
 		// どこに打てるか
 		var start_rank Square
@@ -313,7 +313,7 @@ func GenMoveList(pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenControl(pPos, from)
+					control_list := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
@@ -359,7 +359,7 @@ func GenMoveList(pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenControl(pPos, hand_sq)
+				control_list := GenMoveEnd(pPos, hand_sq)
 
 				for _, to := range control_list {
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
@@ -387,7 +387,7 @@ func GenMoveList(pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenControl(pPos, from)
+					control_list := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
@@ -414,7 +414,7 @@ func GenMoveList(pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenControl(pPos, hand_sq)
+				control_list := GenMoveEnd(pPos, hand_sq)
 
 				for _, to := range control_list {
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
