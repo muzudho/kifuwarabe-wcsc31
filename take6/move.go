@@ -36,8 +36,8 @@ type Move uint32
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMoveValue2 - 初期値として 移動元マス、移動先マスを指定してください
-func NewMoveValue2(src_sq uint32, dst_sq uint32) Move {
+// NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
+func NewMove2(src_sq uint32, dst_sq uint32) Move {
 	move := RESIGN_MOVE
 	move = move.ReplaceSource(src_sq)
 	return move.ReplaceDestination(dst_sq)

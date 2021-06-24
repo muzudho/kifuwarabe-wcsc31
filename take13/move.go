@@ -38,8 +38,8 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMoveValue2 - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMoveValue2(from Square, to Square, promote bool) Move {
+// NewMove3 - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
+func NewMove3(from Square, to Square, promote bool) Move {
 	move := RESIGN_MOVE
 	move = move.ReplaceSource(from)
 	move = move.ReplacePromotion(promote)

@@ -15,28 +15,28 @@ func GenMoveList(pPos *Position) []Move {
 				switch piece {
 				case PIECE_K1, PIECE_K2: // 先手玉, 後手玉
 					if to := from + 9; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左上
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from - 1; to%10 != 0 && pPos.Hetero(to) { // 上
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from - 11; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 右上
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from + 10; to/10%10 != 0 && pPos.Hetero(to) { // 左
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from - 10; to/10%10 != 0 && pPos.Hetero(to) { // 右
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from + 11; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左下
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from + 1; to%10 != 0 && pPos.Hetero(to) { // 下
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 					if to := from - 9; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 右下
-						move_list = append(move_list, NewMoveValue2(from, to))
+						move_list = append(move_list, NewMove2(from, to))
 					}
 				}
 			}

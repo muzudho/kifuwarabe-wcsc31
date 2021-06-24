@@ -185,7 +185,7 @@ func GenMoveList(pPos *Position) []Move {
 				sq_list := GenControl(pPos, from)
 
 				for _, to := range sq_list {
-					move_list = append(move_list, NewMoveValue2(from, to))
+					move_list = append(move_list, NewMove2(from, to))
 				}
 			}
 		}
