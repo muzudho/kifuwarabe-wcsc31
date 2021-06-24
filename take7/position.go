@@ -633,15 +633,15 @@ func (pPos *Position) DoMove(move Move) {
 	// 作業前に、長い利きの駒の利きを -1 します
 	pPos.AddControlAllSlidingPiece(-1)
 
-	src_sq := move.GetSource()
-	dst_sq := move.GetDestination()
+	from, to, _ := move.Destructure()
+
 	// [0]movingPieceType [1]capturedPieceType
 	moving_piece_types := []PieceType{PIECE_TYPE_EMPTY, PIECE_TYPE_EMPTY}
 
 	// まず、打かどうかで処理を分けます
-	drop := src_sq
+	drop := from
 	var piece string
-	switch src_sq {
+	switch from {
 	case DROP_R1:
 		piece = PIECE_R1
 	case DROP_B1:
@@ -669,7 +669,7 @@ func (pPos *Position) DoMove(move Move) {
 	case DROP_L2:
 		piece = PIECE_L2
 	case DROP_P2:
-		drop = src_sq
+		drop = from
 		piece = PIECE_P2
 	default:
 		// Not drop
@@ -683,27 +683,27 @@ func (pPos *Position) DoMove(move Move) {
 		pPos.Hands[drop-DROP_ORIGIN] -= 1
 
 		// 行き先に駒を置きます
-		pPos.Board[dst_sq] = piece
-		pPos.AddControl(dst_sq, 1)
+		pPos.Board[to] = piece
+		pPos.AddControl(to, 1)
 		moving_piece_types[0] = What(piece)
 	} else {
 		// 打でないなら
 
 		// 移動先に駒があれば、その駒の利きを除外します
-		captured := pPos.Board[dst_sq]
+		captured := pPos.Board[to]
 		if captured != PIECE_EMPTY {
-			pPos.AddControl(dst_sq, -1)
+			pPos.AddControl(to, -1)
 			moving_piece_types[1] = What(captured)
 		}
 
 		// 元位置の駒を除去
-		pPos.AddControl(src_sq, -1)
+		pPos.AddControl(from, -1)
 
 		// 行き先の駒の配置
-		pPos.Board[dst_sq] = pPos.Board[src_sq]
-		moving_piece_types[0] = What(pPos.Board[dst_sq])
-		pPos.Board[src_sq] = PIECE_EMPTY
-		pPos.AddControl(dst_sq, 1)
+		pPos.Board[to] = pPos.Board[from]
+		moving_piece_types[0] = What(pPos.Board[to])
+		pPos.Board[from] = PIECE_EMPTY
+		pPos.AddControl(to, 1)
 
 		drop := Square(0)
 		switch captured {
@@ -758,20 +758,20 @@ func (pPos *Position) DoMove(move Move) {
 		switch moving_piece_type {
 		case PIECE_TYPE_R:
 			for i, sq := range pPos.RookLocations {
-				if sq == src_sq {
-					pPos.RookLocations[i] = dst_sq
+				if sq == from {
+					pPos.RookLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_B:
 			for i, sq := range pPos.BishopLocations {
-				if sq == src_sq {
-					pPos.BishopLocations[i] = dst_sq
+				if sq == from {
+					pPos.BishopLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_L:
 			for i, sq := range pPos.LanceLocations {
-				if sq == src_sq {
-					pPos.LanceLocations[i] = dst_sq
+				if sq == from {
+					pPos.LanceLocations[i] = to
 				}
 			}
 		}
@@ -798,17 +798,16 @@ func (pPos *Position) UndoMove() {
 	move := pPos.Moves[pPos.OffsetMovesIndex]
 	captured := pPos.CapturedList[pPos.OffsetMovesIndex]
 
-	src_sq := move.GetSource()
-	dst_sq := move.GetDestination()
+	from, to, _ := move.Destructure()
 
 	// 打かどうかで分けます
-	switch src_sq {
+	switch from {
 	case DROP_R1, DROP_B1, DROP_G1, DROP_S1, DROP_N1, DROP_L1, DROP_P1, DROP_R2, DROP_B2, DROP_G2, DROP_S2, DROP_N2, DROP_L2, DROP_P2:
 		// 打なら
-		drop := src_sq
+		drop := from
 		// 盤上から駒を除去します
-		moving_piece_types[0] = What(pPos.Board[dst_sq])
-		pPos.Board[dst_sq] = PIECE_EMPTY
+		moving_piece_types[0] = What(pPos.Board[to])
+		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[drop-DROP_ORIGIN] += 1
@@ -816,10 +815,10 @@ func (pPos *Position) UndoMove() {
 		// 打でないなら
 
 		// 行き先の駒の除去
-		moving_piece_types[0] = What(pPos.Board[dst_sq])
-		pPos.AddControl(dst_sq, -1)
+		moving_piece_types[0] = What(pPos.Board[to])
+		pPos.AddControl(to, -1)
 		// 移動元への駒の配置
-		pPos.Board[src_sq] = pPos.Board[dst_sq]
+		pPos.Board[from] = pPos.Board[to]
 
 		// あれば、取った駒は駒台から下ろします
 		cap := Square(0)
@@ -866,9 +865,9 @@ func (pPos *Position) UndoMove() {
 
 			// 取った駒を行き先に戻します
 			moving_piece_types[1] = What(captured)
-			pPos.Board[dst_sq] = captured
-			pPos.AddControl(src_sq, 1)
-			pPos.AddControl(dst_sq, 1)
+			pPos.Board[to] = captured
+			pPos.AddControl(from, 1)
+			pPos.AddControl(to, 1)
 		}
 	}
 
@@ -877,20 +876,20 @@ func (pPos *Position) UndoMove() {
 		switch moving_piece_type {
 		case PIECE_TYPE_R:
 			for i, sq := range pPos.RookLocations {
-				if sq == src_sq {
-					pPos.RookLocations[i] = dst_sq
+				if sq == from {
+					pPos.RookLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_B:
 			for i, sq := range pPos.BishopLocations {
-				if sq == src_sq {
-					pPos.BishopLocations[i] = dst_sq
+				if sq == from {
+					pPos.BishopLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_L:
 			for i, sq := range pPos.LanceLocations {
-				if sq == src_sq {
-					pPos.LanceLocations[i] = dst_sq
+				if sq == from {
+					pPos.LanceLocations[i] = to
 				}
 			}
 		}
