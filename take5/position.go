@@ -309,7 +309,10 @@ MovesNumLoop:
 // ParseMove
 func ParseMove(command string, i *int, phase int) (Move, error) {
 	var len = len(command)
-	var move = RESIGN_MOVE
+
+	var from Square
+	var to Square
+	var pro = false
 
 	// 0=移動元 1=移動先
 	var count = 0
@@ -321,9 +324,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_R1))
+			from = Square(DROP_R1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_R2))
+			from = Square(DROP_R2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -332,9 +335,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_B1))
+			from = Square(DROP_B1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_B2))
+			from = Square(DROP_B2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -343,9 +346,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_G1))
+			from = Square(DROP_G1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_G2))
+			from = Square(DROP_G2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -354,9 +357,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_S1))
+			from = Square(DROP_S1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_S2))
+			from = Square(DROP_S2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -365,9 +368,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_N1))
+			from = Square(DROP_N1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_N2))
+			from = Square(DROP_N2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -376,9 +379,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_L1))
+			from = Square(DROP_L1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_L2))
+			from = Square(DROP_L2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -387,9 +390,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(uint32(DROP_P1))
+			from = Square(DROP_P1)
 		case SECOND:
-			move = move.ReplaceSource(uint32(DROP_P2))
+			from = Square(DROP_P2)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -440,11 +443,11 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			}
 			*i += 1
 
-			sq := file*10 + rank
+			sq := Square(file*10 + rank)
 			if count == 0 {
-				move = move.ReplaceSource(uint32(sq))
+				from = sq
 			} else if count == 1 {
-				move = move.ReplaceDestination(uint32(sq))
+				to = sq
 			} else {
 				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
@@ -457,10 +460,10 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 
 	if *i < len && command[*i] == '+' {
 		*i += 1
-		move = move.ReplacePromotion(true)
+		pro = true
 	}
 
-	return move, nil
+	return NewMove(from, to, pro), nil
 }
 
 // Print - 局面出力（＾ｑ＾）

@@ -35,6 +35,24 @@ type Move uint32
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
+// NewMove - 初期値として 移動元マス、移動先マスを指定してください
+func NewMove(from Square, to Square, promotion bool) Move {
+	move := RESIGN_MOVE
+
+	// ReplaceSource - 移動元マス
+	move = Move(uint32(move)&0xffffff00 | uint32(from))
+
+	// ReplaceDestination - 移動先マス
+	move = Move(uint32(move)&0xffff00ff | uint32(to<<8))
+
+	// ReplacePromotion - 成
+	if promotion {
+		return Move(uint32(move) | 0x00010000)
+	}
+
+	return Move(uint32(move) & 0xfffeffff)
+}
+
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCode() string {
 	str := make([]byte, 0, 5)
@@ -100,25 +118,6 @@ func (move Move) ToCode() string {
 	}
 
 	return string(str)
-}
-
-// ReplaceSource - 移動元マス
-func (move Move) ReplaceSource(sq uint32) Move {
-	return Move(uint32(move)&0xffffff00 | sq)
-}
-
-// ReplaceDestination - 移動先マス
-func (move Move) ReplaceDestination(sq uint32) Move {
-	return Move(uint32(move)&0xffff00ff | (sq << 8))
-}
-
-// ReplacePromotion - 成
-func (move Move) ReplacePromotion(promotion bool) Move {
-	if promotion {
-		return Move(uint32(move) | 0x00010000)
-	}
-
-	return Move(uint32(move) & 0xfffeffff)
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
