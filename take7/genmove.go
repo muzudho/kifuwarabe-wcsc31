@@ -184,8 +184,9 @@ func GenMoveList(pPos *Position) []Move {
 			if pPos.Homo(from) {
 				moveEndList := GenMoveEnd(pPos, from)
 
-				for _, to := range moveEndList {
-					move_list = append(move_list, NewMove2(from, to))
+				for _, moveEnd := range moveEndList {
+					to, pro := moveEnd.Destructure()
+					move_list = append(move_list, NewMove(from, to, pro))
 				}
 			}
 		}
