@@ -1156,12 +1156,13 @@ func (pPos *Position) DoMove(move Move) {
 	mov_piece_type := PIECE_TYPE_EMPTY
 	cap_piece_type := PIECE_TYPE_EMPTY
 
-	mov_src_sq := move.GetSource()
-	if pPos.IsEmptySq(mov_src_sq) {
+	from, to, pro := move.Destructure()
+
+	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
-		fmt.Printf("Error: %d square is empty\n", mov_src_sq)
+		fmt.Printf("Error: %d square is empty\n", from)
 	}
-	mov_dst_sq := move.GetDestination()
+
 	var cap_src_sq Square
 	var cap_dst_sq = SQUARE_EMPTY
 
@@ -1169,14 +1170,14 @@ func (pPos *Position) DoMove(move Move) {
 	pPos.ClearControlDiff()
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただし今から動かす駒を除きます。
-	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_OFF, -1, mov_src_sq)
-	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_OFF, -1, mov_src_sq)
-	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_OFF, -1, mov_src_sq)
+	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_OFF, -1, from)
+	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_OFF, -1, from)
+	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_OFF, -1, from)
 
 	// まず、打かどうかで処理を分けます
-	sq_drop := mov_src_sq
+	sq_drop := from
 	var piece Piece
-	switch mov_src_sq {
+	switch from {
 	case SQ_R1:
 		piece = PIECE_R1
 	case SQ_B1:
@@ -1217,40 +1218,40 @@ func (pPos *Position) DoMove(move Move) {
 		pPos.Hands[sq_drop-SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
-		pPos.Board[mov_dst_sq] = piece
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, mov_dst_sq, 1)
+		pPos.Board[to] = piece
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, 1)
 		mov_piece_type = What(piece)
 	} else {
 		// 打でないなら
 
 		// 移動先に駒があれば、その駒の利きを除外します。
-		captured := pPos.Board[mov_dst_sq]
+		captured := pPos.Board[to]
 		if captured != PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
 				// Ignored: 長い利きの駒は 既に除外しているので無視します
 			default:
-				pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, mov_dst_sq, -1)
+				pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, to, -1)
 			}
 			cap_piece_type = What(captured)
-			cap_src_sq = mov_dst_sq
+			cap_src_sq = to
 		}
 
 		// 元位置の駒の利きを除去
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_REMOVE, mov_src_sq, -1)
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_REMOVE, from, -1)
 
 		// 行き先の駒の上書き
-		if move.IsPromotion() {
+		if pro {
 			// 駒を成りに変換します
-			pPos.Board[mov_dst_sq] = Promote(pPos.Board[mov_src_sq])
+			pPos.Board[to] = Promote(pPos.Board[from])
 		} else {
-			pPos.Board[mov_dst_sq] = pPos.Board[mov_src_sq]
+			pPos.Board[to] = pPos.Board[from]
 		}
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
+		mov_piece_type = What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[mov_src_sq] = PIECE_EMPTY
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, mov_dst_sq, 1)
+		pPos.Board[from] = PIECE_EMPTY
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, 1)
 
 		switch captured {
 		case PIECE_EMPTY: // Ignored
@@ -1307,8 +1308,8 @@ func (pPos *Position) DoMove(move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []Square{mov_src_sq, cap_src_sq}
-	dst_sq_list := []Square{mov_dst_sq, cap_dst_sq}
+	src_sq_list := []Square{from, cap_src_sq}
+	dst_sq_list := []Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case PIECE_TYPE_K:
@@ -1342,9 +1343,9 @@ func (pPos *Position) DoMove(move Move) {
 	}
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし動かした駒を除きます
-	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_ON, 1, mov_dst_sq)
-	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_ON, 1, mov_dst_sq)
-	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_ON, 1, mov_dst_sq)
+	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_ON, 1, to)
+	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_ON, 1, to)
+	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_ON, 1, to)
 
 	pPos.MergeControlDiff()
 }
@@ -1372,8 +1373,8 @@ func (pPos *Position) UndoMove() {
 	// 取った駒
 	captured := pPos.CapturedList[pPos.OffsetMovesIndex]
 
-	mov_dst_sq := move.GetDestination()
-	mov_src_sq := move.GetSource()
+	from, to, pro := move.Destructure()
+
 	var cap_dst_sq Square
 	var cap_src_sq = SQUARE_EMPTY
 
@@ -1382,19 +1383,19 @@ func (pPos *Position) UndoMove() {
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただしこれから動かす駒を除きます
 	// アンドゥなので逆さになっているぜ（＾～＾）
-	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_ON, -1, mov_dst_sq)
-	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_ON, -1, mov_dst_sq)
-	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_ON, -1, mov_dst_sq)
+	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_ON, -1, to)
+	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_ON, -1, to)
+	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_ON, -1, to)
 
 	// 打かどうかで分けます
-	switch mov_src_sq {
+	switch from {
 	case SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
 		// 打なら
-		drop := mov_src_sq
+		drop := from
 		// 行き先から駒を除去します
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, mov_dst_sq, -1)
-		pPos.Board[mov_dst_sq] = PIECE_EMPTY
+		mov_piece_type = What(pPos.Board[to])
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, -1)
+		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[drop-SQ_HAND_START] += 1
@@ -1403,15 +1404,15 @@ func (pPos *Position) UndoMove() {
 		// 打でないなら
 
 		// 行き先に進んでいた自駒の利きの除去
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, mov_dst_sq, -1)
+		mov_piece_type = What(pPos.Board[to])
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, -1)
 
 		// 自駒を移動元へ戻します
-		if move.IsPromotion() {
+		if pro {
 			// 成りを元に戻します
-			pPos.Board[mov_src_sq] = Demote(pPos.Board[mov_dst_sq])
+			pPos.Board[from] = Demote(pPos.Board[to])
 		} else {
-			pPos.Board[mov_src_sq] = pPos.Board[mov_dst_sq]
+			pPos.Board[from] = pPos.Board[to]
 		}
 
 		// あれば、取った駒は駒台から下ろします
@@ -1459,7 +1460,7 @@ func (pPos *Position) UndoMove() {
 
 			// 取っていた駒を行き先に戻します
 			cap_piece_type = What(captured)
-			pPos.Board[mov_dst_sq] = captured
+			pPos.Board[to] = captured
 
 			// pieceType := What(captured)
 			// switch pieceType {
@@ -1468,20 +1469,20 @@ func (pPos *Position) UndoMove() {
 			// default:
 			// 取った駒は盤上になかったので、ここで利きを復元させます
 			// 行き先にある取られていた駒の利きの復元
-			pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, mov_dst_sq, 1)
+			pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, to, 1)
 			// }
 		} else {
-			pPos.Board[mov_dst_sq] = PIECE_EMPTY
+			pPos.Board[to] = PIECE_EMPTY
 		}
 
 		// 元の場所に戻した自駒の利きを復元します
-		pPos.AddControlDiff(CONTROL_LAYER_DIFF_REMOVE, mov_src_sq, 1)
+		pPos.AddControlDiff(CONTROL_LAYER_DIFF_REMOVE, from, 1)
 	}
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	dst_sq_list := []Square{mov_dst_sq, cap_dst_sq}
-	src_sq_list := []Square{mov_src_sq, cap_src_sq}
+	dst_sq_list := []Square{to, cap_dst_sq}
+	src_sq_list := []Square{from, cap_src_sq}
 	for j, moving_piece_type := range piece_type_list {
 		switch moving_piece_type {
 		case PIECE_TYPE_K:
@@ -1516,9 +1517,9 @@ func (pPos *Position) UndoMove() {
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし、今動かした駒を除きます
 	// アンドゥなので逆さになっているぜ（＾～＾）
-	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_OFF, 1, mov_src_sq)
-	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_OFF, 1, mov_src_sq)
-	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_OFF, 1, mov_src_sq)
+	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_OFF, 1, from)
+	pPos.AddControlBishop(CONTROL_LAYER_DIFF_BISHOP_OFF, 1, from)
+	pPos.AddControlRook(CONTROL_LAYER_DIFF_ROOK_OFF, 1, from)
 
 	pPos.MergeControlDiff()
 }
