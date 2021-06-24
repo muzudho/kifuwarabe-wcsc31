@@ -1046,9 +1046,11 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
-	var move = RESIGN_MOVE
-
 	var hand_sq = SQUARE_EMPTY
+
+	var from Square
+	var to Square
+	var pro = false
 
 	// file
 	switch ch := command[*i]; ch {
@@ -1077,9 +1079,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(hand_sq)
+			from = hand_sq
 		case SECOND:
-			move = move.ReplaceSource(hand_sq + HAND_TYPE_SIZE)
+			from = hand_sq + HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -1128,9 +1130,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 			sq := Square(file*10 + rank)
 			if count == 0 {
-				move = move.ReplaceSource(sq)
+				from = sq
 			} else if count == 1 {
-				move = move.ReplaceDestination(sq)
+				to = sq
 			} else {
 				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
@@ -1143,10 +1145,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 	if *i < len && command[*i] == '+' {
 		*i += 1
-		move = move.ReplacePromotion(true)
+		pro = true
 	}
 
-	return move, nil
+	return NewMove(from, to, pro), nil
 }
 
 // DoMove - 一手指すぜ（＾～＾）
