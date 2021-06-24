@@ -85,277 +85,280 @@ func FromOpponent(phase Phase, from Square) bool {
 func GenControl(pPos *Position, from Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
-	var genmv_list []int
-
-	if from == SQUARE_EMPTY {
-		panic(fmt.Errorf("GenControl has empty square"))
-	} else if OnHands(from) {
-		// 打なら
-		switch from {
-		case SQ_R1:
-			genmv_list = genmv_dr1
-		case SQ_B1:
-			genmv_list = genmv_db1
-		case SQ_G1:
-			genmv_list = genmv_dg1
-		case SQ_S1:
-			genmv_list = genmv_ds1
-		case SQ_N1:
-			genmv_list = genmv_dn1
-		case SQ_L1:
-			genmv_list = genmv_dl1
-		case SQ_P1:
-			genmv_list = genmv_dp1
-		case SQ_R2:
-			genmv_list = genmv_dr1
-		case SQ_B2:
-			genmv_list = genmv_db1
-		case SQ_G2:
-			genmv_list = genmv_dg1
-		case SQ_S2:
-			genmv_list = genmv_ds1
-		case SQ_N2:
-			genmv_list = genmv_dn1
-		case SQ_L2:
-			genmv_list = genmv_dl2
-		case SQ_P2:
-			genmv_list = genmv_dp2
-		default:
-			panic(fmt.Errorf("Unknown hand from=%d", from))
-		}
-
-		// 打てる列（インデックスと列は等しい）。二歩チェックで使う
-		var droppableFiles = [10]bool{false, true, true, true, true, true, true, true, true, true}
-
-		for _, step := range genmv_list {
-			switch step {
-			case 31:
-				makeDrop(pPos, droppableFiles, 1, moveEndList)
-			case 32:
-				makeDrop(pPos, droppableFiles, 2, moveEndList)
-			case 33:
-				makeDrop(pPos, droppableFiles, 3, moveEndList)
-			case 34:
-				makeDrop(pPos, droppableFiles, 4, moveEndList)
-				makeDrop(pPos, droppableFiles, 5, moveEndList)
-				makeDrop(pPos, droppableFiles, 6, moveEndList)
-			case 35:
-				makeDrop(pPos, droppableFiles, 7, moveEndList)
-			case 36:
-				makeDrop(pPos, droppableFiles, 8, moveEndList)
-			case 37:
-				makeDrop(pPos, droppableFiles, 9, moveEndList)
-			// case 31:
-			// 	genmv_list = append(genmv_list, 24)
-			// 	genmv_list = append(genmv_list, 25)
-			// 	genmv_list = append(genmv_list, 26)
-			// 	genmv_list = append(genmv_list, 27)
-			// 	genmv_list = append(genmv_list, 28)
-			// 	genmv_list = append(genmv_list, 29)
-			// 	genmv_list = append(genmv_list, 30)
-			// case 32:
-			// 	genmv_list = append(genmv_list, 26)
-			// 	genmv_list = append(genmv_list, 27)
-			// 	genmv_list = append(genmv_list, 28)
-			// 	genmv_list = append(genmv_list, 29)
-			// 	genmv_list = append(genmv_list, 30)
-			// case 33:
-			// 	genmv_list = append(genmv_list, 24)
-			// 	genmv_list = append(genmv_list, 25)
-			// 	genmv_list = append(genmv_list, 26)
-			// 	genmv_list = append(genmv_list, 27)
-			// 	genmv_list = append(genmv_list, 28)
-			// case 34:
-			// 	genmv_list = append(genmv_list, 25)
-			// 	genmv_list = append(genmv_list, 26)
-			// 	genmv_list = append(genmv_list, 27)
-			// 	genmv_list = append(genmv_list, 28)
-			// 	genmv_list = append(genmv_list, 29)
-			// 	genmv_list = append(genmv_list, 30)
-			// case 35:
-			// 	genmv_list = append(genmv_list, 24)
-			// 	genmv_list = append(genmv_list, 25)
-			// 	genmv_list = append(genmv_list, 26)
-			// 	genmv_list = append(genmv_list, 27)
-			// 	genmv_list = append(genmv_list, 28)
-			// 	genmv_list = append(genmv_list, 29)
-			// case 36:
-			// 	for file := Square(9); file > 0; file -= 1 {
-			// 		if NifuFirst(pPos, file) { // ２歩禁止
-			// 			droppableFiles[file] = false
-			// 		}
-			// 	}
-
-			// 	genmv_list = append(genmv_list, 34)
-			// case 37:
-			// 	for file := Square(9); file > 0; file -= 1 {
-			// 		if NifuSecond(pPos, file) { // ２歩禁止
-			// 			droppableFiles[file] = false
-			// 		}
-			// 	}
-			// 	genmv_list = append(genmv_list, 35)
-			default:
-				panic(fmt.Errorf("Unknown step=%d", step))
-			}
-		}
-
-	} else {
-		// 打でないなら
-		piece := pPos.Board[from]
-		phase := Who(piece)
-
-		switch piece {
-		case PIECE_EMPTY:
-			panic(fmt.Errorf("Piece empty"))
-		case PIECE_K1:
-			genmv_list = genmv_k1
-		case PIECE_R1:
-			genmv_list = genmv_r1
-		case PIECE_B1:
-			genmv_list = genmv_b1
-		case PIECE_G1:
-			genmv_list = genmv_g1
-		case PIECE_S1:
-			genmv_list = genmv_s1
-		case PIECE_N1:
-			// 先手桂
-			if FromOpponent(phase, from) {
-				var promote = File(from) < 6                         // 移動元または移動先が敵陣なら成れる
-				makeFrontKnightPromotion(from, promote, moveEndList) // 先手桂の利き
-			}
-			if Rank(from) != 3 { // 移動元が3段目でない
-				var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
-				makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
-			}
-		case PIECE_L1:
-			genmv_list = genmv_l1
-		case PIECE_P1:
-			genmv_list = genmv_p1
-		case PIECE_PR1:
-			genmv_list = genmv_pr1
-		case PIECE_PB1:
-			genmv_list = genmv_pb1
-		case PIECE_PS1:
-			genmv_list = genmv_ps1
-		case PIECE_PN1:
-			genmv_list = genmv_pn1
-		case PIECE_PL1:
-			genmv_list = genmv_pl1
-		case PIECE_PP1:
-			genmv_list = genmv_pp1
-		case PIECE_K2:
-			genmv_list = genmv_k2
-		case PIECE_R2:
-			genmv_list = genmv_r2
-		case PIECE_B2:
-			genmv_list = genmv_b2
-		case PIECE_G2:
-			genmv_list = genmv_g2
-		case PIECE_S2:
-			genmv_list = genmv_s2
-		case PIECE_N2:
-			// 後手桂
-			if Rank(from) != 7 { // 移動元が7段目でない
-				var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
-				makeBackKnight(from, promote, moveEndList) // 後手桂の利き
-			}
-			if FromOpponent(phase, from) {
-				var promote = File(from) < 6                        // 移動元または移動先が敵陣なら成れる
-				makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
-			}
-		case PIECE_L2:
-			genmv_list = genmv_l2
-		case PIECE_P2:
-			genmv_list = genmv_p2
-		case PIECE_PR2:
-			genmv_list = genmv_pr2
-		case PIECE_PB2:
-			genmv_list = genmv_pb2
-		case PIECE_PS2:
-			genmv_list = genmv_ps2
-		case PIECE_PN2:
-			genmv_list = genmv_pn2
-		case PIECE_PL2:
-			genmv_list = genmv_pl2
-		case PIECE_PP2:
-			genmv_list = genmv_pp2
-		default:
-			panic(fmt.Errorf("Unknown piece=%d", piece))
-		}
-
-		for _, step := range genmv_list {
-			switch step {
-			case 1:
-				// 先手から見て１つ上への利き
-				makeFront(from, NOT_PROMOTE, moveEndList)
-			case cb + 1:
-				if Rank(from) != 2 { // 移動元が2段目でない
-					makeFront(from, NOT_PROMOTE, moveEndList)
-				}
-			case 2:
-				// 先手から見て１つ後ろへの利き
-				makeBack(from, NOT_PROMOTE, moveEndList)
-			case cc + 2:
-				if Rank(from) != 8 { // 移動元が8段目でない
-					makeBack(from, NOT_PROMOTE, moveEndList)
-				}
-			case 3:
-				makeFrontDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め前の利き
-			case 4:
-				makeBackDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め後ろの利き
-			case 5:
-				makeSide(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ横への利き
-			case 6:
-				if FromOpponent(phase, from) {
-					makeFrontPromotion()
-				}
-			case cb + 6:
-				if FromOpponent(phase, from) {
-					makeFrontPromotion()
-				}
-			case 7:
-				if FromOpponent(phase, from) {
-					makeBackPromotion()
-				}
-			case cc + 7:
-				if FromOpponent(phase, from) {
-					makeBackPromotion()
-				}
-			case 8:
-				if FromOpponent(phase, from) {
-					makeDiagonalPromotion()
-				}
-			case 9:
-				makeLongFront(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
-			case 10:
-				makeLongBack(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの下への長い利き
-			case 11:
-				if FromOpponent(phase, from) {
-					makeLongFrontPromotion(pPos, from, CAN_PROMOTE, moveEndList)
-				}
-			case 12:
-				if FromOpponent(phase, from) {
-					makeLongBackPromotion(pPos, from, CAN_PROMOTE, moveEndList)
-				}
-			case 13:
-				makeLongDiagonal(pPos, from, moveEndList)
-			case 14:
-				makeLongSide(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの横への長い利き
-			case 15:
-				if FromOpponent(phase, from) {
-					makeLongDiagonalPromotion(pPos, phase, from, moveEndList)
-				}
-			case 16:
-				if FromOpponent(phase, from) {
-					makeSide(from, promote, moveEndList)
-				}
-			default:
-				panic(fmt.Errorf("Unknown step=%d", step))
-			}
-		}
-	}
-
 	return moveEndList
+	/*
+		var genmv_list []int
+
+		if from == SQUARE_EMPTY {
+			panic(fmt.Errorf("GenControl has empty square"))
+		} else if OnHands(from) {
+			// 打なら
+			switch from {
+			case SQ_R1:
+				genmv_list = genmv_dr1
+			case SQ_B1:
+				genmv_list = genmv_db1
+			case SQ_G1:
+				genmv_list = genmv_dg1
+			case SQ_S1:
+				genmv_list = genmv_ds1
+			case SQ_N1:
+				genmv_list = genmv_dn1
+			case SQ_L1:
+				genmv_list = genmv_dl1
+			case SQ_P1:
+				genmv_list = genmv_dp1
+			case SQ_R2:
+				genmv_list = genmv_dr1
+			case SQ_B2:
+				genmv_list = genmv_db1
+			case SQ_G2:
+				genmv_list = genmv_dg1
+			case SQ_S2:
+				genmv_list = genmv_ds1
+			case SQ_N2:
+				genmv_list = genmv_dn1
+			case SQ_L2:
+				genmv_list = genmv_dl2
+			case SQ_P2:
+				genmv_list = genmv_dp2
+			default:
+				panic(fmt.Errorf("Unknown hand from=%d", from))
+			}
+
+			// 打てる列（インデックスと列は等しい）。二歩チェックで使う
+			var droppableFiles = [10]bool{false, true, true, true, true, true, true, true, true, true}
+
+			for _, step := range genmv_list {
+				switch step {
+				case 31:
+					makeDrop(pPos, droppableFiles, 1, moveEndList)
+				case 32:
+					makeDrop(pPos, droppableFiles, 2, moveEndList)
+				case 33:
+					makeDrop(pPos, droppableFiles, 3, moveEndList)
+				case 34:
+					makeDrop(pPos, droppableFiles, 4, moveEndList)
+					makeDrop(pPos, droppableFiles, 5, moveEndList)
+					makeDrop(pPos, droppableFiles, 6, moveEndList)
+				case 35:
+					makeDrop(pPos, droppableFiles, 7, moveEndList)
+				case 36:
+					makeDrop(pPos, droppableFiles, 8, moveEndList)
+				case 37:
+					makeDrop(pPos, droppableFiles, 9, moveEndList)
+				// case 31:
+				// 	genmv_list = append(genmv_list, 24)
+				// 	genmv_list = append(genmv_list, 25)
+				// 	genmv_list = append(genmv_list, 26)
+				// 	genmv_list = append(genmv_list, 27)
+				// 	genmv_list = append(genmv_list, 28)
+				// 	genmv_list = append(genmv_list, 29)
+				// 	genmv_list = append(genmv_list, 30)
+				// case 32:
+				// 	genmv_list = append(genmv_list, 26)
+				// 	genmv_list = append(genmv_list, 27)
+				// 	genmv_list = append(genmv_list, 28)
+				// 	genmv_list = append(genmv_list, 29)
+				// 	genmv_list = append(genmv_list, 30)
+				// case 33:
+				// 	genmv_list = append(genmv_list, 24)
+				// 	genmv_list = append(genmv_list, 25)
+				// 	genmv_list = append(genmv_list, 26)
+				// 	genmv_list = append(genmv_list, 27)
+				// 	genmv_list = append(genmv_list, 28)
+				// case 34:
+				// 	genmv_list = append(genmv_list, 25)
+				// 	genmv_list = append(genmv_list, 26)
+				// 	genmv_list = append(genmv_list, 27)
+				// 	genmv_list = append(genmv_list, 28)
+				// 	genmv_list = append(genmv_list, 29)
+				// 	genmv_list = append(genmv_list, 30)
+				// case 35:
+				// 	genmv_list = append(genmv_list, 24)
+				// 	genmv_list = append(genmv_list, 25)
+				// 	genmv_list = append(genmv_list, 26)
+				// 	genmv_list = append(genmv_list, 27)
+				// 	genmv_list = append(genmv_list, 28)
+				// 	genmv_list = append(genmv_list, 29)
+				// case 36:
+				// 	for file := Square(9); file > 0; file -= 1 {
+				// 		if NifuFirst(pPos, file) { // ２歩禁止
+				// 			droppableFiles[file] = false
+				// 		}
+				// 	}
+
+				// 	genmv_list = append(genmv_list, 34)
+				// case 37:
+				// 	for file := Square(9); file > 0; file -= 1 {
+				// 		if NifuSecond(pPos, file) { // ２歩禁止
+				// 			droppableFiles[file] = false
+				// 		}
+				// 	}
+				// 	genmv_list = append(genmv_list, 35)
+				default:
+					panic(fmt.Errorf("Unknown step=%d", step))
+				}
+			}
+
+		} else {
+			// 打でないなら
+			piece := pPos.Board[from]
+			phase := Who(piece)
+
+			switch piece {
+			case PIECE_EMPTY:
+				panic(fmt.Errorf("Piece empty"))
+			case PIECE_K1:
+				genmv_list = genmv_k1
+			case PIECE_R1:
+				genmv_list = genmv_r1
+			case PIECE_B1:
+				genmv_list = genmv_b1
+			case PIECE_G1:
+				genmv_list = genmv_g1
+			case PIECE_S1:
+				genmv_list = genmv_s1
+			case PIECE_N1:
+				// 先手桂
+				if FromOpponent(phase, from) {
+					var promote = File(from) < 6                         // 移動元または移動先が敵陣なら成れる
+					makeFrontKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+				}
+				if Rank(from) != 3 { // 移動元が3段目でない
+					var promote = File(from) < 6                // 移動元または移動先が敵陣なら成れる
+					makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
+				}
+			case PIECE_L1:
+				genmv_list = genmv_l1
+			case PIECE_P1:
+				genmv_list = genmv_p1
+			case PIECE_PR1:
+				genmv_list = genmv_pr1
+			case PIECE_PB1:
+				genmv_list = genmv_pb1
+			case PIECE_PS1:
+				genmv_list = genmv_ps1
+			case PIECE_PN1:
+				genmv_list = genmv_pn1
+			case PIECE_PL1:
+				genmv_list = genmv_pl1
+			case PIECE_PP1:
+				genmv_list = genmv_pp1
+			case PIECE_K2:
+				genmv_list = genmv_k2
+			case PIECE_R2:
+				genmv_list = genmv_r2
+			case PIECE_B2:
+				genmv_list = genmv_b2
+			case PIECE_G2:
+				genmv_list = genmv_g2
+			case PIECE_S2:
+				genmv_list = genmv_s2
+			case PIECE_N2:
+				// 後手桂
+				if Rank(from) != 7 { // 移動元が7段目でない
+					var promote = File(from) > 4               // 移動元または移動先が敵陣なら成れる
+					makeBackKnight(from, promote, moveEndList) // 後手桂の利き
+				}
+				if FromOpponent(phase, from) {
+					var promote = File(from) < 6                        // 移動元または移動先が敵陣なら成れる
+					makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
+				}
+			case PIECE_L2:
+				genmv_list = genmv_l2
+			case PIECE_P2:
+				genmv_list = genmv_p2
+			case PIECE_PR2:
+				genmv_list = genmv_pr2
+			case PIECE_PB2:
+				genmv_list = genmv_pb2
+			case PIECE_PS2:
+				genmv_list = genmv_ps2
+			case PIECE_PN2:
+				genmv_list = genmv_pn2
+			case PIECE_PL2:
+				genmv_list = genmv_pl2
+			case PIECE_PP2:
+				genmv_list = genmv_pp2
+			default:
+				panic(fmt.Errorf("Unknown piece=%d", piece))
+			}
+
+			for _, step := range genmv_list {
+				switch step {
+				case 1:
+					// 先手から見て１つ上への利き
+					makeFront(from, NOT_PROMOTE, moveEndList)
+				case cb + 1:
+					if Rank(from) != 2 { // 移動元が2段目でない
+						makeFront(from, NOT_PROMOTE, moveEndList)
+					}
+				case 2:
+					// 先手から見て１つ後ろへの利き
+					makeBack(from, NOT_PROMOTE, moveEndList)
+				case cc + 2:
+					if Rank(from) != 8 { // 移動元が8段目でない
+						makeBack(from, NOT_PROMOTE, moveEndList)
+					}
+				case 3:
+					makeFrontDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め前の利き
+				case 4:
+					makeBackDiagonal(from, NOT_PROMOTE, moveEndList) // 先手から見て斜め後ろの利き
+				case 5:
+					makeSide(from, NOT_PROMOTE, moveEndList) // 先手から見て１つ横への利き
+				case 6:
+					if FromOpponent(phase, from) {
+						makeFrontPromotion()
+					}
+				case cb + 6:
+					if FromOpponent(phase, from) {
+						makeFrontPromotion()
+					}
+				case 7:
+					if FromOpponent(phase, from) {
+						makeBackPromotion()
+					}
+				case cc + 7:
+					if FromOpponent(phase, from) {
+						makeBackPromotion()
+					}
+				case 8:
+					if FromOpponent(phase, from) {
+						makeDiagonalPromotion()
+					}
+				case 9:
+					makeLongFront(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの上への長い利き
+				case 10:
+					makeLongBack(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの下への長い利き
+				case 11:
+					if FromOpponent(phase, from) {
+						makeLongFrontPromotion(pPos, from, CAN_PROMOTE, moveEndList)
+					}
+				case 12:
+					if FromOpponent(phase, from) {
+						makeLongBackPromotion(pPos, from, CAN_PROMOTE, moveEndList)
+					}
+				case 13:
+					makeLongDiagonal(pPos, from, moveEndList)
+				case 14:
+					makeLongSide(pPos, from, NOT_PROMOTE, moveEndList) // ２つ先のマスからの横への長い利き
+				case 15:
+					if FromOpponent(phase, from) {
+						makeLongDiagonalPromotion(pPos, phase, from, moveEndList)
+					}
+				case 16:
+					if FromOpponent(phase, from) {
+						makeSide(from, promote, moveEndList)
+					}
+				default:
+					panic(fmt.Errorf("Unknown step=%d", step))
+				}
+			}
+		}
+
+		return moveEndList
+	*/
 }
 
 // 1 先手から見て１つ前への利き
