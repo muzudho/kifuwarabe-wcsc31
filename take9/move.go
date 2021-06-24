@@ -59,9 +59,10 @@ func (move Move) ToCode() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
+	from, to, pro := move.Destructure()
+
 	// 移動元マス(Source square)
-	source_sq := Square(move.GetSource())
-	switch source_sq {
+	switch from {
 	case HAND_R1, HAND_R2:
 		str = append(str, 'R')
 		count = 1
@@ -96,10 +97,10 @@ func (move Move) ToCode() string {
 		var sq Square // マス番号
 		if count == 0 {
 			// 移動元
-			sq = source_sq
+			sq = from
 		} else if count == 1 {
 			// 移動先
-			sq = Square(move.GetDestination())
+			sq = to
 		} else {
 			panic(fmt.Errorf("LogicError: count=%d", count))
 		}
@@ -114,7 +115,7 @@ func (move Move) ToCode() string {
 		count += 1
 	}
 
-	if move.IsPromotion() {
+	if pro {
 		str = append(str, '+')
 	}
 
@@ -147,23 +148,22 @@ func (move Move) ReplacePromotion(promotion bool) Move {
 	return Move(uint16(move) & 0xbfff)
 }
 
-// GetSource - 移動元マス
+// Destructure - 移動元マス、移動先マス、成りの有無
+//
+// 移動元マス
 // 0000 0000 0111 1111 (Mask) 0x007f
 // .pdd dddd dsss ssss
-func (move Move) GetSource() Square {
-	return Square(uint16(move) & 0x007f)
-}
-
-// GetDestination - 移動元マス
+//
+// 移動先マス
 // 0011 1111 1000 0000 (Mask) 0x3f80
 // .pdd dddd dsss ssss
-func (move Move) GetDestination() Square {
-	return Square((uint16(move) & 0x3f80) >> 7)
-}
-
-// IsPromotion - 成
+//
+// 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) IsPromotion() bool {
-	return uint16(move)&0x4000 != 0
+func (move Move) Destructure() (Square, Square, bool) {
+	var from = Square(uint16(move) & 0x007f)
+	var to = Square((uint16(move) & 0x3f80) >> 7)
+	var pro = uint16(move)&0x4000 != 0
+	return from, to, pro
 }

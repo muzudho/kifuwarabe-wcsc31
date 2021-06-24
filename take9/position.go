@@ -866,12 +866,13 @@ func (pPos *Position) DoMove(move Move) {
 	mov_piece_type := PIECE_TYPE_EMPTY
 	cap_piece_type := PIECE_TYPE_EMPTY
 
-	mov_src_sq := move.GetSource()
-	if pPos.IsEmptySq(mov_src_sq) {
+	from, to, pro := move.Destructure()
+
+	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
-		fmt.Printf("Error: %d square is empty\n", mov_src_sq)
+		fmt.Printf("Error: %d square is empty\n", from)
 	}
-	mov_dst_sq := move.GetDestination()
+
 	var cap_src_sq Square
 	var cap_dst_sq = SQUARE_EMPTY
 
@@ -879,12 +880,12 @@ func (pPos *Position) DoMove(move Move) {
 	pPos.ClearControlDiff()
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただし今から動かす駒を除きます。
-	pPos.AddControlDiffAllSlidingPiece(0, -1, mov_src_sq)
+	pPos.AddControlDiffAllSlidingPiece(0, -1, from)
 
 	// まず、打かどうかで処理を分けます
-	drop := mov_src_sq
+	drop := from
 	var piece Piece
-	switch mov_src_sq {
+	switch from {
 	case HAND_R1:
 		piece = PIECE_R1
 	case HAND_B1:
@@ -925,40 +926,40 @@ func (pPos *Position) DoMove(move Move) {
 		pPos.Hands[drop-HAND_ORIGIN] -= 1
 
 		// 行き先に駒を置きます
-		pPos.Board[mov_dst_sq] = piece
-		pPos.AddControlDiff(1, mov_dst_sq, 1)
+		pPos.Board[to] = piece
+		pPos.AddControlDiff(1, to, 1)
 		mov_piece_type = What(piece)
 	} else {
 		// 打でないなら
 
 		// 移動先に駒があれば、その駒の利きを除外します。
-		captured := pPos.Board[mov_dst_sq]
+		captured := pPos.Board[to]
 		if captured != PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
 				// Ignored: 長い利きの駒は 既に除外しているので無視します
 			default:
-				pPos.AddControlDiff(1, mov_dst_sq, -1)
+				pPos.AddControlDiff(1, to, -1)
 			}
 			cap_piece_type = What(captured)
-			cap_src_sq = mov_dst_sq
+			cap_src_sq = to
 		}
 
 		// 元位置の駒を除去
-		pPos.AddControlDiff(2, mov_src_sq, -1)
+		pPos.AddControlDiff(2, from, -1)
 
 		// 行き先の駒の上書き
-		if move.IsPromotion() {
+		if pro {
 			// 駒を成りに変換します
-			pPos.Board[mov_dst_sq] = Promote(pPos.Board[mov_src_sq])
+			pPos.Board[to] = Promote(pPos.Board[from])
 		} else {
-			pPos.Board[mov_dst_sq] = pPos.Board[mov_src_sq]
+			pPos.Board[to] = pPos.Board[from]
 		}
 		// 元位置の駒の削除pos
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
-		pPos.Board[mov_src_sq] = PIECE_EMPTY
-		pPos.AddControlDiff(3, mov_dst_sq, 1)
+		mov_piece_type = What(pPos.Board[to])
+		pPos.Board[from] = PIECE_EMPTY
+		pPos.AddControlDiff(3, to, 1)
 
 		switch captured {
 		case PIECE_EMPTY: // Ignored
@@ -1014,8 +1015,8 @@ func (pPos *Position) DoMove(move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []Square{mov_src_sq, cap_src_sq}
-	dst_sq_list := []Square{mov_dst_sq, cap_dst_sq}
+	src_sq_list := []Square{from, cap_src_sq}
+	dst_sq_list := []Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case PIECE_TYPE_K:
@@ -1049,7 +1050,7 @@ func (pPos *Position) DoMove(move Move) {
 	}
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし動かした駒を除きます
-	pPos.AddControlDiffAllSlidingPiece(4, 1, mov_dst_sq)
+	pPos.AddControlDiffAllSlidingPiece(4, 1, to)
 
 	pPos.MergeControlDiff()
 }
@@ -1075,8 +1076,8 @@ func (pPos *Position) UndoMove() {
 	move := pPos.Moves[pPos.OffsetMovesIndex]
 	captured := pPos.CapturedList[pPos.OffsetMovesIndex]
 
-	mov_dst_sq := move.GetDestination()
-	mov_src_sq := move.GetSource()
+	from, to, pro := move.Destructure()
+
 	var cap_dst_sq Square
 	var cap_src_sq = SQUARE_EMPTY
 
@@ -1084,16 +1085,16 @@ func (pPos *Position) UndoMove() {
 	pPos.ClearControlDiff()
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただしこれから動かす駒を除きます
-	pPos.AddControlDiffAllSlidingPiece(0, -1, mov_dst_sq)
+	pPos.AddControlDiffAllSlidingPiece(0, -1, to)
 
 	// 打かどうかで分けます
-	switch mov_src_sq {
+	switch from {
 	case HAND_R1, HAND_B1, HAND_G1, HAND_S1, HAND_N1, HAND_L1, HAND_P1, HAND_R2, HAND_B2, HAND_G2, HAND_S2, HAND_N2, HAND_L2, HAND_P2:
 		// 打なら
-		drop := mov_src_sq
+		drop := from
 		// 盤上から駒を除去します
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
-		pPos.Board[mov_dst_sq] = PIECE_EMPTY
+		mov_piece_type = What(pPos.Board[to])
+		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[drop-HAND_ORIGIN] += 1
@@ -1102,15 +1103,15 @@ func (pPos *Position) UndoMove() {
 		// 打でないなら
 
 		// 行き先の駒の除去
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
-		pPos.AddControlDiff(1, mov_dst_sq, -1)
+		mov_piece_type = What(pPos.Board[to])
+		pPos.AddControlDiff(1, to, -1)
 
 		// 移動元への駒の配置
-		if move.IsPromotion() {
+		if pro {
 			// 成りを元に戻します
-			pPos.Board[mov_src_sq] = Demote(pPos.Board[mov_dst_sq])
+			pPos.Board[from] = Demote(pPos.Board[to])
 		} else {
-			pPos.Board[mov_src_sq] = pPos.Board[mov_dst_sq]
+			pPos.Board[from] = pPos.Board[to]
 		}
 
 		// あれば、取った駒は駒台から下ろします
@@ -1158,8 +1159,8 @@ func (pPos *Position) UndoMove() {
 
 			// 取った駒を行き先に戻します
 			cap_piece_type = What(captured)
-			pPos.Board[mov_dst_sq] = captured
-			pPos.AddControlDiff(2, mov_src_sq, 1)
+			pPos.Board[to] = captured
+			pPos.AddControlDiff(2, from, 1)
 
 			// pieceType := What(captured)
 			// switch pieceType {
@@ -1167,18 +1168,18 @@ func (pPos *Position) UndoMove() {
 			// 	// Ignored: 長い利きの駒は あとで追加するので、ここでは無視します
 			// default:
 			// 取った駒は盤上になかったので、ここで利きを復元させます
-			pPos.AddControlDiff(3, mov_dst_sq, 1)
+			pPos.AddControlDiff(3, to, 1)
 			// }
 
 		} else {
-			pPos.Board[mov_dst_sq] = PIECE_EMPTY
+			pPos.Board[to] = PIECE_EMPTY
 		}
 	}
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	dst_sq_list := []Square{mov_dst_sq, cap_dst_sq}
-	src_sq_list := []Square{mov_src_sq, cap_src_sq}
+	dst_sq_list := []Square{to, cap_dst_sq}
+	src_sq_list := []Square{from, cap_src_sq}
 	for j, moving_piece_type := range piece_type_list {
 		switch moving_piece_type {
 		case PIECE_TYPE_K:
@@ -1212,7 +1213,7 @@ func (pPos *Position) UndoMove() {
 	}
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし、今動かした駒を除きます
-	pPos.AddControlDiffAllSlidingPiece(4, 1, mov_src_sq)
+	pPos.AddControlDiffAllSlidingPiece(4, 1, from)
 
 	pPos.MergeControlDiff()
 }
