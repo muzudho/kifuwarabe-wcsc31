@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// マス番号 00～99,100～113
+type Square uint32
+
 const (
 	// 先手
 	FIRST = iota + 1
@@ -526,56 +529,55 @@ func (pos *Position) Sprint() string {
 
 // DoMove - 一手指すぜ（＾～＾）
 func (pos *Position) DoMove(move Move) {
-	src_sq := move.GetSource()
-	dst_sq := move.GetDestination()
-	switch src_sq {
+	from, to, _ := move.Destructure()
+	switch from {
 	case DROP_R1:
 		pos.Hands[DROP_R1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_R1
+		pos.Board[to] = PIECE_R1
 	case DROP_B1:
 		pos.Hands[DROP_B1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_B1
+		pos.Board[to] = PIECE_B1
 	case DROP_G1:
 		pos.Hands[DROP_G1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_G1
+		pos.Board[to] = PIECE_G1
 	case DROP_S1:
 		pos.Hands[DROP_S1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_S1
+		pos.Board[to] = PIECE_S1
 	case DROP_N1:
 		pos.Hands[DROP_N1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_N1
+		pos.Board[to] = PIECE_N1
 	case DROP_L1:
 		pos.Hands[DROP_L1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_L1
+		pos.Board[to] = PIECE_L1
 	case DROP_P1:
 		pos.Hands[DROP_P1-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_P1
+		pos.Board[to] = PIECE_P1
 	case DROP_R2:
 		pos.Hands[DROP_R2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_R2
+		pos.Board[to] = PIECE_R2
 	case DROP_B2:
 		pos.Hands[DROP_B2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_B2
+		pos.Board[to] = PIECE_B2
 	case DROP_G2:
 		pos.Hands[DROP_G2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_G2
+		pos.Board[to] = PIECE_G2
 	case DROP_S2:
 		pos.Hands[DROP_S2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_S2
+		pos.Board[to] = PIECE_S2
 	case DROP_N2:
 		pos.Hands[DROP_N2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_N2
+		pos.Board[to] = PIECE_N2
 	case DROP_L2:
 		pos.Hands[DROP_L2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_L2
+		pos.Board[to] = PIECE_L2
 	case DROP_P2:
 		pos.Hands[DROP_P2-DROP_ORIGIN] -= 1
-		pos.Board[dst_sq] = PIECE_P2
+		pos.Board[to] = PIECE_P2
 	default:
 		// あれば、取った駒
-		captured := pos.Board[dst_sq]
-		pos.Board[dst_sq] = pos.Board[src_sq]
-		pos.Board[src_sq] = PIECE_EMPTY
+		captured := pos.Board[to]
+		pos.Board[to] = pos.Board[from]
+		pos.Board[from] = PIECE_EMPTY
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
