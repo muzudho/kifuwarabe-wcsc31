@@ -367,9 +367,11 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove
 func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
-	var move = RESIGN_MOVE
-
 	var hand1 = Square(0)
+
+	var from Square
+	var to Square
+	var pro = false
 
 	// file
 	switch ch := command[*i]; ch {
@@ -404,9 +406,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	if hand1 != 0 {
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(hand1)
+			from = hand1
 		case SECOND:
-			move = move.ReplaceSource(hand1 + DROP_TYPE_SIZE)
+			from = hand1 + DROP_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -455,9 +457,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 			sq := Square(file*10 + rank)
 			if count == 0 {
-				move = move.ReplaceSource(sq)
+				from = sq
 			} else if count == 1 {
-				move = move.ReplaceDestination(sq)
+				to = sq
 			} else {
 				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
@@ -470,10 +472,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 	if *i < len && command[*i] == '+' {
 		*i += 1
-		move = move.ReplacePromotion(true)
+		pro = true
 	}
 
-	return move, nil
+	return NewMove(from, to, pro), nil
 }
 
 // Print - 局面出力（＾ｑ＾）
@@ -926,9 +928,10 @@ func (pPos *Position) AddControl(from Square, sign int8) {
 
 	ph := int(Who(piece)) - 1
 
-	sq_list := GenMoveEnd(pPos, from)
+	moveEndList := GenMoveEnd(pPos, from)
 
-	for _, to := range sq_list {
+	for _, moveEnd := range moveEndList {
+		to, _ := moveEnd.Destructure()
 		pPos.ControlBoards[ph][to] += sign * 1
 	}
 }
