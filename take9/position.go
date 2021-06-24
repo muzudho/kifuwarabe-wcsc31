@@ -750,7 +750,7 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
-	var move = NewMoveValue()
+	var move = RESIGN_MOVE
 
 	var hand1 = Square(0)
 

@@ -32,9 +32,8 @@ const (
 // 17bit: 成
 type Move uint32
 
-func NewMoveValue() Move {
-	return Move(0)
-}
+// 0 は 投了ということにするぜ（＾～＾）
+const RESIGN_MOVE = Move(0)
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCode() string {

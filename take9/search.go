@@ -11,7 +11,7 @@ func Search(pPos *Position) Move {
 	size := len(move_list)
 
 	if size == 0 {
-		return ResignMove
+		return RESIGN_MOVE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）

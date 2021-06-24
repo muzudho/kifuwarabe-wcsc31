@@ -55,16 +55,12 @@ const (
 type Move uint16
 
 // 0 は 投了ということにするぜ（＾～＾）
-const ResignMove = Move(0)
-
-func NewMoveValue() Move {
-	return Move(0)
-}
+const RESIGN_MOVE = Move(0)
 
 // NewMoveValue2 - 初期値として 移動元マス、移動先マスを指定してください
 // TODO 成、不成も欲しいぜ（＾～＾）
 func NewMoveValue2(src_sq Square, dst_sq Square) Move {
-	move := Move(0)
+	move := RESIGN_MOVE
 	move = move.ReplaceSource(src_sq)
 	return move.ReplaceDestination(dst_sq)
 }
