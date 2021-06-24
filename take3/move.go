@@ -24,14 +24,14 @@ const (
 type Move struct {
 	// [0]移動元 [1]移動先
 	// 持ち駒は仕方ないから 100～113 を使おうぜ（＾～＾）
-	Squares []byte
+	Squares []Square
 	// 成
 	Promotion bool
 }
 
 func NewMove() *Move {
 	move := new(Move)
-	move.Squares = []byte{0, 0}
+	move.Squares = []Square{0, 0}
 	return move
 }
 
@@ -40,7 +40,9 @@ func (move *Move) ToCode() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
-	switch move.Squares[0] {
+	from, _, pro := move.Destructure()
+
+	switch from {
 	case DROP_R1, DROP_R2:
 		str = append(str, 'R')
 		count = 1
@@ -72,8 +74,8 @@ func (move *Move) ToCode() string {
 
 	for count < 2 {
 		// 正常時は必ず２桁（＾～＾）
-		file := move.Squares[count] / 10
-		rank := move.Squares[count] % 10
+		file := byte(move.Squares[count] / 10)
+		rank := byte(move.Squares[count] % 10)
 		// ASCII Code
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
@@ -82,9 +84,17 @@ func (move *Move) ToCode() string {
 		count += 1
 	}
 
-	// if move.IsPromotion() {
-	// 	str = append(str, '+')
-	// }
+	if pro {
+		str = append(str, '+')
+	}
 
 	return string(str)
+}
+
+// Destructure - 移動元マス、移動先マス、成りの有無
+func (move Move) Destructure() (Square, Square, bool) {
+	var from = move.Squares[0]
+	var to = move.Squares[1]
+	var pro = move.Promotion
+	return from, to, pro
 }

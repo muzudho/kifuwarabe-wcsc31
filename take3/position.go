@@ -6,6 +6,9 @@ import (
 	"strings"
 )
 
+// マス番号 00～99,100～113
+type Square uint32
+
 const (
 	// 先手
 	FIRST = iota + 1
@@ -415,7 +418,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			}
 			*i += 1
 
-			pMove.Squares[count] = file*10 + rank
+			pMove.Squares[count] = Square(file*10 + rank)
 		default:
 			return *new(Move), fmt.Errorf("Fatal: なんか分かんないmove（＾～＾） ch='%c' i='%d'", ch, *i)
 		}
