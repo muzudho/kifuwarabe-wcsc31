@@ -13,13 +13,9 @@ type MoveEnd uint8
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE_END = MoveEnd(0)
 
-func NewMoveEndValue() MoveEnd {
-	return MoveEnd(0)
-}
-
-// NewMoveEndValue2 - 初期値として 移動元マス、成り を指定してください
-func NewMoveEndValue2(dst_sq Square, promote bool) MoveEnd {
-	moveEnd := NewMoveEndValue()
+// NewMoveEnd - 移動先マス、成りの有無 を指定してください
+func NewMoveEnd(dst_sq Square, promote bool) MoveEnd {
+	moveEnd := MoveEnd(0)
 	moveEnd = moveEnd.ReplaceDestination(dst_sq)
 	return moveEnd.ReplacePromotion(promote)
 }
@@ -43,18 +39,19 @@ func (moveEnd MoveEnd) ReplacePromotion(promotion bool) MoveEnd {
 	return MoveEnd(uint8(moveEnd) & 0x7f)
 }
 
-// GetDestination - 移動先マス
+// Destructure
+//
+// 移動先マス
 // 0111 1111 (Mask) 0x7f
 // pddd dddd
-func (moveEnd MoveEnd) GetDestination() Square {
-	return Square(uint8(moveEnd) & 0x7f)
-}
-
-// GetPromotion - 成
+//
+// 成
 // 1000 0000 (Mask) 0x80
 // pddd dddd
-func (moveEnd MoveEnd) GetPromotion() bool {
-	return uint8(moveEnd)&0x80 != 0
+func (moveEnd MoveEnd) Destructure() (Square, bool) {
+	var to = Square(uint8(moveEnd) & 0x7f)
+	var pro = uint8(moveEnd)&0x80 != 0
+	return to, pro
 }
 
 // ToString - 確認用の文字列
@@ -67,12 +64,11 @@ func (moveEnd MoveEnd) ToString() string {
 
 	str := make([]byte, 0, 3)
 
-	var sq Square // マス番号
 	// 移動先
-	sq = moveEnd.GetDestination()
+	to, _ := moveEnd.Destructure()
 	// 正常時は必ず２桁（＾～＾）
-	file := byte(sq / 10)
-	rank := byte(sq % 10)
+	file := byte(to / 10)
+	rank := byte(to % 10)
 	// ASCII Code
 	// '0'=48, '9'=57, 'a'=97, 'i'=105
 	str = append(str, file+48)

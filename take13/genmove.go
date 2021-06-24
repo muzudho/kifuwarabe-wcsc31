@@ -102,7 +102,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 					if !NifuFirst(pPos, file) { // ２歩禁止
 						to := SquareFrom(file, rank)
 						ValidateSq(to)
-						moveEnd := NewMoveEndValue2(to, false)
+						moveEnd := NewMoveEnd(to, false)
 						moveEndList = append(moveEndList, moveEnd)
 					}
 				}
@@ -114,7 +114,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 					if !NifuSecond(pPos, file) { // ２歩禁止
 						to := SquareFrom(file, rank)
 						ValidateSq(to)
-						moveEnd := NewMoveEndValue2(to, false)
+						moveEnd := NewMoveEnd(to, false)
 						moveEndList = append(moveEndList, moveEnd)
 					}
 				}
@@ -124,7 +124,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 				for file := Square(9); file > 0; file-- {
 					to := SquareFrom(file, rank)
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 				}
 			}
@@ -139,7 +139,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) < 8 && rank_from > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 				for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -149,7 +149,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) > 2 && rank_from > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
 				for to := from - 22; File(to) != 0 && Rank(to) != 0; to -= 11 { // ２つ右上から
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -159,7 +159,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) < 8 && rank_from < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
 				for to := from + 22; File(to) != 0 && Rank(to) != 0; to += 11 { // ２つ左下から
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -169,7 +169,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) > 2 && rank_from < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
 				for to := from - 18; File(to) != 0 && Rank(to) != 0; to -= 9 { // ２つ右下から
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -186,7 +186,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if rank_from > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
 				for to := from - 2; Rank(to) != 0; to -= 1 { // 上
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -203,7 +203,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if rank_from < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
 				for to := from + 2; Rank(to) != 0; to += 1 { // 下
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -220,7 +220,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 				for to := from + 20; File(to) != 0; to += 10 { // 左
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -230,7 +230,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if File(from) > 2 && pPos.IsEmptySq(from-10) { // 1～2筋にある駒でもなく、１つ右が空マスなら
 				for to := from - 20; File(to) != 0; to -= 10 { // 右
 					ValidateSq(to)
-					moveEnd := NewMoveEndValue2(to, false)
+					moveEnd := NewMoveEnd(to, false)
 					moveEndList = append(moveEndList, moveEnd)
 					if !pPos.IsEmptySq(to) {
 						break
@@ -263,20 +263,20 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 					to := from + 8
 					ValidateSq(to)
 					if keepGoing {
-						moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
 					if promote {
-						moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+						moveEndList = append(moveEndList, NewMoveEnd(to, true))
 					}
 				}
 				if 1 < File(from) && File(from) < 10 { // 右上桂馬飛び
 					to := from - 12
 					ValidateSq(to)
 					if keepGoing {
-						moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
 					if promote {
-						moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
 				}
 			}
@@ -302,19 +302,19 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			if to := from + 12; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 左下
 				ValidateSq(to)
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 			if to := from - 8; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 右下
 				ValidateSq(to)
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 		}
@@ -341,10 +341,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 				to := from - 1 // 上
 				ValidateSq(to)
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 
@@ -369,10 +369,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 				}
 
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 		case PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_S1, PIECE_PS1,
@@ -380,8 +380,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			PIECE_PN2, PIECE_PL2, PIECE_PP2:
 			if to := from - 1; Rank(to) != 0 { // 上
 				ValidateSq(to)
-				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-				// moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+				moveEndList = append(moveEndList, NewMoveEnd(to, false))
+				// moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 		default:
 			// Ignored
@@ -409,10 +409,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 				ValidateSq(to)
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 		case PIECE_L2:
@@ -436,10 +436,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 				}
 
 				if keepGoing {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
+					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
 				if promote {
-					moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+					moveEndList = append(moveEndList, NewMoveEnd(to, true))
 				}
 			}
 		case PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_S2, PIECE_PS2,
@@ -447,8 +447,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			PIECE_PN1, PIECE_PL1, PIECE_PP1:
 			if to := from + 1; Rank(to) != 0 { // 下
 				ValidateSq(to)
-				moveEndList = append(moveEndList, NewMoveEndValue2(to, false))
-				// moveEndList = append(moveEndList, NewMoveEndValue2(to, true))
+				moveEndList = append(moveEndList, NewMoveEnd(to, false))
+				// moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 		default:
 			// Ignored
@@ -460,12 +460,12 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			PIECE_PP1, PIECE_K2, PIECE_PR2, PIECE_B2, PIECE_PB2, PIECE_S2:
 			if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 			if to := from - 11; File(to) != 0 && Rank(to) != 0 { // 右上
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 		default:
@@ -478,12 +478,12 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			PIECE_PP2, PIECE_K1, PIECE_PR1, PIECE_B1, PIECE_PB1, PIECE_S1:
 			if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 			if to := from - 9; File(to) != 0 && Rank(to) != 0 { // 右下
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 		default:
@@ -496,12 +496,12 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
 			if to := from + 10; File(to) != 0 { // 左
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 			if to := from - 10; File(to) != 0 { // 右
 				ValidateSq(to)
-				moveEnd := NewMoveEndValue2(to, false)
+				moveEnd := NewMoveEnd(to, false)
 				moveEndList = append(moveEndList, moveEnd)
 			}
 		default:
@@ -583,11 +583,11 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
 						for _, moveEnd := range moveEndList {
-							to := moveEnd.GetDestination()
+							to, pro := moveEnd.Destructure()
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMoveValue2(from, to, moveEnd.GetPromotion())
+								move := NewMoveValue2(from, to, pro)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
@@ -601,9 +601,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
-							to := moveEnd.GetDestination()
+							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMoveValue2(from, to, moveEnd.GetPromotion())
+								move := NewMoveValue2(from, to, pro)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -626,9 +626,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
-					to := moveEnd.GetDestination()
+					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := NewMoveValue2(hand_sq, to, moveEnd.GetPromotion())
+						move := NewMoveValue2(hand_sq, to, pro)
 						pPosSys.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -660,16 +660,16 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
 						for _, moveEnd := range moveEndList {
-							to := moveEnd.GetDestination()
+							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, NewMoveValue2(from, to, moveEnd.GetPromotion()))
+								move_list = append(move_list, NewMoveValue2(from, to, pro))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
-							to := moveEnd.GetDestination()
+							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, NewMoveValue2(from, to, moveEnd.GetPromotion()))
+								move_list = append(move_list, NewMoveValue2(from, to, pro))
 							}
 						}
 					}
@@ -684,9 +684,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
-					to := moveEnd.GetDestination()
+					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, NewMoveValue2(hand_sq, to, moveEnd.GetPromotion()))
+						move_list = append(move_list, NewMoveValue2(hand_sq, to, pro))
 					}
 				}
 			}

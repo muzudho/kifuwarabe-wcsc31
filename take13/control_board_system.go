@@ -142,7 +142,7 @@ func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
 			pCB := ControllBoardFromPhase(phase, pCtrlBrdSys.PBoards[ph1_c1], pCtrlBrdSys.PBoards[ph2_c1])
 
 			for _, moveEnd := range moveEndList {
-				to := moveEnd.GetDestination()
+				to, _ := moveEnd.Destructure()
 				pCB.Board1[to] += 1
 			}
 		}
@@ -273,7 +273,8 @@ func MoveEndListToControlList(moveEndList []MoveEnd) []Square {
 	sqList := []Square{}
 	for _, moveEnd := range moveEndList {
 		// 成るか、成らないかの情報は欠落させます
-		sqList = append(sqList, moveEnd.GetDestination())
+		to, _ := moveEnd.Destructure()
+		sqList = append(sqList, to)
 	}
 	return sqList
 }
