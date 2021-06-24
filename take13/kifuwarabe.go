@@ -93,7 +93,8 @@ MainLoop:
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			G.Chat.Print("id name %s\n", config.Profile.Name)
+			// With Build Number
+			G.Chat.Print("id name %sB3\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pPosSys.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）

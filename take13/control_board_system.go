@@ -137,11 +137,11 @@ func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
 		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
-			control_list := GenControl(pPos, from)
+			moveEndList := GenMoveEnd(pPos, from)
 
 			pCB := ControllBoardFromPhase(phase, pCtrlBrdSys.PBoards[ph1_c1], pCtrlBrdSys.PBoards[ph2_c1])
 
-			for _, moveEnd := range control_list {
+			for _, moveEnd := range moveEndList {
 				to := moveEnd.GetDestination()
 				pCB.Board1[to] += 1
 			}
@@ -213,7 +213,7 @@ func AddControlLance(pPos *Position,
 			ValidateThereArePieceIn(pPos, from)
 			phase := Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
-			pCB.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, sign)
+			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
 	}
 }
@@ -231,7 +231,7 @@ func AddControlBishop(pPos *Position,
 			ValidateThereArePieceIn(pPos, from)
 			phase := Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
-			pCB.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, sign)
+			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
 	}
 }
@@ -249,7 +249,7 @@ func AddControlRook(pPos *Position,
 			ValidateThereArePieceIn(pPos, from)
 			phase := Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
-			pCB.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, sign)
+			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
 	}
 }
