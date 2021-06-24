@@ -1,6 +1,6 @@
 // 移動先と成り
 
-package take13
+package take12
 
 // MoveEnd - 移動先と成り
 //
@@ -14,18 +14,24 @@ type MoveEnd uint8
 const RESIGN_MOVE_END = MoveEnd(0)
 
 // NewMoveEnd - 移動先マス、成りの有無 を指定してください
-func NewMoveEnd(to Square, promotion bool) MoveEnd {
+func NewMoveEnd(to Square, promote bool) MoveEnd {
 	moveEnd := RESIGN_MOVE_END
+	moveEnd = moveEnd.ReplaceDestination(to)
+	return moveEnd.ReplacePromotion(promote)
+}
 
-	// ReplaceDestination - 移動先マス
-	// 1000 0000 (Clear) 0x80
-	// pddd dddd
-	moveEnd = MoveEnd(uint8(moveEnd)&0x80 | uint8(to))
+// ReplaceDestination - 移動先マス
+// 1000 0000 (Clear) 0x80
+// pddd dddd
+func (moveEnd MoveEnd) ReplaceDestination(sq Square) MoveEnd {
+	return MoveEnd(uint8(moveEnd)&0x80 | uint8(sq))
+}
 
-	// ReplacePromotion - 成
-	// 1000 0000 (Stand) 0x80
-	// 0111 1111 (Clear) 0x7f
-	// pddd dddd
+// ReplacePromotion - 成
+// 1000 0000 (Stand) 0x80
+// 0111 1111 (Clear) 0x7f
+// pddd dddd
+func (moveEnd MoveEnd) ReplacePromotion(promotion bool) MoveEnd {
 	if promotion {
 		return MoveEnd(uint8(moveEnd) | 0x80)
 	}
