@@ -94,7 +94,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB6\n", config.Profile.Name)
+			G.Chat.Print("id name %sB7\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pPosSys.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
