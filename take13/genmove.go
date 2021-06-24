@@ -587,7 +587,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMoveValue2(from, to)
+								move := NewMoveValue2(from, to, moveEnd.GetPromotion())
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
@@ -603,7 +603,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to := moveEnd.GetDestination()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMoveValue2(from, to)
+								move := NewMoveValue2(from, to, moveEnd.GetPromotion())
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -628,7 +628,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to := moveEnd.GetDestination()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := NewMoveValue2(hand_sq, to)
+						move := NewMoveValue2(hand_sq, to, moveEnd.GetPromotion())
 						pPosSys.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -662,14 +662,14 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to := moveEnd.GetDestination()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, NewMoveValue2(from, to))
+								move_list = append(move_list, NewMoveValue2(from, to, moveEnd.GetPromotion()))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
 							to := moveEnd.GetDestination()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, NewMoveValue2(from, to))
+								move_list = append(move_list, NewMoveValue2(from, to, moveEnd.GetPromotion()))
 							}
 						}
 					}
@@ -686,7 +686,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to := moveEnd.GetDestination()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, NewMoveValue2(hand_sq, to))
+						move_list = append(move_list, NewMoveValue2(hand_sq, to, moveEnd.GetPromotion()))
 					}
 				}
 			}

@@ -42,12 +42,12 @@ func NewMoveValue() Move {
 	return Move(0)
 }
 
-// NewMoveValue2 - 初期値として 移動元マス、移動先マスを指定してください
-// TODO 成、不成も欲しいぜ（＾～＾）
-func NewMoveValue2(src_sq Square, dst_sq Square) Move {
+// NewMoveValue2 - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
+func NewMoveValue2(from Square, to Square, promote bool) Move {
 	move := Move(0)
-	move = move.ReplaceSource(src_sq)
-	return move.ReplaceDestination(dst_sq)
+	move = move.ReplaceSource(from)
+	move = move.ReplacePromotion(promote)
+	return move.ReplaceDestination(to)
 }
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
