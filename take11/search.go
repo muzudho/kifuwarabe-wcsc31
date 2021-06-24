@@ -55,12 +55,14 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 	for i, move := range move_list {
 		// G.Chat.Debug("move=%s\n", move.ToCode())
 
+		from, _, _ := move.Destructure()
+
 		// 盤をコピーしておきます
 		pPosCopy := NewPosition()
 		copyBoard(pPosSys.PPosition[0], pPosCopy)
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
-		if pPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(move.GetSource()) {
+		if pPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
 			G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
 				pPosSys.phase,
@@ -70,7 +72,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				move.GetSource(), i, move_length, younger_sibling_move.ToCode()))
+				from, i, move_length, younger_sibling_move.ToCode()))
 		}
 
 		pPosSys.DoMove(pPosSys.PPosition[POS_LAYER_MAIN], move)
