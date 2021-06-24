@@ -297,14 +297,14 @@ func GenMoveList(pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenMoveEnd(pPos, from)
+					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
 
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
-						for _, to := range control_list {
+						for _, to := range moveEndList {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
@@ -321,7 +321,7 @@ func GenMoveList(pPos *Position) []Move {
 							}
 						}
 					} else {
-						for _, to := range control_list {
+						for _, to := range moveEndList {
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move := NewMove2(from, to)
 								pPos.DoMove(move)
@@ -345,20 +345,20 @@ func GenMoveList(pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenMoveEnd(pPos, from)
+					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
 
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
-						for _, to := range control_list {
+						for _, to := range moveEndList {
 							if pPos.Hetero(from, to) && pPos.ControlBoards[opponent-1][to] == 0 { // 自駒の上、敵の利きには移動できません
 								move_list = append(move_list, NewMove2(from, to))
 							}
 						}
 					} else {
-						for _, to := range control_list {
+						for _, to := range moveEndList {
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move_list = append(move_list, NewMove2(from, to))
 							}
@@ -373,9 +373,9 @@ func GenMoveList(pPos *Position) []Move {
 		for hand := Square(phase_index * HAND_TYPE_SIZE); hand < (phase_index+1)*HAND_TYPE_SIZE; hand += 1 {
 			if pPos.Hands[hand] > 0 {
 				hand_sq := hand + HAND_ORIGIN
-				control_list := GenMoveEnd(pPos, hand_sq)
+				moveEndList := GenMoveEnd(pPos, hand_sq)
 
-				for _, to := range control_list {
+				for _, to := range moveEndList {
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
 						move_list = append(move_list, NewMove2(hand_sq, to))
 					}

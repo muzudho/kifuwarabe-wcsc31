@@ -930,14 +930,14 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenMoveEnd(pPos, from)
+					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
 
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
-						for _, moveEnd := range control_list {
+						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
@@ -955,7 +955,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 							}
 						}
 					} else {
-						for _, moveEnd := range control_list {
+						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move := NewMove3(from, to, pro)
@@ -978,9 +978,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenMoveEnd(pPos, hand_sq)
+				moveEndList := GenMoveEnd(pPos, hand_sq)
 
-				for _, moveEnd := range control_list {
+				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
 						move := NewMove3(hand_sq, to, pro)
@@ -1007,21 +1007,21 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 			for file := 1; file < 10; file += 1 {
 				from := Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
-					control_list := GenMoveEnd(pPos, from)
+					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
 					pieceType := What(piece)
 
 					if pieceType == PIECE_TYPE_K {
 						// 玉は自殺手を省きます
-						for _, moveEnd := range control_list {
+						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
 								move_list = append(move_list, NewMove3(from, to, pro))
 							}
 						}
 					} else {
-						for _, moveEnd := range control_list {
+						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move_list = append(move_list, NewMove3(from, to, pro))
@@ -1036,9 +1036,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
 				hand_sq := Square(hand_index) + SQ_HAND_START
-				control_list := GenMoveEnd(pPos, hand_sq)
+				moveEndList := GenMoveEnd(pPos, hand_sq)
 
-				for _, moveEnd := range control_list {
+				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
 						move_list = append(move_list, NewMove3(hand_sq, to, pro))

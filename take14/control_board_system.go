@@ -137,11 +137,11 @@ func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
 		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
-			control_list := GenMoveEnd(pPos, from)
+			moveEndList := GenMoveEnd(pPos, from)
 
 			pCB := ControllBoardFromPhase(phase, pCtrlBrdSys.PBoards[ph1_c1], pCtrlBrdSys.PBoards[ph2_c1])
 
-			for _, moveEnd := range control_list {
+			for _, moveEnd := range moveEndList {
 				to, _ := moveEnd.Destructure()
 				pCB.Board1[to] += 1
 			}
