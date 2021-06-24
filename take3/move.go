@@ -29,9 +29,10 @@ type Move struct {
 	Promotion bool
 }
 
-func NewMove() *Move {
+func NewMove(from Square, to Square, promotion bool) *Move {
 	move := new(Move)
-	move.Squares = []Square{0, 0}
+	move.Squares = []Square{from, to}
+	move.Promotion = promotion
 	return move
 }
 

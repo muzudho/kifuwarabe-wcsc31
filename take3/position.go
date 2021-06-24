@@ -294,7 +294,7 @@ MovesNumLoop:
 // ParseMove
 func ParseMove(command string, i *int, phase int) (Move, error) {
 	var len = len(command)
-	var pMove = NewMove()
+	var pMove = NewMove(0, 0, false)
 
 	// 0=移動元 1=移動先
 	var count = 0
