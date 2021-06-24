@@ -942,7 +942,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove3(from, to, pro)
+								move := NewMove(from, to, pro)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
@@ -958,7 +958,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove3(from, to, pro)
+								move := NewMove(from, to, pro)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -983,7 +983,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := NewMove3(hand_sq, to, pro)
+						move := NewMove(hand_sq, to, pro)
 						pPosSys.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -1017,14 +1017,14 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, NewMove3(from, to, pro))
+								move_list = append(move_list, NewMove(from, to, pro))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, NewMove3(from, to, pro))
+								move_list = append(move_list, NewMove(from, to, pro))
 							}
 						}
 					}
@@ -1041,7 +1041,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, NewMove3(hand_sq, to, pro))
+						move_list = append(move_list, NewMove(hand_sq, to, pro))
 					}
 				}
 			}
