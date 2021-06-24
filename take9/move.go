@@ -36,12 +36,29 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
-// TODO 成、不成も欲しいぜ（＾～＾）
-func NewMove2(from Square, to Square) Move {
+// NewMove - 初期値として 移動元マス、移動先マスを指定してください
+func NewMove(from Square, to Square, promotion bool) Move {
 	move := RESIGN_MOVE
-	move = move.ReplaceSource(from)
-	return move.ReplaceDestination(to)
+
+	// ReplaceSource - 移動元マス
+	// 1111 1111 1000 0000 (Clear) 0xff80
+	// .pdd dddd dsss ssss
+	move = Move(uint16(move)&0xff80 | uint16(from))
+
+	// ReplaceDestination - 移動先マス
+	// 1100 0000 0111 1111 (Clear) 0xc07f
+	// .pdd dddd dsss ssss
+	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
+
+	// ReplacePromotion - 成
+	// 0100 0000 0000 0000 (Stand) 0x4000
+	// 1011 1111 1111 1111 (Clear) 0xbfff
+	// .pdd dddd dsss ssss
+	if promotion {
+		return Move(uint16(move) | 0x4000)
+	}
+
+	return Move(uint16(move) & 0xbfff)
 }
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
@@ -116,32 +133,6 @@ func (move Move) ToCode() string {
 	}
 
 	return string(str)
-}
-
-// ReplaceSource - 移動元マス
-// 1111 1111 1000 0000 (Clear) 0xff80
-// .pdd dddd dsss ssss
-func (move Move) ReplaceSource(sq Square) Move {
-	return Move(uint16(move)&0xff80 | uint16(sq))
-}
-
-// ReplaceDestination - 移動先マス
-// 1100 0000 0111 1111 (Clear) 0xc07f
-// .pdd dddd dsss ssss
-func (move Move) ReplaceDestination(sq Square) Move {
-	return Move(uint16(move)&0xc07f | (uint16(sq) << 7))
-}
-
-// ReplacePromotion - 成
-// 0100 0000 0000 0000 (Stand) 0x4000
-// 1011 1111 1111 1111 (Clear) 0xbfff
-// .pdd dddd dsss ssss
-func (move Move) ReplacePromotion(promotion bool) Move {
-	if promotion {
-		return Move(uint16(move) | 0x4000)
-	}
-
-	return Move(uint16(move) & 0xbfff)
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
