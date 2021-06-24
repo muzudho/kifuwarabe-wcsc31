@@ -14,7 +14,6 @@ func Rank(sq Square) Square {
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 // 成らないと移動できないが、成れば移動できるマスがあるので、移動先と成りの２つセットで返します。
-// TODO 成る、成らないも入れたいぜ（＾～＾）
 func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 

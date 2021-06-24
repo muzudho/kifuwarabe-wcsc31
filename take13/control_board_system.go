@@ -55,6 +55,7 @@ const (
 )
 
 // ControlBoardSystem - 利きボード・システム
+// TODO 自玉が王手されてるか調べてほしい（＾～＾）
 type ControlBoardSystem struct {
 	// マスへの利き数、または差分が入っています。デバッグ目的で無駄に分けてるんだけどな（＾～＾）
 	PBoards [CONTROL_LAYER_ALL_SIZE]*ControlBoard

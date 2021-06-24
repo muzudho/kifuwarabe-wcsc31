@@ -41,11 +41,12 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
-	move_list := GenMoveList(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
-	move_length := len(move_list)
-	//fmt.Printf("%d/%d move_length=%d\n", curDepth, depthEnd, move_length)
+	// TODO 空き王手チェックは（＾～＾）？
+	moveList := GenMoveList(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
+	moveListLen := len(moveList)
+	//fmt.Printf("%d/%d moveListLen=%d\n", curDepth, depthEnd, moveListLen)
 
-	if move_length == 0 {
+	if moveListLen == 0 {
 		return RESIGN_MOVE, RESIGN_VALUE
 	}
 
@@ -62,11 +63,11 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 	var cutting = CuttingNone
 
 	// その手を指してみるぜ（＾～＾）
-	for i, move := range move_list {
+	for i, move := range moveList {
 		// G.Chat.Debug("move=%s\n", move.ToCode())
 		from, _, _ := move.Destructure()
 
-		// 盤をコピーしておきます
+		// デバッグに使うために、盤をコピーしておきます
 		pPosCopy := NewPosition()
 		copyBoard(pPosSys.PPosition[0], pPosCopy)
 
@@ -81,11 +82,13 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				from, i, move_length, younger_sibling_move.ToCode()))
+				from, i, moveListLen, younger_sibling_move.ToCode()))
 		}
 
 		pPosSys.DoMove(pPosSys.PPosition[POS_LAYER_MAIN], move)
 		nodesNum += 1
+
+		// TODO ここで自玉に王手がかかるようなら、被空き王手（＾～＾）
 
 		// 取った駒は棋譜の１手前に記録されています
 		captured := pPosSys.CapturedList[pPosSys.OffsetMovesIndex-1]
@@ -166,11 +169,11 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			bestVal = -opponentWorstVal
 		}
 
-		bestmove_length := len(bestMoveList)
-		//fmt.Printf("%d/%d bestmove_length=%d\n", curDepth, depthEnd, bestmove_length)
-		if bestmove_length > 0 {
+		bestmoveListLen := len(bestMoveList)
+		//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
+		if bestmoveListLen > 0 {
 			// 0件を避ける（＾～＾）
-			bestMove = bestMoveList[rand.Intn(bestmove_length)]
+			bestMove = bestMoveList[rand.Intn(bestmoveListLen)]
 		}
 
 		// 評価値出力（＾～＾）
