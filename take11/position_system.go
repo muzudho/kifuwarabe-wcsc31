@@ -1060,7 +1060,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
 	var move = NewMoveValue()
-	// fmt.Printf("Debug: ParseMove(1) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+	// fmt.Printf("Debug: ParseMove(1) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 
 	var hand_sq = SQUARE_EMPTY
 
@@ -1105,7 +1105,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		count = 1
 	}
 
-	// fmt.Printf("Debug: ParseMove(2) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+	// fmt.Printf("Debug: ParseMove(2) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 
 	// file, rank
 	for count < 2 {
@@ -1146,9 +1146,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			if count == 0 {
 				move = move.ReplaceSource(sq)
 			} else if count == 1 {
-				// fmt.Printf("Debug: ParseMove(3a) command=[%s] src=%d dst=%d pro=%t sq=%d\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion(), sq)
+				// fmt.Printf("Debug: ParseMove(3a) command=[%s] src=%d dst=%d pro=%t sq=%d\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion(), sq)
 				move = move.ReplaceDestination(sq)
-				// fmt.Printf("Debug: ParseMove(3b) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+				// fmt.Printf("Debug: ParseMove(3b) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 			} else {
 				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
@@ -1158,17 +1158,17 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 		count += 1
 
-		// fmt.Printf("Debug: ParseMove(3c) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+		// fmt.Printf("Debug: ParseMove(3c) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 	}
 
-	// fmt.Printf("Debug: ParseMove(4) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+	// fmt.Printf("Debug: ParseMove(4) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 
 	if *i < len && command[*i] == '+' {
 		*i += 1
 		move = move.ReplacePromotion(true)
 	}
 
-	// fmt.Printf("Debug: ParseMove(5) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.GetPromotion())
+	// fmt.Printf("Debug: ParseMove(5) command=[%s] src=%d dst=%d pro=%t\n", command, move.GetSource(), move.GetDestination(), move.IsPromotion())
 
 	return move, nil
 }
@@ -1176,7 +1176,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 // DoMove - 一手指すぜ（＾～＾）
 func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 
-	// fmt.Printf("Debug: move src=%d dst=%d pro=%t\n", move.GetSource(), move.GetDestination(), move.GetPromotion())
+	// fmt.Printf("Debug: move src=%d dst=%d pro=%t\n", move.GetSource(), move.GetDestination(), move.IsPromotion())
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
 	// 動かしている駒と、取った駒だぜ（＾～＾）
@@ -1272,7 +1272,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		pPosSys.AddControlDiff(pPos, CONTROL_LAYER_DIFF_REMOVE, mov_src_sq, -1)
 
 		// 行き先の駒の上書き
-		if move.GetPromotion() {
+		if move.IsPromotion() {
 			// 駒を成りに変換します
 			pPos.Board[mov_dst_sq] = Promote(pPos.Board[mov_src_sq])
 		} else {
@@ -1450,7 +1450,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		pPosSys.AddControlDiff(pPos, CONTROL_LAYER_DIFF_PUT, mov_dst_sq, -1)
 
 		// 自駒を移動元へ戻します
-		if move.GetPromotion() {
+		if move.IsPromotion() {
 			// 成りを元に戻します
 			pPos.Board[mov_src_sq] = Demote(pPos.Board[mov_dst_sq])
 		} else {

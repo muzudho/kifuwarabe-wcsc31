@@ -82,5 +82,9 @@ func (move *Move) ToCode() string {
 		count += 1
 	}
 
+	// if move.IsPromotion() {
+	// 	str = append(str, '+')
+	// }
+
 	return string(str)
 }

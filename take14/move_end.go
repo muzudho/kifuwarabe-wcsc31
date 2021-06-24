@@ -50,10 +50,10 @@ func (moveEnd MoveEnd) GetDestination() Square {
 	return Square(uint8(moveEnd) & 0x7f)
 }
 
-// GetPromotion - 成
+// IsPromotion - 成
 // 1000 0000 (Mask) 0x80
 // pddd dddd
-func (moveEnd MoveEnd) GetPromotion() bool {
+func (moveEnd MoveEnd) IsPromotion() bool {
 	return uint8(moveEnd)&0x80 != 0
 }
 

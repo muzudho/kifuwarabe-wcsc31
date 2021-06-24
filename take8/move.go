@@ -113,6 +113,10 @@ func (move Move) ToCode() string {
 		count += 1
 	}
 
+	if move.IsPromotion() {
+		str = append(str, '+')
+	}
+
 	return string(str)
 }
 
@@ -156,9 +160,9 @@ func (move Move) GetDestination() Square {
 	return Square((uint16(move) & 0x3f80) >> 7)
 }
 
-// GetPromotion - 成
+// IsPromotion - 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) GetPromotion() bool {
+func (move Move) IsPromotion() bool {
 	return uint16(move)&0x4000 != 0
 }
