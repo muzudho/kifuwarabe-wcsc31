@@ -1,6 +1,6 @@
 // 移動先と成り
 
-package take12
+package take11
 
 // MoveEnd - 移動先と成り
 //
