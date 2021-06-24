@@ -13,13 +13,9 @@ type MoveEnd uint8
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE_END = MoveEnd(0)
 
-func NewMoveEndValue() MoveEnd {
-	return MoveEnd(0)
-}
-
-// NewMoveEndValue2 - 初期値として 移動元マス、成り を指定してください
-func NewMoveEndValue2(dst_sq Square, promote bool) MoveEnd {
-	moveEnd := NewMoveEndValue()
+// NewMoveEnd - 初期値として 移動元マス、成り を指定してください
+func NewMoveEnd(dst_sq Square, promote bool) MoveEnd {
+	moveEnd := MoveEnd(0)
 	moveEnd = moveEnd.ReplaceDestination(dst_sq)
 	return moveEnd.ReplacePromotion(promote)
 }

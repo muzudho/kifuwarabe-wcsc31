@@ -874,12 +874,13 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 	mov_piece_type := PIECE_TYPE_EMPTY
 	cap_piece_type := PIECE_TYPE_EMPTY
 
-	mov_src_sq := move.GetSource()
-	if pPos.IsEmptySq(mov_src_sq) {
+	from, to, pro := move.Destructure()
+
+	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
-		fmt.Printf("Error: %d square is empty\n", mov_src_sq)
+		fmt.Printf("Error: %d square is empty\n", from)
 	}
-	mov_dst_sq := move.GetDestination()
+
 	var cap_src_sq Square
 	var cap_dst_sq = SQUARE_EMPTY
 
@@ -890,20 +891,20 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 	AddControlRook(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], -1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], -1, from)
 	AddControlBishop(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], -1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], -1, from)
 	AddControlLance(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], -1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], -1, from)
 
 	// まず、打かどうかで処理を分けます
-	sq_drop := mov_src_sq
+	sq_drop := from
 	var piece Piece
-	switch mov_src_sq {
+	switch from {
 	case SQ_K1:
 		piece = PIECE_K1
 	case SQ_R1:
@@ -948,11 +949,11 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		pPos.Hands1[sq_drop-SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
-		pPos.Board[mov_dst_sq] = piece
+		pPos.Board[to] = piece
 		mov_piece_type = What(piece)
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-		ValidateThereArePieceIn(pPos, mov_dst_sq)
+		ValidateThereArePieceIn(pPos, to)
 		var pCB *ControlBoard
 		if pPosSys.BuildType == BUILD_DEV {
 			pCB = ControllBoardFromPhase(before_move_phase,
@@ -963,22 +964,22 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, 1)
+		pCB.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
 	} else {
 		// 打でないなら
 
 		// 移動先に駒があれば、その駒の利きを除外します。
-		captured := pPos.Board[mov_dst_sq]
+		captured := pPos.Board[to]
 		if captured != PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
 				// Ignored: 長い利きの駒は 既に除外しているので無視します
 			default:
-				piece := pPos.Board[mov_dst_sq]
+				piece := pPos.Board[to]
 
 				// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-				ValidateThereArePieceIn(pPos, mov_dst_sq)
+				ValidateThereArePieceIn(pPos, to)
 				phase := Who(piece)
 				var pCB *ControlBoard
 				if pPosSys.BuildType == BUILD_DEV {
@@ -990,10 +991,10 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 						pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 				}
-				pCB.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, -1)
+				pCB.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
 			}
 			cap_piece_type = What(captured)
-			cap_src_sq = mov_dst_sq
+			cap_src_sq = to
 
 			// 駒得評価値の計算（＾ｑ＾）
 			material_val := EvalMaterial(captured)
@@ -1004,8 +1005,8 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		}
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-		piece := pPos.Board[mov_src_sq]
-		ValidateThereArePieceIn(pPos, mov_src_sq)
+		piece := pPos.Board[from]
+		ValidateThereArePieceIn(pPos, from)
 		phase := Who(piece)
 		var pCB1 *ControlBoard
 		if pPosSys.BuildType == BUILD_DEV {
@@ -1018,22 +1019,22 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
 		// 元位置の駒の利きを除去
-		pCB1.AddControl(MoveEndListToControlList(GenControl(pPos, mov_src_sq)), mov_src_sq, -1)
+		pCB1.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, -1)
 
 		// 行き先の駒の上書き
-		if move.IsPromotion() {
+		if pro {
 			// 駒を成りに変換します
-			pPos.Board[mov_dst_sq] = Promote(pPos.Board[mov_src_sq])
+			pPos.Board[to] = Promote(pPos.Board[from])
 		} else {
-			pPos.Board[mov_dst_sq] = pPos.Board[mov_src_sq]
+			pPos.Board[to] = pPos.Board[from]
 		}
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
+		mov_piece_type = What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[mov_src_sq] = PIECE_EMPTY
+		pPos.Board[from] = PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-		piece = pPos.Board[mov_dst_sq]
-		ValidateThereArePieceIn(pPos, mov_dst_sq)
+		piece = pPos.Board[to]
+		ValidateThereArePieceIn(pPos, to)
 		phase = Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB2 *ControlBoard
@@ -1046,7 +1047,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB2.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, 1)
+		pCB2.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
 
 		switch captured {
 		case PIECE_EMPTY: // Ignored
@@ -1102,8 +1103,8 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []Square{mov_src_sq, cap_src_sq}
-	dst_sq_list := []Square{mov_dst_sq, cap_dst_sq}
+	src_sq_list := []Square{from, cap_src_sq}
+	dst_sq_list := []Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case PIECE_TYPE_K:
@@ -1158,13 +1159,13 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし動かした駒を除きます
 	AddControlLance(
 		pPos, pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], 1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], 1, to)
 	AddControlBishop(
 		pPos, pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], 1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], 1, to)
 	AddControlRook(
 		pPos, pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], 1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], 1, to)
 
 	pPosSys.PControlBoardSystem.MergeControlDiff(pPosSys.BuildType)
 }
@@ -1188,8 +1189,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 	// next_phase := pPosSys.GetPhase()
 	pPosSys.FlipPhase()
 
-	mov_dst_sq := move.GetDestination()
-	mov_src_sq := move.GetSource()
+	from, to, pro := move.Destructure()
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPosSys.PControlBoardSystem.ClearControlDiff(pPosSys.BuildType)
@@ -1199,27 +1199,27 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 	AddControlRook(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], -1, to)
 	AddControlBishop(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], -1, to)
 	AddControlLance(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], -1, to)
 
 	// 打かどうかで分けます
-	switch mov_src_sq {
+	switch from {
 	case SQ_K1, SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_K2, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
 		// 打なら
-		drop := mov_src_sq
+		drop := from
 		// 行き先から駒を除去します
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
+		mov_piece_type = What(pPos.Board[to])
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-		piece := pPos.Board[mov_dst_sq]
-		ValidateThereArePieceIn(pPos, mov_dst_sq)
+		piece := pPos.Board[to]
+		ValidateThereArePieceIn(pPos, to)
 		phase := Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB3 *ControlBoard
@@ -1232,8 +1232,8 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB3.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, -1)
-		pPos.Board[mov_dst_sq] = PIECE_EMPTY
+		pCB3.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
+		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands1[drop-SQ_HAND_START] += 1
@@ -1241,10 +1241,10 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		// 打でないなら
 
 		// 行き先に進んでいた自駒の利きの除去
-		mov_piece_type = What(pPos.Board[mov_dst_sq])
+		mov_piece_type = What(pPos.Board[to])
 
-		piece := pPos.Board[mov_dst_sq]
-		ValidateThereArePieceIn(pPos, mov_dst_sq)
+		piece := pPos.Board[to]
+		ValidateThereArePieceIn(pPos, to)
 		phase := Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB4 *ControlBoard
@@ -1257,21 +1257,21 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
-		pCB4.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, -1)
+		pCB4.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, -1)
 
 		// 自駒を移動元へ戻します
-		if move.IsPromotion() {
+		if pro {
 			// 成りを元に戻します
-			pPos.Board[mov_src_sq] = Demote(pPos.Board[mov_dst_sq])
+			pPos.Board[from] = Demote(pPos.Board[to])
 		} else {
-			pPos.Board[mov_src_sq] = pPos.Board[mov_dst_sq]
+			pPos.Board[from] = pPos.Board[to]
 		}
 
-		pPos.Board[mov_dst_sq] = PIECE_EMPTY
+		pPos.Board[to] = PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
-		piece = pPos.Board[mov_src_sq]
-		ValidateThereArePieceIn(pPos, mov_src_sq)
+		piece = pPos.Board[from]
+		ValidateThereArePieceIn(pPos, from)
 		phase = Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB5 *ControlBoard
@@ -1285,7 +1285,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2])
 		}
 		// 元の場所に戻した自駒の利きを復元します
-		pCB5.AddControl(MoveEndListToControlList(GenControl(pPos, mov_src_sq)), mov_src_sq, 1)
+		pCB5.AddControl(MoveEndListToControlList(GenControl(pPos, from)), from, 1)
 	}
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
@@ -1294,33 +1294,33 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		// 玉を動かした
 		switch pPosSys.phase { // next_phase
 		case FIRST:
-			pPos.PieceLocations[PCLOC_K1] = mov_src_sq
+			pPos.PieceLocations[PCLOC_K1] = from
 		case SECOND:
-			pPos.PieceLocations[PCLOC_K2] = mov_src_sq
+			pPos.PieceLocations[PCLOC_K2] = from
 		default:
 			panic(fmt.Errorf("Unknown pPosSys.phase=%d", pPosSys.phase))
 		}
 	case PIECE_TYPE_R, PIECE_TYPE_PR:
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
-			if sq == mov_dst_sq {
-				pPos.PieceLocations[i] = mov_src_sq
+			if sq == to {
+				pPos.PieceLocations[i] = from
 				break
 			}
 		}
 	case PIECE_TYPE_B, PIECE_TYPE_PB:
 		for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
-			if sq == mov_dst_sq {
-				pPos.PieceLocations[i] = mov_src_sq
+			if sq == to {
+				pPos.PieceLocations[i] = from
 				break
 			}
 		}
 	case PIECE_TYPE_L, PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 		for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
-			if sq == mov_dst_sq {
-				pPos.PieceLocations[i] = mov_src_sq
+			if sq == to {
+				pPos.PieceLocations[i] = from
 				break
 			}
 		}
@@ -1331,15 +1331,15 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 	AddControlLance(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], 1, from)
 	AddControlBishop(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], 1, from)
 	AddControlRook(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, from)
 
 	pPosSys.PControlBoardSystem.MergeControlDiff(pPosSys.BuildType)
 
@@ -1361,11 +1361,10 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	captured := pPosSys.CapturedList[pPosSys.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
-	// 取った駒に関係するのは行き先だけ（＾～＾）
-	mov_dst_sq := move.GetDestination()
-	// fmt.Printf("Debug: mov_dst_sq=%d\n", mov_dst_sq)
+	from, to, _ := move.Destructure()
 
-	mov_src_sq := move.GetSource()
+	// 取った駒に関係するのは行き先だけ（＾～＾）
+	// fmt.Printf("Debug: to=%d\n", to)
 	var hand_sq = SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
@@ -1376,24 +1375,24 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	AddControlRook(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], -1, to)
 	AddControlBishop(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON], -1, to)
 	AddControlLance(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_ON],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], -1, mov_dst_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON], -1, to)
 
 	// 打かどうかで分けます
-	switch mov_src_sq {
+	switch from {
 	case SQ_K1, SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_K2, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
 		// 打で取れる駒はないぜ（＾～＾）
-		// fmt.Printf("Debug: Drop mov_src_sq=%d\n", mov_src_sq)
+		// fmt.Printf("Debug: Drop from=%d\n", from)
 	default:
 		// 打でないなら
-		// fmt.Printf("Debug: Not drop mov_src_sq=%d\n", mov_src_sq)
+		// fmt.Printf("Debug: Not drop from=%d\n", from)
 
 		// 取った相手の駒があれば、自分の駒台から下ろします
 		switch captured {
@@ -1441,9 +1440,9 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 
 			// 取っていた駒を行き先に戻します
 			cap_piece_type = What(captured)
-			pPos.Board[mov_dst_sq] = captured
+			pPos.Board[to] = captured
 
-			ValidateThereArePieceIn(pPos, mov_dst_sq)
+			ValidateThereArePieceIn(pPos, to)
 			// fmt.Printf("Debug: ph=%d\n", ph)
 			var pCB6 *ControlBoard
 			if pPosSys.BuildType == BUILD_DEV {
@@ -1457,7 +1456,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			}
 			// 取った駒は盤上になかったので、ここで利きを復元させます
 			// 行き先にある取られていた駒の利きの復元
-			pCB6.AddControl(MoveEndListToControlList(GenControl(pPos, mov_dst_sq)), mov_dst_sq, 1)
+			pCB6.AddControl(MoveEndListToControlList(GenControl(pPos, to)), to, 1)
 		}
 	}
 
@@ -1468,10 +1467,10 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		switch pPosSys.phase { // next_phase
 		case FIRST:
 			// 後手の玉
-			pPos.PieceLocations[PCLOC_K2] = mov_dst_sq
+			pPos.PieceLocations[PCLOC_K2] = to
 		case SECOND:
 			// 先手の玉
-			pPos.PieceLocations[PCLOC_K1] = mov_dst_sq
+			pPos.PieceLocations[PCLOC_K1] = to
 		default:
 			panic(fmt.Errorf("Unknown pPosSys.phase=%d", pPosSys.phase))
 		}
@@ -1479,7 +1478,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
-				pPos.PieceLocations[i] = mov_dst_sq
+				pPos.PieceLocations[i] = to
 				break
 			}
 		}
@@ -1487,7 +1486,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
-				pPos.PieceLocations[i] = mov_dst_sq
+				pPos.PieceLocations[i] = to
 				break
 			}
 		}
@@ -1495,7 +1494,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
-				pPos.PieceLocations[i] = mov_dst_sq
+				pPos.PieceLocations[i] = to
 				break
 			}
 		}
@@ -1513,15 +1512,15 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	AddControlLance(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_LANCE_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF], 1, from)
 	AddControlBishop(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF], 1, from)
 	AddControlRook(
 		pPos,
 		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF],
-		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, mov_src_sq)
+		pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, from)
 
 	pPosSys.PControlBoardSystem.MergeControlDiff(pPosSys.BuildType)
 }
