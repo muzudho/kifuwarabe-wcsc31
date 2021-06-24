@@ -58,9 +58,10 @@ func (move Move) ToCode() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
+	from, to, pro := move.Destructure()
+
 	// 移動元マス(Source square)
-	source_sq := move.GetSource()
-	switch source_sq {
+	switch from {
 	case DROP_R1, DROP_R2:
 		str = append(str, 'R')
 		count = 1
@@ -91,19 +92,19 @@ func (move Move) ToCode() string {
 	}
 
 	for count < 2 {
-		var sq byte // マス番号
+		var sq Square // マス番号
 		if count == 0 {
 			// 移動元
-			sq = source_sq
+			sq = from
 		} else if count == 1 {
 			// 移動先
-			sq = move.GetDestination()
+			sq = to
 		} else {
 			panic(fmt.Errorf("LogicError: count=%d", count))
 		}
 		// 正常時は必ず２桁（＾～＾）
-		file := sq / 10
-		rank := sq % 10
+		file := byte(sq / 10)
+		rank := byte(sq % 10)
 		// ASCII Code
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
@@ -112,9 +113,9 @@ func (move Move) ToCode() string {
 		count += 1
 	}
 
-	// if move.IsPromotion() {
-	// 	str = append(str, '+')
-	// }
+	if pro {
+		str = append(str, '+')
+	}
 
 	return string(str)
 }
@@ -138,17 +139,10 @@ func (move Move) ReplacePromotion(promotion bool) Move {
 	return Move(uint32(move) & 0xfffeffff)
 }
 
-// GetSource - 移動元マス
-func (move Move) GetSource() byte {
-	return byte(uint32(move) & 0x000000ff)
-}
-
-// GetDestination - 移動元マス
-func (move Move) GetDestination() byte {
-	return byte((uint32(move) >> 8) & 0x000000ff)
-}
-
-// IsPromotion - 成
-func (move Move) IsPromotion() byte {
-	return byte((uint32(move) >> 9) & 0x00000001)
+// Destructure - 移動元マス、移動先マス、成りの有無
+func (move Move) Destructure() (Square, Square, bool) {
+	var from = Square(byte(uint32(move) & 0x000000ff))
+	var to = Square((uint32(move) >> 8) & 0x000000ff)
+	var pro = (uint32(move)>>9)&0x00000001 == 1
+	return from, to, pro
 }
