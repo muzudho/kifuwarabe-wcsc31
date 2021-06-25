@@ -12,9 +12,10 @@ func (pBrain *Brain) Dump() string {
 
 	for b := PosLayerT(0); b < 2; b += 1 {
 		pPos := pBrain.PPosSys.PPosition[b]
-		buffer.WriteString(fmt.Sprintf("Board[%d]:", b))
+		buffer.WriteString(fmt.Sprintf("Position[%d]:\n", b))
 		for i := 0; i < POS_LAYER_SIZE; i += 1 {
-			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Board))
+			buffer.WriteString(pBrain.PPosSys.PPosition[i].SprintBoard())
+			//buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")
 
