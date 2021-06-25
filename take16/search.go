@@ -90,7 +90,8 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 				pBrain.PPosSys.phase,
 				pBrain.PPosSys.StartMovesNum,
 				pBrain.PPosSys.OffsetMovesIndex))
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
+			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardFooter(
 				pBrain.PPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())

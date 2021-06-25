@@ -22,7 +22,7 @@ func (pPos *Position) SprintBoardHeader(phase Phase, startMovesNum int, offsetMo
 }
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) SprintBoard(moves_text string) string {
+func (pPos *Position) SprintBoard() string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
@@ -151,13 +151,17 @@ func (pPos *Position) SprintBoard(moves_text string) string {
 		//
 		"   +--+--+--+--+--+--+--+--+\n" +
 		//
-		"\n" +
+		"\n"
 		//
-		"moves"
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
-	return s1 + string(moves_text) + "\n"
+	return s1
+}
+
+// Print - 局面出力（＾ｑ＾）
+func (pPos *Position) SprintBoardFooter(moves_text string) string {
+	return "moves" + string(moves_text) + "\n"
 }
 
 // SprintLocation - あの駒どこにいんの？を表示

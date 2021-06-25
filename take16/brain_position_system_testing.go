@@ -293,7 +293,8 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,
 		pBrain.PPosSys.OffsetMovesIndex))
-	G.Chat.Debug(pPos.SprintBoard(
+	G.Chat.Debug(pPos.SprintBoard())
+	G.Chat.Debug(pPos.SprintBoardFooter(
 		pBrain.PPosSys.createMovesText()))
 
 	if false {
@@ -375,7 +376,8 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,
 		pBrain.PPosSys.OffsetMovesIndex))
-	G.Chat.Debug(pPos.SprintBoard(
+	G.Chat.Debug(pPos.SprintBoard())
+	G.Chat.Debug(pPos.SprintBoardFooter(
 		pBrain.PPosSys.createMovesText()))
 	ShowAllPiecesCount(pPos)
 	command2 := pBrain.PPosSys.SprintSfenResignation(pPos)

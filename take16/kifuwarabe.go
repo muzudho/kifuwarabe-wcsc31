@@ -148,7 +148,8 @@ MainLoop:
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex))
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardFooter(
 					pBrain.PPosSys.createMovesText()))
 				ok = true
 				ok = true
@@ -162,7 +163,8 @@ MainLoop:
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
 						pBrain.PPosSys.OffsetMovesIndex))
-					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoard(
+					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoard())
+					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoardFooter(
 						pBrain.PPosSys.createMovesText()))
 					ok = true
 				}
@@ -184,7 +186,8 @@ MainLoop:
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex))
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardFooter(
 					pBrain.PPosSys.createMovesText()))
 				panic(err)
 			}
@@ -331,7 +334,8 @@ MainLoop:
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
 						pBrain.PPosSys.OffsetMovesIndex))
-					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
+					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardFooter(
 						pBrain.PPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
 					// G.Chat.Debug(pBrain.PPosSys.SprintLocation())
