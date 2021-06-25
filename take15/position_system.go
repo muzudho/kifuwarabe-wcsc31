@@ -654,9 +654,6 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 
 			// 駒得評価値の計算（＾ｑ＾）
 			material_val := EvalMaterial(captured)
-			if before_move_phase != FIRST {
-				material_val = -material_val
-			}
 			pPos.MaterialValue += material_val
 		}
 

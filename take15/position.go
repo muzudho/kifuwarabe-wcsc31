@@ -12,8 +12,8 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
 	Hands1 [HAND_SIZE]int
 
-	// 先手から見た駒得評価値
-	MaterialValue int16
+	// 現局面の手番から見た駒得評価値
+	MaterialValue Value
 }
 
 func NewPosition() *Position {

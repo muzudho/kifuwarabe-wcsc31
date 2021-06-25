@@ -1,9 +1,13 @@
 // 評価関数
 package take15
 
+// 評価値の型。
+// int16 に収まるように設計できてないので（＾～＾）
+type Value int32
+
 // EvalControlVal - 葉局面での利きの評価
-func EvalControlVal(pPosSys *PositionSystem) int16 {
-	var control_val int16 = 0
+func EvalControlVal(pPosSys *PositionSystem) Value {
+	var control_val Value = 0
 
 	// 何もしない方がマシかも（＾～＾）
 	/*

@@ -361,3 +361,54 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 		pBrain.DoMove(pPos, pBrain.PPosSys.Moves[i])
 	}
 }
+
+// 長い利きの駒から王手を受けていないかチェック（＾～＾）
+func (pBrain *Brain) IsCheckmate(phase Phase) bool {
+	switch phase {
+	case FIRST:
+		// 先手玉への王手を調べます
+		// 先手玉の位置を調べます
+		var k1 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
+		// 後手の角の利きボードの、先手玉の位置のマスの数を調べます
+		var b2 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON].Board1[k1] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF].Board1[k1]
+		if 0 < b2 {
+			// 1以上なら王手を受けています
+			return true
+		}
+		// 飛
+		var r2 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON].Board1[k1] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF].Board1[k1]
+		if 0 < r2 {
+			return true
+		}
+		// 香
+		var l2 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_LANCE_ON].Board1[k1] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_LANCE_OFF].Board1[k1]
+		if 0 < l2 {
+			return true
+		}
+	case SECOND:
+		// 後手玉の王手を調べます
+		// 後手玉の位置を調べます
+		var k2 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
+		// 先手の角の利きボードの、先手玉の位置のマスの数を調べます
+		var b1 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON].Board1[k2] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF].Board1[k2]
+		if 0 < b1 {
+			// 1以上なら王手を受けています
+			return true
+		}
+		// 飛
+		var r1 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_ROOK_ON].Board1[k2] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF].Board1[k2]
+		if 0 < r1 {
+			return true
+		}
+		// 香
+		var l2 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_LANCE_ON].Board1[k2] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_LANCE_OFF].Board1[k2]
+		if 0 < l2 {
+			return true
+		}
+	default:
+		panic(fmt.Errorf("Unknown phase=%d", phase))
+	}
+
+	// 王手は受けていなかったぜ（＾～＾）
+	return false
+}

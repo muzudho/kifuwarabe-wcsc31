@@ -4,7 +4,7 @@ package take15
 import "fmt"
 
 // EvalMaterial - 駒の価値。開発者のむずでょが勝手に決めた（＾～＾）
-func EvalMaterial(piece Piece) int16 {
+func EvalMaterial(piece Piece) Value {
 	switch piece {
 	case PIECE_EMPTY: // 空きマス
 		return 0

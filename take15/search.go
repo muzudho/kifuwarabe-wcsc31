@@ -5,8 +5,8 @@ import (
 	"math/rand"
 )
 
-const RESIGN_VALUE = -32768
-const MAX_VALUE = 32767
+const RESIGN_VALUE = Value(-2_147_483_648) // Value(-32768)
+const MAX_VALUE = Value(2_147_483_647)     // Value(32767)
 
 var nodesNum int
 var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
@@ -28,6 +28,8 @@ func Search(pBrain *Brain) Move {
 	bestMove, bestVal := search2(pBrain, curDepth)
 
 	// 評価値出力（＾～＾）
+	// きふわらべの評価値のスケールがデカいので、 -3000～+3000 に収めたいぜ（＾～＾）
+	//var val = int32(math.Log10(float64(bestVal)))
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
 		curDepth, nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
@@ -36,34 +38,34 @@ func Search(pBrain *Brain) Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int) (Move, int16) {
+func search2(pBrain *Brain, curDepth int) (Move, Value) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
-	// TODO 空き王手チェックは（＾～＾）？
-	moveList := GenMoveList(pBrain, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
-	moveListLen := len(moveList)
-	//fmt.Printf("%d/%d moveListLen=%d\n", curDepth, depthEnd, moveListLen)
+	someMoves := GenMoveList(pBrain, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
+	lenOfMoves := len(someMoves)
+	//fmt.Printf("%d/%d lenOfMoves=%d\n", curDepth, depthEnd, lenOfMoves)
 
-	if moveListLen == 0 {
+	if lenOfMoves == 0 {
+		// ステイルメートされたら負け（＾～＾）
 		return RESIGN_MOVE, RESIGN_VALUE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var bestMoveList []Move
+	var someBestMoves []Move
 	var bestMove = RESIGN_MOVE
 	// 最初に最低値を入れておけば、更新されるだろ（＾～＾）
-	var bestVal int16 = RESIGN_VALUE
+	var bestVal Value = RESIGN_VALUE
 
 	// 相手の評価値
-	var opponentWorstVal int16 = MAX_VALUE
+	var opponentWorstVal Value = MAX_VALUE
 	var younger_sibling_move = RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
 
 	// その手を指してみるぜ（＾～＾）
-	for i, move := range moveList {
+	for i, move := range someMoves {
 		// G.Chat.Debug("move=%s\n", move.ToCode())
 		from, _, _ := move.Destructure()
 
@@ -82,24 +84,28 @@ func search2(pBrain *Brain, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				from, i, moveListLen, younger_sibling_move.ToCode()))
+				from, i, lenOfMoves, younger_sibling_move.ToCode()))
 		}
 
 		pBrain.DoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], move)
 		nodesNum += 1
 
-		// TODO ここで自玉に王手がかかるようなら、被空き王手（＾～＾）
-
 		// 取った駒は棋譜の１手前に記録されています
 		captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex-1]
 
-		// 玉を取るのは最善手
-		if What(captured) == PIECE_TYPE_K {
+		if pBrain.IsCheckmate(FlipPhase(pBrain.PPosSys.phase)) {
+			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
+			// この手は見なかったことにするぜ（＾～＾）
+		} else if What(captured) == PIECE_TYPE_K {
+			// 玉を取るのは最善手
 			bestMove = move
-			bestVal = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
+			bestVal = MAX_VALUE // pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture
 		} else {
 			if curDepth < depthEnd {
+				// 駒割り評価値反転
+				pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue = -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
+
 				// 再帰
 				_, opponentVal := search2(pBrain, curDepth+1)
 				// 再帰直後（＾～＾）
@@ -107,32 +113,34 @@ func search2(pBrain *Brain, curDepth int) (Move, int16) {
 
 				if opponentVal < opponentWorstVal {
 					// より低い価値が見つかったら更新
-					bestMoveList = nil
-					bestMoveList = append(bestMoveList, move)
+					someBestMoves = nil
+					someBestMoves = append(someBestMoves, move)
 					opponentWorstVal = opponentVal
 				} else if opponentVal == opponentWorstVal {
 					// 最低値が並んだら配列の要素として追加
-					bestMoveList = append(bestMoveList, move)
+					someBestMoves = append(someBestMoves, move)
 				}
 
+				// 駒割り評価値反転
+				pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue = -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			} else {
 				// 葉ノードでは、相手の手ではなく、自分の局面に点数を付けます
 
 				// 自玉と相手玉のどちらが有利な場所にいるか比較
 				control_val := EvalControlVal(pBrain.PPosSys)
+				// 現局面の評価値
 				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
-
-				leafVal := materialVal + int16(control_val)
+				leafVal := materialVal + control_val
 
 				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 				if bestVal < leafVal {
 					// より高い価値が見つかったら更新
-					bestMoveList = nil
-					bestMoveList = append(bestMoveList, move)
+					someBestMoves = nil
+					someBestMoves = append(someBestMoves, move)
 					bestVal = leafVal
 				} else if bestVal == leafVal {
 					// 最高値が並んだら配列の要素として追加
-					bestMoveList = append(bestMoveList, move)
+					someBestMoves = append(someBestMoves, move)
 				}
 			}
 		}
@@ -169,11 +177,11 @@ func search2(pBrain *Brain, curDepth int) (Move, int16) {
 			bestVal = -opponentWorstVal
 		}
 
-		bestmoveListLen := len(bestMoveList)
+		bestmoveListLen := len(someBestMoves)
 		//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 		if bestmoveListLen > 0 {
 			// 0件を避ける（＾～＾）
-			bestMove = bestMoveList[rand.Intn(bestmoveListLen)]
+			bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 		}
 
 		// 評価値出力（＾～＾）

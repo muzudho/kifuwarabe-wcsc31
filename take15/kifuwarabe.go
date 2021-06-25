@@ -94,7 +94,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB10\n", config.Profile.Name)
+			G.Chat.Print("id name %sB15\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pBrain.PPosSys.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
@@ -505,7 +505,7 @@ MainLoop:
 			// 現局面の評価値を表示（＾～＾）
 			G.Chat.Debug("Value\n")
 			G.Chat.Debug("-----\n")
-			G.Chat.Debug("MaterialValue(First)=%d\n", pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
+			G.Chat.Debug("MaterialValue=%d\n", pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
 		case "":
 			// Ignored
 		default:
