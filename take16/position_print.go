@@ -154,14 +154,7 @@ func (pPos *Position) SprintBoard() string {
 		"\n"
 		//
 
-	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
-	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
 	return s1
-}
-
-// Print - 局面出力（＾ｑ＾）
-func (pPos *Position) SprintBoardFooter(moves_text string) string {
-	return "moves" + string(moves_text) + "\n"
 }
 
 // SprintLocation - あの駒どこにいんの？を表示

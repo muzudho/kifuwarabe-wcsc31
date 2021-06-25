@@ -307,8 +307,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 					pBrain.PPosSys.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex))
 				fmt.Println(pPos.SprintBoard())
-				fmt.Println(pPos.SprintBoardFooter(
-					pBrain.PPosSys.createMovesText()))
+				fmt.Println(pBrain.SprintBoardFooter())
 				panic(err)
 			}
 			pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex] = move

@@ -34,11 +34,8 @@ func (pBrain *Brain) Dump() string {
 
 	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
 
-	buffer.WriteString("Moves:")
-	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.Moves[i]))
-	}
-	buffer.WriteString("\n")
+	// moves
+	buffer.WriteString(pBrain.SprintBoardFooter())
 
 	buffer.WriteString("CapturedList:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
@@ -47,4 +44,11 @@ func (pBrain *Brain) Dump() string {
 	buffer.WriteString("\n")
 
 	return buffer.String()
+}
+
+// SprintBoardFooter - 局面出力（＾ｑ＾）
+func (pBrain *Brain) SprintBoardFooter() string {
+	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
+	//return "moves" + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
+	return "moves" + pBrain.PPosSys.createMovesText() + "\n"
 }

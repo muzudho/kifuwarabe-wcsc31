@@ -91,8 +91,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 				pBrain.PPosSys.StartMovesNum,
 				pBrain.PPosSys.OffsetMovesIndex))
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardFooter(
-				pBrain.PPosSys.createMovesText()))
+			G.Chat.Debug(pBrain.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
