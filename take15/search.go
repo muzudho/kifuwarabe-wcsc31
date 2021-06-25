@@ -120,9 +120,8 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			} else {
 				// 葉ノードでは、相手の手ではなく、自分の局面に点数を付けます
 
-				// 現局面の評価値
-				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
-				leafVal := materialVal
+				// 駒割り評価値は　DoMove の中で　ひっくり返っているので、ここでは　ひっくり返し戻します
+				leafVal := -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 
 				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 				if bestVal < leafVal {
