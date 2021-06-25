@@ -390,15 +390,15 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 }
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
-func (pPosSys *PositionSystem) Dump() string {
+func (pBrain *Brain) Dump() string {
 	// bytes.Bufferは、速くはないけど使いやすいぜ（＾～＾）
 	var buffer bytes.Buffer
 
 	for b := PosLayerT(0); b < 2; b += 1 {
-		pPos := pPosSys.PPosition[b]
+		pPos := pBrain.PPosSys.PPosition[b]
 		buffer.WriteString(fmt.Sprintf("Board[%d]:", b))
 		for i := 0; i < BOARD_SIZE; i += 1 {
-			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Board))
+			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")
 		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2]))
@@ -409,30 +409,30 @@ func (pPosSys *PositionSystem) Dump() string {
 
 	// 利きボード全部
 	for c := ControlLayerT(0); c < CONTROL_LAYER_ALL_SIZE; c += 1 {
-		buffer.WriteString(pPosSys.SprintControl(c))
+		buffer.WriteString(pBrain.PCtrlBrdSys.SprintControl(c))
 	}
 
 	buffer.WriteString("Hands:")
 	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Hands1))
+		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Hands1))
 	}
 	buffer.WriteString("\n")
 
-	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pPosSys.GetPhase()))
+	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pBrain.PPosSys.GetPhase()))
 
-	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pPosSys.StartMovesNum))
+	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pBrain.PPosSys.StartMovesNum))
 
-	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pPosSys.OffsetMovesIndex))
+	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
 
 	buffer.WriteString("Moves:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.Moves[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.Moves[i]))
 	}
 	buffer.WriteString("\n")
 
 	buffer.WriteString("CapturedList:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.CapturedList[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.CapturedList[i]))
 	}
 	buffer.WriteString("\n")
 

@@ -10,26 +10,26 @@ func EvalControlVal(pPosSys *PositionSystem) int16 {
 		switch pPosSys.phase {
 		case FIRST:
 			WaterColor(
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL1],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL2],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3])
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL1],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL2],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3])
 			my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
 			oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
-			control_val = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
+			control_val = pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
 		case SECOND:
 			WaterColor(
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL1],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL2],
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3])
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL1],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL2],
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3])
 			my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
 			oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
-			control_val = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
-				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
+			control_val = pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
+				pPosSys.PCtrlBrdSys.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
 		default:
 			panic(fmt.Errorf("Unknown phase=%d", pPosSys.phase))
 		}

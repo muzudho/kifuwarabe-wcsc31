@@ -9,18 +9,18 @@ import (
 )
 
 // TestControl
-func TestControl(pPosSys *PositionSystem, pPos *Position) (bool, string) {
-	pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY1].Clear()
-	pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY2].Clear()
+func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
+	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY1].Clear()
+	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2].Clear()
 
-	pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_ERROR1].Clear()
-	pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_ERROR2].Clear()
+	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR1].Clear()
+	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR2].Clear()
 
 	// 利きをコピー
-	copyCb1 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY1]
-	sumCb1 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
-	copyCb2 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY2]
-	sumCb2 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2]
+	copyCb1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY1]
+	sumCb1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
+	copyCb2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
+	sumCb2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	for sq := 0; sq < BOARD_SIZE; sq += 1 {
 		copyCb1.Board1[sq] = sumCb1.Board1[sq]
 		copyCb2.Board1[sq] = sumCb2.Board1[sq]
@@ -28,18 +28,18 @@ func TestControl(pPosSys *PositionSystem, pPos *Position) (bool, string) {
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
-	move_list := GenMoveList(pPosSys, pPos)
+	move_list := GenMoveList(pBrain, pPos)
 	move_total := len(move_list)
 
 	for move_seq, move := range move_list {
 		// その手を指してみるぜ（＾～＾）
-		pPosSys.DoMove(pPos, move)
+		pBrain.DoMove(pPos, move)
 
 		// すぐ戻すぜ（＾～＾）
-		pPosSys.UndoMove(pPos)
+		pBrain.UndoMove(pPos)
 
 		// 元に戻っていればOK（＾～＾）
-		is_error := checkControl(pPosSys, move_seq, move_total, move)
+		is_error := checkControl(pBrain, move_seq, move_total, move)
 		if is_error {
 			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, move.ToCode())
 		}
@@ -49,17 +49,17 @@ func TestControl(pPosSys *PositionSystem, pPos *Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pPosSys *PositionSystem, move_seq int, move_total int, move Move) bool {
+func checkControl(pBrain *Brain, move_seq int, move_total int, move Move) bool {
 
 	is_error := false
 
 	// 誤差調べ
-	copyCB1 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY1]
-	sumCB1 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
-	errorCB1 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_ERROR1]
-	copyCB2 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_COPY2]
-	sumCB2 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2]
-	errorCB2 := pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_TEST_ERROR2]
+	copyCB1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY1]
+	sumCB1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
+	errorCB1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR1]
+	copyCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
+	sumCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
+	errorCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR2]
 	for sq := 0; sq < BOARD_SIZE; sq += 1 {
 		diff1 := copyCB1.Board1[sq] - sumCB1.Board1[sq]
 		errorCB1.Board1[sq] = diff1
@@ -80,11 +80,11 @@ func checkControl(pPosSys *PositionSystem, move_seq int, move_total int, move Mo
 }
 
 // SumAbsControl - 利きテーブルの各マスを絶対値にし、その総和を返します
-func SumAbsControl(pPosSys *PositionSystem, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]int {
+func SumAbsControl(pBrain *Brain, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]int {
 
 	sumList := [2]int{0, 0}
 
-	cb1 := pPosSys.PControlBoardSystem.PBoards[ph1_c]
+	cb1 := pBrain.PCtrlBrdSys.PBoards[ph1_c]
 	for from := Square(11); from < BOARD_SIZE; from += 1 {
 		if File(from) != 0 && Rank(from) != 0 {
 
@@ -93,7 +93,7 @@ func SumAbsControl(pPosSys *PositionSystem, ph1_c ControlLayerT, ph2_c ControlLa
 		}
 	}
 
-	cb2 := pPosSys.PControlBoardSystem.PBoards[ph2_c]
+	cb2 := pBrain.PCtrlBrdSys.PBoards[ph2_c]
 	for from := Square(11); from < BOARD_SIZE; from += 1 {
 		if File(from) != 0 && Rank(from) != 0 {
 
@@ -108,7 +108,7 @@ func SumAbsControl(pPosSys *PositionSystem, ph1_c ControlLayerT, ph2_c ControlLa
 // ShuffleBoard - 盤上の駒、持ち駒をシャッフルします
 // ゲーム中にはできない動きをするので、利きの計算は無視します。
 // 最後に利きは再計算します
-func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
+func ShuffleBoard(pBrain *Brain, pPos *Position) {
 
 	// 駒の数を数えます
 	countList1 := CountAllPieces(pPos)
@@ -279,21 +279,21 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pPosSys.phase = FIRST
+		pBrain.PPosSys.phase = FIRST
 	default:
-		pPosSys.phase = SECOND
+		pBrain.PPosSys.phase = SECOND
 	}
 
 	// 手目は 1 に戻します
-	pPosSys.StartMovesNum = 1
-	pPosSys.OffsetMovesIndex = 0
+	pBrain.PPosSys.StartMovesNum = 1
+	pBrain.PPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.Sprint(
-		pPosSys.phase,
-		pPosSys.StartMovesNum,
-		pPosSys.OffsetMovesIndex,
-		pPosSys.createMovesText()))
+		pBrain.PPosSys.phase,
+		pBrain.PPosSys.StartMovesNum,
+		pBrain.PPosSys.OffsetMovesIndex,
+		pBrain.PPosSys.createMovesText()))
 
 	if false {
 		var countList [8]int
@@ -363,20 +363,20 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	}
 
 	// position sfen 文字列を取得
-	command := pPosSys.SprintSfenResignation(pPos)
+	command := pBrain.PPosSys.SprintSfenResignation(pPos)
 	G.Chat.Debug("#command=%s", command)
 
 	// 利きの再計算もやってくれる
-	pPosSys.ReadPosition(pPos, command)
+	pBrain.ReadPosition(pPos, command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.Sprint(
-		pPosSys.phase,
-		pPosSys.StartMovesNum,
-		pPosSys.OffsetMovesIndex,
-		pPosSys.createMovesText()))
+		pBrain.PPosSys.phase,
+		pBrain.PPosSys.StartMovesNum,
+		pBrain.PPosSys.OffsetMovesIndex,
+		pBrain.PPosSys.createMovesText()))
 	ShowAllPiecesCount(pPos)
-	command2 := pPosSys.SprintSfenResignation(pPos)
+	command2 := pBrain.PPosSys.SprintSfenResignation(pPos)
 	G.Chat.Debug("#command2=%s", command2)
 
 	// 駒の数を数えます
