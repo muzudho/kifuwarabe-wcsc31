@@ -264,7 +264,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
 					if promote {
-						moveEndList = append(moveEndList, NewMoveEnd(to, false))
+						moveEndList = append(moveEndList, NewMoveEnd(to, true))
 					}
 				}
 			}
