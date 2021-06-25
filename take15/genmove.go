@@ -1,7 +1,5 @@
 package take15
 
-import "fmt"
-
 // File - マス番号から筋（列）を取り出します
 func File(sq Square) Square {
 	return sq / 10 % 10
@@ -67,7 +65,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	*/
 
 	if from == SQUARE_EMPTY {
-		panic(fmt.Errorf("GenMoveEnd has empty square"))
+		panic(G.Log.Fatal("GenMoveEnd has empty square"))
 	} else if OnHands(from) {
 		// どこに打てるか
 		var start_rank Square
@@ -90,7 +88,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(fmt.Errorf("Unknown hand from=%d", from))
+			panic(G.Log.Fatal("Unknown hand from=%d", from))
 		}
 
 		switch from {
@@ -172,7 +170,31 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			// Ignored
 		}
 
-		// ２つ先のマスから先手香車の長い利き
+		// ２つ先のマスから先手香車の長い利き（不成の動き）
+		// 4～9段目にある香で、１つ上が空マスなら
+		if piece == PIECE_L1 && 4 <= rank_from && pPos.IsEmptySq(from-1) {
+			for to := from - 2; 2 <= Rank(to); to -= 1 { // fromの２段上～2段目
+				ValidateSq(to)
+				moveEndList = append(moveEndList, NewMoveEnd(to, false))
+				if !pPos.IsEmptySq(to) {
+					break
+				}
+			}
+		}
+
+		// ２つ先のマスから後手香車の長い利き（不成の動き）
+		// 1～6段目にある香で、１つ下が空マスなら
+		if piece == PIECE_L2 && rank_from <= 6 && pPos.IsEmptySq(from+1) {
+			for to := from + 2; Rank(to) <= 8; to += 1 { // fromの2段下～8段目
+				ValidateSq(to)
+				moveEndList = append(moveEndList, NewMoveEnd(to, false))
+				if !pPos.IsEmptySq(to) {
+					break
+				}
+			}
+		}
+
+		// ２つ先のマスから先手飛・竜の長い利き（不成の動き）
 		switch piece {
 		case PIECE_L1, PIECE_R1, PIECE_PR1, PIECE_R2, PIECE_PR2:
 			if rank_from > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
@@ -188,7 +210,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			// Ignored
 		}
 
-		// ２つ先のマスから後手香車の長い利き
+		// ２つ先のマスから後手飛・竜の長い利き（不成の動き）
 		switch piece {
 		case PIECE_R1, PIECE_PR1, PIECE_L2, PIECE_R2, PIECE_PR2:
 			if rank_from < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
@@ -543,7 +565,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(fmt.Errorf("Unknown phase=%d", friend))
+		panic(G.Log.Fatal("Unknown phase=%d", friend))
 	}
 	hand_end = hand_start + HAND_TYPE_SIZE
 

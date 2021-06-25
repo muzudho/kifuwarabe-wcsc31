@@ -1,8 +1,6 @@
 // 駒の価値
 package take15
 
-import "fmt"
-
 // EvalMaterial - 駒の価値。開発者のむずでょが勝手に決めた（＾～＾）
 func EvalMaterial(piece Piece) Value {
 	switch piece {
@@ -25,6 +23,6 @@ func EvalMaterial(piece Piece) Value {
 	case PIECE_P1, PIECE_PP1, PIECE_P2, PIECE_PP2: // 歩、と
 		return 100
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(G.Log.Fatal("Error: Unknown piece=[%d]", piece))
 	}
 }

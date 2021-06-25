@@ -238,7 +238,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						// ループを抜けます
 						break HandLoop
 					default:
-						panic(fmt.Errorf("Fatal: Unknown piece=%c", piece))
+						panic(G.Log.Fatal("Fatal: Unknown piece=%c", piece))
 					}
 				} else if unicode.IsNumber(rune(piece)) {
 					switch piece {
@@ -251,11 +251,11 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						number *= 10
 						number += num
 					default:
-						panic(fmt.Errorf("Fatal: Unknown number character=%c", piece))
+						panic(G.Log.Fatal("Fatal: Unknown number character=%c", piece))
 					}
 
 				} else {
-					panic(fmt.Errorf("Fatal: Unknown piece=%c", piece))
+					panic(G.Log.Fatal("Fatal: Unknown piece=%c", piece))
 				}
 			}
 		}
@@ -406,7 +406,7 @@ func (pBrain *Brain) IsCheckmate(phase Phase) bool {
 			return true
 		}
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(G.Log.Fatal("Unknown phase=%d", phase))
 	}
 
 	// 王手は受けていなかったぜ（＾～＾）
@@ -659,7 +659,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(G.Log.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			} else {
 				// 取った時
@@ -670,7 +670,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(G.Log.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:
@@ -842,7 +842,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		case SECOND:
 			pPos.PieceLocations[PCLOC_K2] = from
 		default:
-			panic(fmt.Errorf("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
+			panic(G.Log.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case PIECE_TYPE_R, PIECE_TYPE_PR:
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
@@ -1021,7 +1021,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			// 先手の玉
 			pPos.PieceLocations[PCLOC_K1] = to
 		default:
-			panic(fmt.Errorf("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
+			panic(G.Log.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case PIECE_TYPE_R, PIECE_TYPE_PR:
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {

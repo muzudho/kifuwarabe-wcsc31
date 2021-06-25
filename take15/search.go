@@ -1,7 +1,6 @@
 package take15
 
 import (
-	"fmt"
 	"math/rand"
 )
 
@@ -11,7 +10,7 @@ const ANTI_RESIGN_VALUE = Value(2_147_483_647) // Value(32767)
 var nodesNum int
 
 // 0 にすると 1手読み（＾～＾）
-var depthEnd int = 0 // 3 はまだ遅い。 2 だと駒を取り返さない。
+var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
 
 type CuttingType int
 
@@ -80,7 +79,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 				pBrain.PPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
-			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
+			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, lenOfMoves, younger_sibling_move.ToCode()))
 		}
 
@@ -147,7 +146,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(fmt.Errorf("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
+			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
 		}
 
 		younger_sibling_move = move

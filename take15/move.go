@@ -1,7 +1,5 @@
 package take15
 
-import "fmt"
-
 const (
 	// 持ち駒を打つ 100～115
 	// 先手飛打
@@ -118,7 +116,7 @@ func (move Move) ToCode() string {
 			// 移動先
 			sq = to
 		} else {
-			panic(fmt.Errorf("LogicError: count=%d", count))
+			panic(G.Log.Fatal("LogicError: count=%d", count))
 		}
 		// 正常時は必ず２桁（＾～＾）
 		file := byte(sq / 10)

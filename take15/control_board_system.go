@@ -1,7 +1,5 @@
 package take15
 
-import "fmt"
-
 // 利きテーブル・インデックス型
 type ControlLayerT int
 
@@ -265,7 +263,7 @@ func ControllBoardFromPhase(
 	case SECOND:
 		return pPh2_CB
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(G.Log.Fatal("Unknown phase=%d", phase))
 	}
 }
 

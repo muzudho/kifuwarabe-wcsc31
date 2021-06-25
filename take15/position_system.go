@@ -164,7 +164,7 @@ func (pc Piece) ToCode() string {
 	case PIECE_PP2:
 		return "+p"
 	default:
-		panic(fmt.Errorf("Unknown piece=%d", pc))
+		panic(G.Log.Fatal("Unknown piece=%d", pc))
 	}
 }
 
@@ -230,7 +230,7 @@ func PieceFrom(piece string) Piece {
 	case "+p":
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("Unknown piece=[%s]", piece))
+		panic(G.Log.Fatal("Unknown piece=[%s]", piece))
 	}
 }
 
@@ -268,7 +268,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP1
 		default:
-			panic(fmt.Errorf("Unknown pieceType=%d", pieceType))
+			panic(G.Log.Fatal("Unknown pieceType=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
@@ -301,10 +301,10 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP2
 		default:
-			panic(fmt.Errorf("Unknown pieceType=%d", pieceType))
+			panic(G.Log.Fatal("Unknown pieceType=%d", pieceType))
 		}
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(G.Log.Fatal("Unknown phase=%d", phase))
 	}
 }
 
