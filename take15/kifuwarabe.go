@@ -307,6 +307,7 @@ MainLoop:
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
 			G.Chat.Debug(pBrain.PPosSys.SprintRecord())
 		case "movelist":
+			// 指し手の一覧
 			moveList(pBrain)
 		case "dump":
 			// 変数を全部出力してくれだぜ（＾～＾）
@@ -528,7 +529,7 @@ func moveList(pBrain *Brain) {
 	G.Chat.Debug("--------\n")
 	move_list := GenMoveList(pBrain, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
-		G.Chat.Debug("(%d) %s\n", i, move.ToCode())
+		G.Chat.Debug("(%3d) %-5s - ? value\n", i, move.ToCode())
 	}
 	G.Chat.Debug("* Except for those to be removed during the search\n")
 }
