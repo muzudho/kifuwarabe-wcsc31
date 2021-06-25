@@ -4,6 +4,18 @@ import (
 	"math/rand"
 )
 
+/*
+type SearchType uint8
+
+// 探索への指定
+const (
+	// 特になし
+	SEARCH_NONE = SearchType(0)
+	// 駒の取り合い
+	SEARCH_CAPTURE = SearchType(1)
+)
+*/
+
 const RESIGN_VALUE = Value(-2_147_483_647)     // Value(-32767)
 const ANTI_RESIGN_VALUE = Value(2_147_483_647) // Value(32767)
 
@@ -15,8 +27,11 @@ var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
 type CuttingType int
 
 const (
-	CuttingNone        = CuttingType(0)
+	CuttingNone = CuttingType(0)
+	// 玉を取った
 	CuttingKingCapture = CuttingType(1)
+	// 駒の取り合いが終わった
+	//CuttingEndCapture = CuttingType(2)
 )
 
 // Search - 探索部
@@ -26,7 +41,7 @@ func Search(pBrain *Brain) Move {
 	curDepth := 0
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
-	bestMove, bestVal := search2(pBrain, curDepth)
+	bestMove, bestVal := search2(pBrain, curDepth) //, SEARCH_NONE
 
 	// 評価値出力（＾～＾）
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
@@ -37,7 +52,7 @@ func Search(pBrain *Brain) Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int) (Move, Value) {
+func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type SearchType
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -90,6 +105,8 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 		// 取った駒は棋譜の１手前に記録されています
 		captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex-1]
 
+		var leaf = false
+
 		if pBrain.IsCheckmate(FlipPhase(pBrain.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
@@ -99,10 +116,26 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			someBestMoves = append(someBestMoves, move)
 			opponentWorstVal = RESIGN_VALUE
 			cutting = CuttingKingCapture
+			/*
+				} else if search_type == SEARCH_CAPTURE && captured == PIECE_EMPTY {
+					// 駒の取り合いを探索中に、駒を取らなかったら
+					// ただの葉
+					leaf = true
+			*/
 		} else {
-			if curDepth < depthEnd {
+			// 駒を取っている場合は、探索を延長します
+			if curDepth < depthEnd { //  || captured != PIECE_EMPTY
+				/*
+					var search_type2 SearchType
+					if captured != PIECE_EMPTY {
+						search_type2 = SEARCH_CAPTURE
+					} else {
+						search_type2 = search_type
+					}
+				*/
+
 				// 再帰
-				_, opponentVal := search2(pBrain, curDepth+1)
+				_, opponentVal := search2(pBrain, curDepth+1) //search_type2
 				// 再帰直後（＾～＾）
 				// G.Chat.Debug(pBrain.PPosSys.Sprint(POS_LAYER_MAIN))
 
@@ -118,19 +151,24 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 
 			} else {
 				// 葉ノード
-				// 駒割り評価値は、相手の手番のものになっています。
-				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
-				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
+				leaf = true
+			}
+		}
 
-				if materialVal < opponentWorstVal {
-					// より低い価値が見つかったら更新
-					someBestMoves = nil
-					someBestMoves = append(someBestMoves, move)
-					opponentWorstVal = materialVal
-				} else if materialVal == opponentWorstVal {
-					// 最低値が並んだら配列の要素として追加
-					someBestMoves = append(someBestMoves, move)
-				}
+		if leaf {
+			// 葉ノード
+			// 駒割り評価値は、相手の手番のものになっています。
+			materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
+			//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
+
+			if materialVal < opponentWorstVal {
+				// より低い価値が見つかったら更新
+				someBestMoves = nil
+				someBestMoves = append(someBestMoves, move)
+				opponentWorstVal = materialVal
+			} else if materialVal == opponentWorstVal {
+				// 最低値が並んだら配列の要素として追加
+				someBestMoves = append(someBestMoves, move)
 			}
 		}
 
@@ -167,7 +205,9 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 		*/
 	}
 
+	// bestMoveは、１手目しか使わないけど（＾～＾）
 	var bestMove = RESIGN_MOVE
+
 	bestmoveListLen := len(someBestMoves)
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
