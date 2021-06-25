@@ -571,5 +571,10 @@ func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positi
 		}
 	}
 
+	// 駒割り評価値
+	if pPos2.MaterialValue != pPos3.MaterialValue {
+		errorNum += 1
+	}
+
 	return errorNum
 }

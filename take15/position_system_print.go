@@ -169,6 +169,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	lines = append(lines, pPosSys.createMovesText())
 	lines = append(lines, "\n")
+	lines = append(lines, fmt.Sprintf("KomawariValue: %d %d\n", pPosSys.PPosition[b1].MaterialValue, pPosSys.PPosition[b2].MaterialValue))
 
 	buf.Reset()
 	for _, line := range lines {

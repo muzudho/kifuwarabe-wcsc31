@@ -1155,9 +1155,6 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 
 	// 駒得評価値の計算（＾ｑ＾）
 	material_val := EvalMaterial(captured)
-	if pBrain.PPosSys.phase != FIRST {
-		material_val = -material_val
-	}
 	pPos.MaterialValue -= material_val
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし、今動かした駒を除きます
