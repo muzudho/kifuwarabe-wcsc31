@@ -101,8 +101,6 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			cutting = CuttingKingCapture
 		} else {
 			if curDepth < depthEnd {
-				// 駒割り評価値反転
-				pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue = -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 
 				// 再帰
 				_, opponentVal := search2(pBrain, curDepth+1)
@@ -119,8 +117,6 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 					someBestMoves = append(someBestMoves, move)
 				}
 
-				// 駒割り評価値反転
-				pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue = -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			} else {
 				// 葉ノードでは、相手の手ではなく、自分の局面に点数を付けます
 

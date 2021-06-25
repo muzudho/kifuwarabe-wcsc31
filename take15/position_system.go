@@ -652,9 +652,9 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 			cap_piece_type = What(captured)
 			cap_src_sq = to
 
-			// 駒得評価値の計算（＾ｑ＾）
-			material_val := EvalMaterial(captured)
-			pPos.MaterialValue += material_val
+			// 駒得評価値。駒取って得したあと、相手の手番になるからひっくり返せだぜ（＾～＾）
+			pPos.MaterialValue += EvalMaterial(captured)
+			pPos.MaterialValue = -pPos.MaterialValue
 		}
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
@@ -1014,6 +1014,10 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 	captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
+	// 駒得評価値。取った駒を返すから損したあと、相手の手番になるので評価値をひっくり返せだぜ（＾ｑ＾）
+	pPos.MaterialValue -= EvalMaterial(captured)
+	pPos.MaterialValue = -pPos.MaterialValue
+
 	// 取った駒に関係するのは行き先だけ（＾～＾）
 	from, to, _ := move.Destructure()
 	// fmt.Printf("Debug: to=%d\n", to)
@@ -1152,10 +1156,6 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			}
 		}
 	}
-
-	// 駒得評価値の計算（＾ｑ＾）
-	material_val := EvalMaterial(captured)
-	pPos.MaterialValue -= material_val
 
 	// 作業後に、長い利きの駒の利きをプラス１します。ただし、今動かした駒を除きます
 	// アンドゥなので逆さになっているぜ（＾～＾）

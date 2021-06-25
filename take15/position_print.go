@@ -84,7 +84,7 @@ func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex in
 
 	var s1 = "\n" +
 		//
-		fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str) +
+		fmt.Sprintf("[%d -> %d moves / %s / ? repeats / %d value]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str, pPos.MaterialValue) +
 		//
 		"\n" +
 		//
