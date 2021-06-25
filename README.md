@@ -44,3 +44,7 @@ go get -u github.com/go-delve/delve/cmd/dlv
 
 * [ ] 長い利きボードが、相手玉を王手したかどうか　カウントできるだろうか（＾～＾）？  
 利きが伸びるタイミング、利きが遮られるタイミングがあると思う（＾～＾）そこで（＾～＾）
+
+## Documents
+
+[Test](./doc/test.md)  

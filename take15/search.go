@@ -5,8 +5,8 @@ import (
 	"math/rand"
 )
 
-const RESIGN_VALUE = Value(-2_147_483_648) // Value(-32768)
-const MAX_VALUE = Value(2_147_483_647)     // Value(32767)
+const RESIGN_VALUE = Value(-2_147_483_647)     // Value(-32767)
+const ANTI_RESIGN_VALUE = Value(2_147_483_647) // Value(32767)
 
 var nodesNum int
 var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
@@ -54,10 +54,10 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 	var someBestMoves []Move
 	var bestMove = RESIGN_MOVE
 	// 最初に最低値を入れておけば、更新されるだろ（＾～＾）
-	var bestVal Value = RESIGN_VALUE
+	// var bestVal Value = RESIGN_VALUE
 
-	// 相手の評価値
-	var opponentWorstVal Value = MAX_VALUE
+	// 次の相手の手の評価値（自分は これを最小にしたい）
+	var opponentWorstVal Value = ANTI_RESIGN_VALUE
 	var younger_sibling_move = RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
@@ -97,7 +97,8 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 		} else if What(captured) == PIECE_TYPE_K {
 			// 玉を取るのは最善手
 			bestMove = move
-			bestVal = MAX_VALUE // pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
+			opponentWorstVal = RESIGN_VALUE
+			// bestVal = ANTI_RESIGN_VALUE // pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture
 		} else {
 			if curDepth < depthEnd {
@@ -118,19 +119,17 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 				}
 
 			} else {
-				// 葉ノードでは、相手の手ではなく、自分の局面に点数を付けます
-
-				// 駒割り評価値は　DoMove の中で　ひっくり返っているので、ここでは　ひっくり返し戻します
-				leafVal := -pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
-
+				// 駒割り評価値は、相手の手番のものになっています。
+				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
-				if bestVal < leafVal {
-					// より高い価値が見つかったら更新
+
+				if materialVal < opponentWorstVal {
+					// より低い価値が見つかったら更新
 					someBestMoves = nil
 					someBestMoves = append(someBestMoves, move)
-					bestVal = leafVal
-				} else if bestVal == leafVal {
-					// 最高値が並んだら配列の要素として追加
+					opponentWorstVal = materialVal
+				} else if materialVal == opponentWorstVal {
+					// 最低値が並んだら配列の要素として追加
 					someBestMoves = append(someBestMoves, move)
 				}
 			}
@@ -162,12 +161,6 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 	case CuttingKingCapture:
 		// 玉取った
 	default:
-		if curDepth < depthEnd {
-			// 葉以外のノード
-			// 相手の評価値の逆が、自分の評価値
-			bestVal = -opponentWorstVal
-		}
-
 		bestmoveListLen := len(someBestMoves)
 		//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 		if bestmoveListLen > 0 {
@@ -180,5 +173,6 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 
 	}
 
-	return bestMove, bestVal
+	// 相手の評価値の逆が、自分の評価値
+	return bestMove, -opponentWorstVal
 }
