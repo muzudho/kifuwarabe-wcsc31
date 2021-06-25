@@ -28,8 +28,6 @@ func Search(pBrain *Brain) Move {
 	bestMove, bestVal := search2(pBrain, curDepth)
 
 	// 評価値出力（＾～＾）
-	// きふわらべの評価値のスケールがデカいので、 -3000～+3000 に収めたいぜ（＾～＾）
-	//var val = int32(math.Log10(float64(bestVal)))
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
 		curDepth, nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
@@ -126,11 +124,9 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			} else {
 				// 葉ノードでは、相手の手ではなく、自分の局面に点数を付けます
 
-				// 自玉と相手玉のどちらが有利な場所にいるか比較
-				control_val := EvalControlVal(pBrain.PPosSys)
 				// 現局面の評価値
 				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
-				leafVal := materialVal + control_val
+				leafVal := materialVal
 
 				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 				if bestVal < leafVal {

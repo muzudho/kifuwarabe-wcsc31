@@ -1,5 +1,7 @@
 package take15
 
+type Value int32
+
 // Position - 局面
 // TODO 利きボードも含めたい
 type Position struct {
