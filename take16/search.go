@@ -86,10 +86,11 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pBrain.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 				pBrain.PPosSys.phase,
 				pBrain.PPosSys.StartMovesNum,
-				pBrain.PPosSys.OffsetMovesIndex,
+				pBrain.PPosSys.OffsetMovesIndex))
+			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
 				pBrain.PPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())

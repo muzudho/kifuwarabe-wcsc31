@@ -144,10 +144,11 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
-					pBrain.PPosSys.OffsetMovesIndex,
+					pBrain.PPosSys.OffsetMovesIndex))
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
 					pBrain.PPosSys.createMovesText()))
 				ok = true
 				ok = true
@@ -157,10 +158,11 @@ MainLoop:
 				if err != nil {
 					G.Chat.Debug("Error: %s", err)
 				} else {
-					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].Sprint(
+					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoardHeader(
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
-						pBrain.PPosSys.OffsetMovesIndex,
+						pBrain.PPosSys.OffsetMovesIndex))
+					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoard(
 						pBrain.PPosSys.createMovesText()))
 					ok = true
 				}
@@ -178,10 +180,11 @@ MainLoop:
 			i := 3
 			var move, err = ParseMove(command, &i, pBrain.PPosSys.GetPhase())
 			if err != nil {
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
-					pBrain.PPosSys.OffsetMovesIndex,
+					pBrain.PPosSys.OffsetMovesIndex))
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
 					pBrain.PPosSys.createMovesText()))
 				panic(err)
 			}
@@ -324,10 +327,11 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < MOVES_SIZE; i += 1 {
-					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
-						pBrain.PPosSys.OffsetMovesIndex,
+						pBrain.PPosSys.OffsetMovesIndex))
+					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard(
 						pBrain.PPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
 					// G.Chat.Debug(pBrain.PPosSys.SprintLocation())

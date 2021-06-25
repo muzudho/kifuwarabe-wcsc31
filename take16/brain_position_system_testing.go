@@ -289,10 +289,11 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	pBrain.PPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint(
+	G.Chat.Debug(pPos.SprintBoardHeader(
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,
-		pBrain.PPosSys.OffsetMovesIndex,
+		pBrain.PPosSys.OffsetMovesIndex))
+	G.Chat.Debug(pPos.SprintBoard(
 		pBrain.PPosSys.createMovesText()))
 
 	if false {
@@ -370,10 +371,11 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	pBrain.ReadPosition(pPos, command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint(
+	G.Chat.Debug(pPos.SprintBoardHeader(
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,
-		pBrain.PPosSys.OffsetMovesIndex,
+		pBrain.PPosSys.OffsetMovesIndex))
+	G.Chat.Debug(pPos.SprintBoard(
 		pBrain.PPosSys.createMovesText()))
 	ShowAllPiecesCount(pPos)
 	command2 := pBrain.PPosSys.SprintSfenResignation(pPos)

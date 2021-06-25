@@ -17,10 +17,13 @@ func (pBrain *Brain) Dump() string {
 			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2]))
-		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2]))
-		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2]))
-		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2], pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]))
+
+		// PieceLocation
+		pPos.SprintLocation()
+		// buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2]))
+		// buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2]))
+		// buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2]))
+		// buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2], pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]))
 	}
 
 	// 利きボード全部

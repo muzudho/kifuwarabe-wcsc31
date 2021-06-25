@@ -3,11 +3,7 @@ package take16
 import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
-	// pPosSys.StartMovesNum
-	// pPosSys.OffsetMovesIndex
-	// 	moves_text := pPosSys.createMovesText()
-
+func (pPos *Position) SprintBoardHeader(phase Phase, startMovesNum int, offsetMovesIndex int) string {
 	var phase_str string
 	switch phase {
 	case FIRST:
@@ -17,6 +13,19 @@ func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex in
 	default:
 		phase_str = "?"
 	}
+
+	var s1 = "\n" +
+		//
+		fmt.Sprintf("[%d -> %d moves / %s / ? repeats / %d value]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str, pPos.MaterialValue)
+		//
+	return s1
+}
+
+// Print - 局面出力（＾ｑ＾）
+func (pPos *Position) SprintBoard(moves_text string) string {
+	// pPosSys.StartMovesNum
+	// pPosSys.OffsetMovesIndex
+	// 	moves_text := pPosSys.createMovesText()
 
 	// 0段目
 	zeroRanks := [10]string{"  9", "  8", "  7", "  6", "  5", "  4", "  3", "  2", "  1", "   "}
@@ -83,10 +92,6 @@ func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex in
 	}
 
 	var s1 = "\n" +
-		//
-		fmt.Sprintf("[%d -> %d moves / %s / ? repeats / %d value]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str, pPos.MaterialValue) +
-		//
-		"\n" +
 		//
 		"  k  r  b  g  s  n  l  p\n" +
 		"+--+--+--+--+--+--+--+--+\n" +
