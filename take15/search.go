@@ -9,7 +9,9 @@ const RESIGN_VALUE = Value(-2_147_483_647)     // Value(-32767)
 const ANTI_RESIGN_VALUE = Value(2_147_483_647) // Value(32767)
 
 var nodesNum int
-var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
+
+// 0 にすると 1手読み（＾～＾）
+var depthEnd int = 0 // 3 はまだ遅い。 2 だと駒を取り返さない。
 
 type CuttingType int
 
@@ -52,9 +54,6 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
 	var someBestMoves []Move
-	var bestMove = RESIGN_MOVE
-	// 最初に最低値を入れておけば、更新されるだろ（＾～＾）
-	// var bestVal Value = RESIGN_VALUE
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
 	var opponentWorstVal Value = ANTI_RESIGN_VALUE
@@ -96,7 +95,8 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			// この手は見なかったことにするぜ（＾～＾）
 		} else if What(captured) == PIECE_TYPE_K {
 			// 玉を取るのは最善手
-			bestMove = move
+			someBestMoves = nil
+			someBestMoves = append(someBestMoves, move)
 			opponentWorstVal = RESIGN_VALUE
 			// bestVal = ANTI_RESIGN_VALUE // pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture
@@ -155,23 +155,28 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 		if cutting != CuttingNone {
 			break
 		}
+
+		/*
+			// Debug ここから
+			var debugBestMove = RESIGN_MOVE
+			bestmoveListLen := len(someBestMoves)
+			if bestmoveListLen > 0 {
+				debugBestMove = someBestMoves[rand.Intn(bestmoveListLen)]
+			}
+			G.Chat.Debug("info string Debug: depth=%d nodes=%d value=%d move.best=%s.%s\n", curDepth, nodesNum, -opponentWorstVal, move.ToCode(), debugBestMove.ToCode())
+			// Debug ここまで
+		*/
 	}
 
-	switch cutting {
-	case CuttingKingCapture:
-		// 玉取った
-	default:
-		bestmoveListLen := len(someBestMoves)
-		//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
-		if bestmoveListLen > 0 {
-			// 0件を避ける（＾～＾）
-			bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
-		}
-
-		// 評価値出力（＾～＾）
-		// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
-
+	var bestMove = RESIGN_MOVE
+	bestmoveListLen := len(someBestMoves)
+	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
+	if bestmoveListLen > 0 {
+		// 0件を避ける（＾～＾）
+		bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	}
+	// 評価値出力（＾～＾）
+	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	// 相手の評価値の逆が、自分の評価値
 	return bestMove, -opponentWorstVal
