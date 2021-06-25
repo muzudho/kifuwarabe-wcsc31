@@ -83,7 +83,7 @@ func MainLoop() {
 
 	G.Log.FlushAllLogs()
 
-	var pPosSys = NewPositionSystem()
+	var pBrain = NewBrain()
 
 MainLoop:
 	for scanner.Scan() {
@@ -94,9 +94,9 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB8\n", config.Profile.Name)
+			G.Chat.Print("id name %sB9\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
-			pPosSys.BuildType = BUILD_RELEASE
+			pBrain.PPosSys.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
 			rand.Seed(time.Now().UnixNano())
 			G.Chat.Print("usiok\n")
@@ -105,9 +105,9 @@ MainLoop:
 		case "usinewgame":
 		case "position":
 			// position うわっ、大変だ（＾～＾）
-			pPosSys.ReadPosition(pPosSys.PPosition[POS_LAYER_MAIN], command)
+			pBrain.PPosSys.ReadPosition(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
-			bestmove := Search(pPosSys)
+			bestmove := Search(pBrain.PPosSys)
 			G.Chat.Print("bestmove %s\n", bestmove.ToCode())
 		case "quit":
 			break MainLoop
@@ -144,11 +144,11 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
-					pPosSys.phase,
-					pPosSys.StartMovesNum,
-					pPosSys.OffsetMovesIndex,
-					pPosSys.createMovesText()))
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+					pBrain.PPosSys.phase,
+					pBrain.PPosSys.StartMovesNum,
+					pBrain.PPosSys.OffsetMovesIndex,
+					pBrain.PPosSys.createMovesText()))
 				ok = true
 				ok = true
 			} else if length == 2 {
@@ -157,11 +157,11 @@ MainLoop:
 				if err != nil {
 					G.Chat.Debug("Error: %s", err)
 				} else {
-					G.Chat.Debug(pPosSys.PPosition[b1].Sprint(
-						pPosSys.phase,
-						pPosSys.StartMovesNum,
-						pPosSys.OffsetMovesIndex,
-						pPosSys.createMovesText()))
+					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].Sprint(
+						pBrain.PPosSys.phase,
+						pBrain.PPosSys.StartMovesNum,
+						pBrain.PPosSys.OffsetMovesIndex,
+						pBrain.PPosSys.createMovesText()))
 					ok = true
 				}
 			}
@@ -176,38 +176,38 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = ParseMove(command, &i, pPosSys.GetPhase())
+			var move, err = ParseMove(command, &i, pBrain.PPosSys.GetPhase())
 			if err != nil {
-				G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
-					pPosSys.phase,
-					pPosSys.StartMovesNum,
-					pPosSys.OffsetMovesIndex,
-					pPosSys.createMovesText()))
+				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+					pBrain.PPosSys.phase,
+					pBrain.PPosSys.StartMovesNum,
+					pBrain.PPosSys.OffsetMovesIndex,
+					pBrain.PPosSys.createMovesText()))
 				panic(err)
 			}
 
-			pPosSys.DoMove(pPosSys.PPosition[POS_LAYER_MAIN], move)
+			pBrain.PPosSys.DoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], move)
 		case "undo":
 			// 棋譜を頼りに１手戻すぜ（＾～＾）
-			pPosSys.UndoMove(pPosSys.PPosition[POS_LAYER_MAIN])
+			pBrain.PPosSys.UndoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 		case "control":
 			length := len(tokens)
 			// fmt.Printf("length=%d", length)
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				G.Chat.Debug(pPosSys.SprintControl(CONTROL_LAYER_SUM1))
-				G.Chat.Debug(pPosSys.SprintControl(CONTROL_LAYER_SUM2))
+				G.Chat.Debug(pBrain.PPosSys.SprintControl(CONTROL_LAYER_SUM1))
+				G.Chat.Debug(pBrain.PPosSys.SprintControl(CONTROL_LAYER_SUM2))
 				ok = true
 			} else if length == 2 && tokens[1] == "test" {
 				// 利きのテスト
 				// 現局面の利きを覚え、ムーブ、アンドゥを行って
 				// 元の利きに戻るか確認
-				is_error, message := TestControl(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
+				is_error, message := TestControl(pBrain.PPosSys, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 				if is_error {
 					G.Chat.Debug("ControlTest: error=%s\n", message)
-					G.Chat.Debug(pPosSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
-					G.Chat.Debug(pPosSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
+					G.Chat.Debug(pBrain.PPosSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
+					G.Chat.Debug(pBrain.PPosSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
 				}
 				ok = true
 			} else if length == 5 && tokens[1] == "diff" {
@@ -226,7 +226,7 @@ MainLoop:
 					fmt.Printf("Error: %s", err)
 				}
 
-				pPosSys.PControlBoardSystem.DiffControl(ControlLayerT(c1), ControlLayerT(c2), ControlLayerT(c3))
+				pBrain.PPosSys.PControlBoardSystem.DiffControl(ControlLayerT(c1), ControlLayerT(c2), ControlLayerT(c3))
 				ok = true
 			} else if length == 4 && tokens[1] == "recalc" {
 				// control recalc 22 25
@@ -241,7 +241,7 @@ MainLoop:
 					fmt.Printf("Error: %s", err)
 				}
 
-				pPosSys.PControlBoardSystem.RecalculateControl(pPosSys.PPosition[POS_LAYER_MAIN], ControlLayerT(c1), ControlLayerT(c2))
+				pBrain.PPosSys.PControlBoardSystem.RecalculateControl(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], ControlLayerT(c1), ControlLayerT(c2))
 				ok = true
 			} else if length == 3 && tokens[1] == "layer" {
 				// 指定の利きテーブルの表示（＾～＾）
@@ -249,7 +249,7 @@ MainLoop:
 				if err != nil {
 					fmt.Printf("Error: %s", err)
 				} else if 0 <= c1 && ControlLayerT(c1) < CONTROL_LAYER_ALL_SIZE {
-					G.Chat.Debug(pPosSys.SprintControl(ControlLayerT(c1)))
+					G.Chat.Debug(pBrain.PPosSys.SprintControl(ControlLayerT(c1)))
 					ok = true
 				}
 			} else if length == 4 && tokens[1] == "sumabs" {
@@ -266,7 +266,7 @@ MainLoop:
 				// 利きのテスト
 				// 現局面の利きを覚え、ムーブ、アンドゥを行って
 				// 元の利きに戻るか確認
-				sumList := SumAbsControl(pPosSys, ControlLayerT(c1), ControlLayerT(c2))
+				sumList := SumAbsControl(pBrain.PPosSys, ControlLayerT(c1), ControlLayerT(c2))
 				G.Chat.Debug("ControlTest: SumAbs=%d,%d\n", sumList[0], sumList[1])
 				ok = true
 			}
@@ -291,7 +291,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				G.Chat.Debug(pPosSys.PPosition[PosLayerT(b1)].SprintLocation())
+				G.Chat.Debug(pBrain.PPosSys.PPosition[PosLayerT(b1)].SprintLocation())
 				ok = true
 			}
 
@@ -302,16 +302,16 @@ MainLoop:
 			}
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
-			G.Chat.Debug(pPosSys.SprintSfenResignation(pPosSys.PPosition[POS_LAYER_MAIN]))
+			G.Chat.Debug(pBrain.PPosSys.SprintSfenResignation(pBrain.PPosSys.PPosition[POS_LAYER_MAIN]))
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			G.Chat.Debug(pPosSys.SprintRecord())
+			G.Chat.Debug(pBrain.PPosSys.SprintRecord())
 		case "movelist":
-			moveList(pPosSys)
+			moveList(pBrain)
 		case "dump":
 			// 変数を全部出力してくれだぜ（＾～＾）
 			G.Chat.Debug("PositionSystem.Dump()\n")
-			G.Chat.Debug("---------------\n%s", pPosSys.Dump())
+			G.Chat.Debug("---------------\n%s", pBrain.PPosSys.Dump())
 		case "playout":
 			// とにかく手を進めるぜ（＾～＾）
 			// 時間の計測は リリース・モードでやれだぜ（＾～＾）
@@ -323,16 +323,16 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < MOVES_SIZE; i += 1 {
-					G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
-						pPosSys.phase,
-						pPosSys.StartMovesNum,
-						pPosSys.OffsetMovesIndex,
-						pPosSys.createMovesText()))
+					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+						pBrain.PPosSys.phase,
+						pBrain.PPosSys.StartMovesNum,
+						pBrain.PPosSys.OffsetMovesIndex,
+						pBrain.PPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
-					// G.Chat.Debug(pPosSys.SprintLocation())
+					// G.Chat.Debug(pBrain.PPosSys.SprintLocation())
 
-					// moveList(pPosSys)
-					bestmove := Search(pPosSys)
+					// moveList(pBrain.PPosSys)
+					bestmove := Search(pBrain.PPosSys)
 					G.Chat.Print("bestmove %s\n", bestmove.ToCode())
 
 					if bestmove == Move(SQUARE_EMPTY) {
@@ -340,22 +340,22 @@ MainLoop:
 						break PlayoutLoop
 					}
 
-					pPosSys.DoMove(pPosSys.PPosition[POS_LAYER_MAIN], bestmove)
+					pBrain.PPosSys.DoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], bestmove)
 				}
 
-				sfen1 := pPosSys.SprintSfenResignation(pPosSys.PPosition[POS_LAYER_MAIN])
-				pPosSys.ReadPosition(pPosSys.PPosition[POS_LAYER_MAIN], sfen1)
+				sfen1 := pBrain.PPosSys.SprintSfenResignation(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
+				pBrain.PPosSys.ReadPosition(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], sfen1)
 
 				// ここを開始局面ということにするぜ（＾～＾）
-				// pPosSys.StartMovesNum = 0
+				// pBrain.PPosSys.StartMovesNum = 0
 			}
 
 			end := time.Now()
 			G.Chat.Debug("Playout finished。%f seconds\n", (end.Sub(start)).Seconds())
 		case "shuffle":
-			ShuffleBoard(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
+			ShuffleBoard(pBrain.PPosSys, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 		case "count":
-			ShowAllPiecesCount(pPosSys.PPosition[POS_LAYER_MAIN])
+			ShowAllPiecesCount(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 		case "board":
 			length := len(tokens)
 			ok := false
@@ -371,10 +371,10 @@ MainLoop:
 					G.Chat.Debug("Error: %s", err)
 				}
 
-				copyBoard(pPosSys.PPosition[b1], pPosSys.PPosition[b2])
+				copyBoard(pBrain.PPosSys.PPosition[b1], pBrain.PPosSys.PPosition[b2])
 				ok = true
 			} else if length == 2 && tokens[1] == "diff" {
-				diffBoard(pPosSys.PPosition[0], pPosSys.PPosition[1], pPosSys.PPosition[2], pPosSys.PPosition[3])
+				diffBoard(pBrain.PPosSys.PPosition[0], pBrain.PPosSys.PPosition[1], pBrain.PPosSys.PPosition[2], pBrain.PPosSys.PPosition[3])
 				ok = true
 			}
 
@@ -398,7 +398,7 @@ MainLoop:
 					G.Chat.Debug("Error: %s", err)
 				}
 
-				G.Chat.Debug(pPosSys.SprintDiff(PosLayerT(b1), PosLayerT(b2)))
+				G.Chat.Debug(pBrain.PPosSys.SprintDiff(PosLayerT(b1), PosLayerT(b2)))
 				ok = true
 			}
 
@@ -434,7 +434,7 @@ MainLoop:
 					G.Chat.Debug("Error: %s", err)
 				}
 
-				errorNum := errorBoard(pPosSys.PPosition[b0], pPosSys.PPosition[b1], pPosSys.PPosition[b2], pPosSys.PPosition[b3])
+				errorNum := errorBoard(pBrain.PPosSys.PPosition[b0], pBrain.PPosSys.PPosition[b1], pBrain.PPosSys.PPosition[b2], pBrain.PPosSys.PPosition[b3])
 				if errorNum == 0 {
 					G.Chat.Debug("ok\n")
 				} else {
@@ -485,11 +485,11 @@ MainLoop:
 				}
 
 				WaterColor(
-					pPosSys.PControlBoardSystem.PBoards[b1],
-					pPosSys.PControlBoardSystem.PBoards[b2],
-					pPosSys.PControlBoardSystem.PBoards[b3],
-					pPosSys.PControlBoardSystem.PBoards[b4],
-					pPosSys.PControlBoardSystem.PBoards[b5])
+					pBrain.PPosSys.PControlBoardSystem.PBoards[b1],
+					pBrain.PPosSys.PControlBoardSystem.PBoards[b2],
+					pBrain.PPosSys.PControlBoardSystem.PBoards[b3],
+					pBrain.PPosSys.PControlBoardSystem.PBoards[b4],
+					pBrain.PPosSys.PControlBoardSystem.PBoards[b5])
 				ok = true
 			}
 
@@ -505,12 +505,12 @@ MainLoop:
 			// 現局面の評価値を表示（＾～＾）
 			G.Chat.Debug("Value\n")
 			G.Chat.Debug("-----\n")
-			G.Chat.Debug("MaterialValue(First)=%d\n", pPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
+			G.Chat.Debug("MaterialValue(First)=%d\n", pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
 		case "":
 			// Ignored
 		default:
 			// 将棋所からいろいろメッセージ飛んでくるから、リリースモードでは無視しろだぜ（＾～＾）
-			if pPosSys.BuildType == BUILD_DEV {
+			if pBrain.PPosSys.BuildType == BUILD_DEV {
 				fmt.Printf("Unknown command=%s\n", command)
 			}
 		}
@@ -523,10 +523,10 @@ MainLoop:
 }
 
 // moveList - 指し手リスト出力
-func moveList(pPosSys *PositionSystem) {
+func moveList(pBrain *Brain) {
 	G.Chat.Debug("MoveList\n")
 	G.Chat.Debug("--------\n")
-	move_list := GenMoveList(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
+	move_list := GenMoveList(pBrain.PPosSys, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
 		G.Chat.Debug("(%d) %s\n", i, move.ToCode())
 	}
