@@ -56,6 +56,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
 	var opponentWorstVal Value = ANTI_RESIGN_VALUE
+	// 前回のムーブ
 	var younger_sibling_move = RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
@@ -97,11 +98,9 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)
 			opponentWorstVal = RESIGN_VALUE
-			// bestVal = ANTI_RESIGN_VALUE // pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture
 		} else {
 			if curDepth < depthEnd {
-
 				// 再帰
 				_, opponentVal := search2(pBrain, curDepth+1)
 				// 再帰直後（＾～＾）
@@ -118,6 +117,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 				}
 
 			} else {
+				// 葉ノード
 				// 駒割り評価値は、相手の手番のものになっています。
 				materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 				//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
@@ -170,10 +170,11 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) {
 	var bestMove = RESIGN_MOVE
 	bestmoveListLen := len(someBestMoves)
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
-	if bestmoveListLen > 0 {
-		// 0件を避ける（＾～＾）
-		bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
+	if bestmoveListLen < 1 {
+		// 指せる手なし
+		return RESIGN_MOVE, RESIGN_VALUE
 	}
+	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
 	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
