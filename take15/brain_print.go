@@ -28,11 +28,14 @@ func (pBrain *Brain) Dump() string {
 		buffer.WriteString(pBrain.PCtrlBrdSys.SprintControl(c))
 	}
 
-	buffer.WriteString("Hands:")
-	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Hands1))
+	for b := PosLayerT(0); b < 2; b += 1 {
+		buffer.WriteString(fmt.Sprintf("Position[%d]:", b))
+		buffer.WriteString("Hands:")
+		for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
+			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[b].Hands1[i]))
+		}
+		buffer.WriteString("\n")
 	}
-	buffer.WriteString("\n")
 
 	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pBrain.PPosSys.GetPhase()))
 

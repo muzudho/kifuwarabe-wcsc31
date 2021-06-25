@@ -469,7 +469,7 @@ func (pPosSys *PositionSystem) Dump() string {
 
 	for b := PosLayerT(0); b < 2; b += 1 {
 		pPos := pPosSys.PPosition[b]
-		buffer.WriteString(fmt.Sprintf("Board[%d]:", b))
+		buffer.WriteString(fmt.Sprintf("Position[%d]:", b))
 		for i := 0; i < POS_LAYER_SIZE; i += 1 {
 			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Board))
 		}
@@ -487,11 +487,14 @@ func (pPosSys *PositionSystem) Dump() string {
 		}
 	}
 
-	buffer.WriteString("Hands:")
-	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Hands1))
+	for b := PosLayerT(0); b < 2; b += 1 {
+		buffer.WriteString(fmt.Sprintf("Position[%d]:", b))
+		buffer.WriteString("Hands:")
+		for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
+			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[b].Hands1[i]))
+		}
+		buffer.WriteString("\n")
 	}
-	buffer.WriteString("\n")
 
 	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pPosSys.GetPhase()))
 
