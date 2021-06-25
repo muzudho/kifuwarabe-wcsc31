@@ -470,7 +470,7 @@ func (pPosSys *PositionSystem) Dump() string {
 	for b := PosLayerT(0); b < 2; b += 1 {
 		pPos := pPosSys.PPosition[b]
 		buffer.WriteString(fmt.Sprintf("Board[%d]:", b))
-		for i := 0; i < BOARD_SIZE; i += 1 {
+		for i := 0; i < POS_LAYER_SIZE; i += 1 {
 			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")

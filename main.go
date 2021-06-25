@@ -1,6 +1,6 @@
 package main
 
-import "github.com/muzudho/kifuwarabe-wcsc31/take15"
+import "github.com/muzudho/kifuwarabe-wcsc31/take16"
 
 // main - 最初に実行されます
 func main() {
@@ -30,5 +30,6 @@ func main() {
 	// take14.MainLoop()
 
 	// take15 は、 take13 の後継（＾～＾）
-	take15.MainLoop()
+	// take15.MainLoop()
+	take16.MainLoop()
 }

@@ -1,4 +1,4 @@
-package take12
+package take16
 
 import (
 	"bytes"
@@ -169,6 +169,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	lines = append(lines, pPosSys.createMovesText())
 	lines = append(lines, "\n")
+	lines = append(lines, fmt.Sprintf("KomawariValue: %d %d\n", pPosSys.PPosition[b1].MaterialValue, pPosSys.PPosition[b2].MaterialValue))
 
 	buf.Reset()
 	for _, line := range lines {
@@ -213,7 +214,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 				case 1:
 					buf = append(buf, pieceString[0])
 				default:
-					panic(fmt.Errorf("LogicError: length=%d", length))
+					panic(G.Log.Fatal("LogicError: length=%d", length))
 				}
 			} else {
 				// Space
@@ -240,7 +241,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	case SECOND:
 		phaseStr = "w"
 	default:
-		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
+		panic(G.Log.Fatal("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
 	}
 
 	// 持ち駒
@@ -387,54 +388,4 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 	}
 
 	return fmt.Sprintf("Record\n------\n%s", record_text)
-}
-
-// Dump - 内部状態を全部出力しようぜ（＾～＾）？
-func (pPosSys *PositionSystem) Dump() string {
-	// bytes.Bufferは、速くはないけど使いやすいぜ（＾～＾）
-	var buffer bytes.Buffer
-
-	for b := PosLayerT(0); b < 2; b += 1 {
-		pPos := pPosSys.PPosition[b]
-		buffer.WriteString(fmt.Sprintf("Board[%d]:", b))
-		for i := 0; i < POS_LAYER_SIZE; i += 1 {
-			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Board))
-		}
-		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2]))
-		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2]))
-		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2]))
-		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2], pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]))
-	}
-
-	// 利きボード全部
-	for c := ControlLayerT(0); c < CONTROL_LAYER_ALL_SIZE; c += 1 {
-		buffer.WriteString(pPosSys.SprintControl(c))
-	}
-
-	buffer.WriteString("Hands:")
-	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Hands1))
-	}
-	buffer.WriteString("\n")
-
-	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pPosSys.GetPhase()))
-
-	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pPosSys.StartMovesNum))
-
-	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pPosSys.OffsetMovesIndex))
-
-	buffer.WriteString("Moves:")
-	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.Moves[i]))
-	}
-	buffer.WriteString("\n")
-
-	buffer.WriteString("CapturedList:")
-	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPosSys.CapturedList[i]))
-	}
-	buffer.WriteString("\n")
-
-	return buffer.String()
 }
