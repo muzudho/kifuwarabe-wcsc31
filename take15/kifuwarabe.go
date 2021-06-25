@@ -94,7 +94,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB18\n", config.Profile.Name)
+			G.Chat.Print("id name %sB19\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pBrain.PPosSys.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
@@ -529,7 +529,11 @@ func moveList(pBrain *Brain) {
 	G.Chat.Debug("--------\n")
 	move_list := GenMoveList(pBrain, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
-		G.Chat.Debug("(%3d) %-5s - ? value\n", i, move.ToCode())
+		var pPos = pBrain.PPosSys.PPosition[POS_LAYER_MAIN]
+		pBrain.DoMove(pPos, move)
+		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, move.ToCode(), pPos.MaterialValue)
+		pBrain.UndoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
+		// G.Chat.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
 	G.Chat.Debug("* Except for those to be removed during the search\n")
 }

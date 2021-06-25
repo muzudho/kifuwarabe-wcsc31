@@ -905,8 +905,9 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 	captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
-	// 駒得評価値。取った駒を返すから損したあと、相手の手番になるので評価値をひっくり返せだぜ（＾ｑ＾）
-	pPos.MaterialValue -= EvalMaterial(captured)
+	// 駒得評価値。今、自分は駒を取られて減っているので、それを戻すために増やす。
+	// そして相手の手番になるので　評価値をひっくり返すぜ（＾ｑ＾）
+	pPos.MaterialValue += EvalMaterial(captured)
 	pPos.MaterialValue = -pPos.MaterialValue
 
 	// 取った駒に関係するのは行き先だけ（＾～＾）
