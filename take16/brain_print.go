@@ -39,7 +39,7 @@ func (pBrain *Brain) Dump() string {
 
 	buffer.WriteString("CapturedList:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.CapturedList[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PRecord.CapturedList[i]))
 	}
 	buffer.WriteString("\n")
 

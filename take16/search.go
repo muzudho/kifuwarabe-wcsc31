@@ -104,7 +104,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 		nodesNum += 1
 
 		// 取った駒は棋譜の１手前に記録されています
-		captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex-1]
+		captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex-1]
 
 		var leaf = false
 

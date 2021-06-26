@@ -185,7 +185,7 @@ func (pPosSys *PositionSystem) createMovesText() string {
 	moves_text := make([]byte, 0, pPosSys.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pPosSys.Moves[i].ToCode()...)
+		moves_text = append(moves_text, pPosSys.PRecord.Moves[i].ToCode()...)
 	}
 	return string(moves_text)
 }
@@ -383,9 +383,9 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, pPosSys.Moves[i].ToCode()...)
+		record_text = append(record_text, pPosSys.PRecord.Moves[i].ToCode()...)
 		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPosSys.CapturedList[i].ToCode()...)
+		record_text = append(record_text, pPosSys.PRecord.CapturedList[i].ToCode()...)
 		record_text = append(record_text, '\n')
 	}
 

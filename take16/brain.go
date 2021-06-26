@@ -323,7 +323,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				fmt.Println(pBrain.SprintBoardFooter())
 				panic(err)
 			}
-			pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
+			pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
 			pBrain.PPosSys.OffsetMovesIndex += 1
 			pBrain.PPosSys.FlipPhase()
 		}
@@ -372,7 +372,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 	pBrain.PPosSys.OffsetMovesIndex = 0
 	pBrain.PPosSys.phase = start_phase
 	for i = 0; i < moves_size; i += 1 {
-		pBrain.DoMove(pPos, pBrain.PPosSys.Moves[i])
+		pBrain.DoMove(pPos, pBrain.PPosSys.PRecord.Moves[i])
 	}
 }
 
@@ -646,16 +646,16 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		}
 
 		if cap_dst_sq != p.SQUARE_EMPTY {
-			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = captured
+			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = captured
 			pPos.Hands1[cap_dst_sq-p.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = p.PIECE_EMPTY
+			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = p.PIECE_EMPTY
 		}
 	}
 
 	// DoMoveでフェーズを１つ進めます
-	pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
+	pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
 	pBrain.PPosSys.OffsetMovesIndex += 1
 	pBrain.PPosSys.FlipPhase()
 
@@ -743,7 +743,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 
 	// 先に 手目 を１つ戻すぜ（＾～＾）UndoMoveでフェーズもひっくり返すぜ（＾～＾）
 	pBrain.PPosSys.OffsetMovesIndex -= 1
-	move := pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex]
+	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex]
 	// next_phase := pBrain.PPosSys.GetPhase()
 	pBrain.PPosSys.FlipPhase()
 
@@ -913,10 +913,10 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 	cap_piece_type := PIECE_TYPE_EMPTY
 
 	// 手目もフェーズもすでに１つ戻っているとするぜ（＾～＾）
-	move := pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex]
+	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex]
 
 	// 取った駒
-	captured := pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex]
+	captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
 	// 駒得評価値。今、自分は駒を取られて減っているので、それを戻すために増やす。

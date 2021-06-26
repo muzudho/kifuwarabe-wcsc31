@@ -197,11 +197,6 @@ type PositionSystem struct {
 	phase p.Phase
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
 	OffsetMovesIndex int
-	// 指し手のリスト（＾～＾）
-	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]p.Move
-	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]p.Piece
 
 	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
 	PRecord *DifferenceRecord
@@ -235,7 +230,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.PRecord.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [MOVES_SIZE]p.Move{}
+	pPosSys.PRecord.Moves = [MOVES_SIZE]p.Move{}
 	// 取った駒のリスト
-	pPosSys.CapturedList = [MOVES_SIZE]p.Piece{}
+	pPosSys.PRecord.CapturedList = [MOVES_SIZE]p.Piece{}
 }
