@@ -9,8 +9,18 @@ import (
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
+// 開発 or リリース モード
+type BuildT int
+
+const (
+	BUILD_DEV     = BuildT(0)
+	BUILD_RELEASE = BuildT(1)
+)
+
 // Brain - 局面システムと、利き盤システムの２つを持つもの
 type Brain struct {
+	// 開発モードフラグ。デフォルト値：真。 'usi' コマンドで解除
+	BuildType BuildT
 	// 局面システム
 	PPosSys *PositionSystem
 	// 利きボード・システム
@@ -19,6 +29,7 @@ type Brain struct {
 
 func NewBrain() *Brain {
 	var pBrain = new(Brain)
+	pBrain.BuildType = BUILD_DEV
 	pBrain.PPosSys = NewPositionSystem()
 	pBrain.PCtrlBrdSys = NewControlBoardSystem()
 	return pBrain
@@ -318,9 +329,9 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 		}
 	}
 
-	if pBrain.PPosSys.BuildType == BUILD_DEV {
+	if pBrain.BuildType == BUILD_DEV {
 		// 利きの差分テーブルをクリアー（＾～＾）
-		pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
+		pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.BuildType)
 	}
 
 	// 開始局面の利きを計算（＾～＾）
@@ -337,7 +348,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				phase := p.Who(piece)
 				// fmt.Printf("Debug: ph=%d\n", ph)
 				var pCB7 *ControlBoard
-				if pBrain.PPosSys.BuildType == BUILD_DEV {
+				if pBrain.BuildType == BUILD_DEV {
 					pCB7 = ControllBoardFromPhase(phase,
 						pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_PUT],
 						pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_PUT])
@@ -350,9 +361,9 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 			}
 		}
 	}
-	if pBrain.PPosSys.BuildType == BUILD_DEV {
+	if pBrain.BuildType == BUILD_DEV {
 		//fmt.Printf("Debug: 開始局面の利き計算おわり（＾～＾）\n")
-		pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.PPosSys.BuildType)
+		pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.BuildType)
 	}
 
 	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
@@ -435,7 +446,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 	var cap_dst_sq = p.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
-	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.BuildType)
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただし今から動かす駒を除きます。
 	AddControlRook(
@@ -505,7 +516,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		ValidateThereArePieceIn(pPos, to)
 		var pCB *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB = ControllBoardFromPhase(before_move_phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_PUT],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_PUT])
@@ -532,7 +543,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 				ValidateThereArePieceIn(pPos, to)
 				phase := p.Who(piece)
 				var pCB *ControlBoard
-				if pBrain.PPosSys.BuildType == BUILD_DEV {
+				if pBrain.BuildType == BUILD_DEV {
 					pCB = ControllBoardFromPhase(phase,
 						pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_CAPTURED],
 						pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_CAPTURED])
@@ -556,7 +567,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		ValidateThereArePieceIn(pPos, from)
 		phase := p.Who(piece)
 		var pCB1 *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB1 = ControllBoardFromPhase(phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_REMOVE],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_REMOVE])
@@ -585,7 +596,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		phase = p.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB2 *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB2 = ControllBoardFromPhase(phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_PUT],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_PUT])
@@ -714,7 +725,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		pPos, pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_ROOK_ON],
 		pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_ROOK_ON], 1, to)
 
-	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.BuildType)
 }
 
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
@@ -739,7 +750,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 	from, to, pro := move.Destructure()
 
 	// 利きの差分テーブルをクリアー（＾～＾）
-	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.BuildType)
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただしこれから動かす駒を除きます
 	// アンドゥなので逆さになっているぜ（＾～＾）
@@ -770,7 +781,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		phase := p.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB3 *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB3 = ControllBoardFromPhase(phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_PUT],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_PUT])
@@ -795,7 +806,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		phase := p.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB4 *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB4 = ControllBoardFromPhase(phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_PUT],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_PUT])
@@ -822,7 +833,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		phase = p.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB5 *ControlBoard
-		if pBrain.PPosSys.BuildType == BUILD_DEV {
+		if pBrain.BuildType == BUILD_DEV {
 			pCB5 = ControllBoardFromPhase(phase,
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_REMOVE],
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_REMOVE])
@@ -888,7 +899,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF],
 		pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, from)
 
-	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.BuildType)
 
 	// 取った駒を戻すぜ（＾～＾）
 	pBrain.undoCapture(pPos)
@@ -920,7 +931,7 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 	var hand_sq = p.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
-	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.BuildType)
 
 	// 作業前に、長い利きの駒の利きを -1 します。ただしこれから動かす駒を除きます
 	// アンドゥなので逆さになっているぜ（＾～＾）
@@ -997,7 +1008,7 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 			ValidateThereArePieceIn(pPos, to)
 			// fmt.Printf("Debug: ph=%d\n", ph)
 			var pCB6 *ControlBoard
-			if pBrain.PPosSys.BuildType == BUILD_DEV {
+			if pBrain.BuildType == BUILD_DEV {
 				pCB6 = ControllBoardFromPhase(pBrain.PPosSys.phase,
 					pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_CAPTURED],
 					pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_CAPTURED])
@@ -1067,5 +1078,5 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 		pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_ROOK_OFF],
 		pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_ROOK_OFF], 1, from)
 
-	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.PPosSys.BuildType)
+	pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.BuildType)
 }

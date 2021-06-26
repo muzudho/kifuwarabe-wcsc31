@@ -191,18 +191,8 @@ var HandPieceMap1 = [p.HAND_SIZE]p.Piece{
 	p.PIECE_K1, p.PIECE_R1, p.PIECE_B1, p.PIECE_G1, p.PIECE_S1, p.PIECE_N1, p.PIECE_L1, p.PIECE_P1,
 	p.PIECE_K2, p.PIECE_R2, p.PIECE_B2, p.PIECE_G2, p.PIECE_S2, p.PIECE_N2, p.PIECE_L2, p.PIECE_P2}
 
-// 開発 or リリース モード
-type BuildT int
-
-const (
-	BUILD_DEV     = BuildT(0)
-	BUILD_RELEASE = BuildT(1)
-)
-
 // PositionSystem - 局面にいろいろな機能を付けたもの
 type PositionSystem struct {
-	// 開発モードフラグ。デフォルト値：真。 'usi' コマンドで解除
-	BuildType BuildT
 	// 局面
 	PPosition [POS_LAYER_SIZE]*p.Position
 
@@ -221,7 +211,6 @@ type PositionSystem struct {
 
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
-	pPosSys.BuildType = BUILD_DEV
 
 	pPosSys.PPosition = [POS_LAYER_SIZE]*p.Position{p.NewPosition(), p.NewPosition(), p.NewPosition(), p.NewPosition()}
 

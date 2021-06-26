@@ -97,7 +97,7 @@ MainLoop:
 			// With Build Number
 			G.Chat.Print("id name %sB25\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
-			pBrain.PPosSys.BuildType = BUILD_RELEASE
+			pBrain.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
 			rand.Seed(time.Now().UnixNano())
 			G.Chat.Print("usiok\n")
@@ -516,7 +516,7 @@ MainLoop:
 			// Ignored
 		default:
 			// 将棋所からいろいろメッセージ飛んでくるから、リリースモードでは無視しろだぜ（＾～＾）
-			if pBrain.PPosSys.BuildType == BUILD_DEV {
+			if pBrain.BuildType == BUILD_DEV {
 				fmt.Printf("Unknown command=%s\n", command)
 			}
 		}
