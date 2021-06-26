@@ -2,6 +2,8 @@ package take16
 
 import (
 	"math/rand"
+
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 type SearchType uint8
@@ -14,8 +16,8 @@ const (
 	SEARCH_CAPTURE = SearchType(1)
 )
 
-const RESIGN_VALUE = Value(-2_147_483_647)     // Value(-32767)
-const ANTI_RESIGN_VALUE = Value(2_147_483_647) // Value(32767)
+const RESIGN_VALUE = p.Value(-2_147_483_647)     // Value(-32767)
+const ANTI_RESIGN_VALUE = p.Value(2_147_483_647) // Value(32767)
 
 var nodesNum int
 
@@ -50,7 +52,7 @@ func Search(pBrain *Brain) Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) {
+func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, p.Value) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -68,7 +70,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 	var someBestMoves []Move
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
-	var opponentWorstVal Value = ANTI_RESIGN_VALUE
+	var opponentWorstVal p.Value = ANTI_RESIGN_VALUE
 	// 前回のムーブ
 	var younger_sibling_move = RESIGN_MOVE
 	// 探索終了
@@ -80,7 +82,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 		from, _, _ := move.Destructure()
 
 		// デバッグに使うために、盤をコピーしておきます
-		pPosCopy := NewPosition()
+		pPosCopy := p.NewPosition()
 		copyBoard(pBrain.PPosSys.PPosition[0], pPosCopy)
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
@@ -115,15 +117,15 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, Value) 
 			someBestMoves = append(someBestMoves, move)
 			opponentWorstVal = RESIGN_VALUE
 			cutting = CuttingKingCapture
-		} else if search_type == SEARCH_CAPTURE && captured == PIECE_EMPTY {
+		} else if search_type == SEARCH_CAPTURE && captured == p.PIECE_EMPTY {
 			// 駒の取り合いを探索中に、駒を取らなかったら
 			// ただの葉
 			leaf = true
 		} else {
 			// 駒を取っている場合は、探索を延長します
-			if curDepth < depthEnd || captured != PIECE_EMPTY {
+			if curDepth < depthEnd || captured != p.PIECE_EMPTY {
 				var search_type2 SearchType
-				if captured != PIECE_EMPTY {
+				if captured != p.PIECE_EMPTY {
 					search_type2 = SEARCH_CAPTURE
 				} else {
 					search_type2 = search_type

@@ -3,6 +3,8 @@ package take16
 import (
 	"fmt"
 	"strconv"
+
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // 電竜戦が一番長いだろ（＾～＾）
@@ -22,242 +24,161 @@ const (
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
-// 1:先手 2:後手
-type Phase byte
-
 // FlipPhase - 先後を反転します
-func FlipPhase(phase Phase) Phase {
+func FlipPhase(phase p.Phase) p.Phase {
 	return phase%2 + 1
 }
 
 // From - 筋と段からマス番号を作成します
-func SquareFrom(file Square, rank Square) Square {
-	return Square(file*10 + rank)
+func SquareFrom(file p.Square, rank p.Square) p.Square {
+	return p.Square(file*10 + rank)
 }
 
 // OnHands - 持ち駒なら真
-func OnHands(sq Square) bool {
+func OnHands(sq p.Square) bool {
 	return SQ_HAND_START <= sq && sq < SQ_HAND_END
 }
 
 // OnBoard - 盤上なら真
-func OnBoard(sq Square) bool {
-	return 10 < sq && sq < 100 && File(sq) != 0 && Rank(sq) != 0
+func OnBoard(sq p.Square) bool {
+	return 10 < sq && sq < 100 && p.File(sq) != 0 && p.Rank(sq) != 0
 }
-
-const (
-	// 空マス
-	ZEROTH = Phase(0)
-	// 先手
-	FIRST = Phase(1)
-	// 後手
-	SECOND = Phase(2)
-)
 
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
-// 先後付きの駒
-type Piece uint8
-
-// ToCode - 文字列
-func (pc Piece) ToCode() string {
-	switch pc {
-	case PIECE_EMPTY:
-		return ""
-	case PIECE_K1:
-		return "K"
-	case PIECE_R1:
-		return "R"
-	case PIECE_B1:
-		return "B"
-	case PIECE_G1:
-		return "G"
-	case PIECE_S1:
-		return "S"
-	case PIECE_N1:
-		return "N"
-	case PIECE_L1:
-		return "L"
-	case PIECE_P1:
-		return "P"
-	case PIECE_PR1:
-		return "+R"
-	case PIECE_PB1:
-		return "+B"
-	case PIECE_PS1:
-		return "+S"
-	case PIECE_PN1:
-		return "+N"
-	case PIECE_PL1:
-		return "+L"
-	case PIECE_PP1:
-		return "+P"
-	case PIECE_K2:
-		return "k"
-	case PIECE_R2:
-		return "r"
-	case PIECE_B2:
-		return "b"
-	case PIECE_G2:
-		return "g"
-	case PIECE_S2:
-		return "s"
-	case PIECE_N2:
-		return "n"
-	case PIECE_L2:
-		return "l"
-	case PIECE_P2:
-		return "p"
-	case PIECE_PR2:
-		return "+r"
-	case PIECE_PB2:
-		return "+b"
-	case PIECE_PS2:
-		return "+s"
-	case PIECE_PN2:
-		return "+n"
-	case PIECE_PL2:
-		return "+l"
-	case PIECE_PP2:
-		return "+p"
-	default:
-		panic(G.Log.Fatal("Unknown piece=%d", pc))
-	}
-}
-
 // PieceFrom - 文字列
-func PieceFrom(piece string) Piece {
+func PieceFrom(piece string) p.Piece {
 	switch piece {
 	case "":
-		return PIECE_EMPTY
+		return p.PIECE_EMPTY
 	case "K":
-		return PIECE_K1
+		return p.PIECE_K1
 	case "R":
-		return PIECE_R1
+		return p.PIECE_R1
 	case "B":
-		return PIECE_B1
+		return p.PIECE_B1
 	case "G":
-		return PIECE_G1
+		return p.PIECE_G1
 	case "S":
-		return PIECE_S1
+		return p.PIECE_S1
 	case "N":
-		return PIECE_N1
+		return p.PIECE_N1
 	case "L":
-		return PIECE_L1
+		return p.PIECE_L1
 	case "P":
-		return PIECE_P1
+		return p.PIECE_P1
 	case "+R":
-		return PIECE_PR1
+		return p.PIECE_PR1
 	case "+B":
-		return PIECE_PB1
+		return p.PIECE_PB1
 	case "+S":
-		return PIECE_PS1
+		return p.PIECE_PS1
 	case "+N":
-		return PIECE_PN1
+		return p.PIECE_PN1
 	case "+L":
-		return PIECE_PL1
+		return p.PIECE_PL1
 	case "+P":
-		return PIECE_PP1
+		return p.PIECE_PP1
 	case "k":
-		return PIECE_K2
+		return p.PIECE_K2
 	case "r":
-		return PIECE_R2
+		return p.PIECE_R2
 	case "b":
-		return PIECE_B2
+		return p.PIECE_B2
 	case "g":
-		return PIECE_G2
+		return p.PIECE_G2
 	case "s":
-		return PIECE_S2
+		return p.PIECE_S2
 	case "n":
-		return PIECE_N2
+		return p.PIECE_N2
 	case "l":
-		return PIECE_L2
+		return p.PIECE_L2
 	case "p":
-		return PIECE_P2
+		return p.PIECE_P2
 	case "+r":
-		return PIECE_PR2
+		return p.PIECE_PR2
 	case "+b":
-		return PIECE_PB2
+		return p.PIECE_PB2
 	case "+s":
-		return PIECE_PS2
+		return p.PIECE_PS2
 	case "+n":
-		return PIECE_PN2
+		return p.PIECE_PN2
 	case "+l":
-		return PIECE_PL2
+		return p.PIECE_PL2
 	case "+p":
-		return PIECE_PP2
+		return p.PIECE_PP2
 	default:
 		panic(G.Log.Fatal("Unknown piece=[%s]", piece))
 	}
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
+func PieceFromPhPt(phase p.Phase, pieceType PieceType) p.Piece {
 	switch phase {
-	case FIRST:
+	case p.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return PIECE_K1
+			return p.PIECE_K1
 		case PIECE_TYPE_R:
-			return PIECE_R1
+			return p.PIECE_R1
 		case PIECE_TYPE_B:
-			return PIECE_B1
+			return p.PIECE_B1
 		case PIECE_TYPE_G:
-			return PIECE_G1
+			return p.PIECE_G1
 		case PIECE_TYPE_S:
-			return PIECE_S1
+			return p.PIECE_S1
 		case PIECE_TYPE_N:
-			return PIECE_N1
+			return p.PIECE_N1
 		case PIECE_TYPE_L:
-			return PIECE_L1
+			return p.PIECE_L1
 		case PIECE_TYPE_P:
-			return PIECE_P1
+			return p.PIECE_P1
 		case PIECE_TYPE_PR:
-			return PIECE_PR1
+			return p.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return PIECE_PB1
+			return p.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return PIECE_PS1
+			return p.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return PIECE_PN1
+			return p.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return PIECE_PL1
+			return p.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return PIECE_PP1
+			return p.PIECE_PP1
 		default:
 			panic(G.Log.Fatal("Unknown pieceType=%d", pieceType))
 		}
-	case SECOND:
+	case p.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return PIECE_K2
+			return p.PIECE_K2
 		case PIECE_TYPE_R:
-			return PIECE_R2
+			return p.PIECE_R2
 		case PIECE_TYPE_B:
-			return PIECE_B2
+			return p.PIECE_B2
 		case PIECE_TYPE_G:
-			return PIECE_G2
+			return p.PIECE_G2
 		case PIECE_TYPE_S:
-			return PIECE_S2
+			return p.PIECE_S2
 		case PIECE_TYPE_N:
-			return PIECE_N2
+			return p.PIECE_N2
 		case PIECE_TYPE_L:
-			return PIECE_L2
+			return p.PIECE_L2
 		case PIECE_TYPE_P:
-			return PIECE_P2
+			return p.PIECE_P2
 		case PIECE_TYPE_PR:
-			return PIECE_PR2
+			return p.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return PIECE_PB2
+			return p.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return PIECE_PS2
+			return p.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return PIECE_PN2
+			return p.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return PIECE_PL2
+			return p.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return PIECE_PP2
+			return p.PIECE_PP2
 		default:
 			panic(G.Log.Fatal("Unknown pieceType=%d", pieceType))
 		}
@@ -266,9 +187,9 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 	}
 }
 
-var HandPieceMap1 = [HAND_SIZE]Piece{
-	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
-	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
+var HandPieceMap1 = [p.HAND_SIZE]p.Piece{
+	p.PIECE_K1, p.PIECE_R1, p.PIECE_B1, p.PIECE_G1, p.PIECE_S1, p.PIECE_N1, p.PIECE_L1, p.PIECE_P1,
+	p.PIECE_K2, p.PIECE_R2, p.PIECE_B2, p.PIECE_G2, p.PIECE_S2, p.PIECE_N2, p.PIECE_L2, p.PIECE_P2}
 
 // 開発 or リリース モード
 type BuildT int
@@ -283,10 +204,10 @@ type PositionSystem struct {
 	// 開発モードフラグ。デフォルト値：真。 'usi' コマンドで解除
 	BuildType BuildT
 	// 局面
-	PPosition [POS_LAYER_SIZE]*Position
+	PPosition [POS_LAYER_SIZE]*p.Position
 
 	// 先手が1、後手が2（＾～＾）
-	phase Phase
+	phase p.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -295,14 +216,14 @@ type PositionSystem struct {
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
 	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]Piece
+	CapturedList [MOVES_SIZE]p.Piece
 }
 
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
 	pPosSys.BuildType = BUILD_DEV
 
-	pPosSys.PPosition = [POS_LAYER_SIZE]*Position{NewPosition(), NewPosition(), NewPosition(), NewPosition()}
+	pPosSys.PPosition = [POS_LAYER_SIZE]*p.Position{p.NewPosition(), p.NewPosition(), p.NewPosition(), p.NewPosition()}
 
 	pPosSys.resetPosition()
 	return pPosSys
@@ -314,30 +235,30 @@ func (pPosSys *PositionSystem) FlipPhase() {
 }
 
 // GetPhase - フェーズ
-func (pPosSys *PositionSystem) GetPhase() Phase {
+func (pPosSys *PositionSystem) GetPhase() p.Phase {
 	return pPosSys.phase
 }
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPosSys *PositionSystem) resetPosition() {
 	// 先手の局面
-	pPosSys.phase = FIRST
+	pPosSys.phase = p.FIRST
 	// 何手目か
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
 	pPosSys.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pPosSys.CapturedList = [MOVES_SIZE]Piece{}
+	pPosSys.CapturedList = [MOVES_SIZE]p.Piece{}
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 	var len = len(command)
-	var hand_sq = SQUARE_EMPTY
+	var hand_sq = p.SQUARE_EMPTY
 
-	var from Square
-	var to Square
+	var from p.Square
+	var to p.Square
 	var pro = false
 
 	// file
@@ -363,13 +284,13 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != SQUARE_EMPTY {
+	if hand_sq != p.SQUARE_EMPTY {
 		*i += 1
 		switch phase {
-		case FIRST:
+		case p.FIRST:
 			from = hand_sq
-		case SECOND:
-			from = hand_sq + HAND_TYPE_SIZE
+		case p.SECOND:
+			from = hand_sq + p.HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
@@ -416,7 +337,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			}
 			*i += 1
 
-			sq := Square(file*10 + rank)
+			sq := p.Square(file*10 + rank)
 			if count == 0 {
 				from = sq
 			} else if count == 1 {

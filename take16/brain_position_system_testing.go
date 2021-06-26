@@ -6,10 +6,12 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // TestControl
-func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
+func TestControl(pBrain *Brain, pPos *p.Position) (bool, string) {
 	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY1].Clear()
 	pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2].Clear()
 
@@ -21,7 +23,7 @@ func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
 	sumCb1 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	copyCb2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCb2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
-	for sq := 0; sq < BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < p.BOARD_SIZE; sq += 1 {
 		copyCb1.Board1[sq] = sumCb1.Board1[sq]
 		copyCb2.Board1[sq] = sumCb2.Board1[sq]
 	}
@@ -60,7 +62,7 @@ func checkControl(pBrain *Brain, move_seq int, move_total int, move Move) bool {
 	copyCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	errorCB2 := pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR2]
-	for sq := 0; sq < BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < p.BOARD_SIZE; sq += 1 {
 		diff1 := copyCB1.Board1[sq] - sumCB1.Board1[sq]
 		errorCB1.Board1[sq] = diff1
 		if diff1 != 0 {
@@ -85,19 +87,19 @@ func SumAbsControl(pBrain *Brain, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	sumList := [2]int{0, 0}
 
 	cb1 := pBrain.PCtrlBrdSys.PBoards[ph1_c]
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 {
+	for from := p.Square(11); from < p.BOARD_SIZE; from += 1 {
+		if p.File(from) != 0 && p.Rank(from) != 0 {
 
-			sumList[FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
+			sumList[p.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
 
 		}
 	}
 
 	cb2 := pBrain.PCtrlBrdSys.PBoards[ph2_c]
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 {
+	for from := p.Square(11); from < p.BOARD_SIZE; from += 1 {
+		if p.File(from) != 0 && p.Rank(from) != 0 {
 
-			sumList[SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
+			sumList[p.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
 
 		}
 	}
@@ -108,7 +110,7 @@ func SumAbsControl(pBrain *Brain, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 // ShuffleBoard - 盤上の駒、持ち駒をシャッフルします
 // ゲーム中にはできない動きをするので、利きの計算は無視します。
 // 最後に利きは再計算します
-func ShuffleBoard(pBrain *Brain, pPos *Position) {
+func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 
 	// 駒の数を数えます
 	countList1 := CountAllPieces(pPos)
@@ -118,74 +120,74 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	for i := 0; i < 200; i += 1 {
 
 		// 盤から駒台の方向
-		for rank := Square(1); rank < 10; rank += 1 {
-			for file := Square(9); file > 0; file -= 1 {
+		for rank := p.Square(1); rank < 10; rank += 1 {
+			for file := p.Square(9); file > 0; file -= 1 {
 				sq := SquareFrom(file, rank)
 
 				// 10マスに1マスは駒台へ
-				change := Square(rand.Intn(10))
+				change := p.Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != PIECE_EMPTY {
-						phase := Who(piece)
+					if piece != p.PIECE_EMPTY {
+						phase := p.Who(piece)
 						pieceType := What(piece)
 
 						ok := false
 						switch phase {
-						case FIRST:
+						case p.FIRST:
 							switch pieceType {
 							case PIECE_TYPE_K:
-								pPos.Hands1[HAND_K1_IDX] += 1
+								pPos.Hands1[p.HAND_K1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands1[HAND_R1_IDX] += 1
+								pPos.Hands1[p.HAND_R1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands1[HAND_B1_IDX] += 1
+								pPos.Hands1[p.HAND_B1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands1[HAND_G1_IDX] += 1
+								pPos.Hands1[p.HAND_G1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands1[HAND_S1_IDX] += 1
+								pPos.Hands1[p.HAND_S1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands1[HAND_N1_IDX] += 1
+								pPos.Hands1[p.HAND_N1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands1[HAND_L1_IDX] += 1
+								pPos.Hands1[p.HAND_L1_IDX] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands1[HAND_P1_IDX] += 1
+								pPos.Hands1[p.HAND_P1_IDX] += 1
 								ok = true
 							default:
 								// Ignored
 							}
-						case SECOND:
+						case p.SECOND:
 							switch pieceType {
 							case PIECE_TYPE_K:
-								pPos.Hands1[HAND_K2_IDX] += 1
+								pPos.Hands1[p.HAND_K2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands1[HAND_R2_IDX] += 1
+								pPos.Hands1[p.HAND_R2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands1[HAND_B2_IDX] += 1
+								pPos.Hands1[p.HAND_B2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands1[HAND_G2_IDX] += 1
+								pPos.Hands1[p.HAND_G2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands1[HAND_S2_IDX] += 1
+								pPos.Hands1[p.HAND_S2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands1[HAND_N2_IDX] += 1
+								pPos.Hands1[p.HAND_N2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands1[HAND_L2_IDX] += 1
+								pPos.Hands1[p.HAND_L2_IDX] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands1[HAND_P2_IDX] += 1
+								pPos.Hands1[p.HAND_P2_IDX] += 1
 								ok = true
 							default:
 								// Ignored
@@ -195,7 +197,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = PIECE_EMPTY
+							pPos.Board[sq] = p.PIECE_EMPTY
 						}
 					}
 
@@ -211,10 +213,10 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 		}
 
 		// 駒台から盤の方向
-		for hand_index := HAND_IDX_START; hand_index < HAND_IDX_END; hand_index += 1 {
+		for hand_index := p.HAND_IDX_START; hand_index < p.HAND_IDX_END; hand_index += 1 {
 			num := pPos.Hands1[hand_index]
 			if num > 0 {
-				sq := Square(rand.Intn(100))
+				sq := p.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
 					pPos.Board[sq] = HandPieceMap1[hand_index]
@@ -234,8 +236,8 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	// 盤上での移動
 	// 適当に大きな回数
 	for i := 0; i < 81*80; i += 1 {
-		sq1 := Square(rand.Intn(100))
-		sq2 := Square(rand.Intn(100))
+		sq1 := p.Square(rand.Intn(100))
+		sq2 := p.Square(rand.Intn(100))
 		if OnBoard(sq1) && OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
 			piece := pPos.Board[sq1]
 			// 位置スワップ
@@ -243,7 +245,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 			pPos.Board[sq2] = piece
 
 			// 成／不成 変更
-			promote := Square(rand.Intn(10))
+			promote := p.Square(rand.Intn(10))
 			if promote == 0 {
 				pPos.Board[sq2] = Promote(pPos.Board[sq2])
 			} else if promote == 1 {
@@ -256,10 +258,10 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 			case PIECE_TYPE_K, PIECE_TYPE_EMPTY:
 				// Ignored
 			default:
-				phase := Who(piece)
+				phase := p.Who(piece)
 				pieceType := What(piece)
 
-				change := Square(rand.Intn(10))
+				change := p.Square(rand.Intn(10))
 				if change == 0 {
 					phase = FlipPhase(phase)
 				}
@@ -279,9 +281,9 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pBrain.PPosSys.phase = FIRST
+		pBrain.PPosSys.phase = p.FIRST
 	default:
-		pBrain.PPosSys.phase = SECOND
+		pBrain.PPosSys.phase = p.SECOND
 	}
 
 	// 手目は 1 に戻します
@@ -303,8 +305,8 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 			countList = [8]int{}
 
 			// 盤上
-			for rank := Square(1); rank < 10; rank += 1 {
-				for file := Square(9); file > 0; file -= 1 {
+			for rank := p.Square(1); rank < 10; rank += 1 {
+				for file := p.Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCode())
@@ -335,14 +337,14 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 			}
 
 			// 駒台
-			countList[0] += pPos.Hands1[HAND_K1_IDX] + pPos.Hands1[HAND_K2_IDX]
-			countList[1] += pPos.Hands1[HAND_R1_IDX] + pPos.Hands1[HAND_R2_IDX]
-			countList[2] += pPos.Hands1[HAND_B1_IDX] + pPos.Hands1[HAND_B2_IDX]
-			countList[3] += pPos.Hands1[HAND_G1_IDX] + pPos.Hands1[HAND_G2_IDX]
-			countList[4] += pPos.Hands1[HAND_S1_IDX] + pPos.Hands1[HAND_S2_IDX]
-			countList[5] += pPos.Hands1[HAND_N1_IDX] + pPos.Hands1[HAND_N2_IDX]
-			countList[6] += pPos.Hands1[HAND_L1_IDX] + pPos.Hands1[HAND_L2_IDX]
-			countList[7] += pPos.Hands1[HAND_P1_IDX] + pPos.Hands1[HAND_P2_IDX]
+			countList[0] += pPos.Hands1[p.HAND_K1_IDX] + pPos.Hands1[p.HAND_K2_IDX]
+			countList[1] += pPos.Hands1[p.HAND_R1_IDX] + pPos.Hands1[p.HAND_R2_IDX]
+			countList[2] += pPos.Hands1[p.HAND_B1_IDX] + pPos.Hands1[p.HAND_B2_IDX]
+			countList[3] += pPos.Hands1[p.HAND_G1_IDX] + pPos.Hands1[p.HAND_G2_IDX]
+			countList[4] += pPos.Hands1[p.HAND_S1_IDX] + pPos.Hands1[p.HAND_S2_IDX]
+			countList[5] += pPos.Hands1[p.HAND_N1_IDX] + pPos.Hands1[p.HAND_N2_IDX]
+			countList[6] += pPos.Hands1[p.HAND_L1_IDX] + pPos.Hands1[p.HAND_L2_IDX]
+			countList[7] += pPos.Hands1[p.HAND_P1_IDX] + pPos.Hands1[p.HAND_P2_IDX]
 		} else {
 			countList = CountAllPieces(pPos)
 		}
@@ -390,13 +392,13 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 }
 
 // CountAllPieces - 駒の数を確認するぜ（＾～＾）
-func CountAllPieces(pPos *Position) [8]int {
+func CountAllPieces(pPos *p.Position) [8]int {
 
 	countList := [8]int{}
 
 	// 盤上
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
+	for rank := p.Square(1); rank < 10; rank += 1 {
+		for file := p.Square(9); file > 0; file -= 1 {
 			sq := SquareFrom(file, rank)
 
 			piece := What(pPos.Board[sq])
@@ -424,14 +426,14 @@ func CountAllPieces(pPos *Position) [8]int {
 	}
 
 	// 駒台
-	countList[0] += pPos.Hands1[HAND_K1_IDX] + pPos.Hands1[HAND_K2_IDX]
-	countList[1] += pPos.Hands1[HAND_R1_IDX] + pPos.Hands1[HAND_R2_IDX]
-	countList[2] += pPos.Hands1[HAND_B1_IDX] + pPos.Hands1[HAND_B2_IDX]
-	countList[3] += pPos.Hands1[HAND_G1_IDX] + pPos.Hands1[HAND_G2_IDX]
-	countList[4] += pPos.Hands1[HAND_S1_IDX] + pPos.Hands1[HAND_S2_IDX]
-	countList[5] += pPos.Hands1[HAND_N1_IDX] + pPos.Hands1[HAND_N2_IDX]
-	countList[6] += pPos.Hands1[HAND_L1_IDX] + pPos.Hands1[HAND_L2_IDX]
-	countList[7] += pPos.Hands1[HAND_P1_IDX] + pPos.Hands1[HAND_P2_IDX]
+	countList[0] += pPos.Hands1[p.HAND_K1_IDX] + pPos.Hands1[p.HAND_K2_IDX]
+	countList[1] += pPos.Hands1[p.HAND_R1_IDX] + pPos.Hands1[p.HAND_R2_IDX]
+	countList[2] += pPos.Hands1[p.HAND_B1_IDX] + pPos.Hands1[p.HAND_B2_IDX]
+	countList[3] += pPos.Hands1[p.HAND_G1_IDX] + pPos.Hands1[p.HAND_G2_IDX]
+	countList[4] += pPos.Hands1[p.HAND_S1_IDX] + pPos.Hands1[p.HAND_S2_IDX]
+	countList[5] += pPos.Hands1[p.HAND_N1_IDX] + pPos.Hands1[p.HAND_N2_IDX]
+	countList[6] += pPos.Hands1[p.HAND_L1_IDX] + pPos.Hands1[p.HAND_L2_IDX]
+	countList[7] += pPos.Hands1[p.HAND_P1_IDX] + pPos.Hands1[p.HAND_P2_IDX]
 
 	return countList
 }
@@ -446,25 +448,25 @@ func CountErrorCountLists(countList1 [8]int, countList2 [8]int) int {
 }
 
 // copyBoard - 盤[b0] を 盤[b1] にコピーします
-func copyBoard(pPos0 *Position, pPos1 *Position) {
+func copyBoard(pPos0 *p.Position, pPos1 *p.Position) {
 	for sq := 0; sq < 100; sq += 1 {
 		pPos1.Board[sq] = pPos0.Board[sq]
 	}
 
 	pPos1.Hands1 = pPos0.Hands1
-	for i := PCLOC_START; i < PCLOC_END; i += 1 {
+	for i := p.PCLOC_START; i < p.PCLOC_END; i += 1 {
 		pPos1.PieceLocations[i] = pPos0.PieceLocations[i]
 	}
 }
 
 // copyBoard - 盤[0] を 盤[1] で異なるマスを 盤[2] 盤[3] にセットします
-func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Position) {
+func diffBoard(pPos0 *p.Position, pPos1 *p.Position, pPos2 *p.Position, pPos3 *p.Position) {
 	// 盤上
 	for sq := 0; sq < 100; sq += 1 {
 		if pPos1.Board[sq] == pPos0.Board[sq] {
 			// 等しければ空マス
-			pPos2.Board[sq] = PIECE_EMPTY
-			pPos3.Board[sq] = PIECE_EMPTY
+			pPos2.Board[sq] = p.PIECE_EMPTY
+			pPos3.Board[sq] = p.PIECE_EMPTY
 
 		} else {
 			// 異なったら
@@ -474,7 +476,7 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 	}
 
 	// 駒台
-	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
+	for i := p.HAND_IDX_START; i < p.HAND_IDX_END; i += 1 {
 		if pPos0.Hands1[i] == pPos1.Hands1[i] {
 			// 等しければゼロ
 			pPos2.Hands1[i] = 0
@@ -487,7 +489,7 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 	}
 
 	// 位置
-	for i := PCLOC_START; i < PCLOC_END; i += 1 {
+	for i := p.PCLOC_START; i < p.PCLOC_END; i += 1 {
 		if pPos0.PieceLocations[i] == pPos1.PieceLocations[i] {
 			// 等しければゼロ
 			pPos2.PieceLocations[i] = 0
@@ -501,7 +503,7 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 }
 
 // ２つのボードの違いを数えるぜ（＾～＾）
-func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Position) int {
+func errorBoard(pPos0 *p.Position, pPos1 *p.Position, pPos2 *p.Position, pPos3 *p.Position) int {
 	diffBoard(pPos0, pPos1, pPos2, pPos3)
 
 	errorNum := 0
@@ -514,24 +516,24 @@ func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positi
 	}
 
 	// 駒台
-	for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
+	for i := p.HAND_IDX_START; i < p.HAND_IDX_END; i += 1 {
 		if pPos2.Hands1[i] != pPos3.Hands1[i] {
 			errorNum += 1
 		}
 	}
 
 	// 位置
-	if pPos2.PieceLocations[PCLOC_K1] != pPos3.PieceLocations[PCLOC_K1] {
+	if pPos2.PieceLocations[p.PCLOC_K1] != pPos3.PieceLocations[p.PCLOC_K1] {
 		errorNum += 1
 	}
-	if pPos2.PieceLocations[PCLOC_K2] != pPos3.PieceLocations[PCLOC_K2] {
+	if pPos2.PieceLocations[p.PCLOC_K2] != pPos3.PieceLocations[p.PCLOC_K2] {
 		errorNum += 1
 	}
 
 	// 位置（不安定注意）
 	rook2 := []int{}
 	rook3 := []int{}
-	for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+	for i := p.PCLOC_R1; i < p.PCLOC_R2+1; i += 1 {
 		rook2 = append(rook2, int(pPos2.PieceLocations[i]))
 		rook3 = append(rook3, int(pPos2.PieceLocations[i]))
 	}
@@ -546,7 +548,7 @@ func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positi
 	// 位置（不安定注意）
 	bishop2 := []int{}
 	bishop3 := []int{}
-	for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+	for i := p.PCLOC_B1; i < p.PCLOC_B2+1; i += 1 {
 		bishop2 = append(bishop2, int(pPos2.PieceLocations[i]))
 		bishop3 = append(bishop3, int(pPos2.PieceLocations[i]))
 	}
@@ -561,7 +563,7 @@ func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positi
 	// 位置（不安定注意）
 	lance2 := []int{}
 	lance3 := []int{}
-	for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+	for i := p.PCLOC_L1; i < p.PCLOC_L4+1; i += 1 {
 		lance2 = append(lance2, int(pPos2.PieceLocations[i]))
 		lance3 = append(lance3, int(pPos2.PieceLocations[i]))
 	}

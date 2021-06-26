@@ -1,5 +1,9 @@
 package take16
 
+import (
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+)
+
 // 利きテーブル・インデックス型
 type ControlLayerT int
 
@@ -116,8 +120,8 @@ func (pCtrlBrdSys *ControlBoardSystem) DiffControl(c1 ControlLayerT, c2 ControlL
 	cb3 := pCtrlBrdSys.PBoards[c3]
 	cb1 := pCtrlBrdSys.PBoards[c1]
 	cb2 := pCtrlBrdSys.PBoards[c2]
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 {
+	for from := p.Square(11); from < p.BOARD_SIZE; from += 1 {
+		if p.File(from) != 0 && p.Rank(from) != 0 {
 
 			cb3.Board1[from] = cb1.Board1[from] - cb2.Board1[from]
 
@@ -127,15 +131,15 @@ func (pCtrlBrdSys *ControlBoardSystem) DiffControl(c1 ControlLayerT, c2 ControlL
 
 // RecalculateControl - 利きの再計算
 func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
-	pPos *Position, ph1_c1 ControlLayerT, ph2_c1 ControlLayerT) {
+	pPos *p.Position, ph1_c1 ControlLayerT, ph2_c1 ControlLayerT) {
 
 	pCtrlBrdSys.PBoards[ph1_c1].Clear()
 	pCtrlBrdSys.PBoards[ph2_c1].Clear()
 
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
+	for from := p.Square(11); from < p.BOARD_SIZE; from += 1 {
+		if p.File(from) != 0 && p.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
-			phase := Who(piece)
+			phase := p.Who(piece)
 			moveEndList := GenMoveEnd(pPos, from)
 
 			pCB := ControllBoardFromPhase(phase, pCtrlBrdSys.PBoards[ph1_c1], pCtrlBrdSys.PBoards[ph2_c1])
@@ -163,8 +167,8 @@ func (pCtrlBrdSys *ControlBoardSystem) MergeControlDiff(buildType BuildT) {
 		end2 = CONTROL_LAYER_DIFF2_END_RELEASE
 	}
 
-	for sq := Square(11); sq < BOARD_SIZE; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := p.Square(11); sq < p.BOARD_SIZE; sq += 1 {
+		if p.File(sq) != 0 && p.Rank(sq) != 0 {
 			// c=0 を除く
 			for c1 := CONTROL_LAYER_DIFF1_START; c1 < end1; c1 += 1 {
 				cb0sum.Board1[sq] += pCtrlBrdSys.PBoards[c1].Board1[sq]
@@ -199,9 +203,9 @@ func (pCtrlBrdSys *ControlBoardSystem) ClearControlDiff(buildType BuildT) {
 }
 
 // AddControlLance - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func AddControlLance(pPos *Position,
-	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom Square) {
-	for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+func AddControlLance(pPos *p.Position,
+	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
+	for i := p.PCLOC_L1; i < p.PCLOC_L4+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
@@ -210,7 +214,7 @@ func AddControlLance(pPos *Position,
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := p.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -218,9 +222,9 @@ func AddControlLance(pPos *Position,
 }
 
 // AddControlBishop - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func AddControlBishop(pPos *Position,
-	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom Square) {
-	for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+func AddControlBishop(pPos *p.Position,
+	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
+	for i := p.PCLOC_B1; i < p.PCLOC_B2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 角落ちも考えて 空マスは除外
@@ -228,7 +232,7 @@ func AddControlBishop(pPos *Position,
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := p.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -236,9 +240,9 @@ func AddControlBishop(pPos *Position,
 }
 
 // AddControlRook - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func AddControlRook(pPos *Position,
-	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom Square) {
-	for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+func AddControlRook(pPos *p.Position,
+	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
+	for i := p.PCLOC_R1; i < p.PCLOC_R2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 飛落ちも考えて 空マスは除外
@@ -246,7 +250,7 @@ func AddControlRook(pPos *Position,
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := p.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -254,13 +258,13 @@ func AddControlRook(pPos *Position,
 }
 
 func ControllBoardFromPhase(
-	phase Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
+	phase p.Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
 
 	// fmt.Printf("Debug: phase=%d\n", phase)
 	switch phase {
-	case FIRST:
+	case p.FIRST:
 		return pPh1_CB
-	case SECOND:
+	case p.SECOND:
 		return pPh2_CB
 	default:
 		panic(G.Log.Fatal("Unknown phase=%d", phase))
@@ -268,8 +272,8 @@ func ControllBoardFromPhase(
 }
 
 // MoveEndListToControlList - 移動先、成りのリストを、移動先のリストに変換します
-func MoveEndListToControlList(moveEndList []MoveEnd) []Square {
-	sqList := []Square{}
+func MoveEndListToControlList(moveEndList []MoveEnd) []p.Square {
+	sqList := []p.Square{}
 	for _, moveEnd := range moveEndList {
 		// 成るか、成らないかの情報は欠落させます
 		to, _ := moveEnd.Destructure()

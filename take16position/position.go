@@ -1,7 +1,15 @@
-package take16
+package take16position
+
+import "fmt"
+
+// 1:先手 2:後手
+type Phase byte
 
 // マス番号 00～99,100～113
 type Square uint32
+
+// 先後付きの駒
+type Piece uint8
 
 // 評価値
 type Value int32
@@ -86,6 +94,105 @@ const (
 	PIECE_PP2
 )
 
+const (
+	// 空マス
+	ZEROTH = Phase(0)
+	// 先手
+	FIRST = Phase(1)
+	// 後手
+	SECOND = Phase(2)
+)
+
+// File - マス番号から筋（列）を取り出します
+func File(sq Square) Square {
+	return sq / 10 % 10
+}
+
+// Rank - マス番号から段（行）を取り出します
+func Rank(sq Square) Square {
+	return sq % 10
+}
+
+// Who - 駒が先手か後手か空升かを返します
+func Who(piece Piece) Phase {
+	switch piece {
+	case PIECE_EMPTY: // 空きマス
+		return ZEROTH
+	case PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1, PIECE_PR1, PIECE_PB1, PIECE_PS1, PIECE_PN1, PIECE_PL1, PIECE_PP1:
+		return FIRST
+	case PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
+		return SECOND
+	default:
+		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+	}
+}
+
+// ToCode - 文字列
+func (pc Piece) ToCode() string {
+	switch pc {
+	case PIECE_EMPTY:
+		return ""
+	case PIECE_K1:
+		return "K"
+	case PIECE_R1:
+		return "R"
+	case PIECE_B1:
+		return "B"
+	case PIECE_G1:
+		return "G"
+	case PIECE_S1:
+		return "S"
+	case PIECE_N1:
+		return "N"
+	case PIECE_L1:
+		return "L"
+	case PIECE_P1:
+		return "P"
+	case PIECE_PR1:
+		return "+R"
+	case PIECE_PB1:
+		return "+B"
+	case PIECE_PS1:
+		return "+S"
+	case PIECE_PN1:
+		return "+N"
+	case PIECE_PL1:
+		return "+L"
+	case PIECE_PP1:
+		return "+P"
+	case PIECE_K2:
+		return "k"
+	case PIECE_R2:
+		return "r"
+	case PIECE_B2:
+		return "b"
+	case PIECE_G2:
+		return "g"
+	case PIECE_S2:
+		return "s"
+	case PIECE_N2:
+		return "n"
+	case PIECE_L2:
+		return "l"
+	case PIECE_P2:
+		return "p"
+	case PIECE_PR2:
+		return "+r"
+	case PIECE_PB2:
+		return "+b"
+	case PIECE_PS2:
+		return "+s"
+	case PIECE_PN2:
+		return "+n"
+	case PIECE_PL2:
+		return "+l"
+	case PIECE_PP2:
+		return "+p"
+	default:
+		panic(fmt.Errorf("Unknown piece=%d", pc))
+	}
+}
+
 // Position - 局面
 // TODO 利きボードも含めたい
 type Position struct {
@@ -127,8 +234,8 @@ func NewPosition() *Position {
 	return pPos
 }
 
-// setToStartpos - 初期局面にします。利きの計算はまだ行っていません。
-func (pPos *Position) setToStartpos() {
+// SetToStartpos - 初期局面にします。利きの計算はまだ行っていません。
+func (pPos *Position) SetToStartpos() {
 	// 初期局面にします
 	pPos.Board = [BOARD_SIZE]Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
@@ -152,8 +259,8 @@ func (pPos *Position) GetPieceLocation(index int) Square {
 	return pPos.PieceLocations[index]
 }
 
-// clearBoard - 駒を置いていな状態でリセットします
-func (pPos *Position) clearBoard() {
+// ClearBoard - 駒を置いていな状態でリセットします
+func (pPos *Position) ClearBoard() {
 	pPos.Board = [BOARD_SIZE]Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,

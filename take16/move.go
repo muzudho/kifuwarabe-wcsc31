@@ -1,24 +1,28 @@
 package take16
 
+import (
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+)
+
 const (
 	// 持ち駒を打つ 100～115
 	// 先手飛打
-	SQ_K1         = Square(100)
-	SQ_R1         = Square(101)
-	SQ_B1         = Square(102)
-	SQ_G1         = Square(103)
-	SQ_S1         = Square(104)
-	SQ_N1         = Square(105)
-	SQ_L1         = Square(106)
-	SQ_P1         = Square(107)
-	SQ_K2         = Square(108)
-	SQ_R2         = Square(109)
-	SQ_B2         = Square(110)
-	SQ_G2         = Square(111)
-	SQ_S2         = Square(112)
-	SQ_N2         = Square(113)
-	SQ_L2         = Square(114)
-	SQ_P2         = Square(115)
+	SQ_K1         = p.Square(100)
+	SQ_R1         = p.Square(101)
+	SQ_B1         = p.Square(102)
+	SQ_G1         = p.Square(103)
+	SQ_S1         = p.Square(104)
+	SQ_N1         = p.Square(105)
+	SQ_L1         = p.Square(106)
+	SQ_P1         = p.Square(107)
+	SQ_K2         = p.Square(108)
+	SQ_R2         = p.Square(109)
+	SQ_B2         = p.Square(110)
+	SQ_G2         = p.Square(111)
+	SQ_S2         = p.Square(112)
+	SQ_N2         = p.Square(113)
+	SQ_L2         = p.Square(114)
+	SQ_P2         = p.Square(115)
 	SQ_HAND_START = SQ_K1
 	SQ_HAND_END   = SQ_P2 + 1 // この数を含まない
 )
@@ -37,7 +41,7 @@ type Move uint16
 const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+func NewMove(from p.Square, to p.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// replaceSource - 移動元マス
@@ -108,7 +112,7 @@ func (move Move) ToCode() string {
 	}
 
 	for count < 2 {
-		var sq Square // マス番号
+		var sq p.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -149,9 +153,9 @@ func (move Move) ToCode() string {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) Destructure() (Square, Square, bool) {
-	var from = Square(uint16(move) & 0x007f)
-	var to = Square((uint16(move) & 0x3f80) >> 7)
+func (move Move) Destructure() (p.Square, p.Square, bool) {
+	var from = p.Square(uint16(move) & 0x007f)
+	var to = p.Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

@@ -3,15 +3,17 @@ package take16
 import (
 	"bytes"
 	"fmt"
+
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
 func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
-	case FIRST:
+	case p.FIRST:
 		phase_str = "First"
-	case SECOND:
+	case p.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"
@@ -24,13 +26,13 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	for file := 9; file > -1; file -= 1 {
-		if !pPosSys.PPosition[b1].IsEmptySq(Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(Square(file*10)) {
+		if !pPosSys.PPosition[b1].IsEmptySq(p.Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(p.Square(file*10)) {
 			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToCode(), pPosSys.PPosition[b2].Board[file*10].ToCode())
 		}
 	}
 
 	// 0筋目
-	for rank := Square(1); rank < 10; rank += 1 {
+	for rank := p.Square(1); rank < 10; rank += 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(rank) || !pPosSys.PPosition[b2].IsEmptySq(rank) {
 			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToCode(), pPosSys.PPosition[b2].Board[rank].ToCode())
 		}
@@ -45,7 +47,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	// bytes.Bufferは、速くはないけど使いやすいぜ（＾～＾）
 	var buf bytes.Buffer
-	for i := HAND_TYPE_SIZE; i < HAND_IDX_END; i++ {
+	for i := p.HAND_TYPE_SIZE; i < p.HAND_IDX_END; i++ {
 		buf.WriteString(fmt.Sprintf("|%2d%2d", pPosSys.PPosition[b1].Hands1[i], pPosSys.PPosition[b2].Hands1[i]))
 	}
 	buf.WriteString("|\n")
@@ -157,7 +159,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	buf.Reset()
 	buf.WriteString(" ")
-	for i := HAND_IDX_START; i < HAND_TYPE_SIZE; i++ {
+	for i := p.HAND_IDX_START; i < p.HAND_TYPE_SIZE; i++ {
 		buf.WriteString(fmt.Sprintf("|%2d%2d", pPosSys.PPosition[b1].Hands1[i], pPosSys.PPosition[b2].Hands1[i]))
 	}
 	buf.WriteString("|\n")
@@ -189,17 +191,17 @@ func (pPosSys *PositionSystem) createMovesText() string {
 }
 
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
+func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
 
 	spaces := 0
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
+	for rank := p.Square(1); rank < 10; rank += 1 {
+		for file := p.Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
-			if piece != PIECE_EMPTY {
+			if piece != p.PIECE_EMPTY {
 				if spaces > 0 {
 					buf = append(buf, OneDigitNumbers[spaces])
 					spaces = 0
@@ -236,9 +238,9 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	// 手番
 	var phaseStr string
 	switch pPosSys.GetPhase() {
-	case FIRST:
+	case p.FIRST:
 		phaseStr = "b"
-	case SECOND:
+	case p.SECOND:
 		phaseStr = "w"
 	default:
 		panic(G.Log.Fatal("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
@@ -255,49 +257,49 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	// 	hands += fmt.Sprintf("K%d", num)
 	// }
 
-	num := pPos.Hands1[HAND_R1_IDX]
+	num := pPos.Hands1[p.HAND_R1_IDX]
 	if num == 1 {
 		hands += "R"
 	} else if num > 1 {
 		hands += fmt.Sprintf("R%d", num)
 	}
 
-	num = pPos.Hands1[HAND_B1_IDX]
+	num = pPos.Hands1[p.HAND_B1_IDX]
 	if num == 1 {
 		hands += "B"
 	} else if num > 1 {
 		hands += fmt.Sprintf("B%d", num)
 	}
 
-	num = pPos.Hands1[HAND_G1_IDX]
+	num = pPos.Hands1[p.HAND_G1_IDX]
 	if num == 1 {
 		hands += "G"
 	} else if num > 1 {
 		hands += fmt.Sprintf("G%d", num)
 	}
 
-	num = pPos.Hands1[HAND_S1_IDX]
+	num = pPos.Hands1[p.HAND_S1_IDX]
 	if num == 1 {
 		hands += "S"
 	} else if num > 1 {
 		hands += fmt.Sprintf("S%d", num)
 	}
 
-	num = pPos.Hands1[HAND_N1_IDX]
+	num = pPos.Hands1[p.HAND_N1_IDX]
 	if num == 1 {
 		hands += "N"
 	} else if num > 1 {
 		hands += fmt.Sprintf("N%d", num)
 	}
 
-	num = pPos.Hands1[HAND_L1_IDX]
+	num = pPos.Hands1[p.HAND_L1_IDX]
 	if num == 1 {
 		hands += "L"
 	} else if num > 1 {
 		hands += fmt.Sprintf("L%d", num)
 	}
 
-	num = pPos.Hands1[HAND_P1_IDX]
+	num = pPos.Hands1[p.HAND_P1_IDX]
 	if num == 1 {
 		hands += "P"
 	} else if num > 1 {
@@ -312,49 +314,49 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	// 	hands += fmt.Sprintf("k%d", num)
 	// }
 
-	num = pPos.Hands1[HAND_R2_IDX]
+	num = pPos.Hands1[p.HAND_R2_IDX]
 	if num == 1 {
 		hands += "r"
 	} else if num > 1 {
 		hands += fmt.Sprintf("r%d", num)
 	}
 
-	num = pPos.Hands1[HAND_B2_IDX]
+	num = pPos.Hands1[p.HAND_B2_IDX]
 	if num == 1 {
 		hands += "b"
 	} else if num > 1 {
 		hands += fmt.Sprintf("b%d", num)
 	}
 
-	num = pPos.Hands1[HAND_G2_IDX]
+	num = pPos.Hands1[p.HAND_G2_IDX]
 	if num == 1 {
 		hands += "g"
 	} else if num > 1 {
 		hands += fmt.Sprintf("g%d", num)
 	}
 
-	num = pPos.Hands1[HAND_S2_IDX]
+	num = pPos.Hands1[p.HAND_S2_IDX]
 	if num == 1 {
 		hands += "s"
 	} else if num > 1 {
 		hands += fmt.Sprintf("s%d", num)
 	}
 
-	num = pPos.Hands1[HAND_N2_IDX]
+	num = pPos.Hands1[p.HAND_N2_IDX]
 	if num == 1 {
 		hands += "n"
 	} else if num > 1 {
 		hands += fmt.Sprintf("n%d", num)
 	}
 
-	num = pPos.Hands1[HAND_L2_IDX]
+	num = pPos.Hands1[p.HAND_L2_IDX]
 	if num == 1 {
 		hands += "l"
 	} else if num > 1 {
 		hands += fmt.Sprintf("l%d", num)
 	}
 
-	num = pPos.Hands1[HAND_P2_IDX]
+	num = pPos.Hands1[p.HAND_P2_IDX]
 	if num == 1 {
 		hands += "p"
 	} else if num > 1 {

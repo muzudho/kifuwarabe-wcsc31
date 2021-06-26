@@ -12,6 +12,7 @@ import (
 	"time"
 
 	l "github.com/muzudho/go-logger"
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // MainLoop - 開始。
@@ -340,7 +341,7 @@ MainLoop:
 					bestmove := Search(pBrain)
 					G.Chat.Print("bestmove %s\n", bestmove.ToCode())
 
-					if bestmove == Move(SQUARE_EMPTY) {
+					if bestmove == Move(p.SQUARE_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}
@@ -543,7 +544,7 @@ func moveList(pBrain *Brain) {
 }
 
 // ShowAllPiecesCount - 駒の枚数表示
-func ShowAllPiecesCount(pPos *Position) {
+func ShowAllPiecesCount(pPos *p.Position) {
 	countList := CountAllPieces(pPos)
 	G.Chat.Debug("Count\n")
 	G.Chat.Debug("-----\n")
