@@ -184,10 +184,6 @@ func PieceFromPhPt(phase p.Phase, pieceType PieceType) p.Piece {
 	}
 }
 
-var HandPieceMap1 = [p.HAND_SIZE]p.Piece{
-	p.PIECE_K1, p.PIECE_R1, p.PIECE_B1, p.PIECE_G1, p.PIECE_S1, p.PIECE_N1, p.PIECE_L1, p.PIECE_P1,
-	p.PIECE_K2, p.PIECE_R2, p.PIECE_B2, p.PIECE_G2, p.PIECE_S2, p.PIECE_N2, p.PIECE_L2, p.PIECE_P2}
-
 // PositionSystem - 局面にいろいろな機能を付けたもの
 type PositionSystem struct {
 	// 局面
