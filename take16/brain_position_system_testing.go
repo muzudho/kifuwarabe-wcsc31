@@ -219,7 +219,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 				sq := p.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
-					pPos.Board[sq] = HandPieceMap1[hand_index]
+					pPos.Board[sq] = p.HandIndexToPiece[hand_index]
 					pPos.Hands1[hand_index] -= 1
 				}
 			}
@@ -247,9 +247,9 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 			// 成／不成 変更
 			promote := p.Square(rand.Intn(10))
 			if promote == 0 {
-				pPos.Board[sq2] = Promote(pPos.Board[sq2])
+				pPos.Board[sq2] = p.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
-				pPos.Board[sq2] = Demote(pPos.Board[sq2])
+				pPos.Board[sq2] = p.Demote(pPos.Board[sq2])
 			}
 
 			// 駒の先後変更（玉除く）

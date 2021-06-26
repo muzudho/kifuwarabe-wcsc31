@@ -582,7 +582,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		// 行き先の駒の上書き
 		if pro {
 			// 駒を成りに変換します
-			pPos.Board[to] = Promote(pPos.Board[from])
+			pPos.Board[to] = p.Promote(pPos.Board[from])
 		} else {
 			pPos.Board[to] = pPos.Board[from]
 		}
@@ -820,7 +820,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		// 自駒を移動元へ戻します
 		if pro {
 			// 成りを元に戻します
-			pPos.Board[from] = Demote(pPos.Board[to])
+			pPos.Board[from] = p.Demote(pPos.Board[to])
 		} else {
 			pPos.Board[from] = pPos.Board[to]
 		}
