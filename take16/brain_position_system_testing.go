@@ -287,13 +287,13 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 	}
 
 	// 手目は 1 に戻します
-	pBrain.PPosSys.StartMovesNum = 1
+	pBrain.PPosSys.PRecord.StartMovesNum = 1
 	pBrain.PPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.SprintBoardHeader(
 		pBrain.PPosSys.phase,
-		pBrain.PPosSys.StartMovesNum,
+		pBrain.PPosSys.PRecord.StartMovesNum,
 		pBrain.PPosSys.OffsetMovesIndex))
 	G.Chat.Debug(pPos.SprintBoard())
 	G.Chat.Debug(pBrain.SprintBoardFooter())
@@ -375,7 +375,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.SprintBoardHeader(
 		pBrain.PPosSys.phase,
-		pBrain.PPosSys.StartMovesNum,
+		pBrain.PPosSys.PRecord.StartMovesNum,
 		pBrain.PPosSys.OffsetMovesIndex))
 	G.Chat.Debug(pPos.SprintBoard())
 	G.Chat.Debug(pBrain.SprintBoardFooter())

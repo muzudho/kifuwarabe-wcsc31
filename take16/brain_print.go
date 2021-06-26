@@ -30,7 +30,7 @@ func (pBrain *Brain) Dump() string {
 
 	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pBrain.PPosSys.GetPhase()))
 
-	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pBrain.PPosSys.StartMovesNum))
+	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pBrain.PPosSys.PRecord.StartMovesNum))
 
 	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
 

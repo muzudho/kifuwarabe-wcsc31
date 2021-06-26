@@ -274,7 +274,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 		}
 
 		// 手数
-		pBrain.PPosSys.StartMovesNum = 0
+		pBrain.PPosSys.PRecord.StartMovesNum = 0
 	MovesNumLoop:
 		for i < len {
 			switch figure := command[i]; figure {
@@ -284,8 +284,8 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 					panic(err)
 				}
 				i += 1
-				pBrain.PPosSys.StartMovesNum *= 10
-				pBrain.PPosSys.StartMovesNum += num
+				pBrain.PPosSys.PRecord.StartMovesNum *= 10
+				pBrain.PPosSys.PRecord.StartMovesNum += num
 			case ' ':
 				i += 1
 				break MovesNumLoop
@@ -317,7 +317,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				fmt.Println(err)
 				fmt.Println(pPos.SprintBoardHeader(
 					pBrain.PPosSys.phase,
-					pBrain.PPosSys.StartMovesNum,
+					pBrain.PPosSys.PRecord.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex))
 				fmt.Println(pPos.SprintBoard())
 				fmt.Println(pBrain.SprintBoardFooter())

@@ -195,8 +195,6 @@ type PositionSystem struct {
 
 	// 先手が1、後手が2（＾～＾）
 	phase p.Phase
-	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
-	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
@@ -204,11 +202,15 @@ type PositionSystem struct {
 	Moves [MOVES_SIZE]p.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]p.Piece
+
+	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
+	PRecord *DifferenceRecord
 }
 
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
 
+	pPosSys.PRecord = NewDifferenceRecord()
 	pPosSys.PPosition = [POS_LAYER_SIZE]*p.Position{p.NewPosition(), p.NewPosition(), p.NewPosition(), p.NewPosition()}
 
 	pPosSys.resetPosition()
@@ -230,7 +232,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	// 先手の局面
 	pPosSys.phase = p.FIRST
 	// 何手目か
-	pPosSys.StartMovesNum = 1
+	pPosSys.PRecord.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
 	pPosSys.Moves = [MOVES_SIZE]p.Move{}

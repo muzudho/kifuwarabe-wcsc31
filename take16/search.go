@@ -90,7 +90,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 			// 強制終了した局面（＾～＾）
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 				pBrain.PPosSys.phase,
-				pBrain.PPosSys.StartMovesNum,
+				pBrain.PPosSys.PRecord.StartMovesNum,
 				pBrain.PPosSys.OffsetMovesIndex))
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 			G.Chat.Debug(pBrain.SprintBoardFooter())
