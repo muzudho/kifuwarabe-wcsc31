@@ -183,7 +183,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 							for i := p.PCLOC_R1; i < p.PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
+									pPos.PieceLocations[i] = p.Square(hand_index) + p.SQ_HAND_START
 									break
 								}
 							}
@@ -191,7 +191,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 							for i := p.PCLOC_B1; i < p.PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
+									pPos.PieceLocations[i] = p.Square(hand_index) + p.SQ_HAND_START
 									break
 								}
 							}
@@ -199,7 +199,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 							for i := p.PCLOC_L1; i < p.PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
+									pPos.PieceLocations[i] = p.Square(hand_index) + p.SQ_HAND_START
 									break
 								}
 							}
@@ -417,7 +417,7 @@ func (pBrain *Brain) IsCheckmate(phase p.Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pBrain *Brain) DoMove(pPos *p.Position, move Move) {
+func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 	before_move_phase := pBrain.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
@@ -455,37 +455,37 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move Move) {
 	sq_drop := from
 	var piece p.Piece
 	switch from {
-	case SQ_K1:
+	case p.SQ_K1:
 		piece = p.PIECE_K1
-	case SQ_R1:
+	case p.SQ_R1:
 		piece = p.PIECE_R1
-	case SQ_B1:
+	case p.SQ_B1:
 		piece = p.PIECE_B1
-	case SQ_G1:
+	case p.SQ_G1:
 		piece = p.PIECE_G1
-	case SQ_S1:
+	case p.SQ_S1:
 		piece = p.PIECE_S1
-	case SQ_N1:
+	case p.SQ_N1:
 		piece = p.PIECE_N1
-	case SQ_L1:
+	case p.SQ_L1:
 		piece = p.PIECE_L1
-	case SQ_P1:
+	case p.SQ_P1:
 		piece = p.PIECE_P1
-	case SQ_K2:
+	case p.SQ_K2:
 		piece = p.PIECE_K2
-	case SQ_R2:
+	case p.SQ_R2:
 		piece = p.PIECE_R2
-	case SQ_B2:
+	case p.SQ_B2:
 		piece = p.PIECE_B2
-	case SQ_G2:
+	case p.SQ_G2:
 		piece = p.PIECE_G2
-	case SQ_S2:
+	case p.SQ_S2:
 		piece = p.PIECE_S2
-	case SQ_N2:
+	case p.SQ_N2:
 		piece = p.PIECE_N2
-	case SQ_L2:
+	case p.SQ_L2:
 		piece = p.PIECE_L2
-	case SQ_P2:
+	case p.SQ_P2:
 		piece = p.PIECE_P2
 	default:
 		// Not drop
@@ -496,7 +496,7 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move Move) {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands1[sq_drop-SQ_HAND_START] -= 1
+		pPos.Hands1[sq_drop-p.SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -599,44 +599,44 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move Move) {
 		switch captured {
 		case p.PIECE_EMPTY: // Ignored
 		case p.PIECE_K1: // Second player win
-			cap_dst_sq = SQ_K2
+			cap_dst_sq = p.SQ_K2
 		case p.PIECE_R1, p.PIECE_PR1:
-			cap_dst_sq = SQ_R2
+			cap_dst_sq = p.SQ_R2
 		case p.PIECE_B1, p.PIECE_PB1:
-			cap_dst_sq = SQ_B2
+			cap_dst_sq = p.SQ_B2
 		case p.PIECE_G1:
-			cap_dst_sq = SQ_G2
+			cap_dst_sq = p.SQ_G2
 		case p.PIECE_S1, p.PIECE_PS1:
-			cap_dst_sq = SQ_S2
+			cap_dst_sq = p.SQ_S2
 		case p.PIECE_N1, p.PIECE_PN1:
-			cap_dst_sq = SQ_N2
+			cap_dst_sq = p.SQ_N2
 		case p.PIECE_L1, p.PIECE_PL1:
-			cap_dst_sq = SQ_L2
+			cap_dst_sq = p.SQ_L2
 		case p.PIECE_P1, p.PIECE_PP1:
-			cap_dst_sq = SQ_P2
+			cap_dst_sq = p.SQ_P2
 		case p.PIECE_K2: // First player win
-			cap_dst_sq = SQ_K1
+			cap_dst_sq = p.SQ_K1
 		case p.PIECE_R2, p.PIECE_PR2:
-			cap_dst_sq = SQ_R1
+			cap_dst_sq = p.SQ_R1
 		case p.PIECE_B2, p.PIECE_PB2:
-			cap_dst_sq = SQ_B1
+			cap_dst_sq = p.SQ_B1
 		case p.PIECE_G2:
-			cap_dst_sq = SQ_G1
+			cap_dst_sq = p.SQ_G1
 		case p.PIECE_S2, p.PIECE_PS2:
-			cap_dst_sq = SQ_S1
+			cap_dst_sq = p.SQ_S1
 		case p.PIECE_N2, p.PIECE_PN2:
-			cap_dst_sq = SQ_N1
+			cap_dst_sq = p.SQ_N1
 		case p.PIECE_L2, p.PIECE_PL2:
-			cap_dst_sq = SQ_L1
+			cap_dst_sq = p.SQ_L1
 		case p.PIECE_P2, p.PIECE_PP2:
-			cap_dst_sq = SQ_P1
+			cap_dst_sq = p.SQ_P1
 		default:
 			fmt.Printf("Error: Unknown captured=[%d]", captured)
 		}
 
 		if cap_dst_sq != p.SQUARE_EMPTY {
 			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = captured
-			pPos.Hands1[cap_dst_sq-SQ_HAND_START] += 1
+			pPos.Hands1[cap_dst_sq-p.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
 			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = p.PIECE_EMPTY
@@ -758,7 +758,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 
 	// 打かどうかで分けます
 	switch from {
-	case SQ_K1, SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_K2, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
+	case p.SQ_K1, p.SQ_R1, p.SQ_B1, p.SQ_G1, p.SQ_S1, p.SQ_N1, p.SQ_L1, p.SQ_P1, p.SQ_K2, p.SQ_R2, p.SQ_B2, p.SQ_G2, p.SQ_S2, p.SQ_N2, p.SQ_L2, p.SQ_P2:
 		// 打なら
 		drop := from
 		// 行き先から駒を除去します
@@ -783,7 +783,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 		pPos.Board[to] = p.PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands1[drop-SQ_HAND_START] += 1
+		pPos.Hands1[drop-p.SQ_HAND_START] += 1
 	default:
 		// 打でないなら
 
@@ -939,7 +939,7 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 
 	// 打かどうかで分けます
 	switch from {
-	case SQ_K1, SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_K2, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
+	case p.SQ_K1, p.SQ_R1, p.SQ_B1, p.SQ_G1, p.SQ_S1, p.SQ_N1, p.SQ_L1, p.SQ_P1, p.SQ_K2, p.SQ_R2, p.SQ_B2, p.SQ_G2, p.SQ_S2, p.SQ_N2, p.SQ_L2, p.SQ_P2:
 		// 打で取れる駒はないぜ（＾～＾）
 		// fmt.Printf("Debug: Drop from=%d\n", from)
 	default:
@@ -950,37 +950,37 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 		switch captured {
 		case p.PIECE_EMPTY: // Ignored
 		case p.PIECE_K1: // Second player win
-			hand_sq = SQ_K2
+			hand_sq = p.SQ_K2
 		case p.PIECE_R1, p.PIECE_PR1:
-			hand_sq = SQ_R2
+			hand_sq = p.SQ_R2
 		case p.PIECE_B1, p.PIECE_PB1:
-			hand_sq = SQ_B2
+			hand_sq = p.SQ_B2
 		case p.PIECE_G1:
-			hand_sq = SQ_G2
+			hand_sq = p.SQ_G2
 		case p.PIECE_S1, p.PIECE_PS1:
-			hand_sq = SQ_S2
+			hand_sq = p.SQ_S2
 		case p.PIECE_N1, p.PIECE_PN1:
-			hand_sq = SQ_N2
+			hand_sq = p.SQ_N2
 		case p.PIECE_L1, p.PIECE_PL1:
-			hand_sq = SQ_L2
+			hand_sq = p.SQ_L2
 		case p.PIECE_P1, p.PIECE_PP1:
-			hand_sq = SQ_P2
+			hand_sq = p.SQ_P2
 		case p.PIECE_K2: // First player win
-			hand_sq = SQ_K1
+			hand_sq = p.SQ_K1
 		case p.PIECE_R2, p.PIECE_PR2:
-			hand_sq = SQ_R1
+			hand_sq = p.SQ_R1
 		case p.PIECE_B2, p.PIECE_PB2:
-			hand_sq = SQ_B1
+			hand_sq = p.SQ_B1
 		case p.PIECE_G2:
-			hand_sq = SQ_G1
+			hand_sq = p.SQ_G1
 		case p.PIECE_S2, p.PIECE_PS2:
-			hand_sq = SQ_S1
+			hand_sq = p.SQ_S1
 		case p.PIECE_N2, p.PIECE_PN2:
-			hand_sq = SQ_N1
+			hand_sq = p.SQ_N1
 		case p.PIECE_L2, p.PIECE_PL2:
-			hand_sq = SQ_L1
+			hand_sq = p.SQ_L1
 		case p.PIECE_P2, p.PIECE_PP2:
-			hand_sq = SQ_P1
+			hand_sq = p.SQ_P1
 		default:
 			fmt.Printf("Error: Unknown captured=[%d]", captured)
 		}
@@ -988,7 +988,7 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)
 
 		if hand_sq != p.SQUARE_EMPTY {
-			pPos.Hands1[hand_sq-SQ_HAND_START] -= 1
+			pPos.Hands1[hand_sq-p.SQ_HAND_START] -= 1
 
 			// 取っていた駒を行き先に戻します
 			cap_piece_type = What(captured)

@@ -341,7 +341,7 @@ MainLoop:
 					bestmove := Search(pBrain)
 					G.Chat.Print("bestmove %s\n", bestmove.ToCode())
 
-					if bestmove == Move(p.SQUARE_EMPTY) {
+					if bestmove == p.Move(p.SQUARE_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}

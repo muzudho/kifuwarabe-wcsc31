@@ -35,7 +35,7 @@ const (
 )
 
 // Search - 探索部
-func Search(pBrain *Brain) Move {
+func Search(pBrain *Brain) p.Move {
 
 	nodesNum = 0
 	curDepth := 0
@@ -52,7 +52,7 @@ func Search(pBrain *Brain) Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, p.Value) {
+func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Value) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -63,16 +63,16 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, p.Value
 
 	if lenOfMoves == 0 {
 		// ステイルメートされたら負け（＾～＾）
-		return RESIGN_MOVE, RESIGN_VALUE
+		return p.RESIGN_MOVE, RESIGN_VALUE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var someBestMoves []Move
+	var someBestMoves []p.Move
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
 	var opponentWorstVal p.Value = ANTI_RESIGN_VALUE
 	// 前回のムーブ
-	var younger_sibling_move = RESIGN_MOVE
+	var younger_sibling_move = p.RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
 
@@ -203,13 +203,13 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (Move, p.Value
 	}
 
 	// bestMoveは、１手目しか使わないけど（＾～＾）
-	var bestMove = RESIGN_MOVE
+	var bestMove = p.RESIGN_MOVE
 
 	bestmoveListLen := len(someBestMoves)
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
 		// 指せる手なし
-		return RESIGN_MOVE, RESIGN_VALUE
+		return p.RESIGN_MOVE, RESIGN_VALUE
 	}
 	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）

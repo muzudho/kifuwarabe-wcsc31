@@ -51,7 +51,7 @@ func TestControl(pBrain *Brain, pPos *p.Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pBrain *Brain, move_seq int, move_total int, move Move) bool {
+func checkControl(pBrain *Brain, move_seq int, move_total int, move p.Move) bool {
 
 	is_error := false
 

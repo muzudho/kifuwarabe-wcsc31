@@ -36,7 +36,7 @@ func SquareFrom(file p.Square, rank p.Square) p.Square {
 
 // OnHands - 持ち駒なら真
 func OnHands(sq p.Square) bool {
-	return SQ_HAND_START <= sq && sq < SQ_HAND_END
+	return p.SQ_HAND_START <= sq && sq < p.SQ_HAND_END
 }
 
 // OnBoard - 盤上なら真
@@ -214,7 +214,7 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [MOVES_SIZE]p.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]p.Piece
 }
@@ -247,13 +247,13 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [MOVES_SIZE]Move{}
+	pPosSys.Moves = [MOVES_SIZE]p.Move{}
 	// 取った駒のリスト
 	pPosSys.CapturedList = [MOVES_SIZE]p.Piece{}
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
+func ParseMove(command string, i *int, phase p.Phase) (p.Move, error) {
 	var len = len(command)
 	var hand_sq = p.SQUARE_EMPTY
 
@@ -264,19 +264,19 @@ func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 	// file
 	switch ch := command[*i]; ch {
 	case 'R':
-		hand_sq = SQ_R1
+		hand_sq = p.SQ_R1
 	case 'B':
-		hand_sq = SQ_B1
+		hand_sq = p.SQ_B1
 	case 'G':
-		hand_sq = SQ_G1
+		hand_sq = p.SQ_G1
 	case 'S':
-		hand_sq = SQ_S1
+		hand_sq = p.SQ_S1
 	case 'N':
-		hand_sq = SQ_N1
+		hand_sq = p.SQ_N1
 	case 'L':
-		hand_sq = SQ_L1
+		hand_sq = p.SQ_L1
 	case 'P':
-		hand_sq = SQ_P1
+		hand_sq = p.SQ_P1
 	default:
 		// Ignored
 	}
@@ -292,11 +292,11 @@ func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 		case p.SECOND:
 			from = hand_sq + p.HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(p.Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("Fatal: not *")
+			return *new(p.Move), fmt.Errorf("Fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -333,7 +333,7 @@ func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(p.Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -343,10 +343,10 @@ func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(p.Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(p.Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -357,5 +357,5 @@ func ParseMove(command string, i *int, phase p.Phase) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return p.NewMove(from, to, pro), nil
 }

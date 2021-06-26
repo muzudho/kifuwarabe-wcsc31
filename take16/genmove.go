@@ -66,19 +66,19 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 		var end_rank p.Square
 
 		switch from {
-		case SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_R2, SQ_B2, SQ_G2, SQ_S2: // 81マスに打てる
+		case p.SQ_R1, p.SQ_B1, p.SQ_G1, p.SQ_S1, p.SQ_R2, p.SQ_B2, p.SQ_G2, p.SQ_S2: // 81マスに打てる
 			start_rank = 1
 			end_rank = 10
-		case SQ_N1: // 3～9段目に打てる
+		case p.SQ_N1: // 3～9段目に打てる
 			start_rank = 3
 			end_rank = 10
-		case SQ_L1, SQ_P1: // 2～9段目に打てる
+		case p.SQ_L1, p.SQ_P1: // 2～9段目に打てる
 			start_rank = 2
 			end_rank = 10
-		case SQ_N2: // 1～7段目に打てる
+		case p.SQ_N2: // 1～7段目に打てる
 			start_rank = 1
 			end_rank = 8
-		case SQ_L2, SQ_P2: // 1～8段目に打てる
+		case p.SQ_L2, p.SQ_P2: // 1～8段目に打てる
 			start_rank = 1
 			end_rank = 9
 		default:
@@ -86,7 +86,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 		}
 
 		switch from {
-		case SQ_P1: // 先手Pawn
+		case p.SQ_P1: // 先手Pawn
 			// TODO 打ち歩詰め禁止
 			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := p.Square(9); file > 0; file-- {
@@ -97,7 +97,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 					}
 				}
 			}
-		case SQ_P2:
+		case p.SQ_P2:
 			// TODO 打ち歩詰め禁止
 			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := p.Square(9); file > 0; file-- {
@@ -539,9 +539,9 @@ func NifuSecond(pPos *p.Position, file p.Square) bool {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
+func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 
-	move_list := []Move{}
+	move_list := []p.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pBrain.PPosSys.GetPhase()
@@ -591,7 +591,7 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove(from, to, pro)
+								move := p.NewMove(from, to, pro)
 								pBrain.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
@@ -607,7 +607,7 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove(from, to, pro)
+								move := p.NewMove(from, to, pro)
 								pBrain.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -626,13 +626,13 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
 		// 自分の駒台もスキャンしよ（＾～＾）
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
-				hand_sq := p.Square(hand_index) + SQ_HAND_START
+				hand_sq := p.Square(hand_index) + p.SQ_HAND_START
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := NewMove(hand_sq, to, pro)
+						move := p.NewMove(hand_sq, to, pro)
 						pBrain.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -666,14 +666,14 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, NewMove(from, to, pro))
+								move_list = append(move_list, p.NewMove(from, to, pro))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, NewMove(from, to, pro))
+								move_list = append(move_list, p.NewMove(from, to, pro))
 							}
 						}
 					}
@@ -684,13 +684,13 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []Move {
 		// 自分の駒台もスキャンしよ（＾～＾）
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
-				hand_sq := p.Square(hand_index) + SQ_HAND_START
+				hand_sq := p.Square(hand_index) + p.SQ_HAND_START
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, NewMove(hand_sq, to, pro))
+						move_list = append(move_list, p.NewMove(hand_sq, to, pro))
 					}
 				}
 			}
