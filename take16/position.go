@@ -1,6 +1,90 @@
 package take16
 
+// マス番号 00～99,100～113
+type Square uint32
+
+// 評価値
 type Value int32
+
+// 00～99
+const BOARD_SIZE = 100
+
+// Piece location
+const (
+	PCLOC_K1 = iota
+	PCLOC_K2
+	PCLOC_R1
+	PCLOC_R2
+	PCLOC_B1
+	PCLOC_B2
+	PCLOC_L1
+	PCLOC_L2
+	PCLOC_L3
+	PCLOC_L4
+	PCLOC_START = 0
+	PCLOC_END   = 10 //この数を含まない
+	PCLOC_SIZE  = 10
+)
+
+const (
+	// 持ち駒を打つ 0～15 (Index)
+	HAND_K1_IDX    = 0
+	HAND_R1_IDX    = 1 // 先手飛打
+	HAND_B1_IDX    = 2
+	HAND_G1_IDX    = 3
+	HAND_S1_IDX    = 4
+	HAND_N1_IDX    = 5
+	HAND_L1_IDX    = 6
+	HAND_P1_IDX    = 7
+	HAND_K2_IDX    = 8
+	HAND_R2_IDX    = 9
+	HAND_B2_IDX    = 10
+	HAND_G2_IDX    = 11
+	HAND_S2_IDX    = 12
+	HAND_N2_IDX    = 13
+	HAND_L2_IDX    = 14
+	HAND_P2_IDX    = 15
+	HAND_SIZE      = 16
+	HAND_TYPE_SIZE = 8
+	HAND_IDX_START = HAND_K1_IDX
+	HAND_IDX_END   = HAND_SIZE // この数を含まない
+)
+
+// マス番号を指定しないことを意味するマス番号
+const SQUARE_EMPTY = Square(0)
+
+// 駒
+const (
+	PIECE_EMPTY = iota
+	PIECE_K1
+	PIECE_R1
+	PIECE_B1
+	PIECE_G1
+	PIECE_S1
+	PIECE_N1
+	PIECE_L1
+	PIECE_P1
+	PIECE_PR1
+	PIECE_PB1
+	PIECE_PS1
+	PIECE_PN1
+	PIECE_PL1
+	PIECE_PP1
+	PIECE_K2
+	PIECE_R2
+	PIECE_B2
+	PIECE_G2
+	PIECE_S2
+	PIECE_N2
+	PIECE_L2
+	PIECE_P2
+	PIECE_PR2
+	PIECE_PB2
+	PIECE_PS2
+	PIECE_PN2
+	PIECE_PL2
+	PIECE_PP2
+)
 
 // Position - 局面
 // TODO 利きボードも含めたい
