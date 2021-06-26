@@ -1,9 +1,9 @@
 package take16position
 
-import "fmt"
-
-// 1:先手 2:後手
-type Phase byte
+import (
+	"fmt"
+	"strconv"
+)
 
 // マス番号 00～99,100～113
 type Square uint32
@@ -92,15 +92,6 @@ const (
 	PIECE_PN2
 	PIECE_PL2
 	PIECE_PP2
-)
-
-const (
-	// 空マス
-	ZEROTH = Phase(0)
-	// 先手
-	FIRST = Phase(1)
-	// 後手
-	SECOND = Phase(2)
 )
 
 // File - マス番号から筋（列）を取り出します
@@ -302,4 +293,112 @@ func (pPos *Position) IsEmptySq(sq Square) bool {
 		return false
 	}
 	return pPos.Board[sq] == PIECE_EMPTY
+}
+
+// ParseMove - 指し手コマンドを解析
+func ParseMove(command string, i *int, phase Phase) (Move, error) {
+	var len = len(command)
+	var hand_sq = SQUARE_EMPTY
+
+	var from Square
+	var to Square
+	var pro = false
+
+	// file
+	switch ch := command[*i]; ch {
+	case 'R':
+		hand_sq = SQ_R1
+	case 'B':
+		hand_sq = SQ_B1
+	case 'G':
+		hand_sq = SQ_G1
+	case 'S':
+		hand_sq = SQ_S1
+	case 'N':
+		hand_sq = SQ_N1
+	case 'L':
+		hand_sq = SQ_L1
+	case 'P':
+		hand_sq = SQ_P1
+	default:
+		// Ignored
+	}
+
+	// 0=移動元 1=移動先
+	var count = 0
+
+	if hand_sq != SQUARE_EMPTY {
+		*i += 1
+		switch phase {
+		case FIRST:
+			from = hand_sq
+		case SECOND:
+			from = hand_sq + HAND_TYPE_SIZE
+		default:
+			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+		}
+
+		if command[*i] != '*' {
+			return *new(Move), fmt.Errorf("Fatal: not *")
+		}
+		*i += 1
+		count = 1
+	}
+
+	// file, rank
+	for count < 2 {
+		switch ch := command[*i]; ch {
+		case '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			*i += 1
+			file, err := strconv.Atoi(string(ch))
+			if err != nil {
+				panic(err)
+			}
+
+			var rank int
+			switch ch2 := command[*i]; ch2 {
+			case 'a':
+				rank = 1
+			case 'b':
+				rank = 2
+			case 'c':
+				rank = 3
+			case 'd':
+				rank = 4
+			case 'e':
+				rank = 5
+			case 'f':
+				rank = 6
+			case 'g':
+				rank = 7
+			case 'h':
+				rank = 8
+			case 'i':
+				rank = 9
+			default:
+				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+			}
+			*i += 1
+
+			sq := Square(file*10 + rank)
+			if count == 0 {
+				from = sq
+			} else if count == 1 {
+				to = sq
+			} else {
+				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+			}
+		default:
+			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+		}
+
+		count += 1
+	}
+
+	if *i < len && command[*i] == '+' {
+		*i += 1
+		pro = true
+	}
+
+	return NewMove(from, to, pro), nil
 }
