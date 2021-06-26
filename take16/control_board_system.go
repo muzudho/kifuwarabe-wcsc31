@@ -207,7 +207,7 @@ func AddControlLance(pPos *p.Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
 	for i := p.PCLOC_L1; i < p.PCLOC_L4+1; i += 1 {
 		from := pPos.PieceLocations[i]
-		if !OnHands(from) && // 持ち駒は除外
+		if !p.OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
 			from != excludeFrom && // 除外マスは除外
 			PIECE_TYPE_PL != What(pPos.Board[from]) { // 杏は除外
@@ -226,7 +226,7 @@ func AddControlBishop(pPos *p.Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
 	for i := p.PCLOC_B1; i < p.PCLOC_B2+1; i += 1 {
 		from := pPos.PieceLocations[i]
-		if !OnHands(from) && // 持ち駒は除外
+		if !p.OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 角落ちも考えて 空マスは除外
 			from != excludeFrom { // 除外マスは除外
 
@@ -244,7 +244,7 @@ func AddControlRook(pPos *p.Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom p.Square) {
 	for i := p.PCLOC_R1; i < p.PCLOC_R2+1; i += 1 {
 		from := pPos.PieceLocations[i]
-		if !OnHands(from) && // 持ち駒は除外
+		if !p.OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 飛落ちも考えて 空マスは除外
 			from != excludeFrom { // 除外マスは除外
 

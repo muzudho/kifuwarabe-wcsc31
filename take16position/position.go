@@ -543,3 +543,18 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 	return NewMove(from, to, pro), nil
 }
+
+// From - 筋と段からマス番号を作成します
+func SquareFrom(file Square, rank Square) Square {
+	return Square(file*10 + rank)
+}
+
+// OnHands - 持ち駒なら真
+func OnHands(sq Square) bool {
+	return SQ_HAND_START <= sq && sq < SQ_HAND_END
+}
+
+// OnBoard - 盤上なら真
+func OnBoard(sq Square) bool {
+	return 10 < sq && sq < 100 && File(sq) != 0 && Rank(sq) != 0
+}

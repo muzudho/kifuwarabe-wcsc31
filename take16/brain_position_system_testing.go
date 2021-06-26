@@ -122,7 +122,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 		// 盤から駒台の方向
 		for rank := p.Square(1); rank < 10; rank += 1 {
 			for file := p.Square(9); file > 0; file -= 1 {
-				sq := SquareFrom(file, rank)
+				sq := p.SquareFrom(file, rank)
 
 				// 10マスに1マスは駒台へ
 				change := p.Square(rand.Intn(10))
@@ -218,7 +218,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 			if num > 0 {
 				sq := p.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
-				if OnBoard(sq) && pPos.IsEmptySq(sq) {
+				if p.OnBoard(sq) && pPos.IsEmptySq(sq) {
 					pPos.Board[sq] = p.HandIndexToPiece[hand_index]
 					pPos.Hands1[hand_index] -= 1
 				}
@@ -238,7 +238,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 	for i := 0; i < 81*80; i += 1 {
 		sq1 := p.Square(rand.Intn(100))
 		sq2 := p.Square(rand.Intn(100))
-		if OnBoard(sq1) && OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
+		if p.OnBoard(sq1) && p.OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
 			piece := pPos.Board[sq1]
 			// 位置スワップ
 			pPos.Board[sq1] = pPos.Board[sq2]
@@ -307,7 +307,7 @@ func ShuffleBoard(pBrain *Brain, pPos *p.Position) {
 			// 盤上
 			for rank := p.Square(1); rank < 10; rank += 1 {
 				for file := p.Square(9); file > 0; file -= 1 {
-					sq := SquareFrom(file, rank)
+					sq := p.SquareFrom(file, rank)
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCode())
 
@@ -399,7 +399,7 @@ func CountAllPieces(pPos *p.Position) [8]int {
 	// 盤上
 	for rank := p.Square(1); rank < 10; rank += 1 {
 		for file := p.Square(9); file > 0; file -= 1 {
-			sq := SquareFrom(file, rank)
+			sq := p.SquareFrom(file, rank)
 
 			piece := What(pPos.Board[sq])
 			switch piece {

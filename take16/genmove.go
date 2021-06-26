@@ -60,7 +60,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 
 	if from == p.SQUARE_EMPTY {
 		panic(G.Log.Fatal("GenMoveEnd has empty square"))
-	} else if OnHands(from) {
+	} else if p.OnHands(from) {
 		// どこに打てるか
 		var start_rank p.Square
 		var end_rank p.Square
@@ -91,7 +91,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := p.Square(9); file > 0; file-- {
 					if !NifuFirst(pPos, file) { // ２歩禁止
-						to := SquareFrom(file, rank)
+						to := p.SquareFrom(file, rank)
 						ValidateSq(to)
 						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
@@ -102,7 +102,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := p.Square(9); file > 0; file-- {
 					if !NifuSecond(pPos, file) { // ２歩禁止
-						to := SquareFrom(file, rank)
+						to := p.SquareFrom(file, rank)
 						ValidateSq(to)
 						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
@@ -111,7 +111,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 		default:
 			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := p.Square(9); file > 0; file-- {
-					to := SquareFrom(file, rank)
+					to := p.SquareFrom(file, rank)
 					ValidateSq(to)
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
@@ -519,7 +519,7 @@ func GenMoveEnd(pPos *p.Position, from p.Square) []MoveEnd {
 // NifuFirst - 先手で二歩になるか筋調べ
 func NifuFirst(pPos *p.Position, file p.Square) bool {
 	for rank := p.Square(2); rank < 10; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == p.PIECE_P1 {
+		if pPos.Board[p.SquareFrom(file, rank)] == p.PIECE_P1 {
 			return true
 		}
 	}
@@ -530,7 +530,7 @@ func NifuFirst(pPos *p.Position, file p.Square) bool {
 // NifuSecond - 後手で二歩になるか筋調べ
 func NifuSecond(pPos *p.Position, file p.Square) bool {
 	for rank := p.Square(1); rank < 9; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == p.PIECE_P2 {
+		if pPos.Board[p.SquareFrom(file, rank)] == p.PIECE_P2 {
 			return true
 		}
 	}
@@ -563,7 +563,7 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 	}
 	hand_end = hand_start + p.HAND_TYPE_SIZE
 
-	if !OnBoard(friendKingSq) {
+	if !p.OnBoard(friendKingSq) {
 		// 自玉が盤上にない場合は、指し手を返しません
 
 	} else if pOpponentSumCB.Board1[friendKingSq] > 0 {

@@ -26,89 +26,8 @@ func FlipPhase(phase p.Phase) p.Phase {
 	return phase%2 + 1
 }
 
-// From - 筋と段からマス番号を作成します
-func SquareFrom(file p.Square, rank p.Square) p.Square {
-	return p.Square(file*10 + rank)
-}
-
-// OnHands - 持ち駒なら真
-func OnHands(sq p.Square) bool {
-	return p.SQ_HAND_START <= sq && sq < p.SQ_HAND_END
-}
-
-// OnBoard - 盤上なら真
-func OnBoard(sq p.Square) bool {
-	return 10 < sq && sq < 100 && p.File(sq) != 0 && p.Rank(sq) != 0
-}
-
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
-
-// PieceFrom - 文字列からPieceを作成
-func PieceFrom(piece string) p.Piece {
-	switch piece {
-	case "":
-		return p.PIECE_EMPTY
-	case "K":
-		return p.PIECE_K1
-	case "R":
-		return p.PIECE_R1
-	case "B":
-		return p.PIECE_B1
-	case "G":
-		return p.PIECE_G1
-	case "S":
-		return p.PIECE_S1
-	case "N":
-		return p.PIECE_N1
-	case "L":
-		return p.PIECE_L1
-	case "P":
-		return p.PIECE_P1
-	case "+R":
-		return p.PIECE_PR1
-	case "+B":
-		return p.PIECE_PB1
-	case "+S":
-		return p.PIECE_PS1
-	case "+N":
-		return p.PIECE_PN1
-	case "+L":
-		return p.PIECE_PL1
-	case "+P":
-		return p.PIECE_PP1
-	case "k":
-		return p.PIECE_K2
-	case "r":
-		return p.PIECE_R2
-	case "b":
-		return p.PIECE_B2
-	case "g":
-		return p.PIECE_G2
-	case "s":
-		return p.PIECE_S2
-	case "n":
-		return p.PIECE_N2
-	case "l":
-		return p.PIECE_L2
-	case "p":
-		return p.PIECE_P2
-	case "+r":
-		return p.PIECE_PR2
-	case "+b":
-		return p.PIECE_PB2
-	case "+s":
-		return p.PIECE_PS2
-	case "+n":
-		return p.PIECE_PN2
-	case "+l":
-		return p.PIECE_PL2
-	case "+p":
-		return p.PIECE_PP2
-	default:
-		panic(G.Log.Fatal("Unknown piece=[%s]", piece))
-	}
-}
 
 // PieceFromPhPt - 駒作成。空マスは作れません
 func PieceFromPhPt(phase p.Phase, pieceType PieceType) p.Piece {

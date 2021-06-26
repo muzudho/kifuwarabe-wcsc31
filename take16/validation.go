@@ -6,7 +6,7 @@ import (
 
 // マス番号が正常値でなければ強制終了させます
 func ValidateSq(sq p.Square) {
-	if !OnBoard(sq) && !OnHands(sq) {
+	if !p.OnBoard(sq) && !p.OnHands(sq) {
 		panic(G.Log.Fatal("ValidateSq: sq=%d", sq))
 	}
 }

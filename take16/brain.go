@@ -111,7 +111,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				for i := p.PCLOC_R1; i < p.PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == p.SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -119,7 +119,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				for i := p.PCLOC_B1; i < p.PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == p.SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -127,7 +127,7 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				for i := p.PCLOC_L1; i < p.PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == p.SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}

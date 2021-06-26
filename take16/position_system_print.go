@@ -199,7 +199,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 	spaces := 0
 	for rank := p.Square(1); rank < 10; rank += 1 {
 		for file := p.Square(9); file > 0; file -= 1 {
-			piece := pPos.Board[SquareFrom(file, rank)]
+			piece := pPos.Board[p.SquareFrom(file, rank)]
 
 			if piece != p.PIECE_EMPTY {
 				if spaces > 0 {
