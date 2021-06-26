@@ -123,7 +123,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 			leaf = true
 		} else {
 			// 駒を取っている場合は、探索を延長します
-			if curDepth < depthEnd || captured != p.PIECE_EMPTY {
+			if curDepth < depthEnd { // TODO  || captured != p.PIECE_EMPTY
 				var search_type2 SearchType
 				if captured != p.PIECE_EMPTY {
 					search_type2 = SEARCH_CAPTURE

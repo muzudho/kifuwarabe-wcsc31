@@ -3,6 +3,7 @@
 ## 歩を取るか
 
 ```plain
+kifuwarabe-wcsc31
 usi
 isready
 usinewgame
@@ -11,3 +12,17 @@ pos
 movelist
 go
 ```
+
+## フリーズした局面
+
+```plain
+kifuwarabe-wcsc31
+usi
+isready
+usinewgame
+position startpos moves 4i3h 8b7b 9g9f 6a6b 3g3f 5a5b 8i9g 5b6a 7i6h 7b8b 8g8f 3c3d 1g1f 4a5b 1f1e 2b3c 3f3e 6a5a 3i4h 8b9b 6h7i 3c1e 2h1h 1e4b
+pos
+go
+```
+
+駒を取った時の延長でフリーズする？  

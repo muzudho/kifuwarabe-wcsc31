@@ -47,7 +47,7 @@ func OnBoard(sq p.Square) bool {
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
-// PieceFrom - 文字列
+// PieceFrom - 文字列からPieceを作成
 func PieceFrom(piece string) p.Piece {
 	switch piece {
 	case "":
