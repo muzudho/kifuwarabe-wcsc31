@@ -178,7 +178,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Val
 		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(SprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
+			G.Chat.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())

@@ -367,7 +367,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 	}
 
 	// position sfen 文字列を取得
-	command := SprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
+	command := sprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
 	G.Chat.Debug("#command=%s", command)
 
 	// 利きの再計算もやってくれる
@@ -381,7 +381,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 	G.Chat.Debug(pPos.SprintBoard())
 	G.Chat.Debug(pNerve.SprintBoardFooter())
 	ShowAllPiecesCount(pPos)
-	command2 := SprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
+	command2 := sprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
 	G.Chat.Debug("#command2=%s", command2)
 
 	// 駒の数を数えます

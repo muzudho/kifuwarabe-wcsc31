@@ -9,7 +9,7 @@ import (
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
-func SprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRecord *r.DifferenceRecord) string {
+func sprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRecord *r.DifferenceRecord) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
 	case p.FIRST:
@@ -170,7 +170,7 @@ func SprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 	lines = append(lines, "\n")
 	lines = append(lines, "moves")
 
-	lines = append(lines, pPosSys.createMovesText(pRecord))
+	lines = append(lines, createMovesText(pRecord))
 	lines = append(lines, "\n")
 	lines = append(lines, fmt.Sprintf("KomawariValue: %d %d\n", pPosSys.PPosition[b1].MaterialValue, pPosSys.PPosition[b2].MaterialValue))
 
@@ -182,7 +182,7 @@ func SprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 }
 
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func SprintSfenResignation(pPosSys *PositionSystem, pPos *p.Position, pRecord *r.DifferenceRecord) string {
+func sprintSfenResignation(pPosSys *PositionSystem, pPos *p.Position, pRecord *r.DifferenceRecord) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
@@ -368,8 +368,8 @@ func SprintSfenResignation(pPosSys *PositionSystem, pPos *p.Position, pRecord *r
 	return fmt.Sprintf("position sfen %s %s %s %d\n", buf, phaseStr, hands, movesNum)
 }
 
-// SprintRecord - 棋譜表示（＾～＾）
-func SprintRecord(pRecord *r.DifferenceRecord) string {
+// sprintRecord - 棋譜表示（＾～＾）
+func sprintRecord(pRecord *r.DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, r.MOVES_SIZE*9)
@@ -384,7 +384,7 @@ func SprintRecord(pRecord *r.DifferenceRecord) string {
 }
 
 // createMovesText - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
-func (pPosSys *PositionSystem) createMovesText(pRecord *r.DifferenceRecord) string {
+func createMovesText(pRecord *r.DifferenceRecord) string {
 	moves_text := make([]byte, 0, pRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
 	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
