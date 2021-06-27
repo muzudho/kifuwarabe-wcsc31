@@ -47,4 +47,5 @@ go get -u github.com/go-delve/delve/cmd/dlv
 
 ## Documents
 
+[Design](./doc/design.md)  
 [Test](./doc/test.md)  
