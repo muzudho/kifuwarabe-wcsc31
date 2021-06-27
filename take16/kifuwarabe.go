@@ -148,7 +148,7 @@ MainLoop:
 				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.PRecord.StartMovesNum,
-					pBrain.PPosSys.OffsetMovesIndex))
+					pBrain.PPosSys.PRecord.OffsetMovesIndex))
 				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 				G.Chat.Debug(pBrain.SprintBoardFooter())
 				ok = true
@@ -162,7 +162,7 @@ MainLoop:
 					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoardHeader(
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.PRecord.StartMovesNum,
-						pBrain.PPosSys.OffsetMovesIndex))
+						pBrain.PPosSys.PRecord.OffsetMovesIndex))
 					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].SprintBoard())
 					G.Chat.Debug(pBrain.SprintBoardFooter())
 					ok = true
@@ -184,7 +184,7 @@ MainLoop:
 				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.PRecord.StartMovesNum,
-					pBrain.PPosSys.OffsetMovesIndex))
+					pBrain.PPosSys.PRecord.OffsetMovesIndex))
 				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 				G.Chat.Debug(pBrain.SprintBoardFooter())
 				panic(err)
@@ -331,7 +331,7 @@ MainLoop:
 					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.PRecord.StartMovesNum,
-						pBrain.PPosSys.OffsetMovesIndex))
+						pBrain.PPosSys.PRecord.OffsetMovesIndex))
 					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 					G.Chat.Debug(pBrain.SprintBoardFooter())
 					// あの駒、どこにいんの（＾～＾）？

@@ -40,7 +40,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	lines := []string{}
 	lines = append(lines, "\n")
-	lines = append(lines, fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pPosSys.PRecord.StartMovesNum, (pPosSys.PRecord.StartMovesNum+pPosSys.OffsetMovesIndex), phase_str))
+	lines = append(lines, fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pPosSys.PRecord.StartMovesNum, (pPosSys.PRecord.StartMovesNum+pPosSys.PRecord.OffsetMovesIndex), phase_str))
 	lines = append(lines, "\n")
 	lines = append(lines, "    k    r    b    g    s    n    l    p\n")
 	lines = append(lines, "+----+----+----+----+----+----+----+----+\n")
@@ -182,8 +182,8 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 // CreateMovesList - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
 func (pPosSys *PositionSystem) createMovesText() string {
-	moves_text := make([]byte, 0, pPosSys.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
-	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
+	moves_text := make([]byte, 0, pPosSys.PRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
+	for i := 0; i < pPosSys.PRecord.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
 		moves_text = append(moves_text, pPosSys.PRecord.Moves[i].ToCode()...)
 	}
@@ -371,7 +371,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 	}
 
 	// 手数
-	movesNum := pPosSys.PRecord.StartMovesNum + pPosSys.OffsetMovesIndex
+	movesNum := pPosSys.PRecord.StartMovesNum + pPosSys.PRecord.OffsetMovesIndex
 
 	// 指し手
 	// moves_text := pPosSys.createMovesText()
@@ -385,7 +385,7 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
-	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
+	for i := 0; i < pPosSys.PRecord.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, pPosSys.PRecord.Moves[i].ToCode()...)
 		record_text = append(record_text, ' ')
 		record_text = append(record_text, pPosSys.PRecord.CapturedList[i].ToCode()...)

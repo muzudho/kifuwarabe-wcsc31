@@ -91,7 +91,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 				pBrain.PPosSys.phase,
 				pBrain.PPosSys.PRecord.StartMovesNum,
-				pBrain.PPosSys.OffsetMovesIndex))
+				pBrain.PPosSys.PRecord.OffsetMovesIndex))
 			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 			G.Chat.Debug(pBrain.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
@@ -104,7 +104,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 		nodesNum += 1
 
 		// 取った駒は棋譜の１手前に記録されています
-		captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex-1]
+		captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.PRecord.OffsetMovesIndex-1]
 
 		var leaf = false
 

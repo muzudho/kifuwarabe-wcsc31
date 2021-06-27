@@ -43,7 +43,8 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 		// 平手初期局面をセット（＾～＾）
 		pPos.ClearBoard()
 		pBrain.PCtrlBrdSys = NewControlBoardSystem()
-		pBrain.PPosSys.resetPosition()
+		pBrain.PPosSys.ResetPosition()
+		pBrain.PPosSys.PRecord.ResetDifferenceRecord()
 		pPos.SetToStartpos()
 		i = 17
 
@@ -56,7 +57,8 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 		// "position sfen " のはずだから 14 文字飛ばすぜ（＾～＾）
 		pPos.ClearBoard()
 		pBrain.PCtrlBrdSys = NewControlBoardSystem()
-		pBrain.PPosSys.resetPosition()
+		pBrain.PPosSys.ResetPosition()
+		pBrain.PPosSys.PRecord.ResetDifferenceRecord()
 		i = 14
 		var rank = p.Square(1)
 		var file = p.Square(9)
@@ -318,13 +320,13 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 				fmt.Println(pPos.SprintBoardHeader(
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.PRecord.StartMovesNum,
-					pBrain.PPosSys.OffsetMovesIndex))
+					pBrain.PPosSys.PRecord.OffsetMovesIndex))
 				fmt.Println(pPos.SprintBoard())
 				fmt.Println(pBrain.SprintBoardFooter())
 				panic(err)
 			}
-			pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
-			pBrain.PPosSys.OffsetMovesIndex += 1
+			pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.PRecord.OffsetMovesIndex] = move
+			pBrain.PPosSys.PRecord.OffsetMovesIndex += 1
 			pBrain.PPosSys.FlipPhase()
 		}
 	}
@@ -367,9 +369,9 @@ func (pBrain *Brain) ReadPosition(pPos *p.Position, command string) {
 	}
 
 	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
-	moves_size := pBrain.PPosSys.OffsetMovesIndex
+	moves_size := pBrain.PPosSys.PRecord.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
-	pBrain.PPosSys.OffsetMovesIndex = 0
+	pBrain.PPosSys.PRecord.OffsetMovesIndex = 0
 	pBrain.PPosSys.phase = start_phase
 	for i = 0; i < moves_size; i += 1 {
 		pBrain.DoMove(pPos, pBrain.PPosSys.PRecord.Moves[i])
@@ -646,17 +648,17 @@ func (pBrain *Brain) DoMove(pPos *p.Position, move p.Move) {
 		}
 
 		if cap_dst_sq != p.SQUARE_EMPTY {
-			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = captured
+			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.PRecord.OffsetMovesIndex] = captured
 			pPos.Hands1[cap_dst_sq-p.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = p.PIECE_EMPTY
+			pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.PRecord.OffsetMovesIndex] = p.PIECE_EMPTY
 		}
 	}
 
 	// DoMoveでフェーズを１つ進めます
-	pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex] = move
-	pBrain.PPosSys.OffsetMovesIndex += 1
+	pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.PRecord.OffsetMovesIndex] = move
+	pBrain.PPosSys.PRecord.OffsetMovesIndex += 1
 	pBrain.PPosSys.FlipPhase()
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
@@ -733,7 +735,7 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 
 	// G.StderrChat.Trace(pBrain.PPosSys.Sprint())
 
-	if pBrain.PPosSys.OffsetMovesIndex < 1 {
+	if pBrain.PPosSys.PRecord.OffsetMovesIndex < 1 {
 		return
 	}
 
@@ -742,8 +744,8 @@ func (pBrain *Brain) UndoMove(pPos *p.Position) {
 	mov_piece_type := PIECE_TYPE_EMPTY
 
 	// 先に 手目 を１つ戻すぜ（＾～＾）UndoMoveでフェーズもひっくり返すぜ（＾～＾）
-	pBrain.PPosSys.OffsetMovesIndex -= 1
-	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex]
+	pBrain.PPosSys.PRecord.OffsetMovesIndex -= 1
+	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.PRecord.OffsetMovesIndex]
 	// next_phase := pBrain.PPosSys.GetPhase()
 	pBrain.PPosSys.FlipPhase()
 
@@ -913,10 +915,10 @@ func (pBrain *Brain) undoCapture(pPos *p.Position) {
 	cap_piece_type := PIECE_TYPE_EMPTY
 
 	// 手目もフェーズもすでに１つ戻っているとするぜ（＾～＾）
-	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.OffsetMovesIndex]
+	move := pBrain.PPosSys.PRecord.Moves[pBrain.PPosSys.PRecord.OffsetMovesIndex]
 
 	// 取った駒
-	captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.OffsetMovesIndex]
+	captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.PRecord.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
 	// 駒得評価値。今、自分は駒を取られて減っているので、それを戻すために増やす。

@@ -32,7 +32,7 @@ func (pBrain *Brain) Dump() string {
 
 	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pBrain.PPosSys.PRecord.StartMovesNum))
 
-	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
+	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.PRecord.OffsetMovesIndex))
 
 	// moves
 	buffer.WriteString(pBrain.SprintBoardFooter())
