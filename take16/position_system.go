@@ -112,20 +112,14 @@ type PositionSystem struct {
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
 	pPosSys.PPosition = [POS_LAYER_SIZE]*p.Position{p.NewPosition(), p.NewPosition(), p.NewPosition(), p.NewPosition()}
+	pPosSys.ResetPosition()
 	return pPosSys
 }
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
-func (pPosSys *PositionSystem) ResetPosition(pRecord *DifferenceRecord) {
+func (pPosSys *PositionSystem) ResetPosition() {
 	// 先手の局面
 	pPosSys.phase = p.FIRST
-	// 何手目か
-	pRecord.StartMovesNum = 1
-	// pPosSys.OffsetMovesIndex = 0
-	// 指し手のリスト
-	pRecord.Moves = [MOVES_SIZE]p.Move{}
-	// 取った駒のリスト
-	pRecord.CapturedList = [MOVES_SIZE]p.Piece{}
 }
 
 // FlipPhase - フェーズをひっくり返すぜ（＾～＾）

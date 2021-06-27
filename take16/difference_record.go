@@ -17,10 +17,17 @@ type DifferenceRecord struct {
 
 func NewDifferenceRecord() *DifferenceRecord {
 	var pRecord = new(DifferenceRecord)
-
+	pRecord.ResetDifferenceRecord()
 	return pRecord
 }
 
 func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	pRecord.OffsetMovesIndex = 0
+	// 何手目か
+	pRecord.StartMovesNum = 1
+	pRecord.OffsetMovesIndex = 0
+	// 指し手のリスト
+	pRecord.Moves = [MOVES_SIZE]p.Move{}
+	// 取った駒のリスト
+	pRecord.CapturedList = [MOVES_SIZE]p.Piece{}
 }

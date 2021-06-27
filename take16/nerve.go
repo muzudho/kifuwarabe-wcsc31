@@ -32,9 +32,8 @@ type Nerve struct {
 func NewNerve() *Nerve {
 	var pNerve = new(Nerve)
 	pNerve.BuildType = BUILD_DEV
-	pNerve.PRecord = NewDifferenceRecord()
 	pNerve.PPosSys = NewPositionSystem()
-	pNerve.PPosSys.ResetPosition(pNerve.PRecord)
+	pNerve.PRecord = NewDifferenceRecord()
 	pNerve.PCtrlBrdSys = NewControlBoardSystem()
 	return pNerve
 }
@@ -47,7 +46,7 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 		// 平手初期局面をセット（＾～＾）
 		pPos.ClearBoard()
 		pNerve.PCtrlBrdSys = NewControlBoardSystem()
-		pNerve.PPosSys.ResetPosition(pNerve.PRecord)
+		pNerve.PPosSys.ResetPosition()
 		pNerve.PRecord.ResetDifferenceRecord()
 		pPos.SetToStartpos()
 		i = 17
@@ -61,7 +60,7 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 		// "position sfen " のはずだから 14 文字飛ばすぜ（＾～＾）
 		pPos.ClearBoard()
 		pNerve.PCtrlBrdSys = NewControlBoardSystem()
-		pNerve.PPosSys.ResetPosition(pNerve.PRecord)
+		pNerve.PPosSys.ResetPosition()
 		pNerve.PRecord.ResetDifferenceRecord()
 		i = 14
 		var rank = p.Square(1)
