@@ -287,14 +287,14 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 	}
 
 	// 手目は 1 に戻します
-	pNerve.PPosSys.PRecord.StartMovesNum = 1
-	pNerve.PPosSys.PRecord.OffsetMovesIndex = 0
+	pNerve.PRecord.StartMovesNum = 1
+	pNerve.PRecord.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.SprintBoardHeader(
 		pNerve.PPosSys.phase,
-		pNerve.PPosSys.PRecord.StartMovesNum,
-		pNerve.PPosSys.PRecord.OffsetMovesIndex))
+		pNerve.PRecord.StartMovesNum,
+		pNerve.PRecord.OffsetMovesIndex))
 	G.Chat.Debug(pPos.SprintBoard())
 	G.Chat.Debug(pNerve.SprintBoardFooter())
 
@@ -366,7 +366,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 	}
 
 	// position sfen 文字列を取得
-	command := pNerve.PPosSys.SprintSfenResignation(pPos)
+	command := pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pPos)
 	G.Chat.Debug("#command=%s", command)
 
 	// 利きの再計算もやってくれる
@@ -375,12 +375,12 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 	G.Chat.Debug(pPos.SprintBoardHeader(
 		pNerve.PPosSys.phase,
-		pNerve.PPosSys.PRecord.StartMovesNum,
-		pNerve.PPosSys.PRecord.OffsetMovesIndex))
+		pNerve.PRecord.StartMovesNum,
+		pNerve.PRecord.OffsetMovesIndex))
 	G.Chat.Debug(pPos.SprintBoard())
 	G.Chat.Debug(pNerve.SprintBoardFooter())
 	ShowAllPiecesCount(pPos)
-	command2 := pNerve.PPosSys.SprintSfenResignation(pPos)
+	command2 := pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pPos)
 	G.Chat.Debug("#command2=%s", command2)
 
 	// 駒の数を数えます

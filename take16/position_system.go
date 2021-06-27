@@ -107,32 +107,25 @@ type PositionSystem struct {
 
 	// 先手が1、後手が2（＾～＾）
 	phase p.Phase
-
-	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
-	PRecord *DifferenceRecord
 }
 
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
-
-	pPosSys.PRecord = NewDifferenceRecord()
 	pPosSys.PPosition = [POS_LAYER_SIZE]*p.Position{p.NewPosition(), p.NewPosition(), p.NewPosition(), p.NewPosition()}
-
-	pPosSys.ResetPosition()
 	return pPosSys
 }
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
-func (pPosSys *PositionSystem) ResetPosition() {
+func (pPosSys *PositionSystem) ResetPosition(pRecord *DifferenceRecord) {
 	// 先手の局面
 	pPosSys.phase = p.FIRST
 	// 何手目か
-	pPosSys.PRecord.StartMovesNum = 1
+	pRecord.StartMovesNum = 1
 	// pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.PRecord.Moves = [MOVES_SIZE]p.Move{}
+	pRecord.Moves = [MOVES_SIZE]p.Move{}
 	// 取った駒のリスト
-	pPosSys.PRecord.CapturedList = [MOVES_SIZE]p.Piece{}
+	pRecord.CapturedList = [MOVES_SIZE]p.Piece{}
 }
 
 // FlipPhase - フェーズをひっくり返すぜ（＾～＾）

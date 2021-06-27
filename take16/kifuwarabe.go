@@ -147,8 +147,8 @@ MainLoop:
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
 				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
-					pNerve.PPosSys.PRecord.StartMovesNum,
-					pNerve.PPosSys.PRecord.OffsetMovesIndex))
+					pNerve.PRecord.StartMovesNum,
+					pNerve.PRecord.OffsetMovesIndex))
 				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 				G.Chat.Debug(pNerve.SprintBoardFooter())
 				ok = true
@@ -161,8 +161,8 @@ MainLoop:
 				} else {
 					G.Chat.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
 						pNerve.PPosSys.phase,
-						pNerve.PPosSys.PRecord.StartMovesNum,
-						pNerve.PPosSys.PRecord.OffsetMovesIndex))
+						pNerve.PRecord.StartMovesNum,
+						pNerve.PRecord.OffsetMovesIndex))
 					G.Chat.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
 					G.Chat.Debug(pNerve.SprintBoardFooter())
 					ok = true
@@ -183,8 +183,8 @@ MainLoop:
 			if err != nil {
 				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
-					pNerve.PPosSys.PRecord.StartMovesNum,
-					pNerve.PPosSys.PRecord.OffsetMovesIndex))
+					pNerve.PRecord.StartMovesNum,
+					pNerve.PRecord.OffsetMovesIndex))
 				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 				G.Chat.Debug(pNerve.SprintBoardFooter())
 				panic(err)
@@ -306,10 +306,10 @@ MainLoop:
 			}
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.SprintSfenResignation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
+			G.Chat.Debug(pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.SprintRecord())
+			G.Chat.Debug(pNerve.PPosSys.SprintRecord(pNerve.PRecord))
 		case "movelist":
 			// 指し手の一覧
 			moveList(pNerve)
@@ -330,8 +330,8 @@ MainLoop:
 				for i := 0; i < MOVES_SIZE; i += 1 {
 					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pNerve.PPosSys.phase,
-						pNerve.PPosSys.PRecord.StartMovesNum,
-						pNerve.PPosSys.PRecord.OffsetMovesIndex))
+						pNerve.PRecord.StartMovesNum,
+						pNerve.PRecord.OffsetMovesIndex))
 					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 					G.Chat.Debug(pNerve.SprintBoardFooter())
 					// あの駒、どこにいんの（＾～＾）？
@@ -349,7 +349,7 @@ MainLoop:
 					pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], bestmove)
 				}
 
-				sfen1 := pNerve.PPosSys.SprintSfenResignation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
+				sfen1 := pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 				pNerve.ReadPosition(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], sfen1)
 
 				// ここを開始局面ということにするぜ（＾～＾）
@@ -404,7 +404,7 @@ MainLoop:
 					G.Chat.Debug("Error: %s", err)
 				}
 
-				G.Chat.Debug(pNerve.PPosSys.SprintDiff(PosLayerT(b1), PosLayerT(b2)))
+				G.Chat.Debug(pNerve.PPosSys.SprintDiff(pNerve.PRecord, PosLayerT(b1), PosLayerT(b2)))
 				ok = true
 			}
 

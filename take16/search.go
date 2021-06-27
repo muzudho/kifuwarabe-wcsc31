@@ -90,8 +90,8 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 			// 強制終了した局面（＾～＾）
 			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 				pNerve.PPosSys.phase,
-				pNerve.PPosSys.PRecord.StartMovesNum,
-				pNerve.PPosSys.PRecord.OffsetMovesIndex))
+				pNerve.PRecord.StartMovesNum,
+				pNerve.PRecord.OffsetMovesIndex))
 			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 			G.Chat.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
@@ -104,7 +104,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 		nodesNum += 1
 
 		// 取った駒は棋譜の１手前に記録されています
-		captured := pNerve.PPosSys.PRecord.CapturedList[pNerve.PPosSys.PRecord.OffsetMovesIndex-1]
+		captured := pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex-1]
 
 		var leaf = false
 
@@ -177,7 +177,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.SprintDiff(0, 1))
+			G.Chat.Debug(pNerve.PPosSys.SprintDiff(pNerve.PRecord, 0, 1))
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())

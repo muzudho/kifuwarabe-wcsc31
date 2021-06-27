@@ -8,7 +8,7 @@ import (
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
-func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
+func (pPosSys *PositionSystem) SprintDiff(pRecord *DifferenceRecord, b1 PosLayerT, b2 PosLayerT) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
 	case p.FIRST:
@@ -40,7 +40,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	lines := []string{}
 	lines = append(lines, "\n")
-	lines = append(lines, fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pPosSys.PRecord.StartMovesNum, (pPosSys.PRecord.StartMovesNum+pPosSys.PRecord.OffsetMovesIndex), phase_str))
+	lines = append(lines, fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pRecord.StartMovesNum, (pRecord.StartMovesNum+pRecord.OffsetMovesIndex), phase_str))
 	lines = append(lines, "\n")
 	lines = append(lines, "    k    r    b    g    s    n    l    p\n")
 	lines = append(lines, "+----+----+----+----+----+----+----+----+\n")
@@ -169,7 +169,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	lines = append(lines, "\n")
 	lines = append(lines, "moves")
 
-	lines = append(lines, pPosSys.createMovesText())
+	lines = append(lines, pPosSys.createMovesText(pRecord))
 	lines = append(lines, "\n")
 	lines = append(lines, fmt.Sprintf("KomawariValue: %d %d\n", pPosSys.PPosition[b1].MaterialValue, pPosSys.PPosition[b2].MaterialValue))
 
@@ -181,11 +181,11 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 }
 
 // CreateMovesList - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
-func (pPosSys *PositionSystem) createMovesText() string {
-	moves_text := make([]byte, 0, pPosSys.PRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
-	for i := 0; i < pPosSys.PRecord.OffsetMovesIndex; i += 1 {
+func (pPosSys *PositionSystem) createMovesText(pRecord *DifferenceRecord) string {
+	moves_text := make([]byte, 0, pRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
+	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pPosSys.PRecord.Moves[i].ToCode()...)
+		moves_text = append(moves_text, pRecord.Moves[i].ToCode()...)
 	}
 	return string(moves_text)
 }
@@ -194,7 +194,7 @@ func (pPosSys *PositionSystem) createMovesText() string {
 var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
+func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *DifferenceRecord, pPos *p.Position) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
@@ -371,7 +371,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 	}
 
 	// 手数
-	movesNum := pPosSys.PRecord.StartMovesNum + pPosSys.PRecord.OffsetMovesIndex
+	movesNum := pRecord.StartMovesNum + pRecord.OffsetMovesIndex
 
 	// 指し手
 	// moves_text := pPosSys.createMovesText()
@@ -381,14 +381,14 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 }
 
 // SprintRecord - 棋譜表示（＾～＾）
-func (pPosSys *PositionSystem) SprintRecord() string {
+func (pPosSys *PositionSystem) SprintRecord(pRecord *DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
-	for i := 0; i < pPosSys.PRecord.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, pPosSys.PRecord.Moves[i].ToCode()...)
+	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
+		record_text = append(record_text, pRecord.Moves[i].ToCode()...)
 		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPosSys.PRecord.CapturedList[i].ToCode()...)
+		record_text = append(record_text, pRecord.CapturedList[i].ToCode()...)
 		record_text = append(record_text, '\n')
 	}
 

@@ -25,12 +25,16 @@ type Nerve struct {
 	PPosSys *PositionSystem
 	// 利きボード・システム
 	PCtrlBrdSys *ControlBoardSystem
+	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
+	PRecord *DifferenceRecord
 }
 
 func NewNerve() *Nerve {
 	var pNerve = new(Nerve)
 	pNerve.BuildType = BUILD_DEV
+	pNerve.PRecord = NewDifferenceRecord()
 	pNerve.PPosSys = NewPositionSystem()
+	pNerve.PPosSys.ResetPosition(pNerve.PRecord)
 	pNerve.PCtrlBrdSys = NewControlBoardSystem()
 	return pNerve
 }
@@ -43,8 +47,8 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 		// 平手初期局面をセット（＾～＾）
 		pPos.ClearBoard()
 		pNerve.PCtrlBrdSys = NewControlBoardSystem()
-		pNerve.PPosSys.ResetPosition()
-		pNerve.PPosSys.PRecord.ResetDifferenceRecord()
+		pNerve.PPosSys.ResetPosition(pNerve.PRecord)
+		pNerve.PRecord.ResetDifferenceRecord()
 		pPos.SetToStartpos()
 		i = 17
 
@@ -57,8 +61,8 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 		// "position sfen " のはずだから 14 文字飛ばすぜ（＾～＾）
 		pPos.ClearBoard()
 		pNerve.PCtrlBrdSys = NewControlBoardSystem()
-		pNerve.PPosSys.ResetPosition()
-		pNerve.PPosSys.PRecord.ResetDifferenceRecord()
+		pNerve.PPosSys.ResetPosition(pNerve.PRecord)
+		pNerve.PRecord.ResetDifferenceRecord()
 		i = 14
 		var rank = p.Square(1)
 		var file = p.Square(9)
@@ -276,7 +280,7 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 		}
 
 		// 手数
-		pNerve.PPosSys.PRecord.StartMovesNum = 0
+		pNerve.PRecord.StartMovesNum = 0
 	MovesNumLoop:
 		for i < len {
 			switch figure := command[i]; figure {
@@ -286,8 +290,8 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 					panic(err)
 				}
 				i += 1
-				pNerve.PPosSys.PRecord.StartMovesNum *= 10
-				pNerve.PPosSys.PRecord.StartMovesNum += num
+				pNerve.PRecord.StartMovesNum *= 10
+				pNerve.PRecord.StartMovesNum += num
 			case ' ':
 				i += 1
 				break MovesNumLoop
@@ -319,14 +323,14 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 				fmt.Println(err)
 				fmt.Println(pPos.SprintBoardHeader(
 					pNerve.PPosSys.phase,
-					pNerve.PPosSys.PRecord.StartMovesNum,
-					pNerve.PPosSys.PRecord.OffsetMovesIndex))
+					pNerve.PRecord.StartMovesNum,
+					pNerve.PRecord.OffsetMovesIndex))
 				fmt.Println(pPos.SprintBoard())
 				fmt.Println(pNerve.SprintBoardFooter())
 				panic(err)
 			}
-			pNerve.PPosSys.PRecord.Moves[pNerve.PPosSys.PRecord.OffsetMovesIndex] = move
-			pNerve.PPosSys.PRecord.OffsetMovesIndex += 1
+			pNerve.PRecord.Moves[pNerve.PRecord.OffsetMovesIndex] = move
+			pNerve.PRecord.OffsetMovesIndex += 1
 			pNerve.PPosSys.FlipPhase()
 		}
 	}
@@ -369,12 +373,12 @@ func (pNerve *Nerve) ReadPosition(pPos *p.Position, command string) {
 	}
 
 	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
-	moves_size := pNerve.PPosSys.PRecord.OffsetMovesIndex
+	moves_size := pNerve.PRecord.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
-	pNerve.PPosSys.PRecord.OffsetMovesIndex = 0
+	pNerve.PRecord.OffsetMovesIndex = 0
 	pNerve.PPosSys.phase = start_phase
 	for i = 0; i < moves_size; i += 1 {
-		pNerve.DoMove(pPos, pNerve.PPosSys.PRecord.Moves[i])
+		pNerve.DoMove(pPos, pNerve.PRecord.Moves[i])
 	}
 }
 
@@ -648,17 +652,17 @@ func (pNerve *Nerve) DoMove(pPos *p.Position, move p.Move) {
 		}
 
 		if cap_dst_sq != p.SQUARE_EMPTY {
-			pNerve.PPosSys.PRecord.CapturedList[pNerve.PPosSys.PRecord.OffsetMovesIndex] = captured
+			pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex] = captured
 			pPos.Hands1[cap_dst_sq-p.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pNerve.PPosSys.PRecord.CapturedList[pNerve.PPosSys.PRecord.OffsetMovesIndex] = p.PIECE_EMPTY
+			pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex] = p.PIECE_EMPTY
 		}
 	}
 
 	// DoMoveでフェーズを１つ進めます
-	pNerve.PPosSys.PRecord.Moves[pNerve.PPosSys.PRecord.OffsetMovesIndex] = move
-	pNerve.PPosSys.PRecord.OffsetMovesIndex += 1
+	pNerve.PRecord.Moves[pNerve.PRecord.OffsetMovesIndex] = move
+	pNerve.PRecord.OffsetMovesIndex += 1
 	pNerve.PPosSys.FlipPhase()
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
@@ -735,7 +739,7 @@ func (pNerve *Nerve) UndoMove(pPos *p.Position) {
 
 	// G.StderrChat.Trace(pNerve.PPosSys.Sprint())
 
-	if pNerve.PPosSys.PRecord.OffsetMovesIndex < 1 {
+	if pNerve.PRecord.OffsetMovesIndex < 1 {
 		return
 	}
 
@@ -744,8 +748,8 @@ func (pNerve *Nerve) UndoMove(pPos *p.Position) {
 	mov_piece_type := PIECE_TYPE_EMPTY
 
 	// 先に 手目 を１つ戻すぜ（＾～＾）UndoMoveでフェーズもひっくり返すぜ（＾～＾）
-	pNerve.PPosSys.PRecord.OffsetMovesIndex -= 1
-	move := pNerve.PPosSys.PRecord.Moves[pNerve.PPosSys.PRecord.OffsetMovesIndex]
+	pNerve.PRecord.OffsetMovesIndex -= 1
+	move := pNerve.PRecord.Moves[pNerve.PRecord.OffsetMovesIndex]
 	// next_phase := pNerve.PPosSys.GetPhase()
 	pNerve.PPosSys.FlipPhase()
 
@@ -915,10 +919,10 @@ func (pNerve *Nerve) undoCapture(pPos *p.Position) {
 	cap_piece_type := PIECE_TYPE_EMPTY
 
 	// 手目もフェーズもすでに１つ戻っているとするぜ（＾～＾）
-	move := pNerve.PPosSys.PRecord.Moves[pNerve.PPosSys.PRecord.OffsetMovesIndex]
+	move := pNerve.PRecord.Moves[pNerve.PRecord.OffsetMovesIndex]
 
 	// 取った駒
-	captured := pNerve.PPosSys.PRecord.CapturedList[pNerve.PPosSys.PRecord.OffsetMovesIndex]
+	captured := pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex]
 	// fmt.Printf("Debug: CapturedPiece=%s\n", captured.ToCode())
 
 	// 駒得評価値。今、自分は駒を取られて減っているので、それを戻すために増やす。

@@ -30,16 +30,16 @@ func (pNerve *Nerve) Dump() string {
 
 	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pNerve.PPosSys.GetPhase()))
 
-	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pNerve.PPosSys.PRecord.StartMovesNum))
+	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pNerve.PRecord.StartMovesNum))
 
-	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pNerve.PPosSys.PRecord.OffsetMovesIndex))
+	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pNerve.PRecord.OffsetMovesIndex))
 
 	// moves
 	buffer.WriteString(pNerve.SprintBoardFooter())
 
 	buffer.WriteString("CapturedList:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pNerve.PPosSys.PRecord.CapturedList[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pNerve.PRecord.CapturedList[i]))
 	}
 	buffer.WriteString("\n")
 
@@ -50,5 +50,5 @@ func (pNerve *Nerve) Dump() string {
 func (pNerve *Nerve) SprintBoardFooter() string {
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return "moves" + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
-	return "moves" + pNerve.PPosSys.createMovesText() + "\n"
+	return "moves" + pNerve.PPosSys.createMovesText(pNerve.PRecord) + "\n"
 }
