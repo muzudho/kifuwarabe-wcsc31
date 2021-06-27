@@ -190,6 +190,9 @@ func (pPosSys *PositionSystem) createMovesText() string {
 	return string(moves_text)
 }
 
+// position sfen の盤のスペース数に使われますN
+var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
 func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
@@ -203,7 +206,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 
 			if piece != p.PIECE_EMPTY {
 				if spaces > 0 {
-					buf = append(buf, OneDigitNumbers[spaces])
+					buf = append(buf, oneDigitNumbers[spaces])
 					spaces = 0
 				}
 
@@ -226,7 +229,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *p.Position) string {
 		}
 
 		if spaces > 0 {
-			buf = append(buf, OneDigitNumbers[spaces])
+			buf = append(buf, oneDigitNumbers[spaces])
 			spaces = 0
 		}
 

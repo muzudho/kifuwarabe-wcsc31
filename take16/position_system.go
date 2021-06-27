@@ -18,9 +18,6 @@ const (
 	POS_LAYER_SIZE  = 4
 )
 
-// position sfen の盤のスペース数に使われますN
-var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
-
 // FlipPhase - 先後を反転します
 func FlipPhase(phase p.Phase) p.Phase {
 	return phase%2 + 1
@@ -127,16 +124,6 @@ func NewPositionSystem() *PositionSystem {
 	return pPosSys
 }
 
-// FlipPhase - フェーズをひっくり返すぜ（＾～＾）
-func (pPosSys *PositionSystem) FlipPhase() {
-	pPosSys.phase = FlipPhase(pPosSys.phase)
-}
-
-// GetPhase - フェーズ
-func (pPosSys *PositionSystem) GetPhase() p.Phase {
-	return pPosSys.phase
-}
-
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPosSys *PositionSystem) resetPosition() {
 	// 先手の局面
@@ -148,4 +135,14 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.PRecord.Moves = [MOVES_SIZE]p.Move{}
 	// 取った駒のリスト
 	pPosSys.PRecord.CapturedList = [MOVES_SIZE]p.Piece{}
+}
+
+// FlipPhase - フェーズをひっくり返すぜ（＾～＾）
+func (pPosSys *PositionSystem) FlipPhase() {
+	pPosSys.phase = FlipPhase(pPosSys.phase)
+}
+
+// GetPhase - フェーズ
+func (pPosSys *PositionSystem) GetPhase() p.Phase {
+	return pPosSys.phase
 }
