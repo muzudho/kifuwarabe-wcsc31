@@ -12,6 +12,7 @@ import (
 	"time"
 
 	l "github.com/muzudho/go-logger"
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -109,7 +110,7 @@ MainLoop:
 			pNerve.ReadPosition(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
 			bestmove := Search(pNerve)
-			G.Chat.Print("bestmove %s\n", bestmove.ToCode())
+			G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -339,9 +340,9 @@ MainLoop:
 
 					// moveList(pNerve.PPosSys)
 					bestmove := Search(pNerve)
-					G.Chat.Print("bestmove %s\n", bestmove.ToCode())
+					G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 
-					if bestmove == p.Move(p.SQUARE_EMPTY) {
+					if bestmove == b.Move(p.SQUARE_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}
@@ -536,7 +537,7 @@ func moveList(pNerve *Nerve) {
 	for i, move := range move_list {
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		pNerve.DoMove(pPos, move)
-		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, move.ToCode(), pPos.MaterialValue)
+		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, p.ToMoveCode(move), pPos.MaterialValue)
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		// G.Chat.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}

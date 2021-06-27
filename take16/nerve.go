@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -433,7 +434,7 @@ func (pNerve *Nerve) IsCheckmate(phase p.Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pNerve *Nerve) DoMove(pPos *p.Position, move p.Move) {
+func (pNerve *Nerve) DoMove(pPos *p.Position, move b.Move) {
 	before_move_phase := pNerve.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
@@ -442,7 +443,7 @@ func (pNerve *Nerve) DoMove(pPos *p.Position, move p.Move) {
 	cap_piece_type := PIECE_TYPE_EMPTY
 
 	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := move.Destructure()
+	from, to, pro := p.DestructureMove(move)
 	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
 		fmt.Printf("Error: %d square is empty\n", from)
@@ -752,7 +753,7 @@ func (pNerve *Nerve) UndoMove(pPos *p.Position) {
 	// next_phase := pNerve.PPosSys.GetPhase()
 	pNerve.PPosSys.FlipPhase()
 
-	from, to, pro := move.Destructure()
+	from, to, pro := p.DestructureMove(move)
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pNerve.PCtrlBrdSys.ClearControlDiff(pNerve.BuildType)
@@ -930,7 +931,7 @@ func (pNerve *Nerve) undoCapture(pPos *p.Position) {
 	pPos.MaterialValue = -pPos.MaterialValue
 
 	// 取った駒に関係するのは行き先だけ（＾～＾）
-	from, to, _ := move.Destructure()
+	from, to, _ := p.DestructureMove(move)
 	// fmt.Printf("Debug: to=%d\n", to)
 
 	var hand_sq = p.SQUARE_EMPTY

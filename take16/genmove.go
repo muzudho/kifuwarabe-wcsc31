@@ -1,6 +1,7 @@
 package take16
 
 import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -539,9 +540,9 @@ func NifuSecond(pPos *p.Position, file p.Square) bool {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pNerve *Nerve, pPos *p.Position) []p.Move {
+func GenMoveList(pNerve *Nerve, pPos *p.Position) []b.Move {
 
-	move_list := []p.Move{}
+	move_list := []b.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pNerve.PPosSys.GetPhase()

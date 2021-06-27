@@ -1,6 +1,9 @@
 package take16
 
-import p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+)
 
 // 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
 type DifferenceRecord struct {
@@ -10,7 +13,7 @@ type DifferenceRecord struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]p.Move
+	Moves [MOVES_SIZE]b.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]p.Piece
 }
@@ -27,7 +30,7 @@ func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	pRecord.StartMovesNum = 1
 	pRecord.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pRecord.Moves = [MOVES_SIZE]p.Move{}
+	pRecord.Moves = [MOVES_SIZE]b.Move{}
 	// 取った駒のリスト
 	pRecord.CapturedList = [MOVES_SIZE]p.Piece{}
 }

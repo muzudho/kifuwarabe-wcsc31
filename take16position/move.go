@@ -1,6 +1,10 @@
 package take16position
 
-import "fmt"
+import (
+	"fmt"
+
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
+)
 
 const (
 	// 持ち駒を打つ 100～115
@@ -25,42 +29,32 @@ const (
 	SQ_HAND_END   = SQ_P2 + 1 // この数を含まない
 )
 
-// Move - 指し手
-//
-// 15bit で表せるはず（＾～＾）
-// .pdd dddd dsss ssss
-//
-// 1～7bit: 移動元(0～127)
-// 8～14bit: 移動先(0～127)
-// 15bit: 成(0～1)
-type Move uint16
-
 // 0 は 投了ということにするぜ（＾～＾）
-const RESIGN_MOVE = Move(0)
+const RESIGN_MOVE = b.Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+func NewMove(from Square, to Square, promotion bool) b.Move {
 	move := RESIGN_MOVE
 
 	// replaceSource - 移動元マス
 	// 1111 1111 1000 0000 (Clear) 0xff80
 	// .pdd dddd dsss ssss
-	move = Move(uint16(move)&0xff80 | uint16(from))
+	move = b.Move(uint16(move)&0xff80 | uint16(from))
 
 	// replaceDestination - 移動先マス
 	// 1100 0000 0111 1111 (Clear) 0xc07f
 	// .pdd dddd dsss ssss
-	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
+	move = b.Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
 	// replacePromotion - 成
 	// 0100 0000 0000 0000 (Stand) 0x4000
 	// 1011 1111 1111 1111 (Clear) 0xbfff
 	// .pdd dddd dsss ssss
 	if promotion {
-		return Move(uint16(move) | 0x4000)
+		return b.Move(uint16(move) | 0x4000)
 	}
 
-	return Move(uint16(move) & 0xbfff)
+	return b.Move(uint16(move) & 0xbfff)
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
@@ -76,15 +70,15 @@ func NewMove(from Square, to Square, promotion bool) Move {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) Destructure() (Square, Square, bool) {
+func DestructureMove(move b.Move) (Square, Square, bool) {
 	var from = Square(uint16(move) & 0x007f)
 	var to = Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }
 
-// ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func (move Move) ToCode() string {
+// ToMoveCode - SFEN の moves の後に続く指し手に使える文字列を返します
+func ToMoveCode(move b.Move) string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {
@@ -95,7 +89,7 @@ func (move Move) ToCode() string {
 	count := 0
 
 	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := move.Destructure()
+	from, to, pro := DestructureMove(move)
 
 	// 移動元マス(Source square)
 	switch from {

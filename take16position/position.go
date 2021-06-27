@@ -3,6 +3,8 @@ package take16position
 import (
 	"fmt"
 	"strconv"
+
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 )
 
 // マス番号 00～99,100～113
@@ -437,7 +439,7 @@ func (pPos *Position) IsEmptySq(sq Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
 	var len = len(command)
 	var hand_sq = SQUARE_EMPTY
 
@@ -476,11 +478,11 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case SECOND:
 			from = hand_sq + HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(b.Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("Fatal: not *")
+			return *new(b.Move), fmt.Errorf("Fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -517,7 +519,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(b.Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -527,10 +529,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(b.Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(b.Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1

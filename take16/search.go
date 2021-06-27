@@ -3,6 +3,7 @@ package take16
 import (
 	"math/rand"
 
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -35,7 +36,7 @@ const (
 )
 
 // Search - 探索部
-func Search(pNerve *Nerve) p.Move {
+func Search(pNerve *Nerve) b.Move {
 
 	nodesNum = 0
 	curDepth := 0
@@ -45,14 +46,14 @@ func Search(pNerve *Nerve) p.Move {
 
 	// 評価値出力（＾～＾）
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-		curDepth, nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
+		curDepth, nodesNum, bestVal, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
 
 	// ゲーム向けの軽い乱数
 	return bestMove
 }
 
 // search2 - 探索部
-func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Value) {
+func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Value) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -67,7 +68,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var someBestMoves []p.Move
+	var someBestMoves []b.Move
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
 	var opponentWorstVal p.Value = ANTI_RESIGN_VALUE
@@ -79,7 +80,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range someMoves {
 		// G.Chat.Debug("move=%s\n", move.ToCode())
-		from, _, _ := move.Destructure()
+		from, _, _ := p.DestructureMove(move)
 
 		// デバッグに使うために、盤をコピーしておきます
 		pPosCopy := p.NewPosition()
@@ -97,7 +98,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				from, i, lenOfMoves, younger_sibling_move.ToCode()))
+				from, i, lenOfMoves, p.ToMoveCode(younger_sibling_move)))
 		}
 
 		pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], move)
@@ -181,7 +182,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Val
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
+			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, p.ToMoveCode(younger_sibling_move), p.ToMoveCode(move)))
 		}
 
 		younger_sibling_move = move

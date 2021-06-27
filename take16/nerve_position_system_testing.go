@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"sort"
 
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -43,7 +44,7 @@ func TestControl(pNerve *Nerve, pPos *p.Position) (bool, string) {
 		// 元に戻っていればOK（＾～＾）
 		is_error := checkControl(pNerve, move_seq, move_total, move)
 		if is_error {
-			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, move.ToCode())
+			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, p.ToMoveCode(move))
 		}
 	}
 
@@ -51,7 +52,7 @@ func TestControl(pNerve *Nerve, pPos *p.Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pNerve *Nerve, move_seq int, move_total int, move p.Move) bool {
+func checkControl(pNerve *Nerve, move_seq int, move_total int, move b.Move) bool {
 
 	is_error := false
 
