@@ -470,7 +470,7 @@ func (pNerve *Nerve) DoMove(pPos *p.Position, move b.Move) {
 
 	// まず、打かどうかで処理を分けます
 	sq_drop := from
-	var piece p.Piece
+	var piece b.Piece
 	switch from {
 	case p.SQ_K1:
 		piece = p.PIECE_K1

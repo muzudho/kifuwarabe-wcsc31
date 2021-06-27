@@ -2,11 +2,12 @@
 package take16
 
 import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // EvalMaterial - 駒の価値。開発者のむずでょが勝手に決めた（＾～＾）
-func EvalMaterial(piece p.Piece) p.Value {
+func EvalMaterial(piece b.Piece) p.Value {
 	switch piece {
 	case p.PIECE_EMPTY: // 空きマス
 		return 0

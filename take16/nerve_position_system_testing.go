@@ -310,7 +310,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 				for file := p.Square(9); file > 0; file -= 1 {
 					sq := p.SquareFrom(file, rank)
 
-					fmt.Printf("%s,", pPos.Board[sq].ToCode())
+					fmt.Printf("%s,", p.ToPieceCode(pPos.Board[sq]))
 
 					piece := What(pPos.Board[sq])
 					switch piece {

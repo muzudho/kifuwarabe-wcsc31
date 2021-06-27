@@ -1,6 +1,7 @@
 package take16
 
 import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -27,7 +28,7 @@ func FlipPhase(phase p.Phase) p.Phase {
 const PHASE_ARRAY_SIZE = 2
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase p.Phase, pieceType PieceType) p.Piece {
+func PieceFromPhPt(phase p.Phase, pieceType PieceType) b.Piece {
 	switch phase {
 	case p.FIRST:
 		switch pieceType {

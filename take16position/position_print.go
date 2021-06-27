@@ -34,61 +34,61 @@ func (pPos *Position) SprintBoard() string {
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	if !pPos.IsEmptySq(90) {
-		zeroRanks[0] = pPos.Board[90].ToCode()
+		zeroRanks[0] = ToPieceCode(pPos.Board[90])
 	}
 	if !pPos.IsEmptySq(80) {
-		zeroRanks[1] = pPos.Board[80].ToCode()
+		zeroRanks[1] = ToPieceCode(pPos.Board[80])
 	}
 	if !pPos.IsEmptySq(70) {
-		zeroRanks[2] = pPos.Board[70].ToCode()
+		zeroRanks[2] = ToPieceCode(pPos.Board[70])
 	}
 	if !pPos.IsEmptySq(60) {
-		zeroRanks[3] = pPos.Board[60].ToCode()
+		zeroRanks[3] = ToPieceCode(pPos.Board[60])
 	}
 	if !pPos.IsEmptySq(50) {
-		zeroRanks[4] = pPos.Board[50].ToCode()
+		zeroRanks[4] = ToPieceCode(pPos.Board[50])
 	}
 	if !pPos.IsEmptySq(40) {
-		zeroRanks[5] = pPos.Board[40].ToCode()
+		zeroRanks[5] = ToPieceCode(pPos.Board[40])
 	}
 	if !pPos.IsEmptySq(30) {
-		zeroRanks[6] = pPos.Board[30].ToCode()
+		zeroRanks[6] = ToPieceCode(pPos.Board[30])
 	}
 	if !pPos.IsEmptySq(20) {
-		zeroRanks[7] = pPos.Board[20].ToCode()
+		zeroRanks[7] = ToPieceCode(pPos.Board[20])
 	}
 	if !pPos.IsEmptySq(10) {
-		zeroRanks[8] = pPos.Board[10].ToCode()
+		zeroRanks[8] = ToPieceCode(pPos.Board[10])
 	}
 	if !pPos.IsEmptySq(0) {
-		zeroRanks[9] = pPos.Board[0].ToCode()
+		zeroRanks[9] = ToPieceCode(pPos.Board[0])
 	}
 	if !pPos.IsEmptySq(1) {
-		zeroFiles[0] = pPos.Board[1].ToCode()
+		zeroFiles[0] = ToPieceCode(pPos.Board[1])
 	}
 	if !pPos.IsEmptySq(2) {
-		zeroFiles[1] = pPos.Board[2].ToCode()
+		zeroFiles[1] = ToPieceCode(pPos.Board[2])
 	}
 	if !pPos.IsEmptySq(3) {
-		zeroFiles[2] = pPos.Board[3].ToCode()
+		zeroFiles[2] = ToPieceCode(pPos.Board[3])
 	}
 	if !pPos.IsEmptySq(4) {
-		zeroFiles[3] = pPos.Board[4].ToCode()
+		zeroFiles[3] = ToPieceCode(pPos.Board[4])
 	}
 	if !pPos.IsEmptySq(5) {
-		zeroFiles[4] = pPos.Board[5].ToCode()
+		zeroFiles[4] = ToPieceCode(pPos.Board[5])
 	}
 	if !pPos.IsEmptySq(6) {
-		zeroFiles[5] = pPos.Board[6].ToCode()
+		zeroFiles[5] = ToPieceCode(pPos.Board[6])
 	}
 	if !pPos.IsEmptySq(7) {
-		zeroFiles[6] = pPos.Board[7].ToCode()
+		zeroFiles[6] = ToPieceCode(pPos.Board[7])
 	}
 	if !pPos.IsEmptySq(8) {
-		zeroFiles[7] = pPos.Board[8].ToCode()
+		zeroFiles[7] = ToPieceCode(pPos.Board[8])
 	}
 	if !pPos.IsEmptySq(9) {
-		zeroFiles[8] = pPos.Board[9].ToCode()
+		zeroFiles[8] = ToPieceCode(pPos.Board[9])
 	}
 
 	var s1 = "\n" +
@@ -106,39 +106,39 @@ func (pPos *Position) SprintBoard() string {
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[91].ToCode(), pPos.Board[81].ToCode(), pPos.Board[71].ToCode(), pPos.Board[61].ToCode(), pPos.Board[51].ToCode(), pPos.Board[41].ToCode(), pPos.Board[31].ToCode(), pPos.Board[21].ToCode(), pPos.Board[11].ToCode(), zeroFiles[0]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[91]), ToPieceCode(pPos.Board[81]), ToPieceCode(pPos.Board[71]), ToPieceCode(pPos.Board[61]), ToPieceCode(pPos.Board[51]), ToPieceCode(pPos.Board[41]), ToPieceCode(pPos.Board[31]), ToPieceCode(pPos.Board[21]), ToPieceCode(pPos.Board[11]), zeroFiles[0]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[92].ToCode(), pPos.Board[82].ToCode(), pPos.Board[72].ToCode(), pPos.Board[62].ToCode(), pPos.Board[52].ToCode(), pPos.Board[42].ToCode(), pPos.Board[32].ToCode(), pPos.Board[22].ToCode(), pPos.Board[12].ToCode(), zeroFiles[1]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[92]), ToPieceCode(pPos.Board[82]), ToPieceCode(pPos.Board[72]), ToPieceCode(pPos.Board[62]), ToPieceCode(pPos.Board[52]), ToPieceCode(pPos.Board[42]), ToPieceCode(pPos.Board[32]), ToPieceCode(pPos.Board[22]), ToPieceCode(pPos.Board[12]), zeroFiles[1]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[93].ToCode(), pPos.Board[83].ToCode(), pPos.Board[73].ToCode(), pPos.Board[63].ToCode(), pPos.Board[53].ToCode(), pPos.Board[43].ToCode(), pPos.Board[33].ToCode(), pPos.Board[23].ToCode(), pPos.Board[13].ToCode(), zeroFiles[2]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[93]), ToPieceCode(pPos.Board[83]), ToPieceCode(pPos.Board[73]), ToPieceCode(pPos.Board[63]), ToPieceCode(pPos.Board[53]), ToPieceCode(pPos.Board[43]), ToPieceCode(pPos.Board[33]), ToPieceCode(pPos.Board[23]), ToPieceCode(pPos.Board[13]), zeroFiles[2]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[94].ToCode(), pPos.Board[84].ToCode(), pPos.Board[74].ToCode(), pPos.Board[64].ToCode(), pPos.Board[54].ToCode(), pPos.Board[44].ToCode(), pPos.Board[34].ToCode(), pPos.Board[24].ToCode(), pPos.Board[14].ToCode(), zeroFiles[3]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[94]), ToPieceCode(pPos.Board[84]), ToPieceCode(pPos.Board[74]), ToPieceCode(pPos.Board[64]), ToPieceCode(pPos.Board[54]), ToPieceCode(pPos.Board[44]), ToPieceCode(pPos.Board[34]), ToPieceCode(pPos.Board[24]), ToPieceCode(pPos.Board[14]), zeroFiles[3]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[95].ToCode(), pPos.Board[85].ToCode(), pPos.Board[75].ToCode(), pPos.Board[65].ToCode(), pPos.Board[55].ToCode(), pPos.Board[45].ToCode(), pPos.Board[35].ToCode(), pPos.Board[25].ToCode(), pPos.Board[15].ToCode(), zeroFiles[4]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[95]), ToPieceCode(pPos.Board[85]), ToPieceCode(pPos.Board[75]), ToPieceCode(pPos.Board[65]), ToPieceCode(pPos.Board[55]), ToPieceCode(pPos.Board[45]), ToPieceCode(pPos.Board[35]), ToPieceCode(pPos.Board[25]), ToPieceCode(pPos.Board[15]), zeroFiles[4]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[96].ToCode(), pPos.Board[86].ToCode(), pPos.Board[76].ToCode(), pPos.Board[66].ToCode(), pPos.Board[56].ToCode(), pPos.Board[46].ToCode(), pPos.Board[36].ToCode(), pPos.Board[26].ToCode(), pPos.Board[16].ToCode(), zeroFiles[5]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[96]), ToPieceCode(pPos.Board[86]), ToPieceCode(pPos.Board[76]), ToPieceCode(pPos.Board[66]), ToPieceCode(pPos.Board[56]), ToPieceCode(pPos.Board[46]), ToPieceCode(pPos.Board[36]), ToPieceCode(pPos.Board[26]), ToPieceCode(pPos.Board[16]), zeroFiles[5]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[97].ToCode(), pPos.Board[87].ToCode(), pPos.Board[77].ToCode(), pPos.Board[67].ToCode(), pPos.Board[57].ToCode(), pPos.Board[47].ToCode(), pPos.Board[37].ToCode(), pPos.Board[27].ToCode(), pPos.Board[17].ToCode(), zeroFiles[6]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[97]), ToPieceCode(pPos.Board[87]), ToPieceCode(pPos.Board[77]), ToPieceCode(pPos.Board[67]), ToPieceCode(pPos.Board[57]), ToPieceCode(pPos.Board[47]), ToPieceCode(pPos.Board[37]), ToPieceCode(pPos.Board[27]), ToPieceCode(pPos.Board[17]), zeroFiles[6]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[98].ToCode(), pPos.Board[88].ToCode(), pPos.Board[78].ToCode(), pPos.Board[68].ToCode(), pPos.Board[58].ToCode(), pPos.Board[48].ToCode(), pPos.Board[38].ToCode(), pPos.Board[28].ToCode(), pPos.Board[18].ToCode(), zeroFiles[7]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[98]), ToPieceCode(pPos.Board[88]), ToPieceCode(pPos.Board[78]), ToPieceCode(pPos.Board[68]), ToPieceCode(pPos.Board[58]), ToPieceCode(pPos.Board[48]), ToPieceCode(pPos.Board[38]), ToPieceCode(pPos.Board[28]), ToPieceCode(pPos.Board[18]), zeroFiles[7]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", pPos.Board[99].ToCode(), pPos.Board[89].ToCode(), pPos.Board[79].ToCode(), pPos.Board[69].ToCode(), pPos.Board[59].ToCode(), pPos.Board[49].ToCode(), pPos.Board[39].ToCode(), pPos.Board[29].ToCode(), pPos.Board[19].ToCode(), zeroFiles[8]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", ToPieceCode(pPos.Board[99]), ToPieceCode(pPos.Board[89]), ToPieceCode(pPos.Board[79]), ToPieceCode(pPos.Board[69]), ToPieceCode(pPos.Board[59]), ToPieceCode(pPos.Board[49]), ToPieceCode(pPos.Board[39]), ToPieceCode(pPos.Board[29]), ToPieceCode(pPos.Board[19]), zeroFiles[8]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//

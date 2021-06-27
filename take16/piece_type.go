@@ -1,6 +1,7 @@
 package take16
 
 import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
@@ -26,7 +27,7 @@ const (
 )
 
 // What - 先後のない駒種類を返します。
-func What(piece p.Piece) PieceType {
+func What(piece b.Piece) PieceType {
 	switch piece {
 	case p.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY

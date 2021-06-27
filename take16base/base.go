@@ -1,6 +1,9 @@
 package take16base
 
-// Move - 指し手
+// 先後付きの駒
+type Piece uint8
+
+// 指し手
 //
 // 15bit で表せるはず（＾～＾）
 // .pdd dddd dsss ssss
