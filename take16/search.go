@@ -7,6 +7,12 @@ import (
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
+// 0 にすると 1手読み（＾～＾）
+// 1 の 2手読みにしておくと、玉を取りに行くぜ（＾～＾）
+// 2 の 3手読みだと駒を取らない（＾～＾）駒のただ捨てをする（＾～＾）駒をとりかえさない（＾～＾）
+// 3 の 4手読みは、まだ遅い（＾～＾）
+var depthEnd int = 1
+
 type SearchType uint8
 
 // 探索への指定
@@ -21,9 +27,6 @@ const RESIGN_VALUE = p.Value(-2_147_483_647)     // Value(-32767)
 const ANTI_RESIGN_VALUE = p.Value(2_147_483_647) // Value(32767)
 
 var nodesNum int
-
-// 0 にすると 1手読み（＾～＾）
-var depthEnd int = 1 // 3 はまだ遅い。 2 だと駒を取り返さない。
 
 type CuttingType int
 
