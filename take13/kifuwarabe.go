@@ -112,10 +112,11 @@ MainLoop:
 		case "quit":
 			break MainLoop
 		case "gameover":
-			// 時間切れのときなど、将棋所から このメッセージがくるぜ（＾～＾）
 			// gameover win
 			// gameover lose
 			// gameover draw
+			// 時間切れのときなど、将棋所から このメッセージがくるぜ（＾～＾）
+			// 時間切れと知らず指し手を返すと 将棋所の連続対局で不具合を起こすから、指し手は返すなだぜ（＾～＾）
 			length := len(tokens)
 			// fmt.Printf("length=%d", length)
 			ok := false

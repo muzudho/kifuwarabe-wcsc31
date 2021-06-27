@@ -93,11 +93,20 @@ MainLoop:
 		command := scanner.Text()
 		G.Log.Trace("command=%s\n", command)
 
+		if command == "position startpos moves *0" {
+			// 将棋所の連続対局中に
+			// 相手が 時間切れを知らずに bestmove を返すと、
+			// 将棋所は `isready` など次の対局が始まっている最中に
+			// `position startpos moves *0` を返してくる。
+			// この `*0` をパースできずに落ちることがあるので、無視するぜ（＾～＾）
+			continue
+		}
+
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB25\n", config.Profile.Name)
+			G.Chat.Print("id name %sB26\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pNerve.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
