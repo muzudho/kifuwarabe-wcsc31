@@ -539,12 +539,12 @@ func NifuSecond(pPos *p.Position, file p.Square) bool {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
+func GenMoveList(pNerve *Nerve, pPos *p.Position) []p.Move {
 
 	move_list := []p.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
-	friend := pBrain.PPosSys.GetPhase()
+	friend := pNerve.PPosSys.GetPhase()
 	var friendKingSq p.Square
 	var hand_start int
 	var hand_end int
@@ -553,11 +553,11 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 	if friend == p.FIRST {
 		friendKingSq = pPos.GetPieceLocation(p.PCLOC_K1)
 		hand_start = p.HAND_IDX_START
-		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
+		pOpponentSumCB = pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == p.SECOND {
 		friendKingSq = pPos.GetPieceLocation(p.PCLOC_K2)
 		hand_start = p.HAND_IDX_START + p.HAND_TYPE_SIZE
-		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
+		pOpponentSumCB = pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(G.Log.Fatal("Unknown phase=%d", friend))
 	}
@@ -592,7 +592,7 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move := p.NewMove(from, to, pro)
-								pBrain.DoMove(pPos, move)
+								pNerve.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
 									// よっしゃ利きから逃げ切った（＾～＾）
@@ -600,7 +600,7 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 									move_list = append(move_list, move)
 								}
 
-								pBrain.UndoMove(pPos)
+								pNerve.UndoMove(pPos)
 							}
 						}
 					} else {
@@ -608,14 +608,14 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
 								move := p.NewMove(from, to, pro)
-								pBrain.DoMove(pPos, move)
+								pNerve.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
 									// 王手が解除されてるから採用（＾～＾）
 									move_list = append(move_list, move)
 								}
 
-								pBrain.UndoMove(pPos)
+								pNerve.UndoMove(pPos)
 							}
 						}
 					}
@@ -633,14 +633,14 @@ func GenMoveList(pBrain *Brain, pPos *p.Position) []p.Move {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
 						move := p.NewMove(hand_sq, to, pro)
-						pBrain.DoMove(pPos, move)
+						pNerve.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
 							// 王手が解除されてるから採用（＾～＾）
 							move_list = append(move_list, move)
 						}
 
-						pBrain.UndoMove(pPos)
+						pNerve.UndoMove(pPos)
 
 					}
 				}

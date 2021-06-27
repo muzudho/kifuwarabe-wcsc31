@@ -6,13 +6,13 @@ import (
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
-func (pBrain *Brain) Dump() string {
+func (pNerve *Nerve) Dump() string {
 	// bytes.Bufferは、速くはないけど使いやすいぜ（＾～＾）
 	var buffer bytes.Buffer
 
 	// Each position
 	for b := PosLayerT(0); b < 2; b += 1 {
-		pPos := pBrain.PPosSys.PPosition[b]
+		pPos := pNerve.PPosSys.PPosition[b]
 		buffer.WriteString(fmt.Sprintf("Position[%d]:\n", b))
 
 		// Board, Hands
@@ -25,21 +25,21 @@ func (pBrain *Brain) Dump() string {
 
 	// 利きボード全部
 	for c := ControlLayerT(0); c < CONTROL_LAYER_ALL_SIZE; c += 1 {
-		buffer.WriteString(pBrain.PCtrlBrdSys.SprintControl(c))
+		buffer.WriteString(pNerve.PCtrlBrdSys.SprintControl(c))
 	}
 
-	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pBrain.PPosSys.GetPhase()))
+	buffer.WriteString(fmt.Sprintf("Phase:%d,\n", pNerve.PPosSys.GetPhase()))
 
-	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pBrain.PPosSys.PRecord.StartMovesNum))
+	buffer.WriteString(fmt.Sprintf("StartMovesNum:%d,\n", pNerve.PPosSys.PRecord.StartMovesNum))
 
-	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.PRecord.OffsetMovesIndex))
+	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pNerve.PPosSys.PRecord.OffsetMovesIndex))
 
 	// moves
-	buffer.WriteString(pBrain.SprintBoardFooter())
+	buffer.WriteString(pNerve.SprintBoardFooter())
 
 	buffer.WriteString("CapturedList:")
 	for i := 0; i < MOVES_SIZE; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PRecord.CapturedList[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pNerve.PPosSys.PRecord.CapturedList[i]))
 	}
 	buffer.WriteString("\n")
 
@@ -47,8 +47,8 @@ func (pBrain *Brain) Dump() string {
 }
 
 // SprintBoardFooter - 局面出力（＾ｑ＾）
-func (pBrain *Brain) SprintBoardFooter() string {
+func (pNerve *Nerve) SprintBoardFooter() string {
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return "moves" + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
-	return "moves" + pBrain.PPosSys.createMovesText() + "\n"
+	return "moves" + pNerve.PPosSys.createMovesText() + "\n"
 }

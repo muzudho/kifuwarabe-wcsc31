@@ -35,13 +35,13 @@ const (
 )
 
 // Search - 探索部
-func Search(pBrain *Brain) p.Move {
+func Search(pNerve *Nerve) p.Move {
 
 	nodesNum = 0
 	curDepth := 0
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
-	bestMove, bestVal := search2(pBrain, curDepth, SEARCH_NONE)
+	bestMove, bestVal := search2(pNerve, curDepth, SEARCH_NONE)
 
 	// 評価値出力（＾～＾）
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
@@ -52,12 +52,12 @@ func Search(pBrain *Brain) p.Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Value) {
+func search2(pNerve *Nerve, curDepth int, search_type SearchType) (p.Move, p.Value) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
-	someMoves := GenMoveList(pBrain, pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
+	someMoves := GenMoveList(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 	lenOfMoves := len(someMoves)
 	//fmt.Printf("%d/%d lenOfMoves=%d\n", curDepth, depthEnd, lenOfMoves)
 
@@ -83,32 +83,32 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 
 		// デバッグに使うために、盤をコピーしておきます
 		pPosCopy := p.NewPosition()
-		copyBoard(pBrain.PPosSys.PPosition[0], pPosCopy)
+		copyBoard(pNerve.PPosSys.PPosition[0], pPosCopy)
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
-		if pBrain.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
+		if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-				pBrain.PPosSys.phase,
-				pBrain.PPosSys.PRecord.StartMovesNum,
-				pBrain.PPosSys.PRecord.OffsetMovesIndex))
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-			G.Chat.Debug(pBrain.SprintBoardFooter())
+			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+				pNerve.PPosSys.phase,
+				pNerve.PPosSys.PRecord.StartMovesNum,
+				pNerve.PPosSys.PRecord.OffsetMovesIndex))
+			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+			G.Chat.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, lenOfMoves, younger_sibling_move.ToCode()))
 		}
 
-		pBrain.DoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], move)
+		pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], move)
 		nodesNum += 1
 
 		// 取った駒は棋譜の１手前に記録されています
-		captured := pBrain.PPosSys.PRecord.CapturedList[pBrain.PPosSys.PRecord.OffsetMovesIndex-1]
+		captured := pNerve.PPosSys.PRecord.CapturedList[pNerve.PPosSys.PRecord.OffsetMovesIndex-1]
 
 		var leaf = false
 
-		if pBrain.IsCheckmate(FlipPhase(pBrain.PPosSys.phase)) {
+		if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
 		} else if What(captured) == PIECE_TYPE_K {
@@ -132,9 +132,9 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 				}
 
 				// 再帰
-				_, opponentVal := search2(pBrain, curDepth+1, search_type2)
+				_, opponentVal := search2(pNerve, curDepth+1, search_type2)
 				// 再帰直後（＾～＾）
-				// G.Chat.Debug(pBrain.PPosSys.Sprint(POS_LAYER_MAIN))
+				// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
 				if opponentVal < opponentWorstVal {
 					// より低い価値が見つかったら更新
@@ -155,7 +155,7 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 		if leaf {
 			// 葉ノード
 			// 駒割り評価値は、相手の手番のものになっています。
-			materialVal := pBrain.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
+			materialVal := pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 
 			if materialVal < opponentWorstVal {
@@ -169,17 +169,17 @@ func search2(pBrain *Brain, curDepth int, search_type SearchType) (p.Move, p.Val
 			}
 		}
 
-		pBrain.UndoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
+		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 
 		// 盤と、コピー盤を比較します
-		diffBoard(pBrain.PPosSys.PPosition[0], pPosCopy, pBrain.PPosSys.PPosition[2], pBrain.PPosSys.PPosition[3])
+		diffBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		// 異なる箇所を数えます
-		errorNum := errorBoard(pBrain.PPosSys.PPosition[0], pPosCopy, pBrain.PPosSys.PPosition[2], pBrain.PPosSys.PPosition[3])
+		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(pBrain.PPosSys.SprintDiff(0, 1))
+			G.Chat.Debug(pNerve.PPosSys.SprintDiff(0, 1))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
+			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())
 			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
 		}
