@@ -1,5 +1,7 @@
 package take15
 
+import p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+
 // WaterColor - 水で薄めたような評価値にします
 // pCB3 = 0
 // pCB4 = 0
@@ -22,7 +24,7 @@ func waterColor2(pCB1 *ControlBoard, pCB2 *ControlBoard, pCB3 *ControlBoard) {
 	for rank := 1; rank < 10; rank += 1 {
 		for file := 9; file > 0; file -= 1 {
 			sum16, squares16 := waterColor3(rank, file, pCB1, pCB2)
-			sq := SquareFrom(Square(file), Square(rank))
+			sq := p.SquareFrom(p.Square(file), p.Square(rank))
 			// １６マスに利きが１つずつ入っていたとしても、マス数で割ったら、１になってしまう（＾～＾）
 			// 割り過ぎを防止（＾～＾）
 			pCB3.Board1[sq] += (sum16 * 16) / squares16
@@ -66,8 +68,8 @@ func waterColor3(rank int, file int, pCB1 *ControlBoard, pCB2 *ControlBoard) (in
 func waterColor4(sum int16, squares int16, rank int, file int, pCB1 *ControlBoard, pCB2 *ControlBoard) (int16, int16) {
 	// ブラシの面積分の利きを総和します
 
-	sq := SquareFrom(Square(file), Square(rank))
-	if OnBoard(sq) {
+	sq := p.SquareFrom(p.Square(file), p.Square(rank))
+	if p.OnBoard(sq) {
 		sum += pCB1.Board1[sq] - pCB2.Board1[sq]
 		squares += 1
 	}

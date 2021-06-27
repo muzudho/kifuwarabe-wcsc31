@@ -3,6 +3,8 @@ package take15
 import (
 	"bytes"
 	"fmt"
+
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -24,13 +26,13 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	for file := 9; file > -1; file -= 1 {
-		if !pPosSys.PPosition[b1].IsEmptySq(Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(Square(file*10)) {
+		if !pPosSys.PPosition[b1].IsEmptySq(p.Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(p.Square(file*10)) {
 			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToCode(), pPosSys.PPosition[b2].Board[file*10].ToCode())
 		}
 	}
 
 	// 0筋目
-	for rank := Square(1); rank < 10; rank += 1 {
+	for rank := p.Square(1); rank < 10; rank += 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(rank) || !pPosSys.PPosition[b2].IsEmptySq(rank) {
 			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToCode(), pPosSys.PPosition[b2].Board[rank].ToCode())
 		}
@@ -183,7 +185,7 @@ func (pPosSys *PositionSystem) createMovesText() string {
 	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pPosSys.Moves[i].ToCode()...)
+		moves_text = append(moves_text, p.ToMoveCode(pPosSys.Moves[i])...)
 	}
 	return string(moves_text)
 }
@@ -195,9 +197,9 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	buf := make([]byte, 0, 200)
 
 	spaces := 0
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
-			piece := pPos.Board[SquareFrom(file, rank)]
+	for rank := p.Square(1); rank < 10; rank += 1 {
+		for file := p.Square(9); file > 0; file -= 1 {
+			piece := pPos.Board[p.SquareFrom(file, rank)]
 
 			if piece != PIECE_EMPTY {
 				if spaces > 0 {
@@ -381,7 +383,7 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, pPosSys.Moves[i].ToCode()...)
+		record_text = append(record_text, p.ToMoveCode(pPosSys.Moves[i])...)
 		record_text = append(record_text, ' ')
 		record_text = append(record_text, pPosSys.CapturedList[i].ToCode()...)
 		record_text = append(record_text, '\n')

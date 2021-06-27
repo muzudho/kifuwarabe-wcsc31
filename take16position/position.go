@@ -326,7 +326,6 @@ func ToPieceCode(pc b.Piece) string {
 }
 
 // Position - 局面
-// TODO 利きボードも含めたい
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）

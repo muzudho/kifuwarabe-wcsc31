@@ -5,6 +5,9 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 // Brain - 局面システムと、利き盤システムの２つを持つもの
@@ -45,8 +48,8 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 		pBrain.PCtrlBrdSys = NewControlBoardSystem()
 		pBrain.PPosSys.resetPosition()
 		i = 14
-		var rank = Square(1)
-		var file = Square(9)
+		var rank = p.Square(1)
+		var file = p.Square(9)
 
 	BoardLoop:
 		for {
@@ -91,30 +94,30 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.PieceLocations[PCLOC_K1] = Square((file+1)*10 + rank)
+				pPos.PieceLocations[PCLOC_K1] = p.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.PieceLocations[PCLOC_K2] = Square((file+1)*10 + rank)
+				pPos.PieceLocations[PCLOC_K2] = p.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+					if sq == p.SQUARE_EMPTY {
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}
 			case 'B', 'b':
 				for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+					if sq == p.SQUARE_EMPTY {
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}
 			case 'L', 'l':
 				for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == SQUARE_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+					if sq == p.SQUARE_EMPTY {
+						pPos.PieceLocations[i] = p.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -180,24 +183,24 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						case HAND_R1, HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = Square(hand_index) + SQ_HAND_START
+								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
 									break
 								}
 							}
 						case HAND_B1, HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = Square(hand_index) + SQ_HAND_START
+								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
 									break
 								}
 							}
 						case HAND_L1, HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = Square(hand_index) + SQ_HAND_START
+								if sq == p.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = p.Square(hand_index) + SQ_HAND_START
 									break
 								}
 							}
@@ -322,7 +325,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 
 	// 開始局面の利きを計算（＾～＾）
 	//fmt.Printf("Debug: 開始局面の利きを計算（＾～＾）\n")
-	for sq := Square(11); sq < 100; sq += 1 {
+	for sq := p.Square(11); sq < 100; sq += 1 {
 		if File(sq) != 0 && Rank(sq) != 0 {
 			if !pPos.IsEmptySq(sq) {
 				//fmt.Printf("Debug: sq=%d\n", sq)
@@ -414,7 +417,7 @@ func (pBrain *Brain) IsCheckmate(phase Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pBrain *Brain) DoMove(pPos *Position, move Move) {
+func (pBrain *Brain) DoMove(pPos *Position, move b.Move) {
 	before_move_phase := pBrain.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
@@ -423,13 +426,13 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 	cap_piece_type := PIECE_TYPE_EMPTY
 
 	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := move.Destructure()
+	from, to, pro := p.DestructureMove(move)
 	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
 		fmt.Printf("Error: %d square is empty\n", from)
 	}
-	var cap_src_sq Square
-	var cap_dst_sq = SQUARE_EMPTY
+	var cap_src_sq p.Square
+	var cap_dst_sq = p.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
@@ -486,7 +489,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 		piece = PIECE_P2
 	default:
 		// Not drop
-		sq_drop = SQUARE_EMPTY
+		sq_drop = p.SQUARE_EMPTY
 	}
 
 	if sq_drop != 0 {
@@ -631,7 +634,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 			fmt.Printf("Error: Unknown captured=[%d]", captured)
 		}
 
-		if cap_dst_sq != SQUARE_EMPTY {
+		if cap_dst_sq != p.SQUARE_EMPTY {
 			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = captured
 			pPos.Hands1[cap_dst_sq-SQ_HAND_START] += 1
 		} else {
@@ -647,8 +650,8 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []Square{from, cap_src_sq}
-	dst_sq_list := []Square{to, cap_dst_sq}
+	src_sq_list := []p.Square{from, cap_src_sq}
+	dst_sq_list := []p.Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case PIECE_TYPE_K:
@@ -733,7 +736,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 	// next_phase := pBrain.PPosSys.GetPhase()
 	pBrain.PPosSys.FlipPhase()
 
-	from, to, pro := move.Destructure()
+	from, to, pro := p.DestructureMove(move)
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
@@ -911,10 +914,10 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 	pPos.MaterialValue = -pPos.MaterialValue
 
 	// 取った駒に関係するのは行き先だけ（＾～＾）
-	from, to, _ := move.Destructure()
+	from, to, _ := p.DestructureMove(move)
 	// fmt.Printf("Debug: to=%d\n", to)
 
-	var hand_sq = SQUARE_EMPTY
+	var hand_sq = p.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pBrain.PCtrlBrdSys.ClearControlDiff(pBrain.PPosSys.BuildType)
@@ -984,7 +987,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)
 
-		if hand_sq != SQUARE_EMPTY {
+		if hand_sq != p.SQUARE_EMPTY {
 			pPos.Hands1[hand_sq-SQ_HAND_START] -= 1
 
 			// 取っていた駒を行き先に戻します

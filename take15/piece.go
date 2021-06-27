@@ -1,5 +1,7 @@
 package take15
 
+import p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+
 // 先後のない駒種類
 type PieceType byte
 
@@ -74,7 +76,7 @@ func What(piece Piece) PieceType {
 }
 
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
-func WhatHand(hand Square) PieceType {
+func WhatHand(hand p.Square) PieceType {
 	switch hand {
 	case SQ_R1, SQ_R2:
 		return PIECE_TYPE_R

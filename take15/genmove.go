@@ -1,18 +1,23 @@
 package take15
 
+import (
+	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
+	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+)
+
 // File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
+func File(sq p.Square) p.Square {
 	return sq / 10 % 10
 }
 
 // Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
+func Rank(sq p.Square) p.Square {
 	return sq % 10
 }
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 // 成らないと移動できないが、成れば移動できるマスがあるので、移動先と成りの２つセットで返します。
-func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
+func GenMoveEnd(pPos *Position, from p.Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
 	var rank_from = Rank(from)
@@ -64,12 +69,12 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		dp2 := []int{37}
 	*/
 
-	if from == SQUARE_EMPTY {
+	if from == p.SQUARE_EMPTY {
 		panic(G.Log.Fatal("GenMoveEnd has empty square"))
-	} else if OnHands(from) {
+	} else if p.OnHands(from) {
 		// どこに打てるか
-		var start_rank Square
-		var end_rank Square
+		var start_rank p.Square
+		var end_rank p.Square
 
 		switch from {
 		case SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_R2, SQ_B2, SQ_G2, SQ_S2: // 81マスに打てる
@@ -94,10 +99,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		switch from {
 		case SQ_P1: // 先手Pawn
 			// TODO 打ち歩詰め禁止
-			for rank := Square(start_rank); rank < end_rank; rank += 1 {
-				for file := Square(9); file > 0; file-- {
+			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
+				for file := p.Square(9); file > 0; file-- {
 					if !NifuFirst(pPos, file) { // ２歩禁止
-						to := SquareFrom(file, rank)
+						to := p.SquareFrom(file, rank)
 						ValidateSq(to)
 						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
@@ -105,19 +110,19 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			}
 		case SQ_P2:
 			// TODO 打ち歩詰め禁止
-			for rank := Square(start_rank); rank < end_rank; rank += 1 {
-				for file := Square(9); file > 0; file-- {
+			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
+				for file := p.Square(9); file > 0; file-- {
 					if !NifuSecond(pPos, file) { // ２歩禁止
-						to := SquareFrom(file, rank)
+						to := p.SquareFrom(file, rank)
 						ValidateSq(to)
 						moveEndList = append(moveEndList, NewMoveEnd(to, false))
 					}
 				}
 			}
 		default:
-			for rank := Square(start_rank); rank < end_rank; rank += 1 {
-				for file := Square(9); file > 0; file-- {
-					to := SquareFrom(file, rank)
+			for rank := p.Square(start_rank); rank < end_rank; rank += 1 {
+				for file := p.Square(9); file > 0; file-- {
+					to := p.SquareFrom(file, rank)
 					ValidateSq(to)
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
 				}
@@ -523,9 +528,9 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 }
 
 // NifuFirst - 先手で二歩になるか筋調べ
-func NifuFirst(pPos *Position, file Square) bool {
-	for rank := Square(2); rank < 10; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == PIECE_P1 {
+func NifuFirst(pPos *Position, file p.Square) bool {
+	for rank := p.Square(2); rank < 10; rank += 1 {
+		if pPos.Board[p.SquareFrom(file, rank)] == PIECE_P1 {
 			return true
 		}
 	}
@@ -534,9 +539,9 @@ func NifuFirst(pPos *Position, file Square) bool {
 }
 
 // NifuSecond - 後手で二歩になるか筋調べ
-func NifuSecond(pPos *Position, file Square) bool {
-	for rank := Square(1); rank < 9; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == PIECE_P2 {
+func NifuSecond(pPos *Position, file p.Square) bool {
+	for rank := p.Square(1); rank < 9; rank += 1 {
+		if pPos.Board[p.SquareFrom(file, rank)] == PIECE_P2 {
 			return true
 		}
 	}
@@ -545,16 +550,16 @@ func NifuSecond(pPos *Position, file Square) bool {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pBrain *Brain, pPos *Position) []Move {
+func GenMoveList(pBrain *Brain, pPos *Position) []b.Move {
 
-	move_list := []Move{}
+	move_list := []b.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pBrain.PPosSys.GetPhase()
-	var friendKingSq Square
+	var friendKingSq p.Square
 	var hand_start int
 	var hand_end int
-	// var opponentKingSq Square
+	// var opponentKingSq p.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
@@ -569,7 +574,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 	}
 	hand_end = hand_start + HAND_TYPE_SIZE
 
-	if !OnBoard(friendKingSq) {
+	if !p.OnBoard(friendKingSq) {
 		// 自玉が盤上にない場合は、指し手を返しません
 
 	} else if pOpponentSumCB.Board1[friendKingSq] > 0 {
@@ -583,7 +588,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 		// 盤上の駒を動かしてみて、王手が解除されるか調べるか（＾～＾）
 		for rank := 1; rank < 10; rank += 1 {
 			for file := 1; file < 10; file += 1 {
-				from := Square(file*10 + rank)
+				from := p.Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
 					moveEndList := GenMoveEnd(pPos, from)
 
@@ -632,7 +637,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 		// 自分の駒台もスキャンしよ（＾～＾）
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
-				hand_sq := Square(hand_index) + SQ_HAND_START
+				hand_sq := p.Square(hand_index) + SQ_HAND_START
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
@@ -660,7 +665,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 		// 盤面スキャンしたくないけど、駒の位置インデックスを作ってないから 仕方ない（＾～＾）
 		for rank := 1; rank < 10; rank += 1 {
 			for file := 1; file < 10; file += 1 {
-				from := Square(file*10 + rank)
+				from := p.Square(file*10 + rank)
 				if pPos.Homo(from, friendKingSq) { // 自玉と同じプレイヤーの駒を動かします
 					moveEndList := GenMoveEnd(pPos, from)
 
@@ -690,7 +695,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 		// 自分の駒台もスキャンしよ（＾～＾）
 		for hand_index := hand_start; hand_index < hand_end; hand_index += 1 {
 			if pPos.Hands1[hand_index] > 0 {
-				hand_sq := Square(hand_index) + SQ_HAND_START
+				hand_sq := p.Square(hand_index) + SQ_HAND_START
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {

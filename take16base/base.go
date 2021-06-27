@@ -1,3 +1,4 @@
+//! Position と Record を疎結合にするための仕掛け。両方から参照されるもの（＾～＾）
 package take16base
 
 // 先後付きの駒
