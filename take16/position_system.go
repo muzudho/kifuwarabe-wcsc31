@@ -5,9 +5,6 @@ import (
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
-
 // 盤レイヤー・インデックス型
 type PosLayerT int
 

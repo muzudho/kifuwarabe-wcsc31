@@ -1,8 +1,11 @@
-package take16
+package take16record
 
 import (
 	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 )
+
+// 電竜戦が一番長いだろ（＾～＾）
+const MOVES_SIZE = 512
 
 // 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
 type DifferenceRecord struct {

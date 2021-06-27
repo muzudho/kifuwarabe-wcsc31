@@ -8,6 +8,7 @@ import (
 
 	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+	r "github.com/muzudho/kifuwarabe-wcsc31/take16record"
 )
 
 // 開発 or リリース モード
@@ -27,14 +28,14 @@ type Nerve struct {
 	// 利きボード・システム
 	PCtrlBrdSys *ControlBoardSystem
 	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
-	PRecord *DifferenceRecord
+	PRecord *r.DifferenceRecord
 }
 
 func NewNerve() *Nerve {
 	var pNerve = new(Nerve)
 	pNerve.BuildType = BUILD_DEV
 	pNerve.PPosSys = NewPositionSystem()
-	pNerve.PRecord = NewDifferenceRecord()
+	pNerve.PRecord = r.NewDifferenceRecord()
 	pNerve.PCtrlBrdSys = NewControlBoardSystem()
 	return pNerve
 }

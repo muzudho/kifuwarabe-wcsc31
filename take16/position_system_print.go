@@ -5,10 +5,11 @@ import (
 	"fmt"
 
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+	r "github.com/muzudho/kifuwarabe-wcsc31/take16record"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
-func (pPosSys *PositionSystem) SprintDiff(pRecord *DifferenceRecord, b1 PosLayerT, b2 PosLayerT) string {
+func (pPosSys *PositionSystem) SprintDiff(pRecord *r.DifferenceRecord, b1 PosLayerT, b2 PosLayerT) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
 	case p.FIRST:
@@ -181,7 +182,7 @@ func (pPosSys *PositionSystem) SprintDiff(pRecord *DifferenceRecord, b1 PosLayer
 }
 
 // CreateMovesList - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
-func (pPosSys *PositionSystem) createMovesText(pRecord *DifferenceRecord) string {
+func (pPosSys *PositionSystem) createMovesText(pRecord *r.DifferenceRecord) string {
 	moves_text := make([]byte, 0, pRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
 	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
@@ -194,7 +195,7 @@ func (pPosSys *PositionSystem) createMovesText(pRecord *DifferenceRecord) string
 var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *DifferenceRecord, pPos *p.Position) string {
+func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *r.DifferenceRecord, pPos *p.Position) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
@@ -381,10 +382,10 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *DifferenceRecord, 
 }
 
 // SprintRecord - 棋譜表示（＾～＾）
-func (pPosSys *PositionSystem) SprintRecord(pRecord *DifferenceRecord) string {
+func (pPosSys *PositionSystem) SprintRecord(pRecord *r.DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, MOVES_SIZE*9)
+	record_text := make([]byte, 0, r.MOVES_SIZE*9)
 	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, p.ToMoveCode(pRecord.Moves[i])...)
 		record_text = append(record_text, ' ')

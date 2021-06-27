@@ -14,6 +14,7 @@ import (
 	l "github.com/muzudho/go-logger"
 	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
+	r "github.com/muzudho/kifuwarabe-wcsc31/take16record"
 )
 
 // MainLoop - 開始。
@@ -328,7 +329,7 @@ MainLoop:
 			// 棋譜を書き直してさらに多く続けるぜ（＾～＾）
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
-				for i := 0; i < MOVES_SIZE; i += 1 {
+				for i := 0; i < r.MOVES_SIZE; i += 1 {
 					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pNerve.PPosSys.phase,
 						pNerve.PRecord.StartMovesNum,

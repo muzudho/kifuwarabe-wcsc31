@@ -3,6 +3,8 @@ package take16
 import (
 	"bytes"
 	"fmt"
+
+	r "github.com/muzudho/kifuwarabe-wcsc31/take16record"
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
@@ -38,7 +40,7 @@ func (pNerve *Nerve) Dump() string {
 	buffer.WriteString(pNerve.SprintBoardFooter())
 
 	buffer.WriteString("CapturedList:")
-	for i := 0; i < MOVES_SIZE; i += 1 {
+	for i := 0; i < r.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pNerve.PRecord.CapturedList[i]))
 	}
 	buffer.WriteString("\n")
