@@ -308,10 +308,10 @@ MainLoop:
 			}
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
+			G.Chat.Debug(SprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord))
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.SprintRecord(pNerve.PRecord))
+			G.Chat.Debug(SprintRecord(pNerve.PRecord))
 		case "movelist":
 			// 指し手の一覧
 			moveList(pNerve)
@@ -351,7 +351,7 @@ MainLoop:
 					pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], bestmove)
 				}
 
-				sfen1 := pNerve.PPosSys.SprintSfenResignation(pNerve.PRecord, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
+				sfen1 := SprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord)
 				pNerve.ReadPosition(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], sfen1)
 
 				// ここを開始局面ということにするぜ（＾～＾）
@@ -406,7 +406,7 @@ MainLoop:
 					G.Chat.Debug("Error: %s", err)
 				}
 
-				G.Chat.Debug(pNerve.PPosSys.SprintDiff(pNerve.PRecord, PosLayerT(b1), PosLayerT(b2)))
+				G.Chat.Debug(SprintPositionDiff(pNerve.PPosSys, PosLayerT(b1), PosLayerT(b2), pNerve.PRecord))
 				ok = true
 			}
 

@@ -9,7 +9,7 @@ import (
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
-func (pPosSys *PositionSystem) SprintDiff(pRecord *r.DifferenceRecord, b1 PosLayerT, b2 PosLayerT) string {
+func SprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRecord *r.DifferenceRecord) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
 	case p.FIRST:
@@ -181,21 +181,8 @@ func (pPosSys *PositionSystem) SprintDiff(pRecord *r.DifferenceRecord, b1 PosLay
 	return buf.String()
 }
 
-// CreateMovesList - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
-func (pPosSys *PositionSystem) createMovesText(pRecord *r.DifferenceRecord) string {
-	moves_text := make([]byte, 0, pRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
-	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
-		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, p.ToMoveCode(pRecord.Moves[i])...)
-	}
-	return string(moves_text)
-}
-
-// position sfen の盤のスペース数に使われますN
-var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
-
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *r.DifferenceRecord, pPos *p.Position) string {
+func SprintSfenResignation(pPosSys *PositionSystem, pPos *p.Position, pRecord *r.DifferenceRecord) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
@@ -382,7 +369,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pRecord *r.DifferenceRecord
 }
 
 // SprintRecord - 棋譜表示（＾～＾）
-func (pPosSys *PositionSystem) SprintRecord(pRecord *r.DifferenceRecord) string {
+func SprintRecord(pRecord *r.DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, r.MOVES_SIZE*9)
@@ -394,4 +381,14 @@ func (pPosSys *PositionSystem) SprintRecord(pRecord *r.DifferenceRecord) string 
 	}
 
 	return fmt.Sprintf("Record\n------\n%s", record_text)
+}
+
+// createMovesText - " 7g7f 3c3d" みたいな部分を返します。最初は半角スペースです
+func (pPosSys *PositionSystem) createMovesText(pRecord *r.DifferenceRecord) string {
+	moves_text := make([]byte, 0, pRecord.OffsetMovesIndex*6) // スペース含めて１手最大6文字（＾～＾）
+	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
+		moves_text = append(moves_text, ' ')
+		moves_text = append(moves_text, p.ToMoveCode(pRecord.Moves[i])...)
+	}
+	return string(moves_text)
 }

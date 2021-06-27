@@ -16,6 +16,9 @@ const (
 	POS_LAYER_SIZE  = 4
 )
 
+// position sfen の盤のスペース数に使われますN
+var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+
 // FlipPhase - 先後を反転します
 func FlipPhase(phase p.Phase) p.Phase {
 	return phase%2 + 1
