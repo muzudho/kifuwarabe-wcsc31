@@ -108,25 +108,25 @@ func ShuffleBoard(pPos *Position) {
 						case FIRST:
 							switch pieceType {
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands[HAND_R1_IDX] += 1
+								pPos.Hands[HAND_R1] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands[HAND_B1_IDX] += 1
+								pPos.Hands[HAND_B1] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands[HAND_G1_IDX] += 1
+								pPos.Hands[HAND_G1] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands[HAND_S1_IDX] += 1
+								pPos.Hands[HAND_S1] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands[HAND_N1_IDX] += 1
+								pPos.Hands[HAND_N1] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands[HAND_L1_IDX] += 1
+								pPos.Hands[HAND_L1] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands[HAND_P1_IDX] += 1
+								pPos.Hands[HAND_P1] += 1
 								ok = true
 							default:
 								// Ignored
@@ -134,25 +134,25 @@ func ShuffleBoard(pPos *Position) {
 						case SECOND:
 							switch pieceType {
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands[HAND_R2_IDX] += 1
+								pPos.Hands[HAND_R2] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands[HAND_B2_IDX] += 1
+								pPos.Hands[HAND_B2] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands[HAND_G2_IDX] += 1
+								pPos.Hands[HAND_G2] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands[HAND_S2_IDX] += 1
+								pPos.Hands[HAND_S2] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands[HAND_N2_IDX] += 1
+								pPos.Hands[HAND_N2] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands[HAND_L2_IDX] += 1
+								pPos.Hands[HAND_L2] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands[HAND_P2_IDX] += 1
+								pPos.Hands[HAND_P2] += 1
 								ok = true
 							default:
 								// Ignored

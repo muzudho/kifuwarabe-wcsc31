@@ -138,28 +138,28 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 						case p.FIRST:
 							switch pieceType {
 							case PIECE_TYPE_K:
-								pPos.Hands1[p.HAND_K1_IDX] += 1
+								pPos.Hands1[p.HAND_K1] += 1
 								ok = true
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands1[p.HAND_R1_IDX] += 1
+								pPos.Hands1[p.HAND_R1] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands1[p.HAND_B1_IDX] += 1
+								pPos.Hands1[p.HAND_B1] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands1[p.HAND_G1_IDX] += 1
+								pPos.Hands1[p.HAND_G1] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands1[p.HAND_S1_IDX] += 1
+								pPos.Hands1[p.HAND_S1] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands1[p.HAND_N1_IDX] += 1
+								pPos.Hands1[p.HAND_N1] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands1[p.HAND_L1_IDX] += 1
+								pPos.Hands1[p.HAND_L1] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands1[p.HAND_P1_IDX] += 1
+								pPos.Hands1[p.HAND_P1] += 1
 								ok = true
 							default:
 								// Ignored
@@ -167,28 +167,28 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 						case p.SECOND:
 							switch pieceType {
 							case PIECE_TYPE_K:
-								pPos.Hands1[p.HAND_K2_IDX] += 1
+								pPos.Hands1[p.HAND_K2] += 1
 								ok = true
 							case PIECE_TYPE_R, PIECE_TYPE_PR:
-								pPos.Hands1[p.HAND_R2_IDX] += 1
+								pPos.Hands1[p.HAND_R2] += 1
 								ok = true
 							case PIECE_TYPE_B, PIECE_TYPE_PB:
-								pPos.Hands1[p.HAND_B2_IDX] += 1
+								pPos.Hands1[p.HAND_B2] += 1
 								ok = true
 							case PIECE_TYPE_G:
-								pPos.Hands1[p.HAND_G2_IDX] += 1
+								pPos.Hands1[p.HAND_G2] += 1
 								ok = true
 							case PIECE_TYPE_S, PIECE_TYPE_PS:
-								pPos.Hands1[p.HAND_S2_IDX] += 1
+								pPos.Hands1[p.HAND_S2] += 1
 								ok = true
 							case PIECE_TYPE_N, PIECE_TYPE_PN:
-								pPos.Hands1[p.HAND_N2_IDX] += 1
+								pPos.Hands1[p.HAND_N2] += 1
 								ok = true
 							case PIECE_TYPE_L, PIECE_TYPE_PL:
-								pPos.Hands1[p.HAND_L2_IDX] += 1
+								pPos.Hands1[p.HAND_L2] += 1
 								ok = true
 							case PIECE_TYPE_P, PIECE_TYPE_PP:
-								pPos.Hands1[p.HAND_P2_IDX] += 1
+								pPos.Hands1[p.HAND_P2] += 1
 								ok = true
 							default:
 								// Ignored
@@ -338,14 +338,14 @@ func ShuffleBoard(pNerve *Nerve, pPos *p.Position) {
 			}
 
 			// 駒台
-			countList[0] += pPos.Hands1[p.HAND_K1_IDX] + pPos.Hands1[p.HAND_K2_IDX]
-			countList[1] += pPos.Hands1[p.HAND_R1_IDX] + pPos.Hands1[p.HAND_R2_IDX]
-			countList[2] += pPos.Hands1[p.HAND_B1_IDX] + pPos.Hands1[p.HAND_B2_IDX]
-			countList[3] += pPos.Hands1[p.HAND_G1_IDX] + pPos.Hands1[p.HAND_G2_IDX]
-			countList[4] += pPos.Hands1[p.HAND_S1_IDX] + pPos.Hands1[p.HAND_S2_IDX]
-			countList[5] += pPos.Hands1[p.HAND_N1_IDX] + pPos.Hands1[p.HAND_N2_IDX]
-			countList[6] += pPos.Hands1[p.HAND_L1_IDX] + pPos.Hands1[p.HAND_L2_IDX]
-			countList[7] += pPos.Hands1[p.HAND_P1_IDX] + pPos.Hands1[p.HAND_P2_IDX]
+			countList[0] += pPos.Hands1[p.HAND_K1] + pPos.Hands1[p.HAND_K2]
+			countList[1] += pPos.Hands1[p.HAND_R1] + pPos.Hands1[p.HAND_R2]
+			countList[2] += pPos.Hands1[p.HAND_B1] + pPos.Hands1[p.HAND_B2]
+			countList[3] += pPos.Hands1[p.HAND_G1] + pPos.Hands1[p.HAND_G2]
+			countList[4] += pPos.Hands1[p.HAND_S1] + pPos.Hands1[p.HAND_S2]
+			countList[5] += pPos.Hands1[p.HAND_N1] + pPos.Hands1[p.HAND_N2]
+			countList[6] += pPos.Hands1[p.HAND_L1] + pPos.Hands1[p.HAND_L2]
+			countList[7] += pPos.Hands1[p.HAND_P1] + pPos.Hands1[p.HAND_P2]
 		} else {
 			countList = CountAllPieces(pPos)
 		}
@@ -427,14 +427,14 @@ func CountAllPieces(pPos *p.Position) [8]int {
 	}
 
 	// 駒台
-	countList[0] += pPos.Hands1[p.HAND_K1_IDX] + pPos.Hands1[p.HAND_K2_IDX]
-	countList[1] += pPos.Hands1[p.HAND_R1_IDX] + pPos.Hands1[p.HAND_R2_IDX]
-	countList[2] += pPos.Hands1[p.HAND_B1_IDX] + pPos.Hands1[p.HAND_B2_IDX]
-	countList[3] += pPos.Hands1[p.HAND_G1_IDX] + pPos.Hands1[p.HAND_G2_IDX]
-	countList[4] += pPos.Hands1[p.HAND_S1_IDX] + pPos.Hands1[p.HAND_S2_IDX]
-	countList[5] += pPos.Hands1[p.HAND_N1_IDX] + pPos.Hands1[p.HAND_N2_IDX]
-	countList[6] += pPos.Hands1[p.HAND_L1_IDX] + pPos.Hands1[p.HAND_L2_IDX]
-	countList[7] += pPos.Hands1[p.HAND_P1_IDX] + pPos.Hands1[p.HAND_P2_IDX]
+	countList[0] += pPos.Hands1[p.HAND_K1] + pPos.Hands1[p.HAND_K2]
+	countList[1] += pPos.Hands1[p.HAND_R1] + pPos.Hands1[p.HAND_R2]
+	countList[2] += pPos.Hands1[p.HAND_B1] + pPos.Hands1[p.HAND_B2]
+	countList[3] += pPos.Hands1[p.HAND_G1] + pPos.Hands1[p.HAND_G2]
+	countList[4] += pPos.Hands1[p.HAND_S1] + pPos.Hands1[p.HAND_S2]
+	countList[5] += pPos.Hands1[p.HAND_N1] + pPos.Hands1[p.HAND_N2]
+	countList[6] += pPos.Hands1[p.HAND_L1] + pPos.Hands1[p.HAND_L2]
+	countList[7] += pPos.Hands1[p.HAND_P1] + pPos.Hands1[p.HAND_P2]
 
 	return countList
 }

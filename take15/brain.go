@@ -177,7 +177,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case HAND_R1_IDX, HAND_R2_IDX:
+						case HAND_R1, HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -185,7 +185,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_B1_IDX, HAND_B2_IDX:
+						case HAND_B1, HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -193,7 +193,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_L1_IDX, HAND_L2_IDX:
+						case HAND_L1, HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -207,33 +207,33 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = HAND_R1_IDX
+						hand_index = HAND_R1
 					case 'B':
-						hand_index = HAND_B1_IDX
+						hand_index = HAND_B1
 					case 'G':
-						hand_index = HAND_G1_IDX
+						hand_index = HAND_G1
 					case 'S':
-						hand_index = HAND_S1_IDX
+						hand_index = HAND_S1
 					case 'N':
-						hand_index = HAND_N1_IDX
+						hand_index = HAND_N1
 					case 'L':
-						hand_index = HAND_L1_IDX
+						hand_index = HAND_L1
 					case 'P':
-						hand_index = HAND_P1_IDX
+						hand_index = HAND_P1
 					case 'r':
-						hand_index = HAND_R2_IDX
+						hand_index = HAND_R2
 					case 'b':
-						hand_index = HAND_B2_IDX
+						hand_index = HAND_B2
 					case 'g':
-						hand_index = HAND_G2_IDX
+						hand_index = HAND_G2
 					case 's':
-						hand_index = HAND_S2_IDX
+						hand_index = HAND_S2
 					case 'n':
-						hand_index = HAND_N2_IDX
+						hand_index = HAND_N2
 					case 'l':
-						hand_index = HAND_L2_IDX
+						hand_index = HAND_L2
 					case 'p':
-						hand_index = HAND_P2_IDX
+						hand_index = HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop

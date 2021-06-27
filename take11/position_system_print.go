@@ -321,56 +321,56 @@ func (pPosSys *PositionSystem) SprintSfen(pPos *Position) string {
 	hands := ""
 
 	// 玉は出力できません
-	// num := pPos.Hands1[HAND_K1_IDX]
+	// num := pPos.Hands1[HAND_K1]
 	// if num == 1 {
 	// 	hands += "K"
 	// } else if num > 1 {
 	// 	hands += fmt.Sprintf("K%d", num)
 	// }
 
-	num := pPos.Hands1[HAND_R1_IDX]
+	num := pPos.Hands1[HAND_R1]
 	if num == 1 {
 		hands += "R"
 	} else if num > 1 {
 		hands += fmt.Sprintf("R%d", num)
 	}
 
-	num = pPos.Hands1[HAND_B1_IDX]
+	num = pPos.Hands1[HAND_B1]
 	if num == 1 {
 		hands += "B"
 	} else if num > 1 {
 		hands += fmt.Sprintf("B%d", num)
 	}
 
-	num = pPos.Hands1[HAND_G1_IDX]
+	num = pPos.Hands1[HAND_G1]
 	if num == 1 {
 		hands += "G"
 	} else if num > 1 {
 		hands += fmt.Sprintf("G%d", num)
 	}
 
-	num = pPos.Hands1[HAND_S1_IDX]
+	num = pPos.Hands1[HAND_S1]
 	if num == 1 {
 		hands += "S"
 	} else if num > 1 {
 		hands += fmt.Sprintf("S%d", num)
 	}
 
-	num = pPos.Hands1[HAND_N1_IDX]
+	num = pPos.Hands1[HAND_N1]
 	if num == 1 {
 		hands += "N"
 	} else if num > 1 {
 		hands += fmt.Sprintf("N%d", num)
 	}
 
-	num = pPos.Hands1[HAND_L1_IDX]
+	num = pPos.Hands1[HAND_L1]
 	if num == 1 {
 		hands += "L"
 	} else if num > 1 {
 		hands += fmt.Sprintf("L%d", num)
 	}
 
-	num = pPos.Hands1[HAND_P1_IDX]
+	num = pPos.Hands1[HAND_P1]
 	if num == 1 {
 		hands += "P"
 	} else if num > 1 {
@@ -378,56 +378,56 @@ func (pPosSys *PositionSystem) SprintSfen(pPos *Position) string {
 	}
 
 	// 玉は出力できません
-	// num := pPos.Hands1[HAND_K2_IDX]
+	// num := pPos.Hands1[HAND_K2]
 	// if num == 1 {
 	// 	hands += "k"
 	// } else if num > 1 {
 	// 	hands += fmt.Sprintf("k%d", num)
 	// }
 
-	num = pPos.Hands1[HAND_R2_IDX]
+	num = pPos.Hands1[HAND_R2]
 	if num == 1 {
 		hands += "r"
 	} else if num > 1 {
 		hands += fmt.Sprintf("r%d", num)
 	}
 
-	num = pPos.Hands1[HAND_B2_IDX]
+	num = pPos.Hands1[HAND_B2]
 	if num == 1 {
 		hands += "b"
 	} else if num > 1 {
 		hands += fmt.Sprintf("b%d", num)
 	}
 
-	num = pPos.Hands1[HAND_G2_IDX]
+	num = pPos.Hands1[HAND_G2]
 	if num == 1 {
 		hands += "g"
 	} else if num > 1 {
 		hands += fmt.Sprintf("g%d", num)
 	}
 
-	num = pPos.Hands1[HAND_S2_IDX]
+	num = pPos.Hands1[HAND_S2]
 	if num == 1 {
 		hands += "s"
 	} else if num > 1 {
 		hands += fmt.Sprintf("s%d", num)
 	}
 
-	num = pPos.Hands1[HAND_N2_IDX]
+	num = pPos.Hands1[HAND_N2]
 	if num == 1 {
 		hands += "n"
 	} else if num > 1 {
 		hands += fmt.Sprintf("n%d", num)
 	}
 
-	num = pPos.Hands1[HAND_L2_IDX]
+	num = pPos.Hands1[HAND_L2]
 	if num == 1 {
 		hands += "l"
 	} else if num > 1 {
 		hands += fmt.Sprintf("l%d", num)
 	}
 
-	num = pPos.Hands1[HAND_P2_IDX]
+	num = pPos.Hands1[HAND_P2]
 	if num == 1 {
 		hands += "p"
 	} else if num > 1 {

@@ -312,25 +312,25 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 
 const (
 	// 持ち駒を打つ 0～15 (Index)
-	HAND_K1_IDX    = 0
-	HAND_R1_IDX    = 1 // 先手飛打
-	HAND_B1_IDX    = 2
-	HAND_G1_IDX    = 3
-	HAND_S1_IDX    = 4
-	HAND_N1_IDX    = 5
-	HAND_L1_IDX    = 6
-	HAND_P1_IDX    = 7
-	HAND_K2_IDX    = 8
-	HAND_R2_IDX    = 9
-	HAND_B2_IDX    = 10
-	HAND_G2_IDX    = 11
-	HAND_S2_IDX    = 12
-	HAND_N2_IDX    = 13
-	HAND_L2_IDX    = 14
-	HAND_P2_IDX    = 15
+	HAND_K1        = 0
+	HAND_R1        = 1 // 先手飛打
+	HAND_B1        = 2
+	HAND_G1        = 3
+	HAND_S1        = 4
+	HAND_N1        = 5
+	HAND_L1        = 6
+	HAND_P1        = 7
+	HAND_K2        = 8
+	HAND_R2        = 9
+	HAND_B2        = 10
+	HAND_G2        = 11
+	HAND_S2        = 12
+	HAND_N2        = 13
+	HAND_L2        = 14
+	HAND_P2        = 15
 	HAND_SIZE      = 16
 	HAND_TYPE_SIZE = 8
-	HAND_IDX_START = HAND_K1_IDX
+	HAND_IDX_START = HAND_K1
 	HAND_IDX_END   = HAND_SIZE // この数を含まない
 )
 
@@ -574,7 +574,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case HAND_R1_IDX, HAND_R2_IDX:
+						case HAND_R1, HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -582,7 +582,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_B1_IDX, HAND_B2_IDX:
+						case HAND_B1, HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -590,7 +590,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_L1_IDX, HAND_L2_IDX:
+						case HAND_L1, HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -604,33 +604,33 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = HAND_R1_IDX
+						hand_index = HAND_R1
 					case 'B':
-						hand_index = HAND_B1_IDX
+						hand_index = HAND_B1
 					case 'G':
-						hand_index = HAND_G1_IDX
+						hand_index = HAND_G1
 					case 'S':
-						hand_index = HAND_S1_IDX
+						hand_index = HAND_S1
 					case 'N':
-						hand_index = HAND_N1_IDX
+						hand_index = HAND_N1
 					case 'L':
-						hand_index = HAND_L1_IDX
+						hand_index = HAND_L1
 					case 'P':
-						hand_index = HAND_P1_IDX
+						hand_index = HAND_P1
 					case 'r':
-						hand_index = HAND_R2_IDX
+						hand_index = HAND_R2
 					case 'b':
-						hand_index = HAND_B2_IDX
+						hand_index = HAND_B2
 					case 'g':
-						hand_index = HAND_G2_IDX
+						hand_index = HAND_G2
 					case 's':
-						hand_index = HAND_S2_IDX
+						hand_index = HAND_S2
 					case 'n':
-						hand_index = HAND_N2_IDX
+						hand_index = HAND_N2
 					case 'l':
-						hand_index = HAND_L2_IDX
+						hand_index = HAND_L2
 					case 'p':
-						hand_index = HAND_P2_IDX
+						hand_index = HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop

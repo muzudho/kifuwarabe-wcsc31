@@ -8,6 +8,10 @@
 * `A` - Board
 * `B` - Hand
 
+## Hand piece type
+
+![20210627shogi40.png](./img/20210627shogi40.png)  
+
 ## Move
 
 ![20210627shogi33a1.png](./img/20210627shogi33a1.png)  
