@@ -29,6 +29,8 @@ type Nerve struct {
 	PCtrlBrdSys *ControlBoardSystem
 	// 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
 	PRecord *r.DifferenceRecord
+	// 時間管理用
+	OneMoveSec int
 }
 
 func NewNerve() *Nerve {

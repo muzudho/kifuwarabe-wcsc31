@@ -2,6 +2,7 @@ package take16
 
 import (
 	"math/rand"
+	"strconv"
 
 	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
@@ -39,7 +40,71 @@ const (
 )
 
 // SearchEntry - 探索部（開始）
-func SearchEntry(pNerve *Nerve) b.Move {
+func SearchEntry(pNerve *Nerve, tokens []string) b.Move {
+	// # Example
+	//
+	// ```
+	// go btime 60000 wtime 50000 byoyomi 10000
+	// .  .     2     .     4     .       6
+	//
+	// go btime 40000 wtime 50000 binc 10000 winc 10000
+	// .  .     2     .     4     .    6     .    8
+	// ```
+
+	// パース
+	var btime int = 0
+	var wtime int = 0
+	var byoyomi int = 0
+	var binc int = 0
+	var winc int = 0
+	if 8 <= len(tokens) && tokens[5] == "binc" {
+		// フィッシャー・クロック・ルール
+		btime, _ = strconv.Atoi(tokens[2])
+		wtime, _ = strconv.Atoi(tokens[4])
+		byoyomi = 0
+		binc, _ = strconv.Atoi(tokens[6])
+		winc, _ = strconv.Atoi(tokens[8])
+	} else if 6 <= len(tokens) {
+		// 秒読みルール
+		btime, _ = strconv.Atoi(tokens[2])
+		wtime, _ = strconv.Atoi(tokens[4])
+		byoyomi, _ = strconv.Atoi(tokens[6])
+		binc = 0
+		winc = 0
+	}
+
+	var time_sec int = 0
+	var inc_sec int = 0
+	switch pNerve.PPosSys.phase {
+	case 1:
+		time_sec = (btime + byoyomi + binc) / 1000
+		inc_sec = binc / 1000
+	case 2:
+		time_sec = (wtime + byoyomi + winc) / 1000
+		inc_sec = winc / 1000
+	}
+
+	if pNerve.OneMoveSec == 0 {
+		// 対局開始時に計算しておく
+		// １手に割り当てる消費時間
+		pNerve.OneMoveSec = time_sec / 130
+	}
+
+	// 2手目以降
+	var think_sec = pNerve.OneMoveSec
+
+	if 0 < inc_sec {
+		// フィッシャー・クロック・ルール:
+		// 最低でも （加算時間-1秒）は使おう
+		if 1 < inc_sec && think_sec < inc_sec-1 {
+			think_sec = (inc_sec - 1)
+		}
+	} else {
+		// 最低でも 1秒は使おう
+		if think_sec < 1 {
+			think_sec = 1
+		}
+	}
 
 	nodesNum = 0
 	depth := maxDepth
