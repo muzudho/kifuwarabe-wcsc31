@@ -87,8 +87,8 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
 	var someBestMoves []b.Move
 
-	// 前回のムーブ
-	var younger_sibling_move = p.RESIGN_MOVE
+	// 前回のムーブ（デバッグ用）
+	// var younger_sibling_move = p.RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
 
@@ -112,8 +112,10 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			G.Chat.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
-			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				from, i, lenOfMoves, p.ToMoveCode(younger_sibling_move)))
+			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
+				from, i, lenOfMoves))
+			//  younger_sibling_move=%s
+			//, p.ToMoveCode(younger_sibling_move)
 		}
 
 		pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], move)
@@ -163,11 +165,6 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			}
 		}
 
-		// ベーター・カット
-		if beta < alpha {
-			return -VALUE_INFINITE, p.RESIGN_MOVE
-		}
-
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 
 		// 盤と、コピー盤を比較します
@@ -180,10 +177,17 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, p.ToMoveCode(younger_sibling_move), p.ToMoveCode(move)))
+			panic(G.Log.Fatal("Error: count=%d move=%s", errorNum, p.ToMoveCode(move)))
+			// younger_sibling_move=%s
+			//, p.ToMoveCode(younger_sibling_move)
 		}
 
-		younger_sibling_move = move
+		// ベーター・カット
+		if beta < alpha {
+			return -VALUE_INFINITE, p.RESIGN_MOVE
+		}
+
+		// younger_sibling_move = move
 
 		if cutting != CuttingNone {
 			break
