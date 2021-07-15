@@ -38,26 +38,31 @@ const (
 	//CuttingEndCapture = CuttingType(2)
 )
 
-// Search - 探索部
-func Search(pNerve *Nerve) b.Move {
+// SearchEntry - 探索部（開始）
+func SearchEntry(pNerve *Nerve) b.Move {
 
 	nodesNum = 0
 	curDepth := 0
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
-	bestMove, bestVal := search2(pNerve, curDepth, SEARCH_NONE)
+	nodeValue, bestMove := search(pNerve, curDepth, SEARCH_NONE)
 
 	// 評価値出力（＾～＾）
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-		curDepth, nodesNum, bestVal, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
+		curDepth, nodesNum, nodeValue, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
 
 	// ゲーム向けの軽い乱数
 	return bestMove
 }
 
-// search2 - 探索部
-func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Value) {
+// search - 探索部
+func search(pNerve *Nerve, curDepth int, search_type SearchType) (p.Value, b.Move) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
+
+	// TODO 葉ノード
+	if depthEnd <= curDepth {
+
+	}
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
@@ -67,7 +72,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Val
 
 	if lenOfMoves == 0 {
 		// ステイルメートされたら負け（＾～＾）
-		return p.RESIGN_MOVE, RESIGN_VALUE
+		return RESIGN_VALUE, p.RESIGN_MOVE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
@@ -136,7 +141,7 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Val
 				}
 
 				// 再帰
-				_, opponentVal := search2(pNerve, curDepth+1, search_type2)
+				opponentVal, _ := search(pNerve, curDepth+1, search_type2)
 				// 再帰直後（＾～＾）
 				// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
@@ -213,12 +218,12 @@ func search2(pNerve *Nerve, curDepth int, search_type SearchType) (b.Move, p.Val
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
 		// 指せる手なし
-		return p.RESIGN_MOVE, RESIGN_VALUE
+		return RESIGN_VALUE, p.RESIGN_MOVE
 	}
 	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
 	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	// 相手の評価値の逆が、自分の評価値
-	return bestMove, -opponentWorstVal
+	return -opponentWorstVal, bestMove
 }

@@ -119,7 +119,7 @@ MainLoop:
 			// position うわっ、大変だ（＾～＾）
 			pNerve.ReadPosition(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
-			bestmove := Search(pNerve)
+			bestmove := SearchEntry(pNerve)
 			G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 		case "quit":
 			break MainLoop
@@ -349,7 +349,7 @@ MainLoop:
 					// G.Chat.Debug(pNerve.PPosSys.SprintLocation())
 
 					// moveList(pNerve.PPosSys)
-					bestmove := Search(pNerve)
+					bestmove := SearchEntry(pNerve)
 					G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 
 					if bestmove == b.Move(p.SQUARE_EMPTY) {
