@@ -5,7 +5,7 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 
 開発中の名前は、きふわらべ将棋２０２１（kifuwarabe-shogi2021）。リネームした（＾～＾）  
 
-## Run
+## Build
 
 ```shell
 # 使っていないパッケージを、インストールのリストから削除するなら
@@ -15,7 +15,11 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 # go get -u all
 
 go build
+```
 
+## Run
+
+```shell
 kifuwarabe-wcsc31
 ```
 
