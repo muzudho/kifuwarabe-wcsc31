@@ -31,6 +31,10 @@ type Nerve struct {
 	PRecord *r.DifferenceRecord
 	// 時間管理用
 	OneMoveSec int
+	// 時間管理用
+	StopSearch bool
+	// 時間管理用
+	PStopwatchSearch *Stopwatch
 }
 
 func NewNerve() *Nerve {
@@ -39,7 +43,14 @@ func NewNerve() *Nerve {
 	pNerve.PPosSys = NewPositionSystem()
 	pNerve.PRecord = r.NewDifferenceRecord()
 	pNerve.PCtrlBrdSys = NewControlBoardSystem()
+	pNerve.OneMoveSec = 0
+	pNerve.StopSearch = false
+	pNerve.PStopwatchSearch = NewStopwatch()
 	return pNerve
+}
+
+func (pNerve *Nerve) ClearBySearchEntry() {
+	pNerve.StopSearch = false
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）

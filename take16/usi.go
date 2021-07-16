@@ -106,7 +106,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB26\n", config.Profile.Name)
+			G.Chat.Print("id name %sB27\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			pNerve.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
@@ -115,12 +115,13 @@ MainLoop:
 		case "isready":
 			G.Chat.Print("readyok\n")
 		case "usinewgame":
-			pNerve.OneMoveSec = 0
+			pNerve = NewNerve()
 		case "position":
 			// position うわっ、大変だ（＾～＾）
 			pNerve.ReadPosition(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
-			bestmove := SearchEntry(pNerve, tokens)
+			pNerve.PStopwatchSearch.StartStopwatch()
+			bestmove := IterativeDeepeningSearch(pNerve, tokens)
 			G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 		case "quit":
 			break MainLoop
@@ -350,7 +351,7 @@ MainLoop:
 					// G.Chat.Debug(pNerve.PPosSys.SprintLocation())
 
 					// moveList(pNerve.PPosSys)
-					bestmove := SearchEntry(pNerve, []string{"go"})
+					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
 					G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
 
 					if bestmove == b.Move(p.SQUARE_EMPTY) {

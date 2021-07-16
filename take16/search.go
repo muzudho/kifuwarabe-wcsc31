@@ -39,8 +39,9 @@ const (
 	//CuttingEndCapture = CuttingType(2)
 )
 
-// SearchEntry - 探索部（開始）
-func SearchEntry(pNerve *Nerve, tokens []string) b.Move {
+// IterativeDeepeningSearch - 探索部（開始）
+func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
+	pNerve.ClearBySearchEntry()
 	// # Example
 	//
 	// ```
@@ -107,13 +108,26 @@ func SearchEntry(pNerve *Nerve, tokens []string) b.Move {
 	}
 
 	nodesNum = 0
-	depth := maxDepth
-	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	var alpha p.Value = -VALUE_INFINITE
 	var beta p.Value = VALUE_INFINITE
+	// var bestValue p.Value = -VALUE_INFINITE
+	var bestMove b.Move = p.RESIGN_MOVE
+	depth := maxDepth
 
-	nodeValue, bestMove := search(pNerve, alpha, beta, depth, SEARCH_NONE)
+	// // TODO Iterative Deepening
+	// for depth := 1; depth < maxDepth+1; depth += 1 {
+	nodeValue, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
+	if pNerve.StopSearch {
+		// タイムアップしたときの探索結果は使わないぜ（＾～＾）
+	} else {
+		// TODO bestValue = nodeValue
+		bestMove = move
+	}
+
+	// 	//if bestValue <=
+	// }
+	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 評価値出力（＾～＾）
 	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
@@ -159,6 +173,15 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range someMoves {
+		// TODO タイムアップ判定（＾～＾）
+		sec := pNerve.PStopwatchSearch.ElapsedSeconds()
+		if sec >= 20.0 {
+			G.Chat.Print("# Time up. sec=%d\n", sec)
+			pNerve.StopSearch = true
+			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
+			return 0, p.RESIGN_MOVE
+		}
+
 		// G.Chat.Debug("move=%s\n", move.ToCode())
 		from, _, _ := p.DestructureMove(move)
 
