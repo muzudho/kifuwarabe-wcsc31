@@ -8,12 +8,6 @@ import (
 	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
-// 0 にすると 1手読み（＾～＾）
-// 1 の 2手読みにしておくと、玉を取りに行くぜ（＾～＾）
-// 2 の 3手読みだと駒を取らない（＾～＾）駒のただ捨てをする（＾～＾）駒をとりかえさない（＾～＾）
-// 3 の 4手読みは、まだ遅い（＾～＾）
-var maxDepth int = 4
-
 type SearchType uint8
 
 // 探索への指定
@@ -115,7 +109,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 	var bestMove b.Move = p.RESIGN_MOVE
 
 	// Iterative Deepening
-	for depth := 1; depth < maxDepth+1; depth += 1 {
+	for depth := 1; depth < pNerve.MaxMove+1; depth += 1 {
 		value, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
 		if pNerve.IsStopSearch {
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
