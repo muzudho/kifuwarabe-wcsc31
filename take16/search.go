@@ -12,7 +12,7 @@ import (
 // 1 の 2手読みにしておくと、玉を取りに行くぜ（＾～＾）
 // 2 の 3手読みだと駒を取らない（＾～＾）駒のただ捨てをする（＾～＾）駒をとりかえさない（＾～＾）
 // 3 の 4手読みは、まだ遅い（＾～＾）
-var maxDepth int = 1
+var maxDepth int = 4
 
 type SearchType uint8
 
@@ -111,27 +111,24 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 
 	var alpha p.Value = -VALUE_INFINITE
 	var beta p.Value = VALUE_INFINITE
-	// var bestValue p.Value = -VALUE_INFINITE
+	var bestValue p.Value = -VALUE_INFINITE
 	var bestMove b.Move = p.RESIGN_MOVE
-	depth := maxDepth
 
-	// // TODO Iterative Deepening
-	// for depth := 1; depth < maxDepth+1; depth += 1 {
-	nodeValue, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
-	if pNerve.StopSearch {
-		// タイムアップしたときの探索結果は使わないぜ（＾～＾）
-	} else {
-		// TODO bestValue = nodeValue
-		bestMove = move
+	// Iterative Deepening
+	for depth := 1; depth < maxDepth+1; depth += 1 {
+		value, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
+		if pNerve.StopSearch {
+			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
+		} else {
+			bestValue = value
+			bestMove = move
+		}
+
+		// 評価値出力（＾～＾）
+		G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
+			depth, nodesNum, bestValue, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
 	}
-
-	// 	//if bestValue <=
-	// }
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
-
-	// 評価値出力（＾～＾）
-	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-		depth, nodesNum, nodeValue, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
 
 	// ゲーム向けの軽い乱数
 	return bestMove
