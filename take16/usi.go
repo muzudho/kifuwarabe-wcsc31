@@ -108,6 +108,8 @@ MainLoop:
 			// With Build Number
 			G.Chat.Print("id name %sB28\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
+			G.Chat.Print("option name MaxDepth type spin default 4 min 1 max 15\n")
+			// 大会モード
 			pNerve.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
 			rand.Seed(time.Now().UnixNano())

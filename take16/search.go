@@ -117,8 +117,9 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 	// Iterative Deepening
 	for depth := 1; depth < maxDepth+1; depth += 1 {
 		value, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
-		if pNerve.StopSearch {
+		if pNerve.IsStopSearch {
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
+			break
 		} else {
 			bestValue = value
 			bestMove = move
@@ -174,7 +175,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		sec := pNerve.PStopwatchSearch.ElapsedSeconds()
 		if sec >= 20.0 {
 			G.Chat.Print("# Time up. sec=%d\n", sec)
-			pNerve.StopSearch = true
+			pNerve.IsStopSearch = true
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
 			return 0, p.RESIGN_MOVE
 		}
