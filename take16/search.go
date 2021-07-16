@@ -19,16 +19,11 @@ const (
 )
 
 // 最大限に使わなくても、十分に大きければ十分だが（＾～＾）
-// const VALUE_INFINITE_0 = 2_147_483_647
 const VALUE_INFINITE_1 = 1_000_001
-const VALUE_INFINITE_2 = 1_000_002
 const VALUE_INFINITE_3 = 1_000_003
 const VALUE_INFINITE_4 = 1_000_004
 const VALUE_INFINITE_5 = 1_000_005
 const VALUE_INFINITE_6 = 1_000_006
-
-// const VALUE_INFINITE_7 = 1_000_007
-const VALUE_INFINITE_8 = 1_000_008
 
 var nodesNum int
 
@@ -113,7 +108,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 	nodesNum = 0
 
 	var alpha p.Value = -VALUE_INFINITE_1
-	var beta p.Value = VALUE_INFINITE_2
+	var beta p.Value = VALUE_INFINITE_1
 	var bestValue p.Value = -VALUE_INFINITE_3
 	var bestMove b.Move = p.RESIGN_MOVE
 
@@ -248,7 +243,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 				someBestMoves = nil
 				someBestMoves = append(someBestMoves, move)
 				alpha = edgeValue
-			} else if alpha <= edgeValue {
+			} else if alpha == edgeValue {
 				// アルファー・アップデートしないが、同着なら配列の要素として追加
 				someBestMoves = append(someBestMoves, move)
 			}
@@ -272,8 +267,8 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		}
 
 		// ベーター・カット
-		if beta <= alpha {
-			// どうせ使われないから投了を返すぜ（＾～＾）
+		if beta < alpha {
+			// betaより1でもalphaが大きければalphaは使われないから投了を返すぜ（＾～＾）
 			return alpha, p.RESIGN_MOVE
 		}
 
