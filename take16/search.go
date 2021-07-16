@@ -26,7 +26,8 @@ const VALUE_INFINITE_3 = 1_000_003
 const VALUE_INFINITE_4 = 1_000_004
 const VALUE_INFINITE_5 = 1_000_005
 const VALUE_INFINITE_6 = 1_000_006
-const VALUE_INFINITE_7 = 1_000_007
+
+// const VALUE_INFINITE_7 = 1_000_007
 const VALUE_INFINITE_8 = 1_000_008
 
 var nodesNum int
@@ -294,16 +295,13 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		*/
 	}
 
-	// bestMoveは、１手目しか使わないけど（＾～＾）
-	var bestMove = p.RESIGN_MOVE
-
 	bestmoveListLen := len(someBestMoves)
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
 		// 指せる手なし
-		return -VALUE_INFINITE_8, p.RESIGN_MOVE
+		return alpha, p.RESIGN_MOVE
 	}
-	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
+	var bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
 	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
