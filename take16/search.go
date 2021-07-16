@@ -20,10 +20,11 @@ const (
 
 // 最大限に使わなくても、十分に大きければ十分だが（＾～＾）
 const VALUE_INFINITE_1 = 1_000_001
-const VALUE_INFINITE_3 = 1_000_003
-const VALUE_INFINITE_4 = 1_000_004
-const VALUE_INFINITE_5 = 1_000_005
-const VALUE_INFINITE_6 = 1_000_006
+
+// const VALUE_INFINITE_3 = 1_000_003
+// const VALUE_INFINITE_4 = 1_000_004
+// const VALUE_INFINITE_5 = 1_000_005
+// const VALUE_INFINITE_6 = 1_000_006
 
 var nodesNum int
 
@@ -109,7 +110,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 
 	var alpha p.Value = -VALUE_INFINITE_1
 	var beta p.Value = VALUE_INFINITE_1
-	var bestValue p.Value = -VALUE_INFINITE_3
+	var bestValue p.Value = -VALUE_INFINITE_1
 	var bestMove b.Move = p.RESIGN_MOVE
 
 	// Iterative Deepening
@@ -156,7 +157,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 
 	if lenOfMoves == 0 {
 		// ステイルメートされたら負け（＾～＾）
-		return -VALUE_INFINITE_4, p.RESIGN_MOVE
+		return alpha, p.RESIGN_MOVE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
@@ -208,8 +209,6 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		// 取った駒は棋譜の１手前に記録されています
 		captured := pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex-1]
 
-		var edgeValue p.Value = -VALUE_INFINITE_5
-
 		if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
@@ -217,7 +216,6 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			// 玉を取るのは最善手
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)
-			edgeValue = VALUE_INFINITE_6
 			cutting = CuttingKingCapture
 		} else if search_type == SEARCH_CAPTURE && captured == p.PIECE_EMPTY {
 			// 駒の取り合いを探索中に、駒を取らなかったら
@@ -234,7 +232,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 
 			// 再帰
 			nodeValue, _ := search(pNerve, -beta, -alpha, depth-1, search_type2)
-			edgeValue = -nodeValue
+			var edgeValue = -nodeValue
 			// 再帰直後（＾～＾）
 			// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
