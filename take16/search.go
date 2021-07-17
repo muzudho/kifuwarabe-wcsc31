@@ -21,11 +21,6 @@ const (
 // 最大限に使わなくても、十分に大きければ十分だが（＾～＾）
 const VALUE_INFINITE_1 = 1_000_001
 
-// const VALUE_INFINITE_3 = 1_000_003
-// const VALUE_INFINITE_4 = 1_000_004
-// const VALUE_INFINITE_5 = 1_000_005
-// const VALUE_INFINITE_6 = 1_000_006
-
 var nodesNum int
 
 type CuttingType int
@@ -118,6 +113,8 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 		value, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
 		if pNerve.IsStopSearch {
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
+			// 評価値出力（＾～＾）
+			G.Chat.Print("# Time up\n")
 			break
 		} else {
 			bestValue = value
@@ -132,6 +129,14 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 
 	// ゲーム向けの軽い乱数
 	return bestMove
+}
+
+func alpha_value(alpha p.Value) p.Value {
+	if alpha == VALUE_INFINITE_1 {
+		return 0
+	}
+
+	return alpha
 }
 
 // search - 探索部
@@ -157,7 +162,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 
 	if lenOfMoves == 0 {
 		// ステイルメートされたら負け（＾～＾）
-		return alpha, p.RESIGN_MOVE
+		return alpha_value(alpha), p.RESIGN_MOVE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
@@ -267,7 +272,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		// ベーター・カット
 		if beta < alpha {
 			// betaより1でもalphaが大きければalphaは使われないから投了を返すぜ（＾～＾）
-			return alpha, p.RESIGN_MOVE
+			return alpha_value(alpha), p.RESIGN_MOVE
 		}
 
 		// younger_sibling_move = move
@@ -292,11 +297,11 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
 		// 指せる手なし
-		return alpha, p.RESIGN_MOVE
+		return alpha_value(alpha), p.RESIGN_MOVE
 	}
 	var bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
 	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
-	return alpha, bestMove
+	return alpha_value(alpha), bestMove
 }
