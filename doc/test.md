@@ -1,5 +1,11 @@
 # Test
 
+## 探索中に投了を読んだら投了
+
+```plain
+position startpos moves 7g7f 5a5b 6i7h 3a4b 7i6h 7c7d 8h5e 4b3a 5e8b+
+```
+
 ## 歩を取るか
 
 ```plain

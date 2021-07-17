@@ -106,10 +106,10 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 	var alpha p.Value = -VALUE_INFINITE_1
 	var beta p.Value = VALUE_INFINITE_1
 	var bestValue p.Value = -VALUE_INFINITE_1
-	var bestMove b.Move = p.RESIGN_MOVE
+	var bestMove b.Move = p.RESIGN_MOVE // 指し手が無いとき投了
 
 	// Iterative Deepening
-	for depth := 1; depth < pNerve.MaxMove+1; depth += 1 {
+	for depth := 1; depth < pNerve.MaxDepth+1; depth += 1 {
 		value, move := search(pNerve, alpha, beta, depth, SEARCH_NONE)
 		if pNerve.IsStopSearch {
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
@@ -131,14 +131,6 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 	return bestMove
 }
 
-func alpha_value(alpha p.Value) p.Value {
-	if alpha == VALUE_INFINITE_1 {
-		return 0
-	}
-
-	return alpha
-}
-
 // search - 探索部
 func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type SearchType) (p.Value, b.Move) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
@@ -150,8 +142,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		materialValue := pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 		//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 
-		// 指し手は返さないぜ（＾～＾）
-		return materialValue, p.RESIGN_MOVE
+		return materialValue, p.RESIGN_MOVE // 葉では、指し手は使わないから、返さないぜ（＾～＾）
 	}
 
 	// 指し手生成
@@ -161,8 +152,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	//fmt.Printf("%d/%d lenOfMoves=%d\n", curDepth, depthEnd, lenOfMoves)
 
 	if lenOfMoves == 0 {
-		// ステイルメートされたら負け（＾～＾）
-		return alpha_value(alpha), p.RESIGN_MOVE
+		return -VALUE_INFINITE_1, p.RESIGN_MOVE // ステイルメート（指し手がない）されたら投了（＾～＾）
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
@@ -180,8 +170,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		if sec >= 20.0 {
 			G.Chat.Print("# Time up. sec=%d\n", sec)
 			pNerve.IsStopSearch = true
-			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
-			return 0, p.RESIGN_MOVE
+			return -VALUE_INFINITE_1, p.RESIGN_MOVE // タイムアップしたときの探索結果は使わないぜ（＾～＾）
 		}
 
 		// G.Chat.Debug("move=%s\n", move.ToCode())
@@ -242,14 +231,18 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			// 再帰直後（＾～＾）
 			// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
-			if alpha < edgeValue {
+			// 説明変数：何か１つは指し手を選んでおかないと、投了してしまうから、最初の１手は候補に入れておけだぜ（＾～＾）
+			var isFirstMove = len(someBestMoves) == 0
+			// 説明変数：アルファー・アップデートしないが、同着なら配列の要素として追加
+			var isSameAlpha = alpha == edgeValue
+
+			if isFirstMove || isSameAlpha {
+				someBestMoves = append(someBestMoves, move)
+			} else if alpha < edgeValue {
 				// アルファー・アップデート
 				someBestMoves = nil
 				someBestMoves = append(someBestMoves, move)
 				alpha = edgeValue
-			} else if alpha == edgeValue {
-				// アルファー・アップデートしないが、同着なら配列の要素として追加
-				someBestMoves = append(someBestMoves, move)
 			}
 		}
 
@@ -273,7 +266,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		// ベーター・カット
 		if beta < alpha {
 			// betaより1でもalphaが大きければalphaは使われないから投了を返すぜ（＾～＾）
-			return alpha_value(alpha), p.RESIGN_MOVE
+			return alpha, p.RESIGN_MOVE
 		}
 
 		// younger_sibling_move = move
@@ -295,14 +288,17 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	}
 
 	bestmoveListLen := len(someBestMoves)
-	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
+	// // Debug出力
+	// for i := 0; i < bestmoveListLen; i += 1 {
+	// 	G.Chat.Debug("i=%d depth=%d bestmoveListLen=%d\n", i, depth, bestmoveListLen)
+	// }
+
 	if bestmoveListLen < 1 {
-		// 指せる手なし
-		return alpha_value(alpha), p.RESIGN_MOVE
+		return -VALUE_INFINITE_1, p.RESIGN_MOVE // 指せる手無いから投了（＾～＾）
 	}
 	var bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
 	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
-	return alpha_value(alpha), bestMove
+	return alpha, bestMove
 }

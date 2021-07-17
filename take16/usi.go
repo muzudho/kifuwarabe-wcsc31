@@ -106,9 +106,9 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB28\n", config.Profile.Name)
+			G.Chat.Print("id name %sB29\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
-			G.Chat.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxMove)
+			G.Chat.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
 			pNerve.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
@@ -133,13 +133,13 @@ MainLoop:
 				if 5 <= len(tokens) {
 					value := tokens[4]
 					switch name {
-					case "MaxMove":
+					case "MaxDepth":
 						// TODO
 						// 0 にすると 1手読み（＾～＾）
 						// 1 の 2手読みにしておくと、玉を取りに行くぜ（＾～＾）
 						// 2 の 3手読みだと駒を取らない（＾～＾）駒のただ捨てをする（＾～＾）駒をとりかえさない（＾～＾）
 						// 3 の 4手読みは、まだ遅い（＾～＾）
-						pNerve.MaxMove, _ = strconv.Atoi(value)
+						pNerve.MaxDepth, _ = strconv.Atoi(value)
 					}
 				}
 			}

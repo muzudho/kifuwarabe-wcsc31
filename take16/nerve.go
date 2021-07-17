@@ -36,7 +36,7 @@ type Nerve struct {
 	// 時間管理用
 	PStopwatchSearch *Stopwatch
 	// エンジン・オプション
-	MaxMove int
+	MaxDepth int
 }
 
 func NewNerve() *Nerve {
@@ -48,7 +48,7 @@ func NewNerve() *Nerve {
 	pNerve.OneMoveSec = 0
 	pNerve.IsStopSearch = false
 	pNerve.PStopwatchSearch = NewStopwatch()
-	pNerve.MaxMove = 4
+	pNerve.MaxDepth = 2
 	return pNerve
 }
 
