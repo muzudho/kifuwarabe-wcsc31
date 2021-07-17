@@ -222,6 +222,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)
 			cutting = CuttingKingCapture
+			alpha = VALUE_INFINITE_1
 		} else if search_type == SEARCH_CAPTURE && captured == p.PIECE_EMPTY {
 			// 駒の取り合いを探索中に、駒を取らなかったら
 			// この手は見なかったことにするぜ（＾～＾）
