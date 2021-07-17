@@ -232,11 +232,11 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
 			// 説明変数：何か１つは指し手を選んでおかないと、投了してしまうから、最初の１手は候補に入れておけだぜ（＾～＾）
-			var isFirstMove = len(someBestMoves) == 0
+			var isAnyOneMove = len(someBestMoves) == 0
 			// 説明変数：アルファー・アップデートしないが、同着なら配列の要素として追加
 			var isSameAlpha = alpha == edgeValue
 
-			if isFirstMove || isSameAlpha {
+			if isAnyOneMove || isSameAlpha {
 				someBestMoves = append(someBestMoves, move)
 			} else if alpha < edgeValue {
 				// アルファー・アップデート
