@@ -106,7 +106,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB29\n", config.Profile.Name)
+			G.Chat.Print("id name %sB30\n", config.Profile.Name)
 			G.Chat.Print("id author %s\n", config.Profile.Author)
 			G.Chat.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
