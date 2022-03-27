@@ -5,6 +5,17 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 
 開発中の名前は、きふわらべ将棋２０２１（kifuwarabe-shogi2021）。リネームした（＾～＾）  
 
+## Deploy
+
+例えば 開発環境では、ソースは以下のディレクトリに置いてある（＾～＾）  
+
+```
+📂C:\Users\むずでょ\go\src\github.com\muzudho\kifuwarabe-wcsc31  
+           -------
+           1
+1. ユーザー名
+```
+
 ## Build
 
 ```shell
