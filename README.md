@@ -5,7 +5,9 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 
 開発中の名前は、きふわらべ将棋２０２１（kifuwarabe-shogi2021）。リネームした（＾～＾）  
 
-## Deploy
+# Deploy
+
+## Development
 
 例えば 開発環境では、ソースは以下のディレクトリに置いてある（＾～＾）  
 
@@ -16,7 +18,21 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 1. ユーザー名
 ```
 
-## Build
+## Runtime
+
+わたしのフォルダー構成
+
+```plain
+💻大会用PC
+└───📂C:\Users\{ユーザー名}\Documents\MyProduct
+    └───📂KifuwarabeWcsc31
+        ├───📂input
+        ├───📂output
+        ├───📂shogidokoro # 将棋所をダウンロードしてきてここに置く
+        └───📄kifuwarabe-wcsc31.exe
+```
+
+# Build
 
 ```shell
 # 使っていないパッケージを、インストールのリストから削除するなら
@@ -28,13 +44,13 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
 go build
 ```
 
-## Run
+# Run
 
 ```shell
 kifuwarabe-wcsc31
 ```
 
-## Test
+# Test
 
 ```shell
 # 将棋所から ２枚落ち初期局面から△６二玉、▲７六歩、△３二銀と進んだ局面
@@ -44,7 +60,7 @@ position sfen lnsgkgsnl/9/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1 moves 
 pos
 ```
 
-## References
+# References
 
 * [go - 2つの異なるデータ型の多次元配列を宣言する方法](https://cloud6.net/so/go/977771)
 * [Visual Studio CodeでGo言語のデバッグ環境を整える](https://qiita.com/momotaro98/items/7fbcad57a9d8488fe999)
@@ -55,12 +71,12 @@ go get -u github.com/go-delve/delve
 go get -u github.com/go-delve/delve/cmd/dlv
 ```
 
-## TODO
+# TODO
 
 * [ ] 長い利きボードが、相手玉を王手したかどうか　カウントできるだろうか（＾～＾）？  
 利きが伸びるタイミング、利きが遮られるタイミングがあると思う（＾～＾）そこで（＾～＾）
 
-## Documents
+# Documents
 
 [Design](./doc/design.md)  
 [Test](./doc/test.md)  
