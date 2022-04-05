@@ -32,6 +32,10 @@ WCSC31 では take13 を 1手読みで使うぜ（＾～＾）
         └───📄kifuwarabe-wcsc31.exe
 ```
 
+# Lesson
+
+* [Lesson01](./lesson01/README.md)
+* [Lesson02](./lesson02/README.md)
 # Build
 
 ```shell

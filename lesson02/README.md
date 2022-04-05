@@ -11,7 +11,7 @@ go build
 # Run
 
 ```shell
-kifuwarabe-wcsc31
+kifuwarabe-wcsc31 lesson02
 ```
 
 ```plaintext
