@@ -1,6 +1,6 @@
 package main
 
-import "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+import "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 
 // main - 最初に実行されます
 func main() {
@@ -9,8 +9,10 @@ func main() {
 	// fmt.Println("Hello, world!")
 
 	// 自殺手きふわらべ（＾▽＾）
-	lesson01.MainLoop()
-	// take2.MainLoop()
+	// lesson01.MainLoop()
+
+	// ダミーの盤を表示
+	lesson02.MainLoop()
 	// take3.MainLoop()
 	// take4.MainLoop()
 	// take5.MainLoop()

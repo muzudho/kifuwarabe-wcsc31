@@ -1,6 +1,6 @@
-# lesson01
+# lesson02
 
-初手投了きふわらべ（＾～＾）  
+ダミーの盤を表示してみようぜ（＾～＾）  
 
 # Build
 
@@ -20,6 +20,8 @@ usi
 isready
 
 usinewgame
+
+pos
 
 go
 

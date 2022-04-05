@@ -1,4 +1,4 @@
-package take2
+package lesson02
 
 import (
 	l "github.com/muzudho/go-logger"
