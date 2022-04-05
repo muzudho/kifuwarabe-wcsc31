@@ -1,4 +1,4 @@
-package take1
+package lesson01
 
 // EngineConf - Tomlファイル。
 type EngineConf struct {

@@ -1,4 +1,4 @@
-package take1
+package lesson01
 
 import (
 	"bufio"
@@ -25,7 +25,7 @@ func MainLoop() {
 	// コマンドライン引数解析
 	flag.Parse()
 
-	engineConfPath := filepath.Join(*workdir, "input/take1/engine.conf.toml")
+	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
 	// グローバル変数の作成
 	G = *new(Variables)

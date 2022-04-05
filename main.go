@@ -1,13 +1,15 @@
 package main
 
-import "github.com/muzudho/kifuwarabe-wcsc31/take16"
+import "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 
 // main - 最初に実行されます
 func main() {
 	// fmt.Printf("(11-12) mod 10=%d\n", (11-12)%10)
 
 	// fmt.Println("Hello, world!")
-	// take1.MainLoop()
+
+	// 自殺手きふわらべ（＾▽＾）
+	lesson01.MainLoop()
 	// take2.MainLoop()
 	// take3.MainLoop()
 	// take4.MainLoop()
@@ -31,5 +33,7 @@ func main() {
 
 	// take15 は、 take13 の後継（＾～＾）
 	// take15.MainLoop()
-	take16.MainLoop()
+
+	// 最終版
+	// take16.MainLoop()
 }
