@@ -103,7 +103,7 @@ MainLoop:
 			break MainLoop
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			G.Chat.Debug(pos.Sprint())
+			G.Chat.Debug(Sprint(pos))
 		}
 
 		G.Log.FlushAllLogs()
