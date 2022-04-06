@@ -1,9 +1,9 @@
-package take14
+package take15
 
 import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func Sprint(pPos *Position, phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
@@ -84,7 +84,7 @@ func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex in
 
 	var s1 = "\n" +
 		//
-		fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str) +
+		fmt.Sprintf("[%d -> %d moves / %s / ? repeats / %d value]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str, pPos.MaterialValue) +
 		//
 		"\n" +
 		//

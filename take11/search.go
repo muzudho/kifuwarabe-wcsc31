@@ -64,7 +64,8 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+			G.Chat.Debug(Sprint(
+				pPosSys.PPosition[POS_LAYER_MAIN],
 				pPosSys.phase,
 				pPosSys.StartMovesNum,
 				pPosSys.OffsetMovesIndex,

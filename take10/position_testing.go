@@ -256,7 +256,7 @@ func ShuffleBoard(pPos *Position) {
 	pPos.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint())
+	G.Chat.Debug(Sprint(pPos))
 
 	if false {
 		var countList [8]int
@@ -332,7 +332,7 @@ func ShuffleBoard(pPos *Position) {
 	pPos.ReadPosition(command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint())
+	G.Chat.Debug(Sprint(pPos))
 	ShowAllPiecesCount(pPos)
 	command2 := pPos.SprintSfen()
 	G.Chat.Debug("#command2=%s", command2)

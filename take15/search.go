@@ -91,7 +91,8 @@ func search2(pBrain *Brain, curDepth int) (b.Move, Value) { //, search_type Sear
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pBrain.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+			G.Chat.Debug(Sprint(
+				pBrain.PPosSys.PPosition[POS_LAYER_MAIN],
 				pBrain.PPosSys.phase,
 				pBrain.PPosSys.StartMovesNum,
 				pBrain.PPosSys.OffsetMovesIndex,

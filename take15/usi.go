@@ -146,7 +146,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(Sprint(
+					pBrain.PPosSys.PPosition[POS_LAYER_MAIN],
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex,
@@ -159,7 +160,8 @@ MainLoop:
 				if err != nil {
 					G.Chat.Debug("Error: %s", err)
 				} else {
-					G.Chat.Debug(pBrain.PPosSys.PPosition[b1].Sprint(
+					G.Chat.Debug(Sprint(
+						pBrain.PPosSys.PPosition[b1],
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
 						pBrain.PPosSys.OffsetMovesIndex,
@@ -180,7 +182,8 @@ MainLoop:
 			i := 3
 			var move, err = ParseMove(command, &i, pBrain.PPosSys.GetPhase())
 			if err != nil {
-				G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(Sprint(
+					pBrain.PPosSys.PPosition[POS_LAYER_MAIN],
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,
 					pBrain.PPosSys.OffsetMovesIndex,
@@ -326,7 +329,8 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < MOVES_SIZE; i += 1 {
-					G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+					G.Chat.Debug(Sprint(
+						pBrain.PPosSys.PPosition[POS_LAYER_MAIN],
 						pBrain.PPosSys.phase,
 						pBrain.PPosSys.StartMovesNum,
 						pBrain.PPosSys.OffsetMovesIndex,

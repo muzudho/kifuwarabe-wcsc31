@@ -108,14 +108,14 @@ MainLoop:
 		// 以下、きふわらべ独自拡張コマンド
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			G.Chat.Debug(pPos.Sprint())
+			G.Chat.Debug(Sprint(pPos))
 		case "do":
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
 			var move, err = ParseMove(command, &i, pPos.Phase)
 			if err != nil {
-				fmt.Println(pPos.Sprint())
+				fmt.Println(Sprint(pPos))
 				panic(err)
 			}
 

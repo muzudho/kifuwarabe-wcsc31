@@ -6,7 +6,7 @@ import (
 )
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) Sprint() string {
+func Sprint(pPos *Position) string {
 	var phase_str string
 	switch pPos.GetPhase() {
 	case FIRST:

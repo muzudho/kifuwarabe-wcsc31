@@ -111,7 +111,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(Sprint(
+					pPosSys.PPosition[POS_LAYER_MAIN],
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
 					pPosSys.OffsetMovesIndex,
@@ -124,7 +125,8 @@ MainLoop:
 				if err != nil {
 					G.Chat.Debug("Error: %s", err)
 				} else {
-					G.Chat.Debug(pPosSys.PPosition[b1].Sprint(
+					G.Chat.Debug(Sprint(
+						pPosSys.PPosition[b1],
 						pPosSys.phase,
 						pPosSys.StartMovesNum,
 						pPosSys.OffsetMovesIndex,
@@ -145,7 +147,8 @@ MainLoop:
 			i := 3
 			var move, err = ParseMove(command, &i, pPosSys.GetPhase())
 			if err != nil {
-				G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(Sprint(
+					pPosSys.PPosition[POS_LAYER_MAIN],
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
 					pPosSys.OffsetMovesIndex,
@@ -273,7 +276,8 @@ MainLoop:
 			G.Chat.Debug("Playout start\n")
 
 			for i := 0; i < 100; i += 1 {
-				G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].Sprint(
+				G.Chat.Debug(Sprint(
+					pPosSys.PPosition[POS_LAYER_MAIN],
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
 					pPosSys.OffsetMovesIndex,

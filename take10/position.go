@@ -1007,7 +1007,7 @@ func (pPos *Position) ReadPosition(command string) {
 			var move, err = ParseMove(command, &i, pPos.GetPhase())
 			if err != nil {
 				fmt.Println(err)
-				fmt.Println(pPos.Sprint())
+				fmt.Println(Sprint(pPos))
 				panic(err)
 			}
 			pPos.Moves[pPos.OffsetMovesIndex] = move

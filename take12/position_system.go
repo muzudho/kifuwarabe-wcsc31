@@ -688,7 +688,8 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			var move, err = ParseMove(command, &i, pPosSys.GetPhase())
 			if err != nil {
 				fmt.Println(err)
-				fmt.Println(pPos.Sprint(
+				fmt.Println(Sprint(
+					pPos,
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
 					pPosSys.OffsetMovesIndex,

@@ -289,7 +289,8 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	pPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint(
+	G.Chat.Debug(Sprint(
+		pPos,
 		pPosSys.phase,
 		pPosSys.StartMovesNum,
 		pPosSys.OffsetMovesIndex,
@@ -370,7 +371,8 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	pPosSys.ReadPosition(pPos, command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(pPos.Sprint(
+	G.Chat.Debug(Sprint(
+		pPos,
 		pPosSys.phase,
 		pPosSys.StartMovesNum,
 		pPosSys.OffsetMovesIndex,

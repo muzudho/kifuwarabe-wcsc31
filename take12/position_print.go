@@ -3,7 +3,7 @@ package take12
 import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) Sprint(phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func Sprint(pPos *Position, phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
