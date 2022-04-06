@@ -1,4 +1,4 @@
-package take16position
+package take16
 
 import "fmt"
 

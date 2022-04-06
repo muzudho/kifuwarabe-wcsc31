@@ -2,10 +2,6 @@
 
 package take16
 
-import (
-	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
-)
-
 // MoveEnd - 移動先と成り
 //
 // pddd dddd
@@ -18,7 +14,7 @@ type MoveEnd uint8
 const RESIGN_MOVE_END = MoveEnd(0)
 
 // NewMoveEnd - 移動先マス、成りの有無 を指定してください
-func NewMoveEnd(to p.Square, promotion bool) MoveEnd {
+func NewMoveEnd(to Square, promotion bool) MoveEnd {
 	moveEnd := RESIGN_MOVE_END
 
 	// ReplaceDestination - 移動先マス
@@ -46,8 +42,8 @@ func NewMoveEnd(to p.Square, promotion bool) MoveEnd {
 // 成
 // 1000 0000 (Mask) 0x80
 // pddd dddd
-func (moveEnd MoveEnd) Destructure() (p.Square, bool) {
-	var to = p.Square(uint8(moveEnd) & 0x7f)
+func (moveEnd MoveEnd) Destructure() (Square, bool) {
+	var to = Square(uint8(moveEnd) & 0x7f)
 	var pro = uint8(moveEnd)&0x80 != 0
 	return to, pro
 }

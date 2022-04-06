@@ -1,4 +1,4 @@
-package take16position
+package take16
 
 // 1:先手 2:後手
 type Phase byte

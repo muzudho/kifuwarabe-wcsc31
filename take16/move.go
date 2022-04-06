@@ -1,9 +1,7 @@
-package take16position
+package take16
 
 import (
 	"fmt"
-
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 )
 
 const (
@@ -30,31 +28,31 @@ const (
 )
 
 // 0 は 投了ということにするぜ（＾～＾）
-const RESIGN_MOVE = b.Move(0)
+const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMove(from Square, to Square, promotion bool) b.Move {
+func NewMove(from Square, to Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// replaceSource - 移動元マス
 	// 1111 1111 1000 0000 (Clear) 0xff80
 	// .pdd dddd dsss ssss
-	move = b.Move(uint16(move)&0xff80 | uint16(from))
+	move = Move(uint16(move)&0xff80 | uint16(from))
 
 	// replaceDestination - 移動先マス
 	// 1100 0000 0111 1111 (Clear) 0xc07f
 	// .pdd dddd dsss ssss
-	move = b.Move(uint16(move)&0xc07f | (uint16(to) << 7))
+	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
 	// replacePromotion - 成
 	// 0100 0000 0000 0000 (Stand) 0x4000
 	// 1011 1111 1111 1111 (Clear) 0xbfff
 	// .pdd dddd dsss ssss
 	if promotion {
-		return b.Move(uint16(move) | 0x4000)
+		return Move(uint16(move) | 0x4000)
 	}
 
-	return b.Move(uint16(move) & 0xbfff)
+	return Move(uint16(move) & 0xbfff)
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
@@ -70,7 +68,7 @@ func NewMove(from Square, to Square, promotion bool) b.Move {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func DestructureMove(move b.Move) (Square, Square, bool) {
+func DestructureMove(move Move) (Square, Square, bool) {
 	var from = Square(uint16(move) & 0x007f)
 	var to = Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
@@ -78,7 +76,7 @@ func DestructureMove(move b.Move) (Square, Square, bool) {
 }
 
 // ToMoveCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func ToMoveCode(move b.Move) string {
+func ToMoveCode(move Move) string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {

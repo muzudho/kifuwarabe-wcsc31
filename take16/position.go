@@ -1,10 +1,8 @@
-package take16position
+package take16
 
 import (
 	"fmt"
 	"strconv"
-
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
 )
 
 // マス番号 00～99,100～113
@@ -95,7 +93,7 @@ const (
 )
 
 // 持ち駒
-var HandIndexToPiece = [HAND_SIZE]b.Piece{
+var HandIndexToPiece = [HAND_SIZE]Piece{
 	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
 
@@ -110,7 +108,7 @@ func Rank(sq Square) Square {
 }
 
 // Promote - 成ります
-func Promote(piece b.Piece) b.Piece {
+func Promote(piece Piece) Piece {
 	switch piece {
 	case PIECE_EMPTY, PIECE_K1, PIECE_G1, PIECE_PR1, PIECE_PB1, PIECE_PS1, PIECE_PN1, PIECE_PL1, PIECE_PP1,
 		PIECE_K2, PIECE_G2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2: // 成らずにそのまま返す駒
@@ -145,7 +143,7 @@ func Promote(piece b.Piece) b.Piece {
 }
 
 // Demote - 成っている駒を、成っていない駒に戻します
-func Demote(piece b.Piece) b.Piece {
+func Demote(piece Piece) Piece {
 	switch piece {
 	case PIECE_EMPTY, PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 		PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2: // 裏返さずにそのまま返す駒
@@ -180,7 +178,7 @@ func Demote(piece b.Piece) b.Piece {
 }
 
 // Who - 駒が先手か後手か空升かを返します
-func Who(piece b.Piece) Phase {
+func Who(piece Piece) Phase {
 	switch piece {
 	case PIECE_EMPTY: // 空きマス
 		return ZEROTH
@@ -194,7 +192,7 @@ func Who(piece b.Piece) Phase {
 }
 
 // PieceFrom - 文字列からPieceを作成
-func PieceFrom(piece string) b.Piece {
+func PieceFrom(piece string) Piece {
 	switch piece {
 	case "":
 		return PIECE_EMPTY
@@ -260,7 +258,7 @@ func PieceFrom(piece string) b.Piece {
 }
 
 // ToPieceCode - 文字列
-func ToPieceCode(pc b.Piece) string {
+func ToPieceCode(pc Piece) string {
 	switch pc {
 	case PIECE_EMPTY:
 		return ""
@@ -329,7 +327,7 @@ func ToPieceCode(pc b.Piece) string {
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]b.Piece
+	Board [BOARD_SIZE]Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]Square
@@ -343,7 +341,7 @@ type Position struct {
 func NewPosition() *Position {
 	var pPos = new(Position)
 
-	pPos.Board = [BOARD_SIZE]b.Piece{
+	pPos.Board = [BOARD_SIZE]Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
@@ -368,7 +366,7 @@ func NewPosition() *Position {
 // SetToStartpos - 初期局面にします。利きの計算はまだ行っていません。
 func (pPos *Position) SetToStartpos() {
 	// 初期局面にします
-	pPos.Board = [BOARD_SIZE]b.Piece{
+	pPos.Board = [BOARD_SIZE]Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
 		PIECE_EMPTY, PIECE_N2, PIECE_B2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_R1, PIECE_N1,
@@ -392,7 +390,7 @@ func (pPos *Position) GetPieceLocation(index int) Square {
 
 // ClearBoard - 駒を置いていな状態でリセットします
 func (pPos *Position) ClearBoard() {
-	pPos.Board = [BOARD_SIZE]b.Piece{
+	pPos.Board = [BOARD_SIZE]Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
@@ -436,7 +434,7 @@ func (pPos *Position) IsEmptySq(sq Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
+func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
 	var hand_sq = SQUARE_EMPTY
 
@@ -475,11 +473,11 @@ func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
 		case SECOND:
 			from = hand_sq + HAND_TYPE_SIZE
 		default:
-			return *new(b.Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(b.Move), fmt.Errorf("Fatal: not *")
+			return *new(Move), fmt.Errorf("Fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -516,7 +514,7 @@ func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(b.Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -526,10 +524,10 @@ func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(b.Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(b.Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1

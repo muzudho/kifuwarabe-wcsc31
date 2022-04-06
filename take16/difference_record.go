@@ -1,8 +1,4 @@
-package take16record
-
-import (
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
-)
+package take16
 
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
@@ -15,9 +11,9 @@ type DifferenceRecord struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]b.Move
+	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]b.Piece
+	CapturedList [MOVES_SIZE]Piece
 }
 
 func NewDifferenceRecord() *DifferenceRecord {
@@ -32,7 +28,7 @@ func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	pRecord.StartMovesNum = 1
 	pRecord.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pRecord.Moves = [MOVES_SIZE]b.Move{}
+	pRecord.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pRecord.CapturedList = [MOVES_SIZE]b.Piece{}
+	pRecord.CapturedList = [MOVES_SIZE]Piece{}
 }

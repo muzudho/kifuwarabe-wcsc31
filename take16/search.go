@@ -3,9 +3,6 @@ package take16
 import (
 	"math/rand"
 	"strconv"
-
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
-	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
 )
 
 type SearchType uint8
@@ -34,7 +31,7 @@ const (
 )
 
 // IterativeDeepeningSearch - 探索部（開始）
-func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
+func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) Move {
 	pNerve.ClearBySearchEntry()
 	// # Example
 	//
@@ -103,10 +100,10 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 
 	nodesNum = 0
 
-	var alpha p.Value = -VALUE_INFINITE_1
-	var beta p.Value = VALUE_INFINITE_1
-	var bestValue p.Value = -VALUE_INFINITE_1
-	var bestMove b.Move = p.RESIGN_MOVE // 指し手が無いとき投了
+	var alpha Value = -VALUE_INFINITE_1
+	var beta Value = VALUE_INFINITE_1
+	var bestValue Value = -VALUE_INFINITE_1
+	var bestMove Move = RESIGN_MOVE // 指し手が無いとき投了
 
 	// Iterative Deepening
 	for depth := 1; depth < pNerve.MaxDepth+1; depth += 1 {
@@ -123,7 +120,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 
 		// 評価値出力（＾～＾）
 		G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-			depth, nodesNum, bestValue, p.ToMoveCode(bestMove), p.ToMoveCode(bestMove))
+			depth, nodesNum, bestValue, ToMoveCode(bestMove), ToMoveCode(bestMove))
 	}
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
@@ -132,7 +129,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) b.Move {
 }
 
 // search - 探索部
-func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type SearchType) (p.Value, b.Move) {
+func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type SearchType) (Value, Move) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// TODO 葉ノード
@@ -142,7 +139,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		materialValue := pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 		//fmt.Printf("move=%s leafVal=%6d materialVal=%6d(%s) control_val=%6d\n", move.ToCode(), leafVal, materialVal, captured.ToCode(), control_val)
 
-		return materialValue, p.RESIGN_MOVE // 葉では、指し手は使わないから、返さないぜ（＾～＾）
+		return materialValue, RESIGN_MOVE // 葉では、指し手は使わないから、返さないぜ（＾～＾）
 	}
 
 	// 指し手生成
@@ -152,14 +149,14 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	//fmt.Printf("%d/%d lenOfMoves=%d\n", curDepth, depthEnd, lenOfMoves)
 
 	if lenOfMoves == 0 {
-		return -VALUE_INFINITE_1, p.RESIGN_MOVE // ステイルメート（指し手がない）されたら投了（＾～＾）
+		return -VALUE_INFINITE_1, RESIGN_MOVE // ステイルメート（指し手がない）されたら投了（＾～＾）
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var someBestMoves []b.Move
+	var someBestMoves []Move
 
 	// 前回のムーブ（デバッグ用）
-	// var younger_sibling_move = p.RESIGN_MOVE
+	// var younger_sibling_move = RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
 
@@ -170,14 +167,14 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 		if sec >= 20.0 {
 			G.Chat.Print("# Time up. sec=%d\n", sec)
 			pNerve.IsStopSearch = true
-			return -VALUE_INFINITE_1, p.RESIGN_MOVE // タイムアップしたときの探索結果は使わないぜ（＾～＾）
+			return -VALUE_INFINITE_1, RESIGN_MOVE // タイムアップしたときの探索結果は使わないぜ（＾～＾）
 		}
 
 		// G.Chat.Debug("move=%s\n", move.ToCode())
-		from, _, _ := p.DestructureMove(move)
+		from, _, _ := DestructureMove(move)
 
 		// デバッグに使うために、盤をコピーしておきます
-		pPosCopy := p.NewPosition()
+		pPosCopy := NewPosition()
 		copyBoard(pNerve.PPosSys.PPosition[0], pPosCopy)
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
@@ -194,7 +191,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
 				from, i, lenOfMoves))
 			//  younger_sibling_move=%s
-			//, p.ToMoveCode(younger_sibling_move)
+			//, ToMoveCode(younger_sibling_move)
 		}
 
 		pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], move)
@@ -212,14 +209,14 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			someBestMoves = append(someBestMoves, move)
 			cutting = CuttingKingCapture
 			alpha = VALUE_INFINITE_1
-		} else if search_type == SEARCH_CAPTURE && captured == p.PIECE_EMPTY {
+		} else if search_type == SEARCH_CAPTURE && captured == PIECE_EMPTY {
 			// 駒の取り合いを探索中に、駒を取らなかったら
 			// この手は見なかったことにするぜ（＾～＾）
 		} else {
 			// 駒を取っている場合は、探索を延長します
-			// TODO  if captured != p.PIECE_EMPTY
+			// TODO  if captured != PIECE_EMPTY
 			var search_type2 SearchType
-			if captured != p.PIECE_EMPTY {
+			if captured != PIECE_EMPTY {
 				search_type2 = SEARCH_CAPTURE
 			} else {
 				search_type2 = search_type
@@ -258,15 +255,15 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 			// あの駒、どこにいんの（＾～＾）？
 			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(G.Log.Fatal("Error: count=%d move=%s", errorNum, p.ToMoveCode(move)))
+			panic(G.Log.Fatal("Error: count=%d move=%s", errorNum, ToMoveCode(move)))
 			// younger_sibling_move=%s
-			//, p.ToMoveCode(younger_sibling_move)
+			//, ToMoveCode(younger_sibling_move)
 		}
 
 		// ベーター・カット
 		if beta < alpha {
 			// betaより1でもalphaが大きければalphaは使われないから投了を返すぜ（＾～＾）
-			return alpha, p.RESIGN_MOVE
+			return alpha, RESIGN_MOVE
 		}
 
 		// younger_sibling_move = move
@@ -294,7 +291,7 @@ func search(pNerve *Nerve, alpha p.Value, beta p.Value, depth int, search_type S
 	// }
 
 	if bestmoveListLen < 1 {
-		return -VALUE_INFINITE_1, p.RESIGN_MOVE // 指せる手無いから投了（＾～＾）
+		return -VALUE_INFINITE_1, RESIGN_MOVE // 指せる手無いから投了（＾～＾）
 	}
 	var bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）

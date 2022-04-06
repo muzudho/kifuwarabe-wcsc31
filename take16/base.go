@@ -1,5 +1,5 @@
 //! Position と Record を疎結合にするための仕掛け。両方から参照されるもの（＾～＾）
-package take16base
+package take16
 
 // 先後付きの駒
 type Piece uint8

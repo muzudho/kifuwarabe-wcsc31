@@ -12,9 +12,6 @@ import (
 	"time"
 
 	l "github.com/muzudho/go-logger"
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
-	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
-	r "github.com/muzudho/kifuwarabe-wcsc31/take16record"
 )
 
 // MainLoop - 開始。
@@ -146,7 +143,7 @@ MainLoop:
 		case "go":
 			pNerve.PStopwatchSearch.StartStopwatch()
 			bestmove := IterativeDeepeningSearch(pNerve, tokens)
-			G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
+			G.Chat.Print("bestmove %s\n", ToMoveCode(bestmove))
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -216,7 +213,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = p.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
+			var move, err = ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
 				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
@@ -364,7 +361,7 @@ MainLoop:
 			// 棋譜を書き直してさらに多く続けるぜ（＾～＾）
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
-				for i := 0; i < r.MOVES_SIZE; i += 1 {
+				for i := 0; i < MOVES_SIZE; i += 1 {
 					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pNerve.PPosSys.phase,
 						pNerve.PRecord.StartMovesNum,
@@ -376,9 +373,9 @@ MainLoop:
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
-					G.Chat.Print("bestmove %s\n", p.ToMoveCode(bestmove))
+					G.Chat.Print("bestmove %s\n", ToMoveCode(bestmove))
 
-					if bestmove == b.Move(p.SQUARE_EMPTY) {
+					if bestmove == Move(SQUARE_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}
@@ -573,7 +570,7 @@ func moveList(pNerve *Nerve) {
 	for i, move := range move_list {
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		pNerve.DoMove(pPos, move)
-		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, p.ToMoveCode(move), pPos.MaterialValue)
+		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, ToMoveCode(move), pPos.MaterialValue)
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		// G.Chat.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
@@ -581,7 +578,7 @@ func moveList(pNerve *Nerve) {
 }
 
 // ShowAllPiecesCount - 駒の枚数表示
-func ShowAllPiecesCount(pPos *p.Position) {
+func ShowAllPiecesCount(pPos *Position) {
 	countList := CountAllPieces(pPos)
 	G.Chat.Debug("Count\n")
 	G.Chat.Debug("-----\n")
