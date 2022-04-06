@@ -7,6 +7,7 @@ import (
 
 	"github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	"github.com/muzudho/kifuwarabe-wcsc31/lesson02"
+	"github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	"github.com/muzudho/kifuwarabe-wcsc31/take10"
 	"github.com/muzudho/kifuwarabe-wcsc31/take11"
 	"github.com/muzudho/kifuwarabe-wcsc31/take12"
@@ -14,7 +15,6 @@ import (
 	"github.com/muzudho/kifuwarabe-wcsc31/take14"
 	"github.com/muzudho/kifuwarabe-wcsc31/take15"
 	"github.com/muzudho/kifuwarabe-wcsc31/take16"
-	"github.com/muzudho/kifuwarabe-wcsc31/take3"
 	"github.com/muzudho/kifuwarabe-wcsc31/take4"
 	"github.com/muzudho/kifuwarabe-wcsc31/take5"
 	"github.com/muzudho/kifuwarabe-wcsc31/take6"
@@ -40,7 +40,7 @@ func main() {
 		// ダミーの盤を表示
 		lesson02.MainLoop()
 	case "lesson03":
-		take3.MainLoop()
+		lesson03.MainLoop()
 	case "lesson04":
 		take4.MainLoop()
 	case "lesson05":

@@ -1,4 +1,4 @@
-package take3
+package lesson03
 
 const (
 	// 持ち駒を打つ 100～113
