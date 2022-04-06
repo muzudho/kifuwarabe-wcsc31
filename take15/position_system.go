@@ -1,16 +1,5 @@
 package take15
 
-import (
-	"fmt"
-	"strconv"
-
-	b "github.com/muzudho/kifuwarabe-wcsc31/take16base"
-	p "github.com/muzudho/kifuwarabe-wcsc31/take16position"
-)
-
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
-
 // 盤レイヤー・インデックス型
 type PosLayerT int
 
@@ -25,61 +14,13 @@ const (
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
-// 1:先手 2:後手
-type Phase byte
-
 // FlipPhase - 先後を反転します
 func FlipPhase(phase Phase) Phase {
 	return phase%2 + 1
 }
 
-const (
-	// 空マス
-	ZEROTH = Phase(0)
-	// 先手
-	FIRST = Phase(1)
-	// 後手
-	SECOND = Phase(2)
-)
-
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
-
-// 先後付きの駒
-type Piece uint8
-
-// 駒
-const (
-	PIECE_EMPTY = iota
-	PIECE_K1
-	PIECE_R1
-	PIECE_B1
-	PIECE_G1
-	PIECE_S1
-	PIECE_N1
-	PIECE_L1
-	PIECE_P1
-	PIECE_PR1
-	PIECE_PB1
-	PIECE_PS1
-	PIECE_PN1
-	PIECE_PL1
-	PIECE_PP1
-	PIECE_K2
-	PIECE_R2
-	PIECE_B2
-	PIECE_G2
-	PIECE_S2
-	PIECE_N2
-	PIECE_L2
-	PIECE_P2
-	PIECE_PR2
-	PIECE_PB2
-	PIECE_PS2
-	PIECE_PN2
-	PIECE_PL2
-	PIECE_PP2
-)
 
 // ToCode - 文字列
 func (pc Piece) ToCode() string {
@@ -144,72 +85,6 @@ func (pc Piece) ToCode() string {
 		return "+p"
 	default:
 		panic(G.Log.Fatal("Unknown piece=%d", pc))
-	}
-}
-
-// PieceFrom - 文字列
-func PieceFrom(piece string) Piece {
-	switch piece {
-	case "":
-		return PIECE_EMPTY
-	case "K":
-		return PIECE_K1
-	case "R":
-		return PIECE_R1
-	case "B":
-		return PIECE_B1
-	case "G":
-		return PIECE_G1
-	case "S":
-		return PIECE_S1
-	case "N":
-		return PIECE_N1
-	case "L":
-		return PIECE_L1
-	case "P":
-		return PIECE_P1
-	case "+R":
-		return PIECE_PR1
-	case "+B":
-		return PIECE_PB1
-	case "+S":
-		return PIECE_PS1
-	case "+N":
-		return PIECE_PN1
-	case "+L":
-		return PIECE_PL1
-	case "+P":
-		return PIECE_PP1
-	case "k":
-		return PIECE_K2
-	case "r":
-		return PIECE_R2
-	case "b":
-		return PIECE_B2
-	case "g":
-		return PIECE_G2
-	case "s":
-		return PIECE_S2
-	case "n":
-		return PIECE_N2
-	case "l":
-		return PIECE_L2
-	case "p":
-		return PIECE_P2
-	case "+r":
-		return PIECE_PR2
-	case "+b":
-		return PIECE_PB2
-	case "+s":
-		return PIECE_PS2
-	case "+n":
-		return PIECE_PN2
-	case "+l":
-		return PIECE_PL2
-	case "+p":
-		return PIECE_PP2
-	default:
-		panic(G.Log.Fatal("Unknown piece=[%s]", piece))
 	}
 }
 
@@ -287,50 +162,9 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 	}
 }
 
-const (
-	// 持ち駒を打つ 0～15 (Index)
-	HAND_K1        = 0
-	HAND_R1        = 1 // 先手飛打
-	HAND_B1        = 2
-	HAND_G1        = 3
-	HAND_S1        = 4
-	HAND_N1        = 5
-	HAND_L1        = 6
-	HAND_P1        = 7
-	HAND_K2        = 8
-	HAND_R2        = 9
-	HAND_B2        = 10
-	HAND_G2        = 11
-	HAND_S2        = 12
-	HAND_N2        = 13
-	HAND_L2        = 14
-	HAND_P2        = 15
-	HAND_SIZE      = 16
-	HAND_TYPE_SIZE = 8
-	HAND_IDX_START = HAND_K1
-	HAND_IDX_END   = HAND_SIZE // この数を含まない
-)
-
 var HandPieceMap1 = [HAND_SIZE]Piece{
 	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
-
-// Piece location
-const (
-	PCLOC_K1 = iota
-	PCLOC_K2
-	PCLOC_R1
-	PCLOC_R2
-	PCLOC_B1
-	PCLOC_B2
-	PCLOC_L1
-	PCLOC_L2
-	PCLOC_L3
-	PCLOC_L4
-	PCLOC_START = 0
-	PCLOC_END   = 10 //この数を含まない
-	PCLOC_SIZE  = 10
-)
 
 // 開発 or リリース モード
 type BuildT int
@@ -355,7 +189,7 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]b.Move
+	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]Piece
 }
@@ -388,115 +222,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [MOVES_SIZE]b.Move{}
+	pPosSys.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
 	pPosSys.CapturedList = [MOVES_SIZE]Piece{}
-}
-
-// ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (b.Move, error) {
-	var len = len(command)
-	var hand_sq = p.SQUARE_EMPTY
-
-	var from p.Square
-	var to p.Square
-	var pro = false
-
-	// file
-	switch ch := command[*i]; ch {
-	case 'R':
-		hand_sq = SQ_R1
-	case 'B':
-		hand_sq = SQ_B1
-	case 'G':
-		hand_sq = SQ_G1
-	case 'S':
-		hand_sq = SQ_S1
-	case 'N':
-		hand_sq = SQ_N1
-	case 'L':
-		hand_sq = SQ_L1
-	case 'P':
-		hand_sq = SQ_P1
-	default:
-		// Ignored
-	}
-
-	// 0=移動元 1=移動先
-	var count = 0
-
-	if hand_sq != p.SQUARE_EMPTY {
-		*i += 1
-		switch phase {
-		case FIRST:
-			from = hand_sq
-		case SECOND:
-			from = hand_sq + HAND_TYPE_SIZE
-		default:
-			return *new(b.Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
-		}
-
-		if command[*i] != '*' {
-			return *new(b.Move), fmt.Errorf("Fatal: not *")
-		}
-		*i += 1
-		count = 1
-	}
-
-	// file, rank
-	for count < 2 {
-		switch ch := command[*i]; ch {
-		case '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			*i += 1
-			file, err := strconv.Atoi(string(ch))
-			if err != nil {
-				panic(err)
-			}
-
-			var rank int
-			switch ch2 := command[*i]; ch2 {
-			case 'a':
-				rank = 1
-			case 'b':
-				rank = 2
-			case 'c':
-				rank = 3
-			case 'd':
-				rank = 4
-			case 'e':
-				rank = 5
-			case 'f':
-				rank = 6
-			case 'g':
-				rank = 7
-			case 'h':
-				rank = 8
-			case 'i':
-				rank = 9
-			default:
-				return *new(b.Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
-			}
-			*i += 1
-
-			sq := p.Square(file*10 + rank)
-			if count == 0 {
-				from = sq
-			} else if count == 1 {
-				to = sq
-			} else {
-				return *new(b.Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
-			}
-		default:
-			return *new(b.Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
-		}
-
-		count += 1
-	}
-
-	if *i < len && command[*i] == '+' {
-		*i += 1
-		pro = true
-	}
-
-	return NewMove(from, to, pro), nil
 }
