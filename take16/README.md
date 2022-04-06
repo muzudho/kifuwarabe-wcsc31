@@ -8,6 +8,18 @@
 ベータカットも欲しいなあ（＾～＾）  
 moveのうち、移動先と成りだけの move_end を作って genmove で返そ（＾～＾）  
 
+# Build
+
+```shell
+go build
+```
+
+# Run
+
+```shell
+kifuwarabe-wcsc31 lesson16
+```
+
 ## 計測
 
 ```plain
