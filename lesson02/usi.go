@@ -9,12 +9,16 @@ import (
 	"strings"
 
 	l "github.com/muzudho/go-logger"
+	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 )
 
 const (
 	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
 	Author = "Satoshi Takahashi"
 )
+
+// G - グローバル変数。思い切った名前。
+var My l01.Lesson01My
 
 // MainLoop - 開始。
 func MainLoop() {
@@ -33,7 +37,7 @@ func MainLoop() {
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
 	// グローバル変数の作成
-	G = *new(Variables)
+	My = *new(l01.Lesson01My)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -46,7 +50,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了します。
-	G.Log = *l.NewLogger(
+	My.LogNotEcho = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -57,33 +61,33 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	G.Log.RemoveAllOldLogs()
+	My.LogNotEcho.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = G.Log.OpenAllLogs()
+	err = My.LogNotEcho.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer G.Log.CloseAllLogs()
-
-	G.Log.Trace("Start Take1\n")
-	G.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	defer My.LogNotEcho.CloseAllLogs()
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	G.Chat = *l.NewChatter(G.Log)
-	G.StderrChat = *l.NewStderrChatter(G.Log)
+	My.Out = *l.NewChatter(My.LogNotEcho)
+	My.Log = *l.NewStderrChatter(My.LogNotEcho)
+
+	My.Log.Trace("Start Take1\n")
+	My.Log.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(G.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(My.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
 	scanner := bufio.NewScanner(os.Stdin)
 
-	G.Log.FlushAllLogs()
+	My.LogNotEcho.FlushAllLogs()
 
 	var pos = NewPosition()
 
@@ -93,27 +97,27 @@ MainLoop:
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			G.Chat.Print("id name %s\n", config.Profile.Name)
-			G.Chat.Print("id author %s\n", config.Profile.Author)
-			G.Chat.Print("usiok\n")
+			My.Out.Print("id name %s\n", config.Profile.Name)
+			My.Out.Print("id author %s\n", config.Profile.Author)
+			My.Out.Print("usiok\n")
 		case "isready":
-			G.Chat.Print("readyok\n")
+			My.Out.Print("readyok\n")
 		case "usinewgame":
 		case "position":
 			// TODO position うわっ、大変だ（＾～＾）
 			pos.ReadPosition(command)
 		case "go":
-			G.Chat.Print("bestmove resign\n")
+			My.Out.Print("bestmove resign\n")
 		case "quit":
 			break MainLoop
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			G.Chat.Debug(Sprint(pos))
+			My.Out.Debug(Sprint(pos))
 		}
 
-		G.Log.FlushAllLogs()
+		My.LogNotEcho.FlushAllLogs()
 	}
 
-	G.Log.Trace("Finished\n")
-	G.Log.FlushAllLogs()
+	My.Log.Trace("Finished\n")
+	My.LogNotEcho.FlushAllLogs()
 }

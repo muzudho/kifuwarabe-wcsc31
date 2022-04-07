@@ -16,6 +16,9 @@ const (
 	Author = "Satoshi Takahashi"
 )
 
+// My - グローバル変数の宣言。思い切った名前
+var My Lesson01My
+
 // MainLoop - 開始。
 func MainLoop() {
 	// Working directory

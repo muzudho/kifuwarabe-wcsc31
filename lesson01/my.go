@@ -13,6 +13,3 @@ type Lesson01My struct {
 	// LogNotEcho - ロガー。
 	LogNotEcho l.Logger
 }
-
-// My - グローバル変数の宣言。思い切った名前
-var My Lesson01My
