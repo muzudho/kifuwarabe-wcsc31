@@ -4,11 +4,6 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
-const (
-	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
-	Author = "Satoshi Takahashi"
-)
-
 // Variables - グローバル変数。
 type Variables struct {
 	// Log - ロガー。

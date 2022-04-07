@@ -12,6 +12,11 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
+const (
+	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
+	Author = "Satoshi Takahashi"
+)
+
 // MainLoop - 開始。
 func MainLoop() {
 	// Working directory
