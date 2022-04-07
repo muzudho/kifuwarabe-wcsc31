@@ -33,7 +33,7 @@ func MainLoop() {
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
 	// グローバル変数の作成
-	Out = *new(OutNode)
+	My = *new(Lesson01My)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -46,7 +46,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了します。
-	Out.Log = *l.NewLogger(
+	My.LogNotEcho = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -57,27 +57,27 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	Out.Log.RemoveAllOldLogs()
+	My.LogNotEcho.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = Out.Log.OpenAllLogs()
+	err = My.LogNotEcho.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer Out.Log.CloseAllLogs()
-
-	Out.Log.Trace("Start Take1\n")
-	Out.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	defer My.LogNotEcho.CloseAllLogs()
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	Out.Chat = *l.NewChatter(Out.Log)
-	Out.StderrChat = *l.NewStderrChatter(Out.Log)
+	My.Out = *l.NewChatter(My.LogNotEcho)
+	My.Log = *l.NewStderrChatter(My.LogNotEcho)
+
+	My.Log.Trace("Start Take1\n")
+	My.Log.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(Out.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(My.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
@@ -85,26 +85,26 @@ func MainLoop() {
 
 MainLoop:
 	for scanner.Scan() {
-		Out.Log.FlushAllLogs()
+		My.LogNotEcho.FlushAllLogs()
 
 		command := scanner.Text()
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			Out.Chat.Print("id name %s\n", config.Profile.Name)
-			Out.Chat.Print("id author %s\n", config.Profile.Author)
-			Out.Chat.Print("usiok\n")
+			My.Out.Print("id name %s\n", config.Profile.Name)
+			My.Out.Print("id author %s\n", config.Profile.Author)
+			My.Out.Print("usiok\n")
 		case "isready":
-			Out.Chat.Print("readyok\n")
+			My.Out.Print("readyok\n")
 		case "usinewgame":
 		case "position":
 		case "go":
-			Out.Chat.Print("bestmove resign\n")
+			My.Out.Print("bestmove resign\n")
 		case "quit":
 			break MainLoop
 		}
 	}
 
-	Out.Log.Trace("Finished\n")
-	Out.Log.FlushAllLogs()
+	My.Log.Trace("Finished\n")
+	My.LogNotEcho.FlushAllLogs()
 }
