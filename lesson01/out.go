@@ -4,13 +4,8 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
-const (
-	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
-	Author = "Satoshi Takahashi"
-)
-
-// Variables - グローバル変数。
-type Variables struct {
+// OutNode - グローバル変数。
+type OutNode struct {
 	// Log - ロガー。
 	Log l.Logger
 	// Chat - チャッター。 標準出力とロガーを一緒にしただけです。
@@ -19,5 +14,5 @@ type Variables struct {
 	StderrChat l.StderrChatter
 }
 
-// G - グローバル変数。思い切った名前。
-var G Variables
+// Out - グローバル変数。思い切った名前。
+var Out OutNode

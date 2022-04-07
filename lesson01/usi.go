@@ -11,6 +11,11 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
+const (
+	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
+	Author = "Satoshi Takahashi"
+)
+
 // MainLoop - 開始。
 func MainLoop() {
 	// Working directory
@@ -28,7 +33,7 @@ func MainLoop() {
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
 	// グローバル変数の作成
-	G = *new(Variables)
+	Out = *new(OutNode)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -41,7 +46,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了します。
-	G.Log = *l.NewLogger(
+	Out.Log = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -52,27 +57,27 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	G.Log.RemoveAllOldLogs()
+	Out.Log.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = G.Log.OpenAllLogs()
+	err = Out.Log.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer G.Log.CloseAllLogs()
+	defer Out.Log.CloseAllLogs()
 
-	G.Log.Trace("Start Take1\n")
-	G.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	Out.Log.Trace("Start Take1\n")
+	Out.Log.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	G.Chat = *l.NewChatter(G.Log)
-	G.StderrChat = *l.NewStderrChatter(G.Log)
+	Out.Chat = *l.NewChatter(Out.Log)
+	Out.StderrChat = *l.NewStderrChatter(Out.Log)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(G.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(Out.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
@@ -80,26 +85,26 @@ func MainLoop() {
 
 MainLoop:
 	for scanner.Scan() {
-		G.Log.FlushAllLogs()
+		Out.Log.FlushAllLogs()
 
 		command := scanner.Text()
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			G.Chat.Print("id name %s\n", config.Profile.Name)
-			G.Chat.Print("id author %s\n", config.Profile.Author)
-			G.Chat.Print("usiok\n")
+			Out.Chat.Print("id name %s\n", config.Profile.Name)
+			Out.Chat.Print("id author %s\n", config.Profile.Author)
+			Out.Chat.Print("usiok\n")
 		case "isready":
-			G.Chat.Print("readyok\n")
+			Out.Chat.Print("readyok\n")
 		case "usinewgame":
 		case "position":
 		case "go":
-			G.Chat.Print("bestmove resign\n")
+			Out.Chat.Print("bestmove resign\n")
 		case "quit":
 			break MainLoop
 		}
 	}
 
-	G.Log.Trace("Finished\n")
-	G.Log.FlushAllLogs()
+	Out.Log.Trace("Finished\n")
+	Out.Log.FlushAllLogs()
 }
