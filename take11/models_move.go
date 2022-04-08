@@ -1,50 +1,35 @@
-package take16
+package take11
 
-import (
-	"fmt"
-)
+import "fmt"
 
-const (
-	// 持ち駒を打つ 100～115
-	// 先手飛打
-	SQ_K1         = Square(100)
-	SQ_R1         = Square(101)
-	SQ_B1         = Square(102)
-	SQ_G1         = Square(103)
-	SQ_S1         = Square(104)
-	SQ_N1         = Square(105)
-	SQ_L1         = Square(106)
-	SQ_P1         = Square(107)
-	SQ_K2         = Square(108)
-	SQ_R2         = Square(109)
-	SQ_B2         = Square(110)
-	SQ_G2         = Square(111)
-	SQ_S2         = Square(112)
-	SQ_N2         = Square(113)
-	SQ_L2         = Square(114)
-	SQ_P2         = Square(115)
-	SQ_HAND_START = SQ_K1
-	SQ_HAND_END   = SQ_P2 + 1 // この数を含まない
-)
+// Move - 指し手
+//
+// 15bit で表せるはず（＾～＾）
+// .pdd dddd dsss ssss
+//
+// 1～7bit: 移動元(0～127)
+// 8～14bit: 移動先(0～127)
+// 15bit: 成(0～1)
+type Move uint16
 
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
+// NewMove - 初期値として 移動元マス、移動先マスを指定してください
 func NewMove(from Square, to Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
-	// replaceSource - 移動元マス
+	// ReplaceSource - 移動元マス
 	// 1111 1111 1000 0000 (Clear) 0xff80
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xff80 | uint16(from))
 
-	// replaceDestination - 移動先マス
+	// ReplaceDestination - 移動先マス
 	// 1100 0000 0111 1111 (Clear) 0xc07f
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
-	// replacePromotion - 成
+	// ReplacePromotion - 成
 	// 0100 0000 0000 0000 (Stand) 0x4000
 	// 1011 1111 1111 1111 (Clear) 0xbfff
 	// .pdd dddd dsss ssss
@@ -55,28 +40,8 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	return Move(uint16(move) & 0xbfff)
 }
 
-// Destructure - 移動元マス、移動先マス、成りの有無
-//
-// 移動元マス
-// 0000 0000 0111 1111 (Mask) 0x007f
-// .pdd dddd dsss ssss
-//
-// 移動先マス
-// 0011 1111 1000 0000 (Mask) 0x3f80
-// .pdd dddd dsss ssss
-//
-// 成
-// 0100 0000 0000 0000 (Mask) 0x4000
-// .pdd dddd dsss ssss
-func Destructure(move Move) (Square, Square, bool) {
-	var from = Square(uint16(move) & 0x007f)
-	var to = Square((uint16(move) & 0x3f80) >> 7)
-	var pro = uint16(move)&0x4000 != 0
-	return from, to, pro
-}
-
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func ToCode(move Move) string {
+func (move Move) ToCode() string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {
@@ -86,8 +51,7 @@ func ToCode(move Move) string {
 	str := make([]byte, 0, 5)
 	count := 0
 
-	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := Destructure(move)
+	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)
 	switch from {
@@ -148,4 +112,24 @@ func ToCode(move Move) string {
 	}
 
 	return string(str)
+}
+
+// Destructure - 移動元マス、移動先マス、成りの有無
+//
+// 移動元マス
+// 0000 0000 0111 1111 (Mask) 0x007f
+// .pdd dddd dsss ssss
+//
+// 移動先マス
+// 0011 1111 1000 0000 (Mask) 0x3f80
+// .pdd dddd dsss ssss
+//
+// 成
+// 0100 0000 0000 0000 (Mask) 0x4000
+// .pdd dddd dsss ssss
+func (move Move) Destructure() (Square, Square, bool) {
+	var from = Square(uint16(move) & 0x007f)
+	var to = Square((uint16(move) & 0x3f80) >> 7)
+	var pro = uint16(move)&0x4000 != 0
+	return from, to, pro
 }

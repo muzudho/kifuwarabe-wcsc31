@@ -1,27 +1,16 @@
-package take8
+package take10
 
 import "fmt"
 
-const (
-	// 持ち駒を打つ 100～113
-	// 先手飛打
-	HAND_R1        = Square(100)
-	HAND_B1        = Square(101)
-	HAND_G1        = Square(102)
-	HAND_S1        = Square(103)
-	HAND_N1        = Square(104)
-	HAND_L1        = Square(105)
-	HAND_P1        = Square(106)
-	HAND_R2        = Square(107)
-	HAND_B2        = Square(108)
-	HAND_G2        = Square(109)
-	HAND_S2        = Square(110)
-	HAND_N2        = Square(111)
-	HAND_L2        = Square(112)
-	HAND_P2        = Square(113)
-	HAND_ORIGIN    = HAND_R1
-	HAND_TYPE_SIZE = HAND_P1 - HAND_ORIGIN + 1
-)
+// Move - 指し手
+//
+// 15bit で表せるはず（＾～＾）
+// .pdd dddd dsss ssss
+//
+// 1～7bit: 移動元(0～127)
+// 8～14bit: 移動先(0～127)
+// 15bit: 成(0～1)
+type Move uint16
 
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
@@ -66,25 +55,25 @@ func (move Move) ToCode() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case HAND_R1, HAND_R2:
+	case SQ_R1, SQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case HAND_B1, HAND_B2:
+	case SQ_B1, SQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case HAND_G1, HAND_G2:
+	case SQ_G1, SQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case HAND_S1, HAND_S2:
+	case SQ_S1, SQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case HAND_N1, HAND_N2:
+	case SQ_N1, SQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case HAND_L1, HAND_L2:
+	case SQ_L1, SQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case HAND_P1, HAND_P2:
+	case SQ_P1, SQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -92,7 +81,8 @@ func (move Move) ToCode() string {
 	}
 
 	if count == 1 {
-		str = append(str, '+')
+		// 打
+		str = append(str, '*')
 	}
 
 	for count < 2 {

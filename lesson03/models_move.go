@@ -1,25 +1,5 @@
 package lesson03
 
-const (
-	// 持ち駒を打つ 100～113
-	// 先手飛打
-	DROP_R1 = iota + 100
-	DROP_B1
-	DROP_G1
-	DROP_S1
-	DROP_N1
-	DROP_L1
-	DROP_P1
-	DROP_R2
-	DROP_B2
-	DROP_G2
-	DROP_S2
-	DROP_N2
-	DROP_L2
-	DROP_P2
-	DROP_ORIGIN = DROP_R1
-)
-
 // Move - 指し手
 type Move struct {
 	// [0]移動元 [1]移動先

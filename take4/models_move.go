@@ -1,27 +1,6 @@
-package take7
+package take4
 
 import "fmt"
-
-const (
-	// 持ち駒を打つ 100～113
-	// 先手飛打
-	DROP_R1        = Square(100)
-	DROP_B1        = Square(101)
-	DROP_G1        = Square(102)
-	DROP_S1        = Square(103)
-	DROP_N1        = Square(104)
-	DROP_L1        = Square(105)
-	DROP_P1        = Square(106)
-	DROP_R2        = Square(107)
-	DROP_B2        = Square(108)
-	DROP_G2        = Square(109)
-	DROP_S2        = Square(110)
-	DROP_N2        = Square(111)
-	DROP_L2        = Square(112)
-	DROP_P2        = Square(113)
-	DROP_ORIGIN    = DROP_R1
-	DROP_TYPE_SIZE = DROP_P1 - DROP_ORIGIN
-)
 
 // Move - 指し手
 //
@@ -44,7 +23,7 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	move = Move(uint32(move)&0xffffff00 | uint32(from))
 
 	// ReplaceDestination - 移動先マス
-	move = Move(uint32(move)&0xffff00ff | (uint32(to) << 8))
+	move = Move(uint32(move)&0xffff00ff | uint32(to<<8))
 
 	// ReplacePromotion - 成
 	if promotion {
@@ -56,12 +35,6 @@ func NewMove(from Square, to Square, promotion bool) Move {
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCode() string {
-
-	// 投了（＾～＾）
-	if uint32(move) == 0 {
-		return "resign"
-	}
-
 	str := make([]byte, 0, 5)
 	count := 0
 
@@ -116,7 +89,7 @@ func (move Move) ToCode() string {
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
 		str = append(str, rank+96)
-		// fmt.Printf("Debug: move=%d sq=%d count=%d file=%d rank=%d\n", uint32(move), sq, count, file, rank)
+		fmt.Printf("Debug: file=%d rank=%d\n", file, rank)
 		count += 1
 	}
 

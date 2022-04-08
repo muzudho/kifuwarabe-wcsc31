@@ -1,36 +1,6 @@
-package take4
+package take8
 
 import "fmt"
-
-const (
-	// 持ち駒を打つ 100～113
-	// 先手飛打
-	DROP_R1 = iota + 100
-	DROP_B1
-	DROP_G1
-	DROP_S1
-	DROP_N1
-	DROP_L1
-	DROP_P1
-	DROP_R2
-	DROP_B2
-	DROP_G2
-	DROP_S2
-	DROP_N2
-	DROP_L2
-	DROP_P2
-	DROP_ORIGIN = DROP_R1
-)
-
-// Move - 指し手
-//
-// 17bit で表せるはず（＾～＾）
-// pddddddddssssssss
-//
-// 1～8bit: 移動元
-// 9～16bit: 移動先
-// 17bit: 成
-type Move uint32
 
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
@@ -40,21 +10,34 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// ReplaceSource - 移動元マス
-	move = Move(uint32(move)&0xffffff00 | uint32(from))
+	// 1111 1111 1000 0000 (Clear) 0xff80
+	// .pdd dddd dsss ssss
+	move = Move(uint16(move)&0xff80 | uint16(from))
 
 	// ReplaceDestination - 移動先マス
-	move = Move(uint32(move)&0xffff00ff | uint32(to<<8))
+	// 1100 0000 0111 1111 (Clear) 0xc07f
+	// .pdd dddd dsss ssss
+	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
 	// ReplacePromotion - 成
+	// 0100 0000 0000 0000 (Stand) 0x4000
+	// 1011 1111 1111 1111 (Clear) 0xbfff
+	// .pdd dddd dsss ssss
 	if promotion {
-		return Move(uint32(move) | 0x00010000)
+		return Move(uint16(move) | 0x4000)
 	}
 
-	return Move(uint32(move) & 0xfffeffff)
+	return Move(uint16(move) & 0xbfff)
 }
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCode() string {
+
+	// 投了（＾～＾）
+	if uint32(move) == 0 {
+		return "resign"
+	}
+
 	str := make([]byte, 0, 5)
 	count := 0
 
@@ -62,25 +45,25 @@ func (move Move) ToCode() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case DROP_R1, DROP_R2:
+	case HAND_R1, HAND_R2:
 		str = append(str, 'R')
 		count = 1
-	case DROP_B1, DROP_B2:
+	case HAND_B1, HAND_B2:
 		str = append(str, 'B')
 		count = 1
-	case DROP_G1, DROP_G2:
+	case HAND_G1, HAND_G2:
 		str = append(str, 'G')
 		count = 1
-	case DROP_S1, DROP_S2:
+	case HAND_S1, HAND_S2:
 		str = append(str, 'S')
 		count = 1
-	case DROP_N1, DROP_N2:
+	case HAND_N1, HAND_N2:
 		str = append(str, 'N')
 		count = 1
-	case DROP_L1, DROP_L2:
+	case HAND_L1, HAND_L2:
 		str = append(str, 'L')
 		count = 1
-	case DROP_P1, DROP_P2:
+	case HAND_P1, HAND_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -109,7 +92,7 @@ func (move Move) ToCode() string {
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
 		str = append(str, rank+96)
-		fmt.Printf("Debug: file=%d rank=%d\n", file, rank)
+		// fmt.Printf("Debug: move=%d sq=%d count=%d file=%d rank=%d\n", uint32(move), sq, count, file, rank)
 		count += 1
 	}
 
@@ -121,9 +104,21 @@ func (move Move) ToCode() string {
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
+//
+// 移動元マス
+// 0000 0000 0111 1111 (Mask) 0x007f
+// .pdd dddd dsss ssss
+//
+// 移動先マス
+// 0011 1111 1000 0000 (Mask) 0x3f80
+// .pdd dddd dsss ssss
+//
+// 成
+// 0100 0000 0000 0000 (Mask) 0x4000
+// .pdd dddd dsss ssss
 func (move Move) Destructure() (Square, Square, bool) {
-	var from = Square(uint32(move) & 0x000000ff)
-	var to = Square((uint32(move) >> 8) & 0x000000ff)
-	var pro = (uint32(move)>>9)&0x00000001 == 1
+	var from = Square(uint16(move) & 0x007f)
+	var to = Square((uint16(move) & 0x3f80) >> 7)
+	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

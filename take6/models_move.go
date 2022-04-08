@@ -1,26 +1,6 @@
-package take5
+package take6
 
 import "fmt"
-
-const (
-	// 持ち駒を打つ 100～113
-	// 先手飛打
-	DROP_R1 = iota + 100
-	DROP_B1
-	DROP_G1
-	DROP_S1
-	DROP_N1
-	DROP_L1
-	DROP_P1
-	DROP_R2
-	DROP_B2
-	DROP_G2
-	DROP_S2
-	DROP_N2
-	DROP_L2
-	DROP_P2
-	DROP_ORIGIN = DROP_R1
-)
 
 // Move - 指し手
 //
@@ -55,6 +35,12 @@ func NewMove(from Square, to Square, promotion bool) Move {
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCode() string {
+
+	// 投了（＾～＾）
+	if uint32(move) == 0 {
+		return "resign"
+	}
+
 	str := make([]byte, 0, 5)
 	count := 0
 
@@ -122,7 +108,7 @@ func (move Move) ToCode() string {
 
 // Destructure - 移動元マス、移動先マス、成りの有無
 func (move Move) Destructure() (Square, Square, bool) {
-	var from = Square(uint32(move) & 0x000000ff)
+	var from = Square(byte(uint32(move) & 0x000000ff))
 	var to = Square((uint32(move) >> 8) & 0x000000ff)
 	var pro = (uint32(move)>>9)&0x00000001 == 1
 	return from, to, pro

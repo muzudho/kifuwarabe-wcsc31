@@ -1,29 +1,6 @@
-package take13
+package take12
 
 import "fmt"
-
-const (
-	// 持ち駒を打つ 100～115
-	// 先手飛打
-	SQ_K1         = Square(100)
-	SQ_R1         = Square(101)
-	SQ_B1         = Square(102)
-	SQ_G1         = Square(103)
-	SQ_S1         = Square(104)
-	SQ_N1         = Square(105)
-	SQ_L1         = Square(106)
-	SQ_P1         = Square(107)
-	SQ_K2         = Square(108)
-	SQ_R2         = Square(109)
-	SQ_B2         = Square(110)
-	SQ_G2         = Square(111)
-	SQ_S2         = Square(112)
-	SQ_N2         = Square(113)
-	SQ_L2         = Square(114)
-	SQ_P2         = Square(115)
-	SQ_HAND_START = SQ_K1
-	SQ_HAND_END   = SQ_P2 + 1 // この数を含まない
-)
 
 // Move - 指し手
 //
@@ -38,29 +15,12 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+// NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
+// TODO 成、不成も欲しいぜ（＾～＾）
+func NewMove2(from Square, to Square) Move {
 	move := RESIGN_MOVE
-
-	// replaceSource - 移動元マス
-	// 1111 1111 1000 0000 (Clear) 0xff80
-	// .pdd dddd dsss ssss
-	move = Move(uint16(move)&0xff80 | uint16(from))
-
-	// replaceDestination - 移動先マス
-	// 1100 0000 0111 1111 (Clear) 0xc07f
-	// .pdd dddd dsss ssss
-	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
-
-	// replacePromotion - 成
-	// 0100 0000 0000 0000 (Stand) 0x4000
-	// 1011 1111 1111 1111 (Clear) 0xbfff
-	// .pdd dddd dsss ssss
-	if promotion {
-		return Move(uint16(move) | 0x4000)
-	}
-
-	return Move(uint16(move) & 0xbfff)
+	move = move.ReplaceSource(from)
+	return move.ReplaceDestination(to)
 }
 
 // ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
@@ -74,7 +34,6 @@ func (move Move) ToCode() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
-	// 移動元マス、移動先マス、成りの有無
 	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)
@@ -136,6 +95,32 @@ func (move Move) ToCode() string {
 	}
 
 	return string(str)
+}
+
+// ReplaceSource - 移動元マス
+// 1111 1111 1000 0000 (Clear) 0xff80
+// .pdd dddd dsss ssss
+func (move Move) ReplaceSource(sq Square) Move {
+	return Move(uint16(move)&0xff80 | uint16(sq))
+}
+
+// ReplaceDestination - 移動先マス
+// 1100 0000 0111 1111 (Clear) 0xc07f
+// .pdd dddd dsss ssss
+func (move Move) ReplaceDestination(sq Square) Move {
+	return Move(uint16(move)&0xc07f | (uint16(sq) << 7))
+}
+
+// ReplacePromotion - 成
+// 0100 0000 0000 0000 (Stand) 0x4000
+// 1011 1111 1111 1111 (Clear) 0xbfff
+// .pdd dddd dsss ssss
+func (move Move) ReplacePromotion(promotion bool) Move {
+	if promotion {
+		return Move(uint16(move) | 0x4000)
+	}
+
+	return Move(uint16(move) & 0xbfff)
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
