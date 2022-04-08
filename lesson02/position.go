@@ -56,7 +56,7 @@ func (pos *Position) ResetToStartpos() {
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
 func (pos *Position) ReadPosition(command string) {
-	My.Log.Trace("command=%s\n", command)
+	App.Log.Trace("command=%s\n", command)
 
 	if strings.HasPrefix(command, "position startpos") {
 		pos.ResetToStartpos()

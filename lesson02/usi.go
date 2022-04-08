@@ -17,8 +17,8 @@ const (
 	Author = "Satoshi Takahashi"
 )
 
-// G - グローバル変数。思い切った名前。
-var My l01.Lesson01My
+// App - アプリケーション変数の宣言
+var App l01.Lesson01App
 
 // MainLoop - 開始。
 func MainLoop() {
@@ -36,8 +36,8 @@ func MainLoop() {
 
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
-	// グローバル変数の作成
-	My = *new(l01.Lesson01My)
+	// アプリケーション変数の生成
+	App = *new(l01.Lesson01App)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -50,7 +50,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了します。
-	My.LogNotEcho = *l.NewLogger(
+	App.LogNotEcho = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -61,33 +61,33 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	My.LogNotEcho.RemoveAllOldLogs()
+	App.LogNotEcho.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = My.LogNotEcho.OpenAllLogs()
+	err = App.LogNotEcho.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer My.LogNotEcho.CloseAllLogs()
+	defer App.LogNotEcho.CloseAllLogs()
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	My.Out = *l.NewChatter(My.LogNotEcho)
-	My.Log = *l.NewStderrChatter(My.LogNotEcho)
+	App.Out = *l.NewChatter(App.LogNotEcho)
+	App.Log = *l.NewStderrChatter(App.LogNotEcho)
 
-	My.Log.Trace("Start Take1\n")
-	My.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	App.Log.Trace("Start Take1\n")
+	App.Log.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(My.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(App.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
 	scanner := bufio.NewScanner(os.Stdin)
 
-	My.LogNotEcho.FlushAllLogs()
+	App.LogNotEcho.FlushAllLogs()
 
 	var pos = NewPosition()
 
@@ -97,27 +97,27 @@ MainLoop:
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			My.Out.Print("id name %s\n", config.Profile.Name)
-			My.Out.Print("id author %s\n", config.Profile.Author)
-			My.Out.Print("usiok\n")
+			App.Out.Print("id name %s\n", config.Profile.Name)
+			App.Out.Print("id author %s\n", config.Profile.Author)
+			App.Out.Print("usiok\n")
 		case "isready":
-			My.Out.Print("readyok\n")
+			App.Out.Print("readyok\n")
 		case "usinewgame":
 		case "position":
 			// TODO position うわっ、大変だ（＾～＾）
 			pos.ReadPosition(command)
 		case "go":
-			My.Out.Print("bestmove resign\n")
+			App.Out.Print("bestmove resign\n")
 		case "quit":
 			break MainLoop
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			My.Out.Debug(Sprint(pos))
+			App.Out.Debug(Sprint(pos))
 		}
 
-		My.LogNotEcho.FlushAllLogs()
+		App.LogNotEcho.FlushAllLogs()
 	}
 
-	My.Log.Trace("Finished\n")
-	My.LogNotEcho.FlushAllLogs()
+	App.Log.Trace("Finished\n")
+	App.LogNotEcho.FlushAllLogs()
 }
