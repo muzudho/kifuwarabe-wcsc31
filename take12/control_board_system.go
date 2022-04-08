@@ -141,7 +141,7 @@ func (pControlBoardSys *ControlBoardSystem) RecalculateControl(
 			case SECOND:
 				pCB = pControlBoardSys.Boards[ph2_c1]
 			default:
-				panic(fmt.Errorf("Unknown phase=%d", phase))
+				panic(fmt.Errorf("unknown phase=%d", phase))
 			}
 
 			for _, to := range sq_list {
@@ -205,7 +205,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 	case SECOND:
 		pCB = pControlBoardSys.Boards[ph2_c]
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(fmt.Errorf("unknown phase=%d", phase))
 	}
 
 	for _, to := range sq_list {

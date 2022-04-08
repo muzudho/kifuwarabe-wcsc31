@@ -265,7 +265,7 @@ func ControllBoardFromPhase(
 	case SECOND:
 		return pPh2_CB
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(fmt.Errorf("unknown phase=%d", phase))
 	}
 }
 

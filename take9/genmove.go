@@ -221,7 +221,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(fmt.Errorf("Unknown hand from=%d", from))
+			panic(fmt.Errorf("unknown hand from=%d", from))
 		}
 
 		switch from {

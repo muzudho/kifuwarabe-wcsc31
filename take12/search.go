@@ -147,7 +147,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 					control_val = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[my_king_sq] +
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[oppo_king_sq]
 				default:
-					panic(fmt.Errorf("Unknown phase=%d", pPosSys.phase))
+					panic(fmt.Errorf("unknown phase=%d", pPosSys.phase))
 				}
 
 				// 利き評価が強すぎると 指し手がバラけないので、乱数を使って 確率的にします。
@@ -184,7 +184,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(pPosSys.PPosition[0].SprintLocation())
 			App.Out.Debug(pPosCopy.SprintLocation())
-			panic(fmt.Errorf("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
+			panic(fmt.Errorf("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
 		}
 
 		younger_sibling_move = move

@@ -121,11 +121,11 @@ BoardLoop:
 		pos.Phase = 2
 		i += 1
 	default:
-		panic("Fatal: 手番わかんない（＾～＾）")
+		panic("fatal: 手番わかんない（＾～＾）")
 	}
 
 	if command[i] != ' ' {
-		panic("Fatal: 手番の後ろにスペースがない（＾～＾）")
+		panic("fatal: 手番の後ろにスペースがない（＾～＾）")
 	}
 	i += 1
 
@@ -133,7 +133,7 @@ BoardLoop:
 	if command[i] == '-' {
 		i += 1
 		if command[i] != ' ' {
-			panic("Fatal: 持ち駒 - の後ろにスペースがない（＾～＾）")
+			panic("fatal: 持ち駒 - の後ろにスペースがない（＾～＾）")
 		}
 		i += 1
 	} else {
@@ -147,7 +147,7 @@ BoardLoop:
 				i += 1
 				break MoveLoop
 			default:
-				panic("Fatal: 知らん持ち駒（＾～＾）")
+				panic("fatal: 知らん持ち駒（＾～＾）")
 			}
 
 			var number = 0
@@ -217,7 +217,7 @@ MovesNumLoop:
 			move = append(move, ch)
 
 			if command[i] != '+' {
-				panic("Fatal: +じゃなかった（＾～＾）")
+				panic("fatal: +じゃなかった（＾～＾）")
 			}
 
 			i += 1
@@ -239,12 +239,12 @@ MovesNumLoop:
 					i += 1
 					move = append(move, ch2)
 				default:
-					panic(fmt.Errorf("Fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2))
+					panic(fmt.Errorf("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2))
 				}
 
 			default:
 				fmt.Println(Sprint(pos))
-				panic(fmt.Errorf("Fatal: なんか分かんないmove（＾～＾） ch='%c' move=%s", ch, string(move)))
+				panic(fmt.Errorf("fatal: なんか分かんないmove（＾～＾） ch='%c' move=%s", ch, string(move)))
 			}
 
 			count += 1

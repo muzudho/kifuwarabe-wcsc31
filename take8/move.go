@@ -23,16 +23,6 @@ const (
 	HAND_TYPE_SIZE = HAND_P1 - HAND_ORIGIN + 1
 )
 
-// Move - 指し手
-//
-// 15bit で表せるはず（＾～＾）
-// .pdd dddd dsss ssss
-//
-// 1～7bit: 移動元(0～127)
-// 8～14bit: 移動先(0～127)
-// 15bit: 成(0～1)
-type Move uint16
-
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 

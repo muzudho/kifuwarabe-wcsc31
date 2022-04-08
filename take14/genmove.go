@@ -75,7 +75,7 @@ func FromOpponent(phase Phase, from Square) bool {
 	case SECOND:
 		return Rank(from) > 6
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(fmt.Errorf("unknown phase=%d", phase))
 	}
 }
 
@@ -123,7 +123,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			case SQ_P2:
 				genmv_list = genmv_dp2
 			default:
-				panic(fmt.Errorf("Unknown hand from=%d", from))
+				panic(fmt.Errorf("unknown hand from=%d", from))
 			}
 
 			// 打てる列（インデックスと列は等しい）。二歩チェックで使う
@@ -282,7 +282,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			case PIECE_PP2:
 				genmv_list = genmv_pp2
 			default:
-				panic(fmt.Errorf("Unknown piece=%d", piece))
+				panic(fmt.Errorf("unknown piece=%d", piece))
 			}
 
 			for _, step := range genmv_list {
@@ -910,7 +910,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(fmt.Errorf("Unknown phase=%d", friend))
+		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
 	hand_end = hand_start + HAND_TYPE_SIZE
 

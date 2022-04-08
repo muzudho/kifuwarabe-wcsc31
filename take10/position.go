@@ -771,12 +771,12 @@ func (pPos *Position) ReadPosition(command string) {
 			pPos.phase = SECOND
 			i += 1
 		default:
-			panic("Fatal: Unknown phase")
+			panic("fatal: unknown phase")
 		}
 
 		if command[i] != ' ' {
 			// 手番の後ろにスペースがない（＾～＾）
-			panic("Fatal: Nothing space")
+			panic("fatal: Nothing space")
 		}
 		i += 1
 
@@ -785,7 +785,7 @@ func (pPos *Position) ReadPosition(command string) {
 			i += 1
 			if command[i] != ' ' {
 				// 持ち駒 - の後ろにスペースがない（＾～＾）
-				panic("Fatal: Nothing space after -")
+				panic("fatal: Nothing space after -")
 			}
 			i += 1
 		} else {
@@ -920,7 +920,7 @@ func (pPos *Position) ReadPosition(command string) {
 		}
 
 	} else {
-		fmt.Printf("Error: Unknown command=[%s]", command)
+		fmt.Printf("error: unknown command=[%s]", command)
 	}
 
 	// fmt.Printf("command[i:]=[%s]\n", command[i:])
@@ -1223,7 +1223,7 @@ func (pPos *Position) DoMove(move Move) {
 		case PIECE_P2, PIECE_PP2:
 			cap_dst_sq = SQ_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%d]", captured)
+			fmt.Printf("error: unknown captured=[%d]", captured)
 		}
 
 		if cap_dst_sq != SQUARE_EMPTY {
@@ -1386,7 +1386,7 @@ func (pPos *Position) UndoMove() {
 		case PIECE_P2, PIECE_PP2:
 			cap_src_sq = SQ_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%d]", captured)
+			fmt.Printf("error: unknown captured=[%d]", captured)
 		}
 
 		if cap_src_sq != SQUARE_EMPTY {

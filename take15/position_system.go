@@ -58,7 +58,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP1
 		default:
-			panic(App.LogNotEcho.Fatal("Unknown pieceType=%d", pieceType))
+			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
@@ -91,10 +91,10 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP2
 		default:
-			panic(App.LogNotEcho.Fatal("Unknown pieceType=%d", pieceType))
+			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
 	default:
-		panic(App.LogNotEcho.Fatal("Unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 }
 

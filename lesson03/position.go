@@ -160,11 +160,11 @@ BoardLoop:
 		pos.Phase = 2
 		i += 1
 	default:
-		panic("Fatal: 手番わかんない（＾～＾）")
+		panic("fatal: 手番わかんない（＾～＾）")
 	}
 
 	if command[i] != ' ' {
-		panic("Fatal: 手番の後ろにスペースがない（＾～＾）")
+		panic("fatal: 手番の後ろにスペースがない（＾～＾）")
 	}
 	i += 1
 
@@ -172,7 +172,7 @@ BoardLoop:
 	if command[i] == '-' {
 		i += 1
 		if command[i] != ' ' {
-			panic("Fatal: 持ち駒 - の後ろにスペースがない（＾～＾）")
+			panic("fatal: 持ち駒 - の後ろにスペースがない（＾～＾）")
 		}
 		i += 1
 	} else {
@@ -213,7 +213,7 @@ BoardLoop:
 				i += 1
 				break HandLoop
 			default:
-				panic("Fatal: 知らん持ち駒（＾～＾）")
+				panic("fatal: 知らん持ち駒（＾～＾）")
 			}
 
 			var number = 0
@@ -309,7 +309,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_R2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'B':
 		*i += 1
@@ -319,7 +319,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_B2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'G':
 		*i += 1
@@ -329,7 +329,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_G2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'S':
 		*i += 1
@@ -339,7 +339,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_S2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'N':
 		*i += 1
@@ -349,7 +349,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_N2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'L':
 		*i += 1
@@ -359,7 +359,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_L2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'P':
 		*i += 1
@@ -369,7 +369,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			pMove.Squares[0] = DROP_P2
 		default:
-			return *new(Move), fmt.Errorf("Fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	default:
 		// Ignored
@@ -377,7 +377,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 
 	if count == 1 {
 		if command[*i] != '+' {
-			return *new(Move), fmt.Errorf("Fatal: +じゃなかった（＾～＾）")
+			return *new(Move), fmt.Errorf("fatal: +じゃなかった（＾～＾）")
 		}
 		*i += 1
 	}
@@ -414,13 +414,13 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2)
+				return *new(Move), fmt.Errorf("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2)
 			}
 			*i += 1
 
 			pMove.Squares[count] = Square(file*10 + rank)
 		default:
-			return *new(Move), fmt.Errorf("Fatal: なんか分かんないmove（＾～＾） ch='%c' i='%d'", ch, *i)
+			return *new(Move), fmt.Errorf("fatal: なんか分かんないmove（＾～＾） ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1

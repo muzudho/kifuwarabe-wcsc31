@@ -263,7 +263,7 @@ func ControllBoardFromPhase(
 	case SECOND:
 		return pPh2_CB
 	default:
-		panic(App.LogNotEcho.Fatal("Unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 }
 

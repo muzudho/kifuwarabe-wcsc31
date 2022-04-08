@@ -221,12 +221,12 @@ func (pPos *Position) ReadPosition(command string) {
 			pPos.Phase = SECOND
 			i += 1
 		default:
-			panic("Fatal: Unknown phase")
+			panic("fatal: unknown phase")
 		}
 
 		if command[i] != ' ' {
 			// 手番の後ろにスペースがない（＾～＾）
-			panic("Fatal: Nothing space")
+			panic("fatal: Nothing space")
 		}
 		i += 1
 
@@ -235,7 +235,7 @@ func (pPos *Position) ReadPosition(command string) {
 			i += 1
 			if command[i] != ' ' {
 				// 持ち駒 - の後ろにスペースがない（＾～＾）
-				panic("Fatal: Nothing space after -")
+				panic("fatal: Nothing space after -")
 			}
 			i += 1
 		} else {
@@ -276,7 +276,7 @@ func (pPos *Position) ReadPosition(command string) {
 					i += 1
 					break HandLoop
 				default:
-					panic(fmt.Errorf("Fatal: Unknown piece=%c", piece))
+					panic(fmt.Errorf("fatal: unknown piece=%c", piece))
 				}
 
 				var number = 0
@@ -410,11 +410,11 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case SECOND:
 			from = hand1 + DROP_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("Fatal: not *")
+			return *new(Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -451,7 +451,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -461,10 +461,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -655,7 +655,7 @@ func (pPos *Position) DoMove(move Move) {
 		case PIECE_P2, PIECE_PP2:
 			drop = DROP_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%s]", captured)
+			fmt.Printf("error: unknown captured=[%s]", captured)
 		}
 
 		if drop != 0 {
@@ -771,7 +771,7 @@ func (pPos *Position) UndoMove() {
 		case PIECE_P2, PIECE_PP2:
 			cap = DROP_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%s]", captured)
+			fmt.Printf("error: unknown captured=[%s]", captured)
 		}
 
 		if cap != 0 {

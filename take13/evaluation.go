@@ -31,7 +31,7 @@ func EvalControlVal(pPosSys *PositionSystem) int16 {
 			control_val = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
 		default:
-			panic(fmt.Errorf("Unknown phase=%d", pPosSys.phase))
+			panic(fmt.Errorf("unknown phase=%d", pPosSys.phase))
 		}
 
 		// 利き評価が強すぎると 指し手がバラけません

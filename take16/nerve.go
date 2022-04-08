@@ -164,12 +164,12 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 			pNerve.PPosSys.phase = SECOND
 			i += 1
 		default:
-			panic("Fatal: Unknown phase")
+			panic("fatal: unknown phase")
 		}
 
 		if command[i] != ' ' {
 			// 手番の後ろにスペースがない（＾～＾）
-			panic("Fatal: Nothing space")
+			panic("fatal: Nothing space")
 		}
 		i += 1
 
@@ -178,7 +178,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 			i += 1
 			if command[i] != ' ' {
 				// 持ち駒 - の後ろにスペースがない（＾～＾）
-				panic("Fatal: Nothing space after -")
+				panic("fatal: Nothing space after -")
 			}
 			i += 1
 		} else {
@@ -272,7 +272,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 						// ループを抜けます
 						break HandLoop
 					default:
-						panic(App.LogNotEcho.Fatal("Fatal: Unknown piece=%c", piece))
+						panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
 					}
 				} else if unicode.IsNumber(rune(piece)) {
 					switch piece {
@@ -285,11 +285,11 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 						number *= 10
 						number += num
 					default:
-						panic(App.LogNotEcho.Fatal("Fatal: Unknown number character=%c", piece))
+						panic(App.LogNotEcho.Fatal("fatal: Unknown number character=%c", piece))
 					}
 
 				} else {
-					panic(App.LogNotEcho.Fatal("Fatal: Unknown piece=%c", piece))
+					panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
 				}
 			}
 		}
@@ -316,7 +316,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 		}
 
 	} else {
-		fmt.Printf("Error: Unknown command=[%s]", command)
+		fmt.Printf("error: unknown command=[%s]", command)
 	}
 
 	// fmt.Printf("command[i:]=[%s]\n", command[i:])
@@ -441,7 +441,7 @@ func (pNerve *Nerve) IsCheckmate(phase Phase) bool {
 			return true
 		}
 	default:
-		panic(App.LogNotEcho.Fatal("Unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 
 	// 王手は受けていなかったぜ（＾～＾）
@@ -663,7 +663,7 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 		case PIECE_P2, PIECE_PP2:
 			cap_dst_sq = SQ_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%d]", captured)
+			fmt.Printf("error: unknown captured=[%d]", captured)
 		}
 
 		if cap_dst_sq != SQUARE_EMPTY {
@@ -1014,7 +1014,7 @@ func (pNerve *Nerve) undoCapture(pPos *Position) {
 		case PIECE_P2, PIECE_PP2:
 			hand_sq = SQ_P1
 		default:
-			fmt.Printf("Error: Unknown captured=[%d]", captured)
+			fmt.Printf("error: unknown captured=[%d]", captured)
 		}
 
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)

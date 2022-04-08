@@ -90,7 +90,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(fmt.Errorf("Unknown hand from=%d", from))
+			panic(fmt.Errorf("unknown hand from=%d", from))
 		}
 
 		switch from {
@@ -543,7 +543,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(fmt.Errorf("Unknown phase=%d", friend))
+		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
 	hand_end = hand_start + HAND_TYPE_SIZE
 

@@ -140,7 +140,7 @@ func Promote(piece l09.Piece) l09.Piece {
 	case PIECE_P2:
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -175,7 +175,7 @@ func Demote(piece l09.Piece) l09.Piece {
 	case PIECE_PP2:
 		return PIECE_P2
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -189,7 +189,7 @@ func Who(piece l09.Piece) Phase {
 	case PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
 		return SECOND
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -255,7 +255,7 @@ func PieceFrom(piece string) l09.Piece {
 	case "+p":
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("Unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece))
 	}
 }
 
@@ -321,7 +321,7 @@ func ToPieceCode(pc l09.Piece) string {
 	case PIECE_PP2:
 		return "+p"
 	default:
-		panic(fmt.Errorf("Unknown piece=%d", pc))
+		panic(fmt.Errorf("unknown piece=%d", pc))
 	}
 }
 
@@ -475,11 +475,11 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case SECOND:
 			from = hand_sq + HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("Fatal: not *")
+			return *new(Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -516,7 +516,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -526,10 +526,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
