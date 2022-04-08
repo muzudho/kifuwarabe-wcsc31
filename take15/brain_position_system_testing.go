@@ -41,7 +41,7 @@ func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
 		// 元に戻っていればOK（＾～＾）
 		is_error := checkControl(pBrain, move_seq, move_total, move)
 		if is_error {
-			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, ToMoveCode(move))
+			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, ToCode(move))
 		}
 	}
 

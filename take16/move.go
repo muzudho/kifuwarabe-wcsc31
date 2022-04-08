@@ -68,15 +68,15 @@ func NewMove(from Square, to Square, promotion bool) Move {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func DestructureMove(move Move) (Square, Square, bool) {
+func Destructure(move Move) (Square, Square, bool) {
 	var from = Square(uint16(move) & 0x007f)
 	var to = Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }
 
-// ToMoveCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func ToMoveCode(move Move) string {
+// ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
+func ToCode(move Move) string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {
@@ -87,7 +87,7 @@ func ToMoveCode(move Move) string {
 	count := 0
 
 	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := DestructureMove(move)
+	from, to, pro := Destructure(move)
 
 	// 移動元マス(Source square)
 	switch from {
