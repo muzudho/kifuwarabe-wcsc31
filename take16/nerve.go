@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // 開発 or リリース モード
@@ -483,7 +485,7 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 
 	// まず、打かどうかで処理を分けます
 	sq_drop := from
-	var piece Piece
+	var piece l09.Piece
 	switch from {
 	case SQ_K1:
 		piece = PIECE_K1

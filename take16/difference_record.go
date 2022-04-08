@@ -1,5 +1,7 @@
 package take16
 
+import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
@@ -13,7 +15,7 @@ type DifferenceRecord struct {
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
 	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]Piece
+	CapturedList [MOVES_SIZE]l09.Piece
 }
 
 func NewDifferenceRecord() *DifferenceRecord {
@@ -30,5 +32,5 @@ func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	// 指し手のリスト
 	pRecord.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pRecord.CapturedList = [MOVES_SIZE]Piece{}
+	pRecord.CapturedList = [MOVES_SIZE]l09.Piece{}
 }

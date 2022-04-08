@@ -1,5 +1,7 @@
 package take16
 
+import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+
 // 先後のない駒種類
 type PieceType byte
 
@@ -22,7 +24,7 @@ const (
 )
 
 // What - 先後のない駒種類を返します。
-func What(piece Piece) PieceType {
+func What(piece l09.Piece) PieceType {
 	switch piece {
 	case PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY

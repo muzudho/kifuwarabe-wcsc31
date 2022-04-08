@@ -1,5 +1,7 @@
 package take16
 
+import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+
 // 盤レイヤー・インデックス型
 type PosLayerT int
 
@@ -23,7 +25,7 @@ func FlipPhase(phase Phase) Phase {
 const PHASE_ARRAY_SIZE = 2
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
+func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 	switch phase {
 	case FIRST:
 		switch pieceType {

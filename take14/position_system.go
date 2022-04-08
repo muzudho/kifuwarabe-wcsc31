@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 	"unicode"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // 電竜戦が一番長いだろ（＾～＾）
@@ -68,9 +70,6 @@ const (
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
-// 先後付きの駒
-type Piece uint8
-
 // 駒
 const (
 	PIECE_EMPTY = iota
@@ -104,74 +103,8 @@ const (
 	PIECE_PP2
 )
 
-// ToCode - 文字列
-func (pc Piece) ToCode() string {
-	switch pc {
-	case PIECE_EMPTY:
-		return ""
-	case PIECE_K1:
-		return "K"
-	case PIECE_R1:
-		return "R"
-	case PIECE_B1:
-		return "B"
-	case PIECE_G1:
-		return "G"
-	case PIECE_S1:
-		return "S"
-	case PIECE_N1:
-		return "N"
-	case PIECE_L1:
-		return "L"
-	case PIECE_P1:
-		return "P"
-	case PIECE_PR1:
-		return "+R"
-	case PIECE_PB1:
-		return "+B"
-	case PIECE_PS1:
-		return "+S"
-	case PIECE_PN1:
-		return "+N"
-	case PIECE_PL1:
-		return "+L"
-	case PIECE_PP1:
-		return "+P"
-	case PIECE_K2:
-		return "k"
-	case PIECE_R2:
-		return "r"
-	case PIECE_B2:
-		return "b"
-	case PIECE_G2:
-		return "g"
-	case PIECE_S2:
-		return "s"
-	case PIECE_N2:
-		return "n"
-	case PIECE_L2:
-		return "l"
-	case PIECE_P2:
-		return "p"
-	case PIECE_PR2:
-		return "+r"
-	case PIECE_PB2:
-		return "+b"
-	case PIECE_PS2:
-		return "+s"
-	case PIECE_PN2:
-		return "+n"
-	case PIECE_PL2:
-		return "+l"
-	case PIECE_PP2:
-		return "+p"
-	default:
-		panic(fmt.Errorf("Unknown piece=%d", pc))
-	}
-}
-
 // PieceFrom - 文字列
-func PieceFrom(piece string) Piece {
+func PieceFrom(piece string) l09.Piece {
 	switch piece {
 	case "":
 		return PIECE_EMPTY
@@ -237,7 +170,7 @@ func PieceFrom(piece string) Piece {
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
+func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 	switch phase {
 	case FIRST:
 		switch pieceType {
@@ -334,7 +267,7 @@ const (
 	HAND_IDX_END   = HAND_SIZE // この数を含まない
 )
 
-var HandPieceMap1 = [HAND_SIZE]Piece{
+var HandPieceMap1 = [HAND_SIZE]l09.Piece{
 	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
 
@@ -383,7 +316,7 @@ type PositionSystem struct {
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
 	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]Piece
+	CapturedList [MOVES_SIZE]l09.Piece
 }
 
 func NewPositionSystem() *PositionSystem {
@@ -418,7 +351,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	// 指し手のリスト
 	pPosSys.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pPosSys.CapturedList = [MOVES_SIZE]Piece{}
+	pPosSys.CapturedList = [MOVES_SIZE]l09.Piece{}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
@@ -906,7 +839,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 
 	// まず、打かどうかで処理を分けます
 	sq_drop := from
-	var piece Piece
+	var piece l09.Piece
 	switch from {
 	case SQ_K1:
 		piece = PIECE_K1

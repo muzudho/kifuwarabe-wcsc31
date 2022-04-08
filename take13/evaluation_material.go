@@ -1,10 +1,14 @@
 // 駒の価値
 package take13
 
-import "fmt"
+import (
+	"fmt"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+)
 
 // EvalMaterial - 駒の価値。開発者のむずでょが勝手に決めた（＾～＾）
-func EvalMaterial(piece Piece) int16 {
+func EvalMaterial(piece l09.Piece) int16 {
 	switch piece {
 	case PIECE_EMPTY: // 空きマス
 		return 0

@@ -1,11 +1,13 @@
 package take14
 
+import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+
 // Position - 局面
 // TODO 利きボードも含めたい
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]Piece
+	Board [BOARD_SIZE]l09.Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]Square
@@ -19,7 +21,7 @@ type Position struct {
 func NewPosition() *Position {
 	var pPos = new(Position)
 
-	pPos.Board = [BOARD_SIZE]Piece{
+	pPos.Board = [BOARD_SIZE]l09.Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
@@ -44,7 +46,7 @@ func NewPosition() *Position {
 // setToStartpos - 初期局面にします。利きの計算はまだ行っていません。
 func (pPos *Position) setToStartpos() {
 	// 初期局面にします
-	pPos.Board = [BOARD_SIZE]Piece{
+	pPos.Board = [BOARD_SIZE]l09.Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
 		PIECE_EMPTY, PIECE_N2, PIECE_B2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_R1, PIECE_N1,
@@ -68,7 +70,7 @@ func (pPos *Position) GetPieceLocation(index int) Square {
 
 // clearBoard - 駒を置いていな状態でリセットします
 func (pPos *Position) clearBoard() {
-	pPos.Board = [BOARD_SIZE]Piece{
+	pPos.Board = [BOARD_SIZE]l09.Piece{
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
 		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
