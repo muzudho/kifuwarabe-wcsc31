@@ -34,8 +34,8 @@ func MainLoop() {
 
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
-	// グローバル変数の作成
-	G = *new(Variables)
+	// アプリケーション変数の生成
+	App = *new(l01.Lesson01App)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -48,7 +48,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了してしまいます。
-	G.Log = *l.NewLogger(
+	App.LogNotEcho = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -59,40 +59,40 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	G.Log.RemoveAllOldLogs()
+	App.LogNotEcho.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = G.Log.OpenAllLogs()
+	err = App.LogNotEcho.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer G.Log.CloseAllLogs()
-
-	G.Log.Trace("Start Take1\n")
-	G.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	defer App.LogNotEcho.CloseAllLogs()
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	G.Chat = *l.NewChatter(G.Log)
-	G.StderrChat = *l.NewStderrChatter(G.Log)
+	App.Out = *l.NewChatter(App.LogNotEcho)
+	App.Log = *l.NewStderrChatter(App.LogNotEcho)
+
+	App.LogNotEcho.Trace("Start Take1\n")
+	App.LogNotEcho.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(G.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(App.LogNotEcho.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
 	scanner := bufio.NewScanner(os.Stdin)
 
-	G.Log.FlushAllLogs()
+	App.LogNotEcho.FlushAllLogs()
 
 	var pNerve = NewNerve()
 
 MainLoop:
 	for scanner.Scan() {
 		command := scanner.Text()
-		G.Log.Trace("command=%s\n", command)
+		App.LogNotEcho.Trace("command=%s\n", command)
 
 		if command == "position startpos moves *0" {
 			// 将棋所の連続対局中に
@@ -107,16 +107,16 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			G.Chat.Print("id name %sB30\n", config.Profile.Name)
-			G.Chat.Print("id author %s\n", config.Profile.Author)
-			G.Chat.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
+			App.Out.Print("id name %sB30\n", config.Profile.Name)
+			App.Out.Print("id author %s\n", config.Profile.Author)
+			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
 			pNerve.BuildType = BUILD_RELEASE
 			// 乱数のタネを変更するぜ（＾～＾）
 			rand.Seed(time.Now().UnixNano())
-			G.Chat.Print("usiok\n")
+			App.Out.Print("usiok\n")
 		case "isready":
-			G.Chat.Print("readyok\n")
+			App.Out.Print("readyok\n")
 		case "usinewgame":
 			pNerve = NewNerve()
 		case "position":
@@ -147,7 +147,7 @@ MainLoop:
 		case "go":
 			pNerve.PStopwatchSearch.StartStopwatch()
 			bestmove := IterativeDeepeningSearch(pNerve, tokens)
-			G.Chat.Print("bestmove %s\n", ToMoveCode(bestmove))
+			App.Out.Print("bestmove %s\n", ToMoveCode(bestmove))
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -170,11 +170,11 @@ MainLoop:
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("gameover win\n")
-				G.Chat.Debug("gameover lose\n")
-				G.Chat.Debug("gameover draw\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("gameover win\n")
+				App.Out.Debug("gameover lose\n")
+				App.Out.Debug("gameover draw\n")
 			}
 		// 以下、きふわらべ独自拡張コマンド
 		case "pos":
@@ -183,35 +183,35 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
 					pNerve.PRecord.StartMovesNum,
 					pNerve.PRecord.OffsetMovesIndex))
-				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-				G.Chat.Debug(pNerve.SprintBoardFooter())
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				App.Out.Debug(pNerve.SprintBoardFooter())
 				ok = true
 				ok = true
 			} else if length == 2 {
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				} else {
-					G.Chat.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
+					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
 						pNerve.PPosSys.phase,
 						pNerve.PRecord.StartMovesNum,
 						pNerve.PRecord.OffsetMovesIndex))
-					G.Chat.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
-					G.Chat.Debug(pNerve.SprintBoardFooter())
+					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
+					App.Out.Debug(pNerve.SprintBoardFooter())
 					ok = true
 				}
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("pos\n")
-				G.Chat.Debug("pos {boardNumber}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("pos\n")
+				App.Out.Debug("pos {boardNumber}\n")
 			}
 		case "do":
 			// １手指すぜ（＾～＾）
@@ -219,12 +219,12 @@ MainLoop:
 			i := 3
 			var move, err = ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
-				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
 					pNerve.PRecord.StartMovesNum,
 					pNerve.PRecord.OffsetMovesIndex))
-				G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-				G.Chat.Debug(pNerve.SprintBoardFooter())
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				App.Out.Debug(pNerve.SprintBoardFooter())
 				panic(err)
 			}
 
@@ -238,8 +238,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				G.Chat.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM1))
-				G.Chat.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM2))
+				App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM1))
+				App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM2))
 				ok = true
 			} else if length == 2 && tokens[1] == "test" {
 				// 利きのテスト
@@ -247,9 +247,9 @@ MainLoop:
 				// 元の利きに戻るか確認
 				is_error, message := TestControl(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 				if is_error {
-					G.Chat.Debug("ControlTest: error=%s\n", message)
-					G.Chat.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
-					G.Chat.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
+					App.Out.Debug("ControlTest: error=%s\n", message)
+					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
+					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
 				}
 				ok = true
 			} else if length == 5 && tokens[1] == "diff" {
@@ -291,7 +291,7 @@ MainLoop:
 				if err != nil {
 					fmt.Printf("Error: %s", err)
 				} else if 0 <= c1 && ControlLayerT(c1) < CONTROL_LAYER_ALL_SIZE {
-					G.Chat.Debug(pNerve.PCtrlBrdSys.SprintControl(ControlLayerT(c1)))
+					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(ControlLayerT(c1)))
 					ok = true
 				}
 			} else if length == 4 && tokens[1] == "sumabs" {
@@ -309,18 +309,18 @@ MainLoop:
 				// 現局面の利きを覚え、ムーブ、アンドゥを行って
 				// 元の利きに戻るか確認
 				sumList := SumAbsControl(pNerve, ControlLayerT(c1), ControlLayerT(c2))
-				G.Chat.Debug("ControlTest: SumAbs=%d,%d\n", sumList[0], sumList[1])
+				App.Out.Debug("ControlTest: SumAbs=%d,%d\n", sumList[0], sumList[1])
 				ok = true
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("control\n")
-				G.Chat.Debug("control layer {number}\n")
-				G.Chat.Debug("control recalc {number} {number}\n")
-				G.Chat.Debug("control diff {layer_number} {layer_number} {layer_number}\n")
-				G.Chat.Debug("control sumabs {number} {number}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("control\n")
+				App.Out.Debug("control layer {number}\n")
+				App.Out.Debug("control recalc {number} {number}\n")
+				App.Out.Debug("control diff {layer_number} {layer_number} {layer_number}\n")
+				App.Out.Debug("control sumabs {number} {number}\n")
 			}
 		case "location":
 			length := len(tokens)
@@ -329,36 +329,36 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				G.Chat.Debug(pNerve.PPosSys.PPosition[PosLayerT(b1)].SprintLocation())
+				App.Out.Debug(pNerve.PPosSys.PPosition[PosLayerT(b1)].SprintLocation())
 				ok = true
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("location {boardLayerIndex}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("location {boardLayerIndex}\n")
 			}
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
-			G.Chat.Debug(sprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord))
+			App.Out.Debug(sprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord))
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			G.Chat.Debug(sprintRecord(pNerve.PRecord))
+			App.Out.Debug(sprintRecord(pNerve.PRecord))
 		case "movelist":
 			// 指し手の一覧
 			moveList(pNerve)
 		case "dump":
 			// 変数を全部出力してくれだぜ（＾～＾）
-			G.Chat.Debug("PositionSystem.Dump()\n")
-			G.Chat.Debug("---------------\n%s", pNerve.Dump())
+			App.Out.Debug("PositionSystem.Dump()\n")
+			App.Out.Debug("---------------\n%s", pNerve.Dump())
 		case "playout":
 			// とにかく手を進めるぜ（＾～＾）
 			// 時間の計測は リリース・モードでやれだぜ（＾～＾）
-			G.Chat.Debug("Playout start\n")
+			App.Out.Debug("Playout start\n")
 			start := time.Now()
 
 		PlayoutLoop:
@@ -366,18 +366,18 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < MOVES_SIZE; i += 1 {
-					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pNerve.PPosSys.phase,
 						pNerve.PRecord.StartMovesNum,
 						pNerve.PRecord.OffsetMovesIndex))
-					G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-					G.Chat.Debug(pNerve.SprintBoardFooter())
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+					App.Out.Debug(pNerve.SprintBoardFooter())
 					// あの駒、どこにいんの（＾～＾）？
-					// G.Chat.Debug(pNerve.PPosSys.SprintLocation())
+					// App.Out.Debug(pNerve.PPosSys.SprintLocation())
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
-					G.Chat.Print("bestmove %s\n", ToMoveCode(bestmove))
+					App.Out.Print("bestmove %s\n", ToMoveCode(bestmove))
 
 					if bestmove == Move(SQUARE_EMPTY) {
 						// 投了
@@ -395,7 +395,7 @@ MainLoop:
 			}
 
 			end := time.Now()
-			G.Chat.Debug("Playout finished。%f seconds\n", (end.Sub(start)).Seconds())
+			App.Out.Debug("Playout finished。%f seconds\n", (end.Sub(start)).Seconds())
 		case "shuffle":
 			ShuffleBoard(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		case "count":
@@ -407,12 +407,12 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b2, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				copyBoard(pNerve.PPosSys.PPosition[b1], pNerve.PPosSys.PPosition[b2])
@@ -423,9 +423,9 @@ MainLoop:
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("board copy {boardLayerIndex} {boardLayerIndex}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("board copy {boardLayerIndex} {boardLayerIndex}\n")
 			}
 		case "posdiff":
 			length := len(tokens)
@@ -434,22 +434,22 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b2, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
-				G.Chat.Debug(sprintPositionDiff(pNerve.PPosSys, PosLayerT(b1), PosLayerT(b2), pNerve.PRecord))
+				App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, PosLayerT(b1), PosLayerT(b2), pNerve.PRecord))
 				ok = true
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("posdiff {boardIndex1} {boardIndex2}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("posdiff {boardIndex1} {boardIndex2}\n")
 			}
 		case "error":
 			// 2つのものを比較して、違いが何個あったか返すぜ（＾ｑ＾）
@@ -460,41 +460,41 @@ MainLoop:
 				// 盤番号
 				b0, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b1, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b2, err := strconv.Atoi(tokens[4])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b3, err := strconv.Atoi(tokens[5])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				errorNum := errorBoard(pNerve.PPosSys.PPosition[b0], pNerve.PPosSys.PPosition[b1], pNerve.PPosSys.PPosition[b2], pNerve.PPosSys.PPosition[b3])
 				if errorNum == 0 {
-					G.Chat.Debug("ok\n")
+					App.Out.Debug("ok\n")
 				} else {
-					G.Chat.Debug("error=%d\n", errorNum)
+					App.Out.Debug("error=%d\n", errorNum)
 				}
 				ok = true
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("error board {*1} {*2} {*3} {*4}\n")
-				G.Chat.Debug("    *1 boardLayerIndex Compare 1\n")
-				G.Chat.Debug("    *2 boardLayerIndex Compare 2\n")
-				G.Chat.Debug("    *3 boardLayerIndex Temp\n")
-				G.Chat.Debug("    *4 boardLayerIndex Temp\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("error board {*1} {*2} {*3} {*4}\n")
+				App.Out.Debug("    *1 boardLayerIndex Compare 1\n")
+				App.Out.Debug("    *2 boardLayerIndex Compare 2\n")
+				App.Out.Debug("    *3 boardLayerIndex Temp\n")
+				App.Out.Debug("    *4 boardLayerIndex Temp\n")
 			}
 		case "watercolor":
 			// 水彩絵の具でにじませたような、利きボード作り
@@ -505,27 +505,27 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b2, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b3, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b4, err := strconv.Atoi(tokens[4])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				b5, err := strconv.Atoi(tokens[5])
 				if err != nil {
-					G.Chat.Debug("Error: %s", err)
+					App.Out.Debug("Error: %s", err)
 				}
 
 				WaterColor(
@@ -538,18 +538,18 @@ MainLoop:
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("watercolor {control1} {control2} {control3} {control4} {control5}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("watercolor {control1} {control2} {control3} {control4} {control5}\n")
 			}
 		case "dev":
 			// 乱数のタネを0固定（＾～＾）
 			rand.Seed(0)
 		case "value":
 			// 現局面の評価値を表示（＾～＾）
-			G.Chat.Debug("Value\n")
-			G.Chat.Debug("-----\n")
-			G.Chat.Debug("MaterialValue=%d\n", pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
+			App.Out.Debug("Value\n")
+			App.Out.Debug("-----\n")
+			App.Out.Debug("MaterialValue=%d\n", pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
 		case "":
 			// Ignored
 		default:
@@ -559,41 +559,41 @@ MainLoop:
 			}
 		}
 
-		G.Log.FlushAllLogs()
+		App.LogNotEcho.FlushAllLogs()
 	}
 
-	G.Log.Trace("Finished\n")
-	G.Log.FlushAllLogs()
+	App.LogNotEcho.Trace("Finished\n")
+	App.LogNotEcho.FlushAllLogs()
 }
 
 // moveList - 指し手リスト出力
 func moveList(pNerve *Nerve) {
-	G.Chat.Debug("MoveList\n")
-	G.Chat.Debug("--------\n")
+	App.Out.Debug("MoveList\n")
+	App.Out.Debug("--------\n")
 	move_list := GenMoveList(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		pNerve.DoMove(pPos, move)
-		G.Chat.Debug("(%3d) %-5s . %11d value\n", i, ToMoveCode(move), pPos.MaterialValue)
+		App.Out.Debug("(%3d) %-5s . %11d value\n", i, ToMoveCode(move), pPos.MaterialValue)
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
-		// G.Chat.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
+		// App.Out.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
-	G.Chat.Debug("* Except for those to be removed during the search\n")
+	App.Out.Debug("* Except for those to be removed during the search\n")
 }
 
 // ShowAllPiecesCount - 駒の枚数表示
 func ShowAllPiecesCount(pPos *Position) {
 	countList := CountAllPieces(pPos)
-	G.Chat.Debug("Count\n")
-	G.Chat.Debug("-----\n")
-	G.Chat.Debug("King  :%3d\n", countList[0])
-	G.Chat.Debug("Rook  :%3d\n", countList[1])
-	G.Chat.Debug("Bishop:%3d\n", countList[2])
-	G.Chat.Debug("Gold  :%3d\n", countList[3])
-	G.Chat.Debug("Silver:%3d\n", countList[4])
-	G.Chat.Debug("Knight:%3d\n", countList[5])
-	G.Chat.Debug("Lance :%3d\n", countList[6])
-	G.Chat.Debug("Pawn  :%3d\n", countList[7])
-	G.Chat.Debug("----------\n")
-	G.Chat.Debug("Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+	App.Out.Debug("Count\n")
+	App.Out.Debug("-----\n")
+	App.Out.Debug("King  :%3d\n", countList[0])
+	App.Out.Debug("Rook  :%3d\n", countList[1])
+	App.Out.Debug("Bishop:%3d\n", countList[2])
+	App.Out.Debug("Gold  :%3d\n", countList[3])
+	App.Out.Debug("Silver:%3d\n", countList[4])
+	App.Out.Debug("Knight:%3d\n", countList[5])
+	App.Out.Debug("Lance :%3d\n", countList[6])
+	App.Out.Debug("Pawn  :%3d\n", countList[7])
+	App.Out.Debug("----------\n")
+	App.Out.Debug("Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
 }

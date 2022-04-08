@@ -1176,7 +1176,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
 func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 
-	// G.StderrChat.Trace(pPosSys.Sprint())
+	// App.Log.Trace(pPosSys.Sprint())
 
 	if pPosSys.OffsetMovesIndex < 1 {
 		return
@@ -1352,7 +1352,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 
 // undoCapture - 取った駒を戻すぜ（＾～＾）
 func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
-	// G.StderrChat.Trace(pPosSys.Sprint())
+	// App.Log.Trace(pPosSys.Sprint())
 
 	// 取った駒だぜ（＾～＾）
 	cap_piece_type := PIECE_TYPE_EMPTY

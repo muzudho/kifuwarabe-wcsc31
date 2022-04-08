@@ -925,7 +925,7 @@ func (pPos *Position) DoMove(move Move) {
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
 func (pPos *Position) UndoMove() {
 
-	// G.StderrChat.Trace(pPos.Sprint())
+	// App.Log.Trace(pPos.Sprint())
 
 	if pPos.OffsetMovesIndex < 1 {
 		return

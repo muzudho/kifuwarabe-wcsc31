@@ -263,7 +263,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	pPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(Sprint(
+	App.Out.Debug(Sprint(
 		pPos,
 		pPosSys.phase,
 		pPosSys.StartMovesNum,
@@ -321,31 +321,31 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 			countList = CountAllPieces(pPos)
 		}
 
-		G.Chat.Debug("#Count\n")
-		G.Chat.Debug("#-----\n")
-		G.Chat.Debug("#King  :%3d\n", countList[0])
-		G.Chat.Debug("#Rook  :%3d\n", countList[1])
-		G.Chat.Debug("#Bishop:%3d\n", countList[2])
-		G.Chat.Debug("#Gold  :%3d\n", countList[3])
-		G.Chat.Debug("#Silver:%3d\n", countList[4])
-		G.Chat.Debug("#Knight:%3d\n", countList[5])
-		G.Chat.Debug("#Lance :%3d\n", countList[6])
-		G.Chat.Debug("#Pawn  :%3d\n", countList[7])
-		G.Chat.Debug("#----------\n")
-		G.Chat.Debug("#Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+		App.Out.Debug("#Count\n")
+		App.Out.Debug("#-----\n")
+		App.Out.Debug("#King  :%3d\n", countList[0])
+		App.Out.Debug("#Rook  :%3d\n", countList[1])
+		App.Out.Debug("#Bishop:%3d\n", countList[2])
+		App.Out.Debug("#Gold  :%3d\n", countList[3])
+		App.Out.Debug("#Silver:%3d\n", countList[4])
+		App.Out.Debug("#Knight:%3d\n", countList[5])
+		App.Out.Debug("#Lance :%3d\n", countList[6])
+		App.Out.Debug("#Pawn  :%3d\n", countList[7])
+		App.Out.Debug("#----------\n")
+		App.Out.Debug("#Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
 	} else {
 		ShowAllPiecesCount(pPos)
 	}
 
 	// position sfen 文字列を取得
 	command := pPosSys.SprintSfen(pPos)
-	G.Chat.Debug("#command=%s", command)
+	App.Out.Debug("#command=%s", command)
 
 	// 利きの再計算もやってくれる
 	pPosSys.ReadPosition(pPos, command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	G.Chat.Debug(Sprint(
+	App.Out.Debug(Sprint(
 		pPos,
 		pPosSys.phase,
 		pPosSys.StartMovesNum,
@@ -353,7 +353,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 		pPosSys.createMovesText()))
 	ShowAllPiecesCount(pPos)
 	command2 := pPosSys.SprintSfen(pPos)
-	G.Chat.Debug("#command2=%s", command2)
+	App.Out.Debug("#command2=%s", command2)
 
 	// 駒の数を数えます
 	countList2 := CountAllPieces(pPos)

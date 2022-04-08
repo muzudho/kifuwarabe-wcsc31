@@ -55,7 +55,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	*/
 
 	if from == SQUARE_EMPTY {
-		panic(G.Log.Fatal("GenMoveEnd has empty square"))
+		panic(App.LogNotEcho.Fatal("GenMoveEnd has empty square"))
 	} else if OnHands(from) {
 		// どこに打てるか
 		var start_rank Square
@@ -78,7 +78,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(G.Log.Fatal("Unknown hand from=%d", from))
+			panic(App.LogNotEcho.Fatal("Unknown hand from=%d", from))
 		}
 
 		switch from {
@@ -555,7 +555,7 @@ func GenMoveList(pNerve *Nerve, pPos *Position) []Move {
 		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
 		pOpponentSumCB = pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(G.Log.Fatal("Unknown phase=%d", friend))
+		panic(App.LogNotEcho.Fatal("Unknown phase=%d", friend))
 	}
 	hand_end = hand_start + HAND_TYPE_SIZE
 

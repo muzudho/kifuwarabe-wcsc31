@@ -111,7 +111,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) Move {
 		if pNerve.IsStopSearch {
 			// タイムアップしたときの探索結果は使わないぜ（＾～＾）
 			// 評価値出力（＾～＾）
-			G.Chat.Print("# Time up\n")
+			App.Out.Print("# Time up\n")
 			break
 		} else {
 			bestValue = value
@@ -119,7 +119,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) Move {
 		}
 
 		// 評価値出力（＾～＾）
-		G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
+		App.Out.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
 			depth, nodesNum, bestValue, ToMoveCode(bestMove), ToMoveCode(bestMove))
 	}
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
@@ -165,12 +165,12 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		// TODO タイムアップ判定（＾～＾）
 		sec := pNerve.PStopwatchSearch.ElapsedSeconds()
 		if sec >= 20.0 {
-			G.Chat.Print("# Time up. sec=%d\n", sec)
+			App.Out.Print("# Time up. sec=%d\n", sec)
 			pNerve.IsStopSearch = true
 			return -VALUE_INFINITE_1, RESIGN_MOVE // タイムアップしたときの探索結果は使わないぜ（＾～＾）
 		}
 
-		// G.Chat.Debug("move=%s\n", move.ToCode())
+		// App.Out.Debug("move=%s\n", move.ToCode())
 		from, _, _ := DestructureMove(move)
 
 		// デバッグに使うために、盤をコピーしておきます
@@ -180,15 +180,15 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 				pNerve.PPosSys.phase,
 				pNerve.PRecord.StartMovesNum,
 				pNerve.PRecord.OffsetMovesIndex))
-			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-			G.Chat.Debug(pNerve.SprintBoardFooter())
+			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+			App.Out.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
-			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
+			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
 				from, i, lenOfMoves))
 			//  younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)
@@ -226,7 +226,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			nodeValue, _ := search(pNerve, -beta, -alpha, depth-1, search_type2)
 			var edgeValue = -nodeValue
 			// 再帰直後（＾～＾）
-			// G.Chat.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
+			// App.Out.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
 
 			// 説明変数：何か１つは指し手を選んでおかないと、投了してしまうから、最初の１手は候補に入れておけだぜ（＾～＾）
 			var isAnyOneMove = len(someBestMoves) == 0
@@ -251,11 +251,11 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
+			App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
-			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(G.Log.Fatal("Error: count=%d move=%s", errorNum, ToMoveCode(move)))
+			App.Out.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
+			App.Out.Debug(pPosCopy.SprintLocation())
+			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, ToMoveCode(move)))
 			// younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)
 		}
@@ -279,7 +279,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			if bestmoveListLen > 0 {
 				debugBestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 			}
-			G.Chat.Debug("info string Debug: depth=%d nodes=%d value=%d move.best=%s.%s\n", curDepth, nodesNum, -opponentWorstVal, move.ToCode(), debugBestMove.ToCode())
+			App.Out.Debug("info string Debug: depth=%d nodes=%d value=%d move.best=%s.%s\n", curDepth, nodesNum, -opponentWorstVal, move.ToCode(), debugBestMove.ToCode())
 			// Debug ここまで
 		*/
 	}
@@ -287,7 +287,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 	bestmoveListLen := len(someBestMoves)
 	// // Debug出力
 	// for i := 0; i < bestmoveListLen; i += 1 {
-	// 	G.Chat.Debug("i=%d depth=%d bestmoveListLen=%d\n", i, depth, bestmoveListLen)
+	// 	App.Out.Debug("i=%d depth=%d bestmoveListLen=%d\n", i, depth, bestmoveListLen)
 	// }
 
 	if bestmoveListLen < 1 {
@@ -295,7 +295,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 	}
 	var bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
-	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
+	// App.Out.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	return alpha, bestMove
 }

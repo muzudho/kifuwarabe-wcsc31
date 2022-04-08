@@ -33,7 +33,7 @@ func Who(piece Piece) Phase {
 	case PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
 		return SECOND
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -71,7 +71,7 @@ func What(piece Piece) PieceType {
 	case PIECE_PP1, PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -93,7 +93,7 @@ func WhatHand(hand Square) PieceType {
 	case SQ_P1, SQ_P2:
 		return PIECE_TYPE_P
 	default:
-		panic(fmt.Errorf("Error: Unknown hand=[%d]", hand))
+		panic(fmt.Errorf("error: unknown hand=[%d]", hand))
 	}
 }
 
@@ -128,7 +128,7 @@ func Promote(piece Piece) Piece {
 	case PIECE_P2:
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }
 
@@ -163,6 +163,6 @@ func Demote(piece Piece) Piece {
 	case PIECE_PP2:
 		return PIECE_P2
 	default:
-		panic(fmt.Errorf("Error: Unknown piece=[%d]", piece))
+		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
 	}
 }

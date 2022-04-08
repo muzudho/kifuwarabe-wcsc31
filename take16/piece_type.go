@@ -55,7 +55,7 @@ func What(piece Piece) PieceType {
 	case PIECE_PP1, PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(G.Log.Fatal("Error: Unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("Error: Unknown piece=[%d]", piece))
 	}
 }
 
@@ -77,6 +77,6 @@ func WhatHand(hand Square) PieceType {
 	case SQ_P1, SQ_P2:
 		return PIECE_TYPE_P
 	default:
-		panic(G.Log.Fatal("Error: Unknown hand=[%d]", hand))
+		panic(App.LogNotEcho.Fatal("Error: Unknown hand=[%d]", hand))
 	}
 }

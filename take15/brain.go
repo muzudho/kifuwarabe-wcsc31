@@ -238,7 +238,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						// ループを抜けます
 						break HandLoop
 					default:
-						panic(G.Log.Fatal("Fatal: Unknown piece=%c", piece))
+						panic(App.LogNotEcho.Fatal("Fatal: Unknown piece=%c", piece))
 					}
 				} else if unicode.IsNumber(rune(piece)) {
 					switch piece {
@@ -251,11 +251,11 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						number *= 10
 						number += num
 					default:
-						panic(G.Log.Fatal("Fatal: Unknown number character=%c", piece))
+						panic(App.LogNotEcho.Fatal("Fatal: Unknown number character=%c", piece))
 					}
 
 				} else {
-					panic(G.Log.Fatal("Fatal: Unknown piece=%c", piece))
+					panic(App.LogNotEcho.Fatal("Fatal: Unknown piece=%c", piece))
 				}
 			}
 		}
@@ -407,7 +407,7 @@ func (pBrain *Brain) IsCheckmate(phase Phase) bool {
 			return true
 		}
 	default:
-		panic(G.Log.Fatal("Unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("Unknown phase=%d", phase))
 	}
 
 	// 王手は受けていなかったぜ（＾～＾）
@@ -660,7 +660,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
-					panic(G.Log.Fatal("Unknown before_move_phase=%d", before_move_phase))
+					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			} else {
 				// 取った時
@@ -671,7 +671,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
-					panic(G.Log.Fatal("Unknown before_move_phase=%d", before_move_phase))
+					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:
@@ -718,7 +718,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
 func (pBrain *Brain) UndoMove(pPos *Position) {
 
-	// G.StderrChat.Trace(pBrain.PPosSys.Sprint())
+	// App.Log.Trace(pBrain.PPosSys.Sprint())
 
 	if pBrain.PPosSys.OffsetMovesIndex < 1 {
 		return
@@ -843,7 +843,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		case SECOND:
 			pPos.PieceLocations[PCLOC_K2] = from
 		default:
-			panic(G.Log.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
+			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case PIECE_TYPE_R, PIECE_TYPE_PR:
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
@@ -894,7 +894,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 
 // undoCapture - 取った駒を戻すぜ（＾～＾）
 func (pBrain *Brain) undoCapture(pPos *Position) {
-	// G.StderrChat.Trace(pBrain.PPosSys.Sprint())
+	// App.Log.Trace(pBrain.PPosSys.Sprint())
 
 	// 取った駒だぜ（＾～＾）
 	cap_piece_type := PIECE_TYPE_EMPTY
@@ -1022,7 +1022,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			// 先手の玉
 			pPos.PieceLocations[PCLOC_K1] = to
 		default:
-			panic(G.Log.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
+			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case PIECE_TYPE_R, PIECE_TYPE_PR:
 		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {

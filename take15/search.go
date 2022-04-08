@@ -44,7 +44,7 @@ func Search(pBrain *Brain) Move {
 	bestMove, bestVal := search2(pBrain, curDepth) //, SEARCH_NONE
 
 	// 評価値出力（＾～＾）
-	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
+	App.Out.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
 		curDepth, nodesNum, bestVal, ToMoveCode(bestMove), ToMoveCode(bestMove))
 
 	// ゲーム向けの軽い乱数
@@ -78,7 +78,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range someMoves {
-		// G.Chat.Debug("move=%s\n", move.ToCode())
+		// App.Out.Debug("move=%s\n", move.ToCode())
 		from, _, _ := DestructureMove(move)
 
 		// デバッグに使うために、盤をコピーしておきます
@@ -88,15 +88,15 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pBrain.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(Sprint(
+			App.Out.Debug(Sprint(
 				pBrain.PPosSys.PPosition[POS_LAYER_MAIN],
 				pBrain.PPosSys.phase,
 				pBrain.PPosSys.StartMovesNum,
 				pBrain.PPosSys.OffsetMovesIndex,
 				pBrain.PPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
-			panic(G.Log.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
+			App.Out.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, lenOfMoves, ToMoveCode(younger_sibling_move)))
 		}
 
@@ -138,7 +138,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 				// 再帰
 				_, opponentVal := search2(pBrain, curDepth+1) //search_type2
 				// 再帰直後（＾～＾）
-				// G.Chat.Debug(pBrain.PPosSys.Sprint(POS_LAYER_MAIN))
+				// App.Out.Debug(pBrain.PPosSys.Sprint(POS_LAYER_MAIN))
 
 				if opponentVal < opponentWorstVal {
 					// より低い価値が見つかったら更新
@@ -181,11 +181,11 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 		errorNum := errorBoard(pBrain.PPosSys.PPosition[0], pPosCopy, pBrain.PPosSys.PPosition[2], pBrain.PPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(pBrain.PPosSys.SprintDiff(0, 1))
+			App.Out.Debug(pBrain.PPosSys.SprintDiff(0, 1))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
-			G.Chat.Debug(pPosCopy.SprintLocation())
-			panic(G.Log.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, ToMoveCode(younger_sibling_move), ToMoveCode(move)))
+			App.Out.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
+			App.Out.Debug(pPosCopy.SprintLocation())
+			panic(App.LogNotEcho.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, ToMoveCode(younger_sibling_move), ToMoveCode(move)))
 		}
 
 		younger_sibling_move = move
@@ -201,7 +201,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 			if bestmoveListLen > 0 {
 				debugBestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 			}
-			G.Chat.Debug("info string Debug: depth=%d nodes=%d value=%d move.best=%s.%s\n", curDepth, nodesNum, -opponentWorstVal, move.ToCode(), debugBestMove.ToCode())
+			App.Out.Debug("info string Debug: depth=%d nodes=%d value=%d move.best=%s.%s\n", curDepth, nodesNum, -opponentWorstVal, move.ToCode(), debugBestMove.ToCode())
 			// Debug ここまで
 		*/
 	}
@@ -217,7 +217,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 	}
 	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）
-	// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
+	// App.Out.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	// 相手の評価値の逆が、自分の評価値
 	return bestMove, -opponentWorstVal

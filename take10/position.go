@@ -152,7 +152,7 @@ func (pc Piece) ToCode() string {
 	case PIECE_PP2:
 		return "+p"
 	default:
-		panic(fmt.Errorf("Unknown piece=%d", pc))
+		panic(fmt.Errorf("unknown piece=%d", pc))
 	}
 }
 
@@ -218,7 +218,7 @@ func PieceFrom(piece string) Piece {
 	case "+p":
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("Unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece))
 	}
 }
 
@@ -256,7 +256,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP1
 		default:
-			panic(fmt.Errorf("Unknown pieceType=%d", pieceType))
+			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
@@ -289,10 +289,10 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) Piece {
 		case PIECE_TYPE_PP:
 			return PIECE_PP2
 		default:
-			panic(fmt.Errorf("Unknown pieceType=%d", pieceType))
+			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
 	default:
-		panic(fmt.Errorf("Unknown phase=%d", phase))
+		panic(fmt.Errorf("unknown phase=%d", phase))
 	}
 }
 
@@ -943,7 +943,7 @@ func (pPos *Position) ReadPosition(command string) {
 						// ループを抜けます
 						break HandLoop
 					default:
-						panic(fmt.Errorf("Fatal: Unknown piece=%c", piece))
+						panic(fmt.Errorf("fatal: unknown piece=%c", piece))
 					}
 				} else if unicode.IsNumber(rune(piece)) {
 					switch piece {
@@ -956,11 +956,11 @@ func (pPos *Position) ReadPosition(command string) {
 						number *= 10
 						number += num
 					default:
-						panic(fmt.Errorf("Fatal: Unknown number character=%c", piece))
+						panic(fmt.Errorf("fatal: unknown number character=%c", piece))
 					}
 
 				} else {
-					panic(fmt.Errorf("Fatal: Unknown piece=%c", piece))
+					panic(fmt.Errorf("fatal: unknown piece=%c", piece))
 				}
 			}
 		}
@@ -1083,11 +1083,11 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case SECOND:
 			from = hand_sq + HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown phase=%d", phase)
+			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("Fatal: not *")
+			return *new(Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -1124,7 +1124,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("Fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -1134,10 +1134,10 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("Fatal: Unknown count='%c'", count)
+				return *new(Move), fmt.Errorf("fatal: unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("Fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -1321,7 +1321,7 @@ func (pPos *Position) DoMove(move Move) {
 			case SECOND:
 				pPos.kingLocations[1] = dst_sq_list[j]
 			default:
-				panic(fmt.Errorf("Unknown prev_phase=%d", prev_phase))
+				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:
 			for i, sq := range pPos.RookLocations {
@@ -1355,7 +1355,7 @@ func (pPos *Position) DoMove(move Move) {
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
 func (pPos *Position) UndoMove() {
 
-	// G.StderrChat.Trace(pPos.Sprint())
+	// App.Log.Trace(pPos.Sprint())
 
 	if pPos.OffsetMovesIndex < 1 {
 		return
@@ -1494,7 +1494,7 @@ func (pPos *Position) UndoMove() {
 			case SECOND:
 				pPos.kingLocations[1] = src_sq_list[j]
 			default:
-				panic(fmt.Errorf("Unknown pPos.phase=%d", pPos.phase))
+				panic(fmt.Errorf("unknown pPos.phase=%d", pPos.phase))
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:
 			for i, sq := range pPos.RookLocations {

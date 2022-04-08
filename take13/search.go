@@ -28,7 +28,7 @@ func Search(pPosSys *PositionSystem) Move {
 	bestMove, bestVal := search2(pPosSys, curDepth)
 
 	// 評価値出力（＾～＾）
-	G.Chat.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
+	App.Out.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
 		curDepth, nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	// ゲーム向けの軽い乱数
@@ -64,7 +64,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range moveList {
-		// G.Chat.Debug("move=%s\n", move.ToCode())
+		// App.Out.Debug("move=%s\n", move.ToCode())
 		from, _, _ := move.Destructure()
 
 		// デバッグに使うために、盤をコピーしておきます
@@ -74,14 +74,14 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
 			// 強制終了した局面（＾～＾）
-			G.Chat.Debug(Sprint(
+			App.Out.Debug(Sprint(
 				pPosSys.PPosition[POS_LAYER_MAIN],
 				pPosSys.phase,
 				pPosSys.StartMovesNum,
 				pPosSys.OffsetMovesIndex,
 				pPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			App.Out.Debug(pPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, moveListLen, younger_sibling_move.ToCode()))
 		}
@@ -104,7 +104,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 				// 再帰
 				_, opponentVal := search2(pPosSys, curDepth+1)
 				// 再帰直後（＾～＾）
-				// G.Chat.Debug(pPosSys.Sprint(POS_LAYER_MAIN))
+				// App.Out.Debug(pPosSys.Sprint(POS_LAYER_MAIN))
 
 				if opponentVal < opponentWorstVal {
 					// より低い価値が見つかったら更新
@@ -146,10 +146,10 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		errorNum := errorBoard(pPosSys.PPosition[0], pPosCopy, pPosSys.PPosition[2], pPosSys.PPosition[3])
 		if errorNum != 0 {
 			// 違いのあった局面（＾～＾）
-			G.Chat.Debug(pPosSys.SprintDiff(0, 1))
+			App.Out.Debug(pPosSys.SprintDiff(0, 1))
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pPosSys.PPosition[0].SprintLocation())
-			G.Chat.Debug(pPosCopy.SprintLocation())
+			App.Out.Debug(pPosSys.PPosition[0].SprintLocation())
+			App.Out.Debug(pPosCopy.SprintLocation())
 			panic(fmt.Errorf("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
 		}
 
@@ -178,7 +178,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		}
 
 		// 評価値出力（＾～＾）
-		// G.Chat.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
+		// App.Out.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, bestMove.ToCode(), bestMove.ToCode())
 
 	}
 

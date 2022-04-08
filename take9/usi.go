@@ -32,8 +32,8 @@ func MainLoop() {
 
 	engineConfPath := filepath.Join(*workdir, "input/lesson01/engine.conf.toml")
 
-	// グローバル変数の作成
-	G = *new(Variables)
+	// アプリケーション変数の生成
+	App = *new(l01.Lesson01App)
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -46,7 +46,7 @@ func MainLoop() {
 
 	// ロガーの作成。
 	// TODO ディレクトリが存在しなければ、強制終了してしまいます。
-	G.Log = *l.NewLogger(
+	App.LogNotEcho = *l.NewLogger(
 		tracePath,
 		debugPath,
 		infoPath,
@@ -57,62 +57,62 @@ func MainLoop() {
 		printPath)
 
 	// 既存のログ・ファイルを削除
-	G.Log.RemoveAllOldLogs()
+	App.LogNotEcho.RemoveAllOldLogs()
 
 	// ログ・ファイルの開閉
-	err = G.Log.OpenAllLogs()
+	err = App.LogNotEcho.OpenAllLogs()
 	if err != nil {
 		// ログ・ファイルを開くのに失敗したのだから、ログ・ファイルへは書き込めません
 		panic(err)
 	}
-	defer G.Log.CloseAllLogs()
-
-	G.Log.Trace("Start Take1\n")
-	G.Log.Trace("engineConfPath=%s\n", engineConfPath)
+	defer App.LogNotEcho.CloseAllLogs()
 
 	// チャッターの作成。 標準出力とロガーを一緒にしただけです。
-	G.Chat = *l.NewChatter(G.Log)
-	G.StderrChat = *l.NewStderrChatter(G.Log)
+	App.Out = *l.NewChatter(App.LogNotEcho)
+	App.Log = *l.NewStderrChatter(App.LogNotEcho)
+
+	App.LogNotEcho.Trace("Start Take1\n")
+	App.LogNotEcho.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
 	config, err := LoadEngineConf(engineConfPath)
 	if err != nil {
-		panic(G.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
+		panic(App.LogNotEcho.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}
 
 	// 何か標準入力しろだぜ☆（＾～＾）
 	scanner := bufio.NewScanner(os.Stdin)
 
-	G.Log.FlushAllLogs()
+	App.LogNotEcho.FlushAllLogs()
 
 	var pPos = NewPosition()
 
 MainLoop:
 	for scanner.Scan() {
 		command := scanner.Text()
-		G.Log.Trace("command=%s\n", command)
+		App.LogNotEcho.Trace("command=%s\n", command)
 
 		tokens := strings.Split(command, " ")
 		switch tokens[0] {
 		case "usi":
-			G.Chat.Print("id name %s\n", config.Profile.Name)
-			G.Chat.Print("id author %s\n", config.Profile.Author)
-			G.Chat.Print("usiok\n")
+			App.Out.Print("id name %s\n", config.Profile.Name)
+			App.Out.Print("id author %s\n", config.Profile.Author)
+			App.Out.Print("usiok\n")
 		case "isready":
-			G.Chat.Print("readyok\n")
+			App.Out.Print("readyok\n")
 		case "usinewgame":
 		case "position":
 			// position うわっ、大変だ（＾～＾）
 			pPos.ReadPosition(command)
 		case "go":
 			bestmove := Search(pPos)
-			G.Chat.Print("bestmove %s\n", bestmove.ToCode())
+			App.Out.Print("bestmove %s\n", bestmove.ToCode())
 		case "quit":
 			break MainLoop
 		// 以下、きふわらべ独自拡張コマンド
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			G.Chat.Debug(Sprint(pPos))
+			App.Out.Debug(Sprint(pPos))
 		case "do":
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
@@ -133,8 +133,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				G.Chat.Debug(pPos.SprintControl(FIRST, 0))
-				G.Chat.Debug(pPos.SprintControl(SECOND, 0))
+				App.Out.Debug(pPos.SprintControl(FIRST, 0))
+				App.Out.Debug(pPos.SprintControl(SECOND, 0))
 				ok = true
 			} else if length == 3 && tokens[1] == "diff" {
 				// 利きの差分の表示（＾～＾）
@@ -142,44 +142,44 @@ MainLoop:
 				if err != nil {
 					fmt.Printf("Error: %s", err)
 				} else if 0 <= layer && layer < 5 {
-					G.Chat.Debug(pPos.SprintControl(FIRST, layer+1))
-					G.Chat.Debug(pPos.SprintControl(SECOND, layer+1))
+					App.Out.Debug(pPos.SprintControl(FIRST, layer+1))
+					App.Out.Debug(pPos.SprintControl(SECOND, layer+1))
 					ok = true
 				}
 			}
 
 			if !ok {
-				G.Chat.Debug("Format\n")
-				G.Chat.Debug("------\n")
-				G.Chat.Debug("control\n")
-				G.Chat.Debug("control diff {0-4}\n")
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("control\n")
+				App.Out.Debug("control diff {0-4}\n")
 			}
 		case "location":
 			// あの駒、どこにいんの（＾～＾）？
-			G.Chat.Debug(pPos.SprintLocation())
+			App.Out.Debug(pPos.SprintLocation())
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
-			G.Chat.Debug(pPos.SprintSfen())
+			App.Out.Debug(pPos.SprintSfen())
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			G.Chat.Debug(pPos.SprintRecord())
+			App.Out.Debug(pPos.SprintRecord())
 		case "movelist":
-			G.Chat.Debug("MoveList\n")
-			G.Chat.Debug("--------\n")
+			App.Out.Debug("MoveList\n")
+			App.Out.Debug("--------\n")
 			move_list := GenMoveList(pPos)
 			for i, move := range move_list {
-				G.Chat.Debug("(%d) %s\n", i, move.ToCode())
+				App.Out.Debug("(%d) %s\n", i, move.ToCode())
 			}
-			G.Chat.Debug("* Except for those to be removed during the search\n")
+			App.Out.Debug("* Except for those to be removed during the search\n")
 		case "dump":
 			// 変数を全部出力してくれだぜ（＾～＾）
-			G.Chat.Debug("Position.Dump()\n")
-			G.Chat.Debug("---------------\n%s", pPos.Dump())
+			App.Out.Debug("Position.Dump()\n")
+			App.Out.Debug("---------------\n%s", pPos.Dump())
 		}
 
-		G.Log.FlushAllLogs()
+		App.LogNotEcho.FlushAllLogs()
 	}
 
-	G.Log.Trace("Finished\n")
-	G.Log.FlushAllLogs()
+	App.LogNotEcho.Trace("Finished\n")
+	App.LogNotEcho.FlushAllLogs()
 }

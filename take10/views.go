@@ -186,7 +186,7 @@ func (pPos *Position) SprintControl(phase Phase, layer int) string {
 	}
 
 	var ph = phase - 1
-	if 0 <= ph && ph < 2 {
+	if ph < 2 { // ph >= 0 &&
 		title = fmt.Sprintf("Control(%d)%s", layer, GetControlLayerName(layer))
 		board = pPos.ControlBoards[ph][layer]
 	}

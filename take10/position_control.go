@@ -52,7 +52,7 @@ func GetControlLayerName(layer int) string {
 	case CONTROL_LAYER_TEST_RECALCULATION:
 		return "TestRecalc"
 	default:
-		panic(fmt.Errorf("Unknown layer=%d", layer))
+		panic(fmt.Errorf("unknown layer=%d", layer))
 	}
 }
 
