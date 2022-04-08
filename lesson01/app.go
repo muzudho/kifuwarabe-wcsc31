@@ -4,6 +4,11 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
+const (
+	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
+	Author = "Satoshi Takahashi"
+)
+
 // Lesson01App - グローバル変数。
 type Lesson01App struct {
 	// Out - チャッター。 標準出力とロガーを一緒にしただけです。

@@ -12,12 +12,11 @@ import (
 	"time"
 
 	l "github.com/muzudho/go-logger"
+	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 )
 
-const (
-	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
-	Author = "Satoshi Takahashi"
-)
+// App - アプリケーション変数の宣言
+var App l01.Lesson01App
 
 // MainLoop - 開始。
 func MainLoop() {

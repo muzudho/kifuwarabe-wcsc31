@@ -11,11 +11,6 @@ import (
 	l "github.com/muzudho/go-logger"
 )
 
-const (
-	// Author - 囲碁思考エンジンの作者名だぜ☆（＾～＾）
-	Author = "Satoshi Takahashi"
-)
-
 // App - アプリケーション変数の宣言
 var App Lesson01App
 
