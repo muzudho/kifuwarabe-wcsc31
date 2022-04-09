@@ -1,5 +1,7 @@
 package take16
 
+import l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+
 // マス番号が正常値でなければ強制終了させます
 func ValidateSq(sq Square) {
 	if !OnBoard(sq) && !OnHands(sq) {
@@ -9,7 +11,7 @@ func ValidateSq(sq Square) {
 
 func ValidateThereArePieceIn(pPos *Position, sq Square) {
 	piece := pPos.Board[sq]
-	if piece == PIECE_EMPTY {
+	if piece == l15.PIECE_EMPTY {
 		panic(App.LogNotEcho.Fatal("LogicalError: There are not piece in sq=%d", sq))
 	}
 }

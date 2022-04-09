@@ -6,6 +6,8 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 )
 
 // TestControl
@@ -126,7 +128,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 				change := Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != PIECE_EMPTY {
+					if piece != l15.PIECE_EMPTY {
 						phase := Who(piece)
 						pieceType := What(piece)
 
@@ -195,7 +197,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = PIECE_EMPTY
+							pPos.Board[sq] = l15.PIECE_EMPTY
 						}
 					}
 
@@ -245,9 +247,9 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 			// 成／不成 変更
 			promote := Square(rand.Intn(10))
 			if promote == 0 {
-				pPos.Board[sq2] = Promote(pPos.Board[sq2])
+				pPos.Board[sq2] = l15.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
-				pPos.Board[sq2] = Demote(pPos.Board[sq2])
+				pPos.Board[sq2] = l15.Demote(pPos.Board[sq2])
 			}
 
 			// 駒の先後変更（玉除く）
@@ -307,7 +309,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 				for file := Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
-					fmt.Printf("%s,", ToCodeOfPc(pPos.Board[sq]))
+					fmt.Printf("%s,", l15.ToCodeOfPc(pPos.Board[sq]))
 
 					piece := What(pPos.Board[sq])
 					switch piece {
@@ -463,8 +465,8 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 	for sq := 0; sq < 100; sq += 1 {
 		if pPos1.Board[sq] == pPos0.Board[sq] {
 			// 等しければ空マス
-			pPos2.Board[sq] = PIECE_EMPTY
-			pPos3.Board[sq] = PIECE_EMPTY
+			pPos2.Board[sq] = l15.PIECE_EMPTY
+			pPos3.Board[sq] = l15.PIECE_EMPTY
 
 		} else {
 			// 異なったら
