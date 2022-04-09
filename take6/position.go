@@ -207,33 +207,33 @@ func (pos *Position) ReadPosition(command string) {
 				var piece = command[i]
 				switch piece {
 				case 'R':
-					drop_index = DROP_R1
+					drop_index = HAND_R1
 				case 'B':
-					drop_index = DROP_B1
+					drop_index = HAND_B1
 				case 'G':
-					drop_index = DROP_G1
+					drop_index = HAND_G1
 				case 'S':
-					drop_index = DROP_S1
+					drop_index = HAND_S1
 				case 'N':
-					drop_index = DROP_N1
+					drop_index = HAND_N1
 				case 'L':
-					drop_index = DROP_L1
+					drop_index = HAND_L1
 				case 'P':
-					drop_index = DROP_P1
+					drop_index = HAND_P1
 				case 'r':
-					drop_index = DROP_R2
+					drop_index = HAND_R2
 				case 'b':
-					drop_index = DROP_B2
+					drop_index = HAND_B2
 				case 'g':
-					drop_index = DROP_G2
+					drop_index = HAND_G2
 				case 's':
-					drop_index = DROP_S2
+					drop_index = HAND_S2
 				case 'n':
-					drop_index = DROP_N2
+					drop_index = HAND_N2
 				case 'l':
-					drop_index = DROP_L2
+					drop_index = HAND_L2
 				case 'p':
-					drop_index = DROP_P2
+					drop_index = HAND_P2
 				case ' ':
 					i += 1
 					break HandLoop
@@ -339,25 +339,25 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	switch ch := command[*i]; ch {
 	case 'R':
 		*i += 1
-		hand1 = DROP_R1
+		hand1 = HAND_R1
 	case 'B':
 		*i += 1
-		hand1 = DROP_B1
+		hand1 = HAND_B1
 	case 'G':
 		*i += 1
-		hand1 = DROP_G1
+		hand1 = HAND_G1
 	case 'S':
 		*i += 1
-		hand1 = DROP_S1
+		hand1 = HAND_S1
 	case 'N':
 		*i += 1
-		hand1 = DROP_N1
+		hand1 = HAND_N1
 	case 'L':
 		*i += 1
-		hand1 = DROP_L1
+		hand1 = HAND_L1
 	case 'P':
 		*i += 1
-		hand1 = DROP_P1
+		hand1 = HAND_P1
 	default:
 		// Ignored
 	}
@@ -370,7 +370,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case FIRST:
 			from = hand1
 		case SECOND:
-			from = hand1 + DROP_TYPE_SIZE
+			from = hand1 + HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
@@ -445,47 +445,47 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 func (pos *Position) DoMove(move Move) {
 	from, to, _ := move.Destructure()
 	switch from {
-	case DROP_R1:
-		pos.Hands[DROP_R1-DROP_ORIGIN] -= 1
+	case HAND_R1:
+		pos.Hands[HAND_R1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_R1
-	case DROP_B1:
-		pos.Hands[DROP_B1-DROP_ORIGIN] -= 1
+	case HAND_B1:
+		pos.Hands[HAND_B1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_B1
-	case DROP_G1:
-		pos.Hands[DROP_G1-DROP_ORIGIN] -= 1
+	case HAND_G1:
+		pos.Hands[HAND_G1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_G1
-	case DROP_S1:
-		pos.Hands[DROP_S1-DROP_ORIGIN] -= 1
+	case HAND_S1:
+		pos.Hands[HAND_S1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_S1
-	case DROP_N1:
-		pos.Hands[DROP_N1-DROP_ORIGIN] -= 1
+	case HAND_N1:
+		pos.Hands[HAND_N1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_N1
-	case DROP_L1:
-		pos.Hands[DROP_L1-DROP_ORIGIN] -= 1
+	case HAND_L1:
+		pos.Hands[HAND_L1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_L1
-	case DROP_P1:
-		pos.Hands[DROP_P1-DROP_ORIGIN] -= 1
+	case HAND_P1:
+		pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_P1
-	case DROP_R2:
-		pos.Hands[DROP_R2-DROP_ORIGIN] -= 1
+	case HAND_R2:
+		pos.Hands[HAND_R2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_R2
-	case DROP_B2:
-		pos.Hands[DROP_B2-DROP_ORIGIN] -= 1
+	case HAND_B2:
+		pos.Hands[HAND_B2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_B2
-	case DROP_G2:
-		pos.Hands[DROP_G2-DROP_ORIGIN] -= 1
+	case HAND_G2:
+		pos.Hands[HAND_G2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_G2
-	case DROP_S2:
-		pos.Hands[DROP_S2-DROP_ORIGIN] -= 1
+	case HAND_S2:
+		pos.Hands[HAND_S2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_S2
-	case DROP_N2:
-		pos.Hands[DROP_N2-DROP_ORIGIN] -= 1
+	case HAND_N2:
+		pos.Hands[HAND_N2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_N2
-	case DROP_L2:
-		pos.Hands[DROP_L2-DROP_ORIGIN] -= 1
+	case HAND_L2:
+		pos.Hands[HAND_L2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_L2
-	case DROP_P2:
-		pos.Hands[DROP_P2-DROP_ORIGIN] -= 1
+	case HAND_P2:
+		pos.Hands[HAND_P2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_P2
 	default:
 		// あれば、取った駒
@@ -497,63 +497,63 @@ func (pos *Position) DoMove(move Move) {
 		case PIECE_K1: // Second player win
 			// Lost first king
 		case PIECE_R1:
-			pos.Hands[DROP_R2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_R2-HAND_ORIGIN] += 1
 		case PIECE_B1:
-			pos.Hands[DROP_B2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_B2-HAND_ORIGIN] += 1
 		case PIECE_G1:
-			pos.Hands[DROP_G2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_G2-HAND_ORIGIN] += 1
 		case PIECE_S1:
-			pos.Hands[DROP_S2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_S2-HAND_ORIGIN] += 1
 		case PIECE_N1:
-			pos.Hands[DROP_N2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_N2-HAND_ORIGIN] += 1
 		case PIECE_L1:
-			pos.Hands[DROP_L2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_L2-HAND_ORIGIN] += 1
 		case PIECE_P1:
-			pos.Hands[DROP_P2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_P2-HAND_ORIGIN] += 1
 		case PIECE_PR1:
-			pos.Hands[DROP_R2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_R2-HAND_ORIGIN] += 1
 		case PIECE_PB1:
-			pos.Hands[DROP_B2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_B2-HAND_ORIGIN] += 1
 		case PIECE_PG1:
-			pos.Hands[DROP_G2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_G2-HAND_ORIGIN] += 1
 		case PIECE_PS1:
-			pos.Hands[DROP_S2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_S2-HAND_ORIGIN] += 1
 		case PIECE_PN1:
-			pos.Hands[DROP_N2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_N2-HAND_ORIGIN] += 1
 		case PIECE_PL1:
-			pos.Hands[DROP_L2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_L2-HAND_ORIGIN] += 1
 		case PIECE_PP1:
-			pos.Hands[DROP_P2-DROP_ORIGIN] += 1
+			pos.Hands[HAND_P2-HAND_ORIGIN] += 1
 		case PIECE_K2: // First player win
 			// Lost second king
 		case PIECE_R2:
-			pos.Hands[DROP_R1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_R1-HAND_ORIGIN] += 1
 		case PIECE_B2:
-			pos.Hands[DROP_B1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_B1-HAND_ORIGIN] += 1
 		case PIECE_G2:
-			pos.Hands[DROP_G1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_G1-HAND_ORIGIN] += 1
 		case PIECE_S2:
-			pos.Hands[DROP_S1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_S1-HAND_ORIGIN] += 1
 		case PIECE_N2:
-			pos.Hands[DROP_N1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_N1-HAND_ORIGIN] += 1
 		case PIECE_L2:
-			pos.Hands[DROP_L1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_L1-HAND_ORIGIN] += 1
 		case PIECE_P2:
-			pos.Hands[DROP_P1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		case PIECE_PR2:
-			pos.Hands[DROP_R1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_R1-HAND_ORIGIN] += 1
 		case PIECE_PB2:
-			pos.Hands[DROP_B1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_B1-HAND_ORIGIN] += 1
 		case PIECE_PG2:
-			pos.Hands[DROP_G1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_G1-HAND_ORIGIN] += 1
 		case PIECE_PS2:
-			pos.Hands[DROP_S1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_S1-HAND_ORIGIN] += 1
 		case PIECE_PN2:
-			pos.Hands[DROP_N1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_N1-HAND_ORIGIN] += 1
 		case PIECE_PL2:
-			pos.Hands[DROP_L1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_L1-HAND_ORIGIN] += 1
 		case PIECE_PP2:
-			pos.Hands[DROP_P1-DROP_ORIGIN] += 1
+			pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		default:
 			fmt.Printf("error: unknown captured=[%s]", captured)
 		}
@@ -578,47 +578,47 @@ func (pos *Position) UndoMove() {
 	from, to, _ := move.Destructure()
 
 	switch from {
-	case DROP_R1:
-		pos.Hands[DROP_R1-DROP_ORIGIN] += 1
+	case HAND_R1:
+		pos.Hands[HAND_R1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_B1:
-		pos.Hands[DROP_B1-DROP_ORIGIN] += 1
+	case HAND_B1:
+		pos.Hands[HAND_B1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_G1:
-		pos.Hands[DROP_G1-DROP_ORIGIN] += 1
+	case HAND_G1:
+		pos.Hands[HAND_G1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_S1:
-		pos.Hands[DROP_S1-DROP_ORIGIN] += 1
+	case HAND_S1:
+		pos.Hands[HAND_S1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_N1:
-		pos.Hands[DROP_N1-DROP_ORIGIN] += 1
+	case HAND_N1:
+		pos.Hands[HAND_N1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_L1:
-		pos.Hands[DROP_L1-DROP_ORIGIN] += 1
+	case HAND_L1:
+		pos.Hands[HAND_L1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_P1:
-		pos.Hands[DROP_P1-DROP_ORIGIN] += 1
+	case HAND_P1:
+		pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_R2:
-		pos.Hands[DROP_R2-DROP_ORIGIN] += 1
+	case HAND_R2:
+		pos.Hands[HAND_R2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_B2:
-		pos.Hands[DROP_B2-DROP_ORIGIN] += 1
+	case HAND_B2:
+		pos.Hands[HAND_B2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_G2:
-		pos.Hands[DROP_G2-DROP_ORIGIN] += 1
+	case HAND_G2:
+		pos.Hands[HAND_G2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_S2:
-		pos.Hands[DROP_S2-DROP_ORIGIN] += 1
+	case HAND_S2:
+		pos.Hands[HAND_S2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_N2:
-		pos.Hands[DROP_N2-DROP_ORIGIN] += 1
+	case HAND_N2:
+		pos.Hands[HAND_N2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_L2:
-		pos.Hands[DROP_L2-DROP_ORIGIN] += 1
+	case HAND_L2:
+		pos.Hands[HAND_L2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case DROP_P2:
-		pos.Hands[DROP_P2-DROP_ORIGIN] += 1
+	case HAND_P2:
+		pos.Hands[HAND_P2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
 	default:
 		pos.Board[from] = pos.Board[to]
@@ -629,63 +629,63 @@ func (pos *Position) UndoMove() {
 		case PIECE_K1: // Second player win
 			// Lost first king
 		case PIECE_R1:
-			pos.Hands[DROP_R2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_R2-HAND_ORIGIN] -= 1
 		case PIECE_B1:
-			pos.Hands[DROP_B2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_B2-HAND_ORIGIN] -= 1
 		case PIECE_G1:
-			pos.Hands[DROP_G2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_G2-HAND_ORIGIN] -= 1
 		case PIECE_S1:
-			pos.Hands[DROP_S2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_S2-HAND_ORIGIN] -= 1
 		case PIECE_N1:
-			pos.Hands[DROP_N2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_N2-HAND_ORIGIN] -= 1
 		case PIECE_L1:
-			pos.Hands[DROP_L2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_L2-HAND_ORIGIN] -= 1
 		case PIECE_P1:
-			pos.Hands[DROP_P2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_P2-HAND_ORIGIN] -= 1
 		case PIECE_PR1:
-			pos.Hands[DROP_R2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_R2-HAND_ORIGIN] -= 1
 		case PIECE_PB1:
-			pos.Hands[DROP_B2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_B2-HAND_ORIGIN] -= 1
 		case PIECE_PG1:
-			pos.Hands[DROP_G2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_G2-HAND_ORIGIN] -= 1
 		case PIECE_PS1:
-			pos.Hands[DROP_S2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_S2-HAND_ORIGIN] -= 1
 		case PIECE_PN1:
-			pos.Hands[DROP_N2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_N2-HAND_ORIGIN] -= 1
 		case PIECE_PL1:
-			pos.Hands[DROP_L2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_L2-HAND_ORIGIN] -= 1
 		case PIECE_PP1:
-			pos.Hands[DROP_P2-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_P2-HAND_ORIGIN] -= 1
 		case PIECE_K2: // First player win
 			// Lost second king
 		case PIECE_R2:
-			pos.Hands[DROP_R1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_R1-HAND_ORIGIN] -= 1
 		case PIECE_B2:
-			pos.Hands[DROP_B1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_B1-HAND_ORIGIN] -= 1
 		case PIECE_G2:
-			pos.Hands[DROP_G1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_G1-HAND_ORIGIN] -= 1
 		case PIECE_S2:
-			pos.Hands[DROP_S1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_S1-HAND_ORIGIN] -= 1
 		case PIECE_N2:
-			pos.Hands[DROP_N1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_N1-HAND_ORIGIN] -= 1
 		case PIECE_L2:
-			pos.Hands[DROP_L1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_L1-HAND_ORIGIN] -= 1
 		case PIECE_P2:
-			pos.Hands[DROP_P1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
 		case PIECE_PR2:
-			pos.Hands[DROP_R1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_R1-HAND_ORIGIN] -= 1
 		case PIECE_PB2:
-			pos.Hands[DROP_B1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_B1-HAND_ORIGIN] -= 1
 		case PIECE_PG2:
-			pos.Hands[DROP_G1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_G1-HAND_ORIGIN] -= 1
 		case PIECE_PS2:
-			pos.Hands[DROP_S1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_S1-HAND_ORIGIN] -= 1
 		case PIECE_PN2:
-			pos.Hands[DROP_N1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_N1-HAND_ORIGIN] -= 1
 		case PIECE_PL2:
-			pos.Hands[DROP_L1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_L1-HAND_ORIGIN] -= 1
 		case PIECE_PP2:
-			pos.Hands[DROP_P1-DROP_ORIGIN] -= 1
+			pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
 		default:
 			fmt.Printf("error: unknown captured=[%s]", captured)
 		}

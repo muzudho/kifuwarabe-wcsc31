@@ -42,25 +42,25 @@ func (move Move) ToCode() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case DROP_R1, DROP_R2:
+	case HAND_R1, HAND_R2:
 		str = append(str, 'R')
 		count = 1
-	case DROP_B1, DROP_B2:
+	case HAND_B1, HAND_B2:
 		str = append(str, 'B')
 		count = 1
-	case DROP_G1, DROP_G2:
+	case HAND_G1, HAND_G2:
 		str = append(str, 'G')
 		count = 1
-	case DROP_S1, DROP_S2:
+	case HAND_S1, HAND_S2:
 		str = append(str, 'S')
 		count = 1
-	case DROP_N1, DROP_N2:
+	case HAND_N1, HAND_N2:
 		str = append(str, 'N')
 		count = 1
-	case DROP_L1, DROP_L2:
+	case HAND_L1, HAND_L2:
 		str = append(str, 'L')
 		count = 1
-	case DROP_P1, DROP_P2:
+	case HAND_P1, HAND_P2:
 		str = append(str, 'P')
 		count = 1
 	default:

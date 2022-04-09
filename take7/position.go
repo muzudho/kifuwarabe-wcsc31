@@ -245,33 +245,33 @@ func (pPos *Position) ReadPosition(command string) {
 				var piece = command[i]
 				switch piece {
 				case 'R':
-					drop_index = DROP_R1
+					drop_index = HAND_R1
 				case 'B':
-					drop_index = DROP_B1
+					drop_index = HAND_B1
 				case 'G':
-					drop_index = DROP_G1
+					drop_index = HAND_G1
 				case 'S':
-					drop_index = DROP_S1
+					drop_index = HAND_S1
 				case 'N':
-					drop_index = DROP_N1
+					drop_index = HAND_N1
 				case 'L':
-					drop_index = DROP_L1
+					drop_index = HAND_L1
 				case 'P':
-					drop_index = DROP_P1
+					drop_index = HAND_P1
 				case 'r':
-					drop_index = DROP_R2
+					drop_index = HAND_R2
 				case 'b':
-					drop_index = DROP_B2
+					drop_index = HAND_B2
 				case 'g':
-					drop_index = DROP_G2
+					drop_index = HAND_G2
 				case 's':
-					drop_index = DROP_S2
+					drop_index = HAND_S2
 				case 'n':
-					drop_index = DROP_N2
+					drop_index = HAND_N2
 				case 'l':
-					drop_index = DROP_L2
+					drop_index = HAND_L2
 				case 'p':
-					drop_index = DROP_P2
+					drop_index = HAND_P2
 				case ' ':
 					i += 1
 					break HandLoop
@@ -377,25 +377,25 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	switch ch := command[*i]; ch {
 	case 'R':
 		*i += 1
-		hand1 = DROP_R1
+		hand1 = HAND_R1
 	case 'B':
 		*i += 1
-		hand1 = DROP_B1
+		hand1 = HAND_B1
 	case 'G':
 		*i += 1
-		hand1 = DROP_G1
+		hand1 = HAND_G1
 	case 'S':
 		*i += 1
-		hand1 = DROP_S1
+		hand1 = HAND_S1
 	case 'N':
 		*i += 1
-		hand1 = DROP_N1
+		hand1 = HAND_N1
 	case 'L':
 		*i += 1
-		hand1 = DROP_L1
+		hand1 = HAND_L1
 	case 'P':
 		*i += 1
-		hand1 = DROP_P1
+		hand1 = HAND_P1
 	default:
 		// Ignored
 	}
@@ -408,7 +408,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case FIRST:
 			from = hand1
 		case SECOND:
-			from = hand1 + DROP_TYPE_SIZE
+			from = hand1 + HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
@@ -556,33 +556,33 @@ func (pPos *Position) DoMove(move Move) {
 	drop := from
 	var piece string
 	switch from {
-	case DROP_R1:
+	case HAND_R1:
 		piece = PIECE_R1
-	case DROP_B1:
+	case HAND_B1:
 		piece = PIECE_B1
-	case DROP_G1:
+	case HAND_G1:
 		piece = PIECE_G1
-	case DROP_S1:
+	case HAND_S1:
 		piece = PIECE_S1
-	case DROP_N1:
+	case HAND_N1:
 		piece = PIECE_N1
-	case DROP_L1:
+	case HAND_L1:
 		piece = PIECE_L1
-	case DROP_P1:
+	case HAND_P1:
 		piece = PIECE_P1
-	case DROP_R2:
+	case HAND_R2:
 		piece = PIECE_R2
-	case DROP_B2:
+	case HAND_B2:
 		piece = PIECE_B2
-	case DROP_G2:
+	case HAND_G2:
 		piece = PIECE_G2
-	case DROP_S2:
+	case HAND_S2:
 		piece = PIECE_S2
-	case DROP_N2:
+	case HAND_N2:
 		piece = PIECE_N2
-	case DROP_L2:
+	case HAND_L2:
 		piece = PIECE_L2
-	case DROP_P2:
+	case HAND_P2:
 		drop = from
 		piece = PIECE_P2
 	default:
@@ -594,7 +594,7 @@ func (pPos *Position) DoMove(move Move) {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands[drop-DROP_ORIGIN] -= 1
+		pPos.Hands[drop-HAND_ORIGIN] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -625,41 +625,41 @@ func (pPos *Position) DoMove(move Move) {
 		case PIECE_K1: // Second player win
 			// Lost first king
 		case PIECE_R1, PIECE_PR1:
-			drop = DROP_R2
+			drop = HAND_R2
 		case PIECE_B1, PIECE_PB1:
-			drop = DROP_B2
+			drop = HAND_B2
 		case PIECE_G1:
-			drop = DROP_G2
+			drop = HAND_G2
 		case PIECE_S1, PIECE_PS1:
-			drop = DROP_S2
+			drop = HAND_S2
 		case PIECE_N1, PIECE_PN1:
-			drop = DROP_N2
+			drop = HAND_N2
 		case PIECE_L1, PIECE_PL1:
-			drop = DROP_L2
+			drop = HAND_L2
 		case PIECE_P1, PIECE_PP1:
-			drop = DROP_P2
+			drop = HAND_P2
 		case PIECE_K2: // First player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
-			drop = DROP_R1
+			drop = HAND_R1
 		case PIECE_B2, PIECE_PB2:
-			drop = DROP_B1
+			drop = HAND_B1
 		case PIECE_G2:
-			drop = DROP_G1
+			drop = HAND_G1
 		case PIECE_S2, PIECE_PS2:
-			drop = DROP_S1
+			drop = HAND_S1
 		case PIECE_N2, PIECE_PN2:
-			drop = DROP_N1
+			drop = HAND_N1
 		case PIECE_L2, PIECE_PL2:
-			drop = DROP_L1
+			drop = HAND_L1
 		case PIECE_P2, PIECE_PP2:
-			drop = DROP_P1
+			drop = HAND_P1
 		default:
 			fmt.Printf("error: unknown captured=[%s]", captured)
 		}
 
 		if drop != 0 {
-			pPos.Hands[drop-DROP_ORIGIN] += 1
+			pPos.Hands[drop-HAND_ORIGIN] += 1
 		}
 	}
 
@@ -716,7 +716,7 @@ func (pPos *Position) UndoMove() {
 
 	// 打かどうかで分けます
 	switch from {
-	case DROP_R1, DROP_B1, DROP_G1, DROP_S1, DROP_N1, DROP_L1, DROP_P1, DROP_R2, DROP_B2, DROP_G2, DROP_S2, DROP_N2, DROP_L2, DROP_P2:
+	case HAND_R1, HAND_B1, HAND_G1, HAND_S1, HAND_N1, HAND_L1, HAND_P1, HAND_R2, HAND_B2, HAND_G2, HAND_S2, HAND_N2, HAND_L2, HAND_P2:
 		// 打なら
 		drop := from
 		// 盤上から駒を除去します
@@ -724,7 +724,7 @@ func (pPos *Position) UndoMove() {
 		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands[drop-DROP_ORIGIN] += 1
+		pPos.Hands[drop-HAND_ORIGIN] += 1
 	default:
 		// 打でないなら
 
@@ -741,41 +741,41 @@ func (pPos *Position) UndoMove() {
 		case PIECE_K1: // Second player win
 			// Lost first king
 		case PIECE_R1, PIECE_PR1:
-			cap = DROP_R2
+			cap = HAND_R2
 		case PIECE_B1, PIECE_PB1:
-			cap = DROP_B2
+			cap = HAND_B2
 		case PIECE_G1:
-			cap = DROP_G2
+			cap = HAND_G2
 		case PIECE_S1, PIECE_PS1:
-			cap = DROP_S2
+			cap = HAND_S2
 		case PIECE_N1, PIECE_PN1:
-			cap = DROP_N2
+			cap = HAND_N2
 		case PIECE_L1, PIECE_PL1:
-			cap = DROP_L2
+			cap = HAND_L2
 		case PIECE_P1, PIECE_PP1:
-			cap = DROP_P2
+			cap = HAND_P2
 		case PIECE_K2: // First player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
-			cap = DROP_R1
+			cap = HAND_R1
 		case PIECE_B2, PIECE_PB2:
-			cap = DROP_B1
+			cap = HAND_B1
 		case PIECE_G2:
-			cap = DROP_G1
+			cap = HAND_G1
 		case PIECE_S2, PIECE_PS2:
-			cap = DROP_S1
+			cap = HAND_S1
 		case PIECE_N2, PIECE_PN2:
-			cap = DROP_N1
+			cap = HAND_N1
 		case PIECE_L2, PIECE_PL2:
-			cap = DROP_L1
+			cap = HAND_L1
 		case PIECE_P2, PIECE_PP2:
-			cap = DROP_P1
+			cap = HAND_P1
 		default:
 			fmt.Printf("error: unknown captured=[%s]", captured)
 		}
 
 		if cap != 0 {
-			pPos.Hands[cap-DROP_ORIGIN] -= 1
+			pPos.Hands[cap-HAND_ORIGIN] -= 1
 
 			// 取った駒を行き先に戻します
 			moving_piece_types[1] = What(captured)
