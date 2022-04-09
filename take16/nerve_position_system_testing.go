@@ -41,7 +41,7 @@ func TestControl(pNerve *Nerve, pPos *Position) (bool, string) {
 		// 元に戻っていればOK（＾～＾）
 		is_error := checkControl(pNerve, move_seq, move_total, move)
 		if is_error {
-			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, ToCodeOfM(move))
+			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, move.ToCodeOfM())
 		}
 	}
 

@@ -29,43 +29,43 @@ func Sprint(pPos *Position) string {
 		//
 		"\n" +
 		//
-		fmt.Sprintf(" %2s %2s %2s %2s %2s %2s %2s %2s %2s %2s\n", pPos.Board[90].ToCodeOfPc(), pPos.Board[80].ToCodeOfPc(), pPos.Board[70].ToCodeOfPc(), pPos.Board[60].ToCodeOfPc(), pPos.Board[50].ToCodeOfPc(), pPos.Board[40].ToCodeOfPc(), pPos.Board[30].ToCodeOfPc(), pPos.Board[20].ToCodeOfPc(), pPos.Board[10].ToCodeOfPc(), pPos.Board[0].ToCodeOfPc()) +
+		fmt.Sprintf(" %2s %2s %2s %2s %2s %2s %2s %2s %2s %2s\n", pPos.Board[90].ToPcCode(), pPos.Board[80].ToPcCode(), pPos.Board[70].ToPcCode(), pPos.Board[60].ToPcCode(), pPos.Board[50].ToPcCode(), pPos.Board[40].ToPcCode(), pPos.Board[30].ToPcCode(), pPos.Board[20].ToPcCode(), pPos.Board[10].ToPcCode(), pPos.Board[0].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[91].ToCodeOfPc(), pPos.Board[81].ToCodeOfPc(), pPos.Board[71].ToCodeOfPc(), pPos.Board[61].ToCodeOfPc(), pPos.Board[51].ToCodeOfPc(), pPos.Board[41].ToCodeOfPc(), pPos.Board[31].ToCodeOfPc(), pPos.Board[21].ToCodeOfPc(), pPos.Board[11].ToCodeOfPc(), pPos.Board[1].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[91].ToPcCode(), pPos.Board[81].ToPcCode(), pPos.Board[71].ToPcCode(), pPos.Board[61].ToPcCode(), pPos.Board[51].ToPcCode(), pPos.Board[41].ToPcCode(), pPos.Board[31].ToPcCode(), pPos.Board[21].ToPcCode(), pPos.Board[11].ToPcCode(), pPos.Board[1].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[92].ToCodeOfPc(), pPos.Board[82].ToCodeOfPc(), pPos.Board[72].ToCodeOfPc(), pPos.Board[62].ToCodeOfPc(), pPos.Board[52].ToCodeOfPc(), pPos.Board[42].ToCodeOfPc(), pPos.Board[32].ToCodeOfPc(), pPos.Board[22].ToCodeOfPc(), pPos.Board[12].ToCodeOfPc(), pPos.Board[2].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[92].ToPcCode(), pPos.Board[82].ToPcCode(), pPos.Board[72].ToPcCode(), pPos.Board[62].ToPcCode(), pPos.Board[52].ToPcCode(), pPos.Board[42].ToPcCode(), pPos.Board[32].ToPcCode(), pPos.Board[22].ToPcCode(), pPos.Board[12].ToPcCode(), pPos.Board[2].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[93].ToCodeOfPc(), pPos.Board[83].ToCodeOfPc(), pPos.Board[73].ToCodeOfPc(), pPos.Board[63].ToCodeOfPc(), pPos.Board[53].ToCodeOfPc(), pPos.Board[43].ToCodeOfPc(), pPos.Board[33].ToCodeOfPc(), pPos.Board[23].ToCodeOfPc(), pPos.Board[13].ToCodeOfPc(), pPos.Board[3].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[93].ToPcCode(), pPos.Board[83].ToPcCode(), pPos.Board[73].ToPcCode(), pPos.Board[63].ToPcCode(), pPos.Board[53].ToPcCode(), pPos.Board[43].ToPcCode(), pPos.Board[33].ToPcCode(), pPos.Board[23].ToPcCode(), pPos.Board[13].ToPcCode(), pPos.Board[3].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[94].ToCodeOfPc(), pPos.Board[84].ToCodeOfPc(), pPos.Board[74].ToCodeOfPc(), pPos.Board[64].ToCodeOfPc(), pPos.Board[54].ToCodeOfPc(), pPos.Board[44].ToCodeOfPc(), pPos.Board[34].ToCodeOfPc(), pPos.Board[24].ToCodeOfPc(), pPos.Board[14].ToCodeOfPc(), pPos.Board[4].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[94].ToPcCode(), pPos.Board[84].ToPcCode(), pPos.Board[74].ToPcCode(), pPos.Board[64].ToPcCode(), pPos.Board[54].ToPcCode(), pPos.Board[44].ToPcCode(), pPos.Board[34].ToPcCode(), pPos.Board[24].ToPcCode(), pPos.Board[14].ToPcCode(), pPos.Board[4].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[95].ToCodeOfPc(), pPos.Board[85].ToCodeOfPc(), pPos.Board[75].ToCodeOfPc(), pPos.Board[65].ToCodeOfPc(), pPos.Board[55].ToCodeOfPc(), pPos.Board[45].ToCodeOfPc(), pPos.Board[35].ToCodeOfPc(), pPos.Board[25].ToCodeOfPc(), pPos.Board[15].ToCodeOfPc(), pPos.Board[5].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[95].ToPcCode(), pPos.Board[85].ToPcCode(), pPos.Board[75].ToPcCode(), pPos.Board[65].ToPcCode(), pPos.Board[55].ToPcCode(), pPos.Board[45].ToPcCode(), pPos.Board[35].ToPcCode(), pPos.Board[25].ToPcCode(), pPos.Board[15].ToPcCode(), pPos.Board[5].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[96].ToCodeOfPc(), pPos.Board[86].ToCodeOfPc(), pPos.Board[76].ToCodeOfPc(), pPos.Board[66].ToCodeOfPc(), pPos.Board[56].ToCodeOfPc(), pPos.Board[46].ToCodeOfPc(), pPos.Board[36].ToCodeOfPc(), pPos.Board[26].ToCodeOfPc(), pPos.Board[16].ToCodeOfPc(), pPos.Board[6].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[96].ToPcCode(), pPos.Board[86].ToPcCode(), pPos.Board[76].ToPcCode(), pPos.Board[66].ToPcCode(), pPos.Board[56].ToPcCode(), pPos.Board[46].ToPcCode(), pPos.Board[36].ToPcCode(), pPos.Board[26].ToPcCode(), pPos.Board[16].ToPcCode(), pPos.Board[6].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[97].ToCodeOfPc(), pPos.Board[87].ToCodeOfPc(), pPos.Board[77].ToCodeOfPc(), pPos.Board[67].ToCodeOfPc(), pPos.Board[57].ToCodeOfPc(), pPos.Board[47].ToCodeOfPc(), pPos.Board[37].ToCodeOfPc(), pPos.Board[27].ToCodeOfPc(), pPos.Board[17].ToCodeOfPc(), pPos.Board[7].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[97].ToPcCode(), pPos.Board[87].ToPcCode(), pPos.Board[77].ToPcCode(), pPos.Board[67].ToPcCode(), pPos.Board[57].ToPcCode(), pPos.Board[47].ToPcCode(), pPos.Board[37].ToPcCode(), pPos.Board[27].ToPcCode(), pPos.Board[17].ToPcCode(), pPos.Board[7].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[98].ToCodeOfPc(), pPos.Board[88].ToCodeOfPc(), pPos.Board[78].ToCodeOfPc(), pPos.Board[68].ToCodeOfPc(), pPos.Board[58].ToCodeOfPc(), pPos.Board[48].ToCodeOfPc(), pPos.Board[38].ToCodeOfPc(), pPos.Board[28].ToCodeOfPc(), pPos.Board[18].ToCodeOfPc(), pPos.Board[8].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[98].ToPcCode(), pPos.Board[88].ToPcCode(), pPos.Board[78].ToPcCode(), pPos.Board[68].ToPcCode(), pPos.Board[58].ToPcCode(), pPos.Board[48].ToPcCode(), pPos.Board[38].ToPcCode(), pPos.Board[28].ToPcCode(), pPos.Board[18].ToPcCode(), pPos.Board[8].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[99].ToCodeOfPc(), pPos.Board[89].ToCodeOfPc(), pPos.Board[79].ToCodeOfPc(), pPos.Board[69].ToCodeOfPc(), pPos.Board[59].ToCodeOfPc(), pPos.Board[49].ToCodeOfPc(), pPos.Board[39].ToCodeOfPc(), pPos.Board[29].ToCodeOfPc(), pPos.Board[19].ToCodeOfPc(), pPos.Board[9].ToCodeOfPc()) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[99].ToPcCode(), pPos.Board[89].ToPcCode(), pPos.Board[79].ToPcCode(), pPos.Board[69].ToPcCode(), pPos.Board[59].ToPcCode(), pPos.Board[49].ToPcCode(), pPos.Board[39].ToPcCode(), pPos.Board[29].ToPcCode(), pPos.Board[19].ToPcCode(), pPos.Board[9].ToPcCode()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
@@ -217,7 +217,7 @@ func (pPos *Position) SprintSfen() string {
 					spaces = 0
 				}
 
-				pieceString := piece.ToCodeOfPc()
+				pieceString := piece.ToPcCode()
 				length := len(pieceString)
 				switch length {
 				case 2:
@@ -377,7 +377,7 @@ func (pPos *Position) SprintRecord() string {
 	for i := 0; i < pPos.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, pPos.Moves[i].ToCodeOfM()...)
 		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPos.CapturedList[i].ToCodeOfPc()...)
+		record_text = append(record_text, pPos.CapturedList[i].ToPcCode()...)
 		record_text = append(record_text, '\n')
 	}
 

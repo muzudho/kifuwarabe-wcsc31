@@ -120,7 +120,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) Move {
 
 		// 評価値出力（＾～＾）
 		App.Out.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-			depth, nodesNum, bestValue, ToCodeOfM(bestMove), ToCodeOfM(bestMove))
+			depth, nodesNum, bestValue, bestMove.ToCodeOfM(), bestMove.ToCodeOfM())
 	}
 	//fmt.Printf("Search: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
@@ -255,7 +255,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
 			App.Out.Debug(pPosCopy.SprintLocation())
-			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, ToCodeOfM(move)))
+			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
 			// younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)
 		}

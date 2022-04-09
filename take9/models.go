@@ -5,8 +5,8 @@ import "fmt"
 // 先後付きの駒
 type Piece uint8
 
-// ToCodeOfPc - 文字列
-func (pc Piece) ToCodeOfPc() string {
+// ToPcCode - 文字列
+func (pc Piece) ToPcCode() string {
 	switch pc {
 	case PIECE_EMPTY:
 		return ""

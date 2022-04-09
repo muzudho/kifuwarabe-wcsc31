@@ -42,7 +42,7 @@ func NewMove(from Square, to Square, promotion bool) Move {
 }
 
 // ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
-func ToCodeOfM(move Move) string {
+func (move Move) ToCodeOfM() string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {
