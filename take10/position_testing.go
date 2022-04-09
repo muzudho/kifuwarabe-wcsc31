@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // TestControl
@@ -99,7 +101,7 @@ func ShuffleBoard(pPos *Position) {
 				change := Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != PIECE_EMPTY {
+					if piece != l09.PIECE_EMPTY {
 						phase := Who(piece)
 						pieceType := What(piece)
 
@@ -162,7 +164,7 @@ func ShuffleBoard(pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = PIECE_EMPTY
+							pPos.Board[sq] = l09.PIECE_EMPTY
 						}
 					}
 
@@ -212,9 +214,9 @@ func ShuffleBoard(pPos *Position) {
 			// 成／不成 変更
 			promote := Square(rand.Intn(10))
 			if promote == 0 {
-				pPos.Board[sq2] = Promote(pPos.Board[sq2])
+				pPos.Board[sq2] = l09.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
-				pPos.Board[sq2] = Demote(pPos.Board[sq2])
+				pPos.Board[sq2] = l09.Demote(pPos.Board[sq2])
 			}
 
 			// 駒の先後変更（玉除く）

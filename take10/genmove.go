@@ -1,6 +1,10 @@
 package take10
 
-import "fmt"
+import (
+	"fmt"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+)
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
@@ -68,7 +72,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから斜めに長い利き
 		switch piece {
-		case PIECE_B1, PIECE_PB1, PIECE_B2, PIECE_PB2:
+		case l09.PIECE_B1, l09.PIECE_PB1, l09.PIECE_B2, l09.PIECE_PB2:
 			if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 				for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -107,7 +111,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから先手香車の長い利き
 		switch piece {
-		case PIECE_L1, PIECE_R1, PIECE_PR1, PIECE_R2, PIECE_PR2:
+		case l09.PIECE_L1, l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_R2, l09.PIECE_PR2:
 			if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
 				for to := from - 2; Rank(to) != 0; to -= 1 { // 上
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -122,7 +126,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから後手香車の長い利き
 		switch piece {
-		case PIECE_R1, PIECE_PR1, PIECE_L2, PIECE_R2, PIECE_PR2:
+		case l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_L2, l09.PIECE_R2, l09.PIECE_PR2:
 			if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
 				for to := from + 2; Rank(to) != 0; to += 1 { // 下
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -137,7 +141,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ横のマスから飛の長い利き
 		switch piece {
-		case PIECE_R1, PIECE_PR1, PIECE_R2, PIECE_PR2:
+		case l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_R2, l09.PIECE_PR2:
 			if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 				for to := from + 20; File(to) != 0; to += 10 { // 左
 					moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -159,7 +163,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		}
 
 		// 先手桂の利き
-		if piece == PIECE_N1 {
+		if piece == l09.PIECE_N1 {
 			if to := from + 8; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 左上桂馬飛び
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -169,7 +173,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		}
 
 		// 後手桂の利き
-		if piece == PIECE_N2 {
+		if piece == l09.PIECE_N2 {
 			if to := from + 12; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 左下
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -180,9 +184,9 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 先手歩の利き
 		switch piece {
-		case PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_S1, PIECE_L1, PIECE_P1, PIECE_PS1,
-			PIECE_PN1, PIECE_PL1, PIECE_PP1, PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_PS2,
-			PIECE_PN2, PIECE_PL2, PIECE_PP2:
+		case l09.PIECE_K1, l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_PB1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_L1, l09.PIECE_P1, l09.PIECE_PS1,
+			l09.PIECE_PN1, l09.PIECE_PL1, l09.PIECE_PP1, l09.PIECE_K2, l09.PIECE_R2, l09.PIECE_PR2, l09.PIECE_PB2, l09.PIECE_G2, l09.PIECE_PS2,
+			l09.PIECE_PN2, l09.PIECE_PL2, l09.PIECE_PP2:
 			if to := from - 1; Rank(to) != 0 { // 上
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -192,9 +196,9 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 後手歩の利き
 		switch piece {
-		case PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_S2, PIECE_L2, PIECE_P2, PIECE_PS2,
-			PIECE_PN2, PIECE_PL2, PIECE_PP2, PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_PS1,
-			PIECE_PN1, PIECE_PL1, PIECE_PP1:
+		case l09.PIECE_K2, l09.PIECE_R2, l09.PIECE_PR2, l09.PIECE_PB2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_L2, l09.PIECE_P2, l09.PIECE_PS2,
+			l09.PIECE_PN2, l09.PIECE_PL2, l09.PIECE_PP2, l09.PIECE_K1, l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_PB1, l09.PIECE_G1, l09.PIECE_PS1,
+			l09.PIECE_PN1, l09.PIECE_PL1, l09.PIECE_PP1:
 			if to := from + 1; Rank(to) != 0 { // 下
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -204,8 +208,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 先手斜め前の利き
 		switch piece {
-		case PIECE_K1, PIECE_PR1, PIECE_B1, PIECE_PB1, PIECE_G1, PIECE_S1, PIECE_PS1, PIECE_PN1, PIECE_PL1,
-			PIECE_PP1, PIECE_K2, PIECE_PR2, PIECE_B2, PIECE_PB2, PIECE_S2:
+		case l09.PIECE_K1, l09.PIECE_PR1, l09.PIECE_B1, l09.PIECE_PB1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_PS1, l09.PIECE_PN1, l09.PIECE_PL1,
+			l09.PIECE_PP1, l09.PIECE_K2, l09.PIECE_PR2, l09.PIECE_B2, l09.PIECE_PB2, l09.PIECE_S2:
 			if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -218,8 +222,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 後手斜め前の利き
 		switch piece {
-		case PIECE_K2, PIECE_PR2, PIECE_B2, PIECE_PB2, PIECE_G2, PIECE_S2, PIECE_PS2, PIECE_PN2, PIECE_PL2,
-			PIECE_PP2, PIECE_K1, PIECE_PR1, PIECE_B1, PIECE_PB1, PIECE_S1:
+		case l09.PIECE_K2, l09.PIECE_PR2, l09.PIECE_B2, l09.PIECE_PB2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_PS2, l09.PIECE_PN2, l09.PIECE_PL2,
+			l09.PIECE_PP2, l09.PIECE_K1, l09.PIECE_PR1, l09.PIECE_B1, l09.PIECE_PB1, l09.PIECE_S1:
 			if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -232,8 +236,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 横１マスの利き
 		switch piece {
-		case PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_PS1, PIECE_PN1, PIECE_PL1, PIECE_PP1,
-			PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
+		case l09.PIECE_K1, l09.PIECE_R1, l09.PIECE_PR1, l09.PIECE_PB1, l09.PIECE_G1, l09.PIECE_PS1, l09.PIECE_PN1, l09.PIECE_PL1, l09.PIECE_PP1,
+			l09.PIECE_K2, l09.PIECE_R2, l09.PIECE_PR2, l09.PIECE_PB2, l09.PIECE_G2, l09.PIECE_PS2, l09.PIECE_PN2, l09.PIECE_PL2, l09.PIECE_PP2:
 			if to := from + 10; File(to) != 0 { // 左
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
@@ -251,7 +255,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 // NifuFirst - 先手で二歩になるか筋調べ
 func NifuFirst(pPos *Position, file Square) bool {
 	for rank := Square(2); rank < 10; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == PIECE_P1 {
+		if pPos.Board[SquareFrom(file, rank)] == l09.PIECE_P1 {
 			return true
 		}
 	}
@@ -262,7 +266,7 @@ func NifuFirst(pPos *Position, file Square) bool {
 // NifuSecond - 後手で二歩になるか筋調べ
 func NifuSecond(pPos *Position, file Square) bool {
 	for rank := Square(1); rank < 9; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == PIECE_P2 {
+		if pPos.Board[SquareFrom(file, rank)] == l09.PIECE_P2 {
 			return true
 		}
 	}

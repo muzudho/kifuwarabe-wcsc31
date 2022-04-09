@@ -1,7 +1,11 @@
 // 利きボード
 package take10
 
-import "fmt"
+import (
+	"fmt"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+)
 
 const (
 	CONTROL_LAYER_SUM = iota
@@ -99,7 +103,7 @@ func (pPos *Position) AddControlDiff(layer int, from Square, sign int8) {
 	}
 
 	piece := pPos.Board[from]
-	if piece == PIECE_EMPTY {
+	if piece == l09.PIECE_EMPTY {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 

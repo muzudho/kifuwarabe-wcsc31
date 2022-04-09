@@ -44,66 +44,66 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 	case FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return PIECE_K1
+			return l09.PIECE_K1
 		case PIECE_TYPE_R:
-			return PIECE_R1
+			return l09.PIECE_R1
 		case PIECE_TYPE_B:
-			return PIECE_B1
+			return l09.PIECE_B1
 		case PIECE_TYPE_G:
-			return PIECE_G1
+			return l09.PIECE_G1
 		case PIECE_TYPE_S:
-			return PIECE_S1
+			return l09.PIECE_S1
 		case PIECE_TYPE_N:
-			return PIECE_N1
+			return l09.PIECE_N1
 		case PIECE_TYPE_L:
-			return PIECE_L1
+			return l09.PIECE_L1
 		case PIECE_TYPE_P:
-			return PIECE_P1
+			return l09.PIECE_P1
 		case PIECE_TYPE_PR:
-			return PIECE_PR1
+			return l09.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return PIECE_PB1
+			return l09.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return PIECE_PS1
+			return l09.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return PIECE_PN1
+			return l09.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return PIECE_PL1
+			return l09.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return PIECE_PP1
+			return l09.PIECE_PP1
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return PIECE_K2
+			return l09.PIECE_K2
 		case PIECE_TYPE_R:
-			return PIECE_R2
+			return l09.PIECE_R2
 		case PIECE_TYPE_B:
-			return PIECE_B2
+			return l09.PIECE_B2
 		case PIECE_TYPE_G:
-			return PIECE_G2
+			return l09.PIECE_G2
 		case PIECE_TYPE_S:
-			return PIECE_S2
+			return l09.PIECE_S2
 		case PIECE_TYPE_N:
-			return PIECE_N2
+			return l09.PIECE_N2
 		case PIECE_TYPE_L:
-			return PIECE_L2
+			return l09.PIECE_L2
 		case PIECE_TYPE_P:
-			return PIECE_P2
+			return l09.PIECE_P2
 		case PIECE_TYPE_PR:
-			return PIECE_PR2
+			return l09.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return PIECE_PB2
+			return l09.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return PIECE_PS2
+			return l09.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return PIECE_PN2
+			return l09.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return PIECE_PL2
+			return l09.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return PIECE_PP2
+			return l09.PIECE_PP2
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
@@ -113,8 +113,8 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 }
 
 var HandPieceMap = [14]l09.Piece{
-	PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
-	PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
+	l09.PIECE_R1, l09.PIECE_B1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_N1, l09.PIECE_L1, l09.PIECE_P1,
+	l09.PIECE_R2, l09.PIECE_B2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_N2, l09.PIECE_L2, l09.PIECE_P2}
 
 // Position - 局面
 type Position struct {
@@ -185,16 +185,16 @@ func (pPos *Position) GetKingLocations() (Square, Square) {
 func (pPos *Position) resetToZero() {
 	// 筋、段のラベルだけ入れとくぜ（＾～＾）
 	pPos.Board = [BOARD_SIZE]l09.Piece{
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
 	}
 	pPos.ControlBoards = [2][CONTROL_LAYER_ALL_SIZE][BOARD_SIZE]int8{{
 		{
@@ -536,16 +536,16 @@ func (pPos *Position) resetToZero() {
 func (pPos *Position) setToStartpos() {
 	// 初期局面にします
 	pPos.Board = [BOARD_SIZE]l09.Piece{
-		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
-		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
-		PIECE_EMPTY, PIECE_N2, PIECE_B2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_R1, PIECE_N1,
-		PIECE_EMPTY, PIECE_S2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_S1,
-		PIECE_EMPTY, PIECE_G2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_G1,
-		PIECE_EMPTY, PIECE_K2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_K1,
-		PIECE_EMPTY, PIECE_G2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_G1,
-		PIECE_EMPTY, PIECE_S2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_S1,
-		PIECE_EMPTY, PIECE_N2, PIECE_R2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_B1, PIECE_N1,
-		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
+		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
+		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_B2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_R1, l09.PIECE_N1,
+		l09.PIECE_EMPTY, l09.PIECE_S2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_S1,
+		l09.PIECE_EMPTY, l09.PIECE_G2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_G1,
+		l09.PIECE_EMPTY, l09.PIECE_K2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_K1,
+		l09.PIECE_EMPTY, l09.PIECE_G2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_G1,
+		l09.PIECE_EMPTY, l09.PIECE_S2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_S1,
+		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_R2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_B1, l09.PIECE_N1,
+		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
 	}
 	pPos.kingLocations = [2]Square{59, 51}
 	pPos.RookLocations = [2]Square{28, 82}
@@ -580,13 +580,13 @@ func (pPos *Position) ReadPosition(command string) {
 			promoted := false
 			switch pc := command[i]; pc {
 			case 'K', 'R', 'B', 'G', 'S', 'N', 'L', 'P', 'k', 'r', 'b', 'g', 's', 'n', 'l', 'p':
-				pPos.Board[file*10+rank] = FromStringToPiece(string(pc))
+				pPos.Board[file*10+rank] = l09.FromStringToPiece(string(pc))
 				file -= 1
 				i += 1
 			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
 				var spaces, _ = strconv.Atoi(string(pc))
 				for sp := 0; sp < spaces; sp += 1 {
-					pPos.Board[file*10+rank] = PIECE_EMPTY
+					pPos.Board[file*10+rank] = l09.PIECE_EMPTY
 					file -= 1
 				}
 				i += 1
@@ -607,7 +607,7 @@ func (pPos *Position) ReadPosition(command string) {
 			if promoted {
 				switch pc2 := command[i]; pc2 {
 				case 'R', 'B', 'S', 'N', 'L', 'P', 'r', 'b', 's', 'n', 'l', 'p':
-					pPos.Board[file*10+rank] = FromStringToPiece("+" + string(pc2))
+					pPos.Board[file*10+rank] = l09.FromStringToPiece("+" + string(pc2))
 					file -= 1
 					i += 1
 				default:
@@ -997,33 +997,33 @@ func (pPos *Position) DoMove(move Move) {
 	var piece l09.Piece
 	switch from {
 	case SQ_R1:
-		piece = PIECE_R1
+		piece = l09.PIECE_R1
 	case SQ_B1:
-		piece = PIECE_B1
+		piece = l09.PIECE_B1
 	case SQ_G1:
-		piece = PIECE_G1
+		piece = l09.PIECE_G1
 	case SQ_S1:
-		piece = PIECE_S1
+		piece = l09.PIECE_S1
 	case SQ_N1:
-		piece = PIECE_N1
+		piece = l09.PIECE_N1
 	case SQ_L1:
-		piece = PIECE_L1
+		piece = l09.PIECE_L1
 	case SQ_P1:
-		piece = PIECE_P1
+		piece = l09.PIECE_P1
 	case SQ_R2:
-		piece = PIECE_R2
+		piece = l09.PIECE_R2
 	case SQ_B2:
-		piece = PIECE_B2
+		piece = l09.PIECE_B2
 	case SQ_G2:
-		piece = PIECE_G2
+		piece = l09.PIECE_G2
 	case SQ_S2:
-		piece = PIECE_S2
+		piece = l09.PIECE_S2
 	case SQ_N2:
-		piece = PIECE_N2
+		piece = l09.PIECE_N2
 	case SQ_L2:
-		piece = PIECE_L2
+		piece = l09.PIECE_L2
 	case SQ_P2:
-		piece = PIECE_P2
+		piece = l09.PIECE_P2
 	default:
 		// Not hand
 		sq_hand = SQUARE_EMPTY
@@ -1044,7 +1044,7 @@ func (pPos *Position) DoMove(move Move) {
 
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
-		if captured != PIECE_EMPTY {
+		if captured != l09.PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
@@ -1062,48 +1062,48 @@ func (pPos *Position) DoMove(move Move) {
 		// 行き先の駒の上書き
 		if pro {
 			// 駒を成りに変換します
-			pPos.Board[to] = Promote(pPos.Board[from])
+			pPos.Board[to] = l09.Promote(pPos.Board[from])
 		} else {
 			pPos.Board[to] = pPos.Board[from]
 		}
 		mov_piece_type = What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[from] = PIECE_EMPTY
+		pPos.Board[from] = l09.PIECE_EMPTY
 		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, 1)
 
 		switch captured {
-		case PIECE_EMPTY: // Ignored
-		case PIECE_K1: // Second player win
+		case l09.PIECE_EMPTY: // Ignored
+		case l09.PIECE_K1: // Second player win
 			// Lost first king
-		case PIECE_R1, PIECE_PR1:
+		case l09.PIECE_R1, l09.PIECE_PR1:
 			cap_dst_sq = SQ_R2
-		case PIECE_B1, PIECE_PB1:
+		case l09.PIECE_B1, l09.PIECE_PB1:
 			cap_dst_sq = SQ_B2
-		case PIECE_G1:
+		case l09.PIECE_G1:
 			cap_dst_sq = SQ_G2
-		case PIECE_S1, PIECE_PS1:
+		case l09.PIECE_S1, l09.PIECE_PS1:
 			cap_dst_sq = SQ_S2
-		case PIECE_N1, PIECE_PN1:
+		case l09.PIECE_N1, l09.PIECE_PN1:
 			cap_dst_sq = SQ_N2
-		case PIECE_L1, PIECE_PL1:
+		case l09.PIECE_L1, l09.PIECE_PL1:
 			cap_dst_sq = SQ_L2
-		case PIECE_P1, PIECE_PP1:
+		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_dst_sq = SQ_P2
-		case PIECE_K2: // First player win
+		case l09.PIECE_K2: // First player win
 			// Lost second king
-		case PIECE_R2, PIECE_PR2:
+		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_dst_sq = SQ_R1
-		case PIECE_B2, PIECE_PB2:
+		case l09.PIECE_B2, l09.PIECE_PB2:
 			cap_dst_sq = SQ_B1
-		case PIECE_G2:
+		case l09.PIECE_G2:
 			cap_dst_sq = SQ_G1
-		case PIECE_S2, PIECE_PS2:
+		case l09.PIECE_S2, l09.PIECE_PS2:
 			cap_dst_sq = SQ_S1
-		case PIECE_N2, PIECE_PN2:
+		case l09.PIECE_N2, l09.PIECE_PN2:
 			cap_dst_sq = SQ_N1
-		case PIECE_L2, PIECE_PL2:
+		case l09.PIECE_L2, l09.PIECE_PL2:
 			cap_dst_sq = SQ_L1
-		case PIECE_P2, PIECE_PP2:
+		case l09.PIECE_P2, l09.PIECE_PP2:
 			cap_dst_sq = SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -1114,7 +1114,7 @@ func (pPos *Position) DoMove(move Move) {
 			pPos.Hands[cap_dst_sq-SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pPos.CapturedList[pPos.OffsetMovesIndex] = PIECE_EMPTY
+			pPos.CapturedList[pPos.OffsetMovesIndex] = l09.PIECE_EMPTY
 		}
 	}
 
@@ -1213,7 +1213,7 @@ func (pPos *Position) UndoMove() {
 		// 行き先から駒を除去します
 		mov_piece_type = What(pPos.Board[to])
 		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, -1)
-		pPos.Board[to] = PIECE_EMPTY
+		pPos.Board[to] = l09.PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[hand-SQ_HAND_START] += 1
@@ -1228,45 +1228,45 @@ func (pPos *Position) UndoMove() {
 		// 自駒を移動元へ戻します
 		if pro {
 			// 成りを元に戻します
-			pPos.Board[from] = Demote(pPos.Board[to])
+			pPos.Board[from] = l09.Demote(pPos.Board[to])
 		} else {
 			pPos.Board[from] = pPos.Board[to]
 		}
 
 		// あれば、取った駒は駒台から下ろします
 		switch captured {
-		case PIECE_EMPTY: // Ignored
-		case PIECE_K1: // Second player win
+		case l09.PIECE_EMPTY: // Ignored
+		case l09.PIECE_K1: // Second player win
 			// Lost first king
-		case PIECE_R1, PIECE_PR1:
+		case l09.PIECE_R1, l09.PIECE_PR1:
 			cap_src_sq = SQ_R2
-		case PIECE_B1, PIECE_PB1:
+		case l09.PIECE_B1, l09.PIECE_PB1:
 			cap_src_sq = SQ_B2
-		case PIECE_G1:
+		case l09.PIECE_G1:
 			cap_src_sq = SQ_G2
-		case PIECE_S1, PIECE_PS1:
+		case l09.PIECE_S1, l09.PIECE_PS1:
 			cap_src_sq = SQ_S2
-		case PIECE_N1, PIECE_PN1:
+		case l09.PIECE_N1, l09.PIECE_PN1:
 			cap_src_sq = SQ_N2
-		case PIECE_L1, PIECE_PL1:
+		case l09.PIECE_L1, l09.PIECE_PL1:
 			cap_src_sq = SQ_L2
-		case PIECE_P1, PIECE_PP1:
+		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_src_sq = SQ_P2
-		case PIECE_K2: // First player win
+		case l09.PIECE_K2: // First player win
 			// Lost second king
-		case PIECE_R2, PIECE_PR2:
+		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_src_sq = SQ_R1
-		case PIECE_B2, PIECE_PB2:
+		case l09.PIECE_B2, l09.PIECE_PB2:
 			cap_src_sq = SQ_B1
-		case PIECE_G2:
+		case l09.PIECE_G2:
 			cap_src_sq = SQ_G1
-		case PIECE_S2, PIECE_PS2:
+		case l09.PIECE_S2, l09.PIECE_PS2:
 			cap_src_sq = SQ_S1
-		case PIECE_N2, PIECE_PN2:
+		case l09.PIECE_N2, l09.PIECE_PN2:
 			cap_src_sq = SQ_N1
-		case PIECE_L2, PIECE_PL2:
+		case l09.PIECE_L2, l09.PIECE_PL2:
 			cap_src_sq = SQ_L1
-		case PIECE_P2, PIECE_PP2:
+		case l09.PIECE_P2, l09.PIECE_PP2:
 			cap_src_sq = SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -1290,7 +1290,7 @@ func (pPos *Position) UndoMove() {
 			pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, to, 1)
 			// }
 		} else {
-			pPos.Board[to] = PIECE_EMPTY
+			pPos.Board[to] = l09.PIECE_EMPTY
 		}
 
 		// 元の場所に戻した自駒の利きを復元します
@@ -1362,5 +1362,5 @@ func (pPos *Position) IsEmptySq(sq Square) bool {
 	if sq > 99 {
 		return false
 	}
-	return pPos.Board[sq] == PIECE_EMPTY
+	return pPos.Board[sq] == l09.PIECE_EMPTY
 }

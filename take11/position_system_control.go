@@ -4,7 +4,7 @@ package take11
 import (
 	"fmt"
 
-	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // 利きテーブル・インデックス型
@@ -108,7 +108,7 @@ func (pPosSys *PositionSystem) AddControlDiff(pPos *Position, c ControlLayerT, f
 	}
 
 	piece := pPos.Board[from]
-	if piece == l10.PIECE_EMPTY {
+	if piece == l09.PIECE_EMPTY {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 

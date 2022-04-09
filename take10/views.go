@@ -3,6 +3,8 @@ package take10
 import (
 	"bytes"
 	"fmt"
+
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // Print - 局面出力（＾ｑ＾）
@@ -272,7 +274,7 @@ func (pPos *Position) SprintSfen() string {
 		for file := Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
-			if piece != PIECE_EMPTY {
+			if piece != l09.PIECE_EMPTY {
 				if spaces > 0 {
 					buf = append(buf, OneDigitNumbers[spaces])
 					spaces = 0
