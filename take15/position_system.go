@@ -125,9 +125,9 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [l09.MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]l09.Piece
+	CapturedList [l09.MOVES_SIZE]l09.Piece
 }
 
 func NewPositionSystem() *PositionSystem {
