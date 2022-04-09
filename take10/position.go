@@ -120,7 +120,7 @@ var HandPieceMap = [14]l09.Piece{
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]l09.Piece
+	Board [l09.BOARD_SIZE]l09.Piece
 	// [0]先手 [1]後手
 	kingLocations [2]Square
 	// 飛車の場所。長い利きを消すために必要（＾～＾）
