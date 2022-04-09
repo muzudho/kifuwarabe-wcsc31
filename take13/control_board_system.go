@@ -1,6 +1,8 @@
 package take13
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 利きテーブル・インデックス型
 type ControlLayerT int

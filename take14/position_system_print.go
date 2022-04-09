@@ -3,6 +3,8 @@ package take14
 import (
 	"bytes"
 	"fmt"
+
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -198,7 +200,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 		for file := Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
-			if piece != PIECE_EMPTY {
+			if piece != l13.PIECE_EMPTY {
 				if spaces > 0 {
 					buf = append(buf, OneDigitNumbers[spaces])
 					spaces = 0

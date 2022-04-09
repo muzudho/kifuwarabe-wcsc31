@@ -6,7 +6,7 @@ import (
 	"strings"
 	"unicode"
 
-	l14 "github.com/muzudho/kifuwarabe-wcsc31/take14"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -56,13 +56,13 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			promoted := false
 			switch pc := command[i]; pc {
 			case 'K', 'R', 'B', 'G', 'S', 'N', 'L', 'P', 'k', 'r', 'b', 'g', 's', 'n', 'l', 'p':
-				pPos.Board[file*10+rank] = l14.FromStringToPiece(string(pc))
+				pPos.Board[file*10+rank] = l13.FromStringToPiece(string(pc))
 				file -= 1
 				i += 1
 			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
 				var spaces, _ = strconv.Atoi(string(pc))
 				for sp := 0; sp < spaces; sp += 1 {
-					pPos.Board[file*10+rank] = l14.PIECE_EMPTY
+					pPos.Board[file*10+rank] = l13.PIECE_EMPTY
 					file -= 1
 				}
 				i += 1
@@ -83,7 +83,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			if promoted {
 				switch pc2 := command[i]; pc2 {
 				case 'R', 'B', 'S', 'N', 'L', 'P', 'r', 'b', 's', 'n', 'l', 'p':
-					pPos.Board[file*10+rank] = l14.FromStringToPiece("+" + string(pc2))
+					pPos.Board[file*10+rank] = l13.FromStringToPiece("+" + string(pc2))
 					file -= 1
 					i += 1
 				default:
@@ -457,37 +457,37 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 	var piece l09.Piece
 	switch from {
 	case SQ_K1:
-		piece = l14.PIECE_K1
+		piece = l13.PIECE_K1
 	case SQ_R1:
-		piece = l14.PIECE_R1
+		piece = l13.PIECE_R1
 	case SQ_B1:
-		piece = l14.PIECE_B1
+		piece = l13.PIECE_B1
 	case SQ_G1:
-		piece = l14.PIECE_G1
+		piece = l13.PIECE_G1
 	case SQ_S1:
-		piece = l14.PIECE_S1
+		piece = l13.PIECE_S1
 	case SQ_N1:
-		piece = l14.PIECE_N1
+		piece = l13.PIECE_N1
 	case SQ_L1:
-		piece = l14.PIECE_L1
+		piece = l13.PIECE_L1
 	case SQ_P1:
-		piece = l14.PIECE_P1
+		piece = l13.PIECE_P1
 	case SQ_K2:
-		piece = l14.PIECE_K2
+		piece = l13.PIECE_K2
 	case SQ_R2:
-		piece = l14.PIECE_R2
+		piece = l13.PIECE_R2
 	case SQ_B2:
-		piece = l14.PIECE_B2
+		piece = l13.PIECE_B2
 	case SQ_G2:
-		piece = l14.PIECE_G2
+		piece = l13.PIECE_G2
 	case SQ_S2:
-		piece = l14.PIECE_S2
+		piece = l13.PIECE_S2
 	case SQ_N2:
-		piece = l14.PIECE_N2
+		piece = l13.PIECE_N2
 	case SQ_L2:
-		piece = l14.PIECE_L2
+		piece = l13.PIECE_L2
 	case SQ_P2:
-		piece = l14.PIECE_P2
+		piece = l13.PIECE_P2
 	default:
 		// Not hand
 		sq_hand = SQUARE_EMPTY
@@ -521,7 +521,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
-		if captured != l14.PIECE_EMPTY {
+		if captured != l13.PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
@@ -572,13 +572,13 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 		// 行き先の駒の上書き
 		if pro {
 			// 駒を成りに変換します
-			pPos.Board[to] = l14.Promote(pPos.Board[from])
+			pPos.Board[to] = l13.Promote(pPos.Board[from])
 		} else {
 			pPos.Board[to] = pPos.Board[from]
 		}
 		mov_piece_type = What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[from] = l14.PIECE_EMPTY
+		pPos.Board[from] = l13.PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[to]
@@ -598,38 +598,38 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 		pCB2.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, 1)
 
 		switch captured {
-		case l14.PIECE_EMPTY: // Ignored
-		case l14.PIECE_K1: // Second player win
+		case l13.PIECE_EMPTY: // Ignored
+		case l13.PIECE_K1: // Second player win
 			cap_dst_sq = SQ_K2
-		case l14.PIECE_R1, l14.PIECE_PR1:
+		case l13.PIECE_R1, l13.PIECE_PR1:
 			cap_dst_sq = SQ_R2
-		case l14.PIECE_B1, l14.PIECE_PB1:
+		case l13.PIECE_B1, l13.PIECE_PB1:
 			cap_dst_sq = SQ_B2
-		case l14.PIECE_G1:
+		case l13.PIECE_G1:
 			cap_dst_sq = SQ_G2
-		case l14.PIECE_S1, l14.PIECE_PS1:
+		case l13.PIECE_S1, l13.PIECE_PS1:
 			cap_dst_sq = SQ_S2
-		case l14.PIECE_N1, l14.PIECE_PN1:
+		case l13.PIECE_N1, l13.PIECE_PN1:
 			cap_dst_sq = SQ_N2
-		case l14.PIECE_L1, l14.PIECE_PL1:
+		case l13.PIECE_L1, l13.PIECE_PL1:
 			cap_dst_sq = SQ_L2
-		case l14.PIECE_P1, l14.PIECE_PP1:
+		case l13.PIECE_P1, l13.PIECE_PP1:
 			cap_dst_sq = SQ_P2
-		case l14.PIECE_K2: // First player win
+		case l13.PIECE_K2: // First player win
 			cap_dst_sq = SQ_K1
-		case l14.PIECE_R2, l14.PIECE_PR2:
+		case l13.PIECE_R2, l13.PIECE_PR2:
 			cap_dst_sq = SQ_R1
-		case l14.PIECE_B2, l14.PIECE_PB2:
+		case l13.PIECE_B2, l13.PIECE_PB2:
 			cap_dst_sq = SQ_B1
-		case l14.PIECE_G2:
+		case l13.PIECE_G2:
 			cap_dst_sq = SQ_G1
-		case l14.PIECE_S2, l14.PIECE_PS2:
+		case l13.PIECE_S2, l13.PIECE_PS2:
 			cap_dst_sq = SQ_S1
-		case l14.PIECE_N2, l14.PIECE_PN2:
+		case l13.PIECE_N2, l13.PIECE_PN2:
 			cap_dst_sq = SQ_N1
-		case l14.PIECE_L2, l14.PIECE_PL2:
+		case l13.PIECE_L2, l13.PIECE_PL2:
 			cap_dst_sq = SQ_L1
-		case l14.PIECE_P2, l14.PIECE_PP2:
+		case l13.PIECE_P2, l13.PIECE_PP2:
 			cap_dst_sq = SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -640,7 +640,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move Move) {
 			pPos.Hands1[cap_dst_sq-SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = l14.PIECE_EMPTY
+			pBrain.PPosSys.CapturedList[pBrain.PPosSys.OffsetMovesIndex] = l13.PIECE_EMPTY
 		}
 	}
 
@@ -781,7 +781,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 				pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2])
 		}
 		pCB3.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
-		pPos.Board[to] = l14.PIECE_EMPTY
+		pPos.Board[to] = l13.PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands1[hand-SQ_HAND_START] += 1
@@ -810,12 +810,12 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		// 自駒を移動元へ戻します
 		if pro {
 			// 成りを元に戻します
-			pPos.Board[from] = l14.Demote(pPos.Board[to])
+			pPos.Board[from] = l13.Demote(pPos.Board[to])
 		} else {
 			pPos.Board[from] = pPos.Board[to]
 		}
 
-		pPos.Board[to] = l14.PIECE_EMPTY
+		pPos.Board[to] = l13.PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[from]
@@ -949,38 +949,38 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 
 		// 取った相手の駒があれば、自分の駒台から下ろします
 		switch captured {
-		case l14.PIECE_EMPTY: // Ignored
-		case l14.PIECE_K1: // Second player win
+		case l13.PIECE_EMPTY: // Ignored
+		case l13.PIECE_K1: // Second player win
 			hand_sq = SQ_K2
-		case l14.PIECE_R1, l14.PIECE_PR1:
+		case l13.PIECE_R1, l13.PIECE_PR1:
 			hand_sq = SQ_R2
-		case l14.PIECE_B1, l14.PIECE_PB1:
+		case l13.PIECE_B1, l13.PIECE_PB1:
 			hand_sq = SQ_B2
-		case l14.PIECE_G1:
+		case l13.PIECE_G1:
 			hand_sq = SQ_G2
-		case l14.PIECE_S1, l14.PIECE_PS1:
+		case l13.PIECE_S1, l13.PIECE_PS1:
 			hand_sq = SQ_S2
-		case l14.PIECE_N1, l14.PIECE_PN1:
+		case l13.PIECE_N1, l13.PIECE_PN1:
 			hand_sq = SQ_N2
-		case l14.PIECE_L1, l14.PIECE_PL1:
+		case l13.PIECE_L1, l13.PIECE_PL1:
 			hand_sq = SQ_L2
-		case l14.PIECE_P1, l14.PIECE_PP1:
+		case l13.PIECE_P1, l13.PIECE_PP1:
 			hand_sq = SQ_P2
-		case l14.PIECE_K2: // First player win
+		case l13.PIECE_K2: // First player win
 			hand_sq = SQ_K1
-		case l14.PIECE_R2, l14.PIECE_PR2:
+		case l13.PIECE_R2, l13.PIECE_PR2:
 			hand_sq = SQ_R1
-		case l14.PIECE_B2, l14.PIECE_PB2:
+		case l13.PIECE_B2, l13.PIECE_PB2:
 			hand_sq = SQ_B1
-		case l14.PIECE_G2:
+		case l13.PIECE_G2:
 			hand_sq = SQ_G1
-		case l14.PIECE_S2, l14.PIECE_PS2:
+		case l13.PIECE_S2, l13.PIECE_PS2:
 			hand_sq = SQ_S1
-		case l14.PIECE_N2, l14.PIECE_PN2:
+		case l13.PIECE_N2, l13.PIECE_PN2:
 			hand_sq = SQ_N1
-		case l14.PIECE_L2, l14.PIECE_PL2:
+		case l13.PIECE_L2, l13.PIECE_PL2:
 			hand_sq = SQ_L1
-		case l14.PIECE_P2, l14.PIECE_PP2:
+		case l13.PIECE_P2, l13.PIECE_PP2:
 			hand_sq = SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)

@@ -175,76 +175,68 @@ func FromStringToPiece(piece string) l09.Piece {
 	}
 }
 
-// PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
-	switch phase {
-	case FIRST:
-		switch pieceType {
-		case PIECE_TYPE_K:
-			return PIECE_K1
-		case PIECE_TYPE_R:
-			return PIECE_R1
-		case PIECE_TYPE_B:
-			return PIECE_B1
-		case PIECE_TYPE_G:
-			return PIECE_G1
-		case PIECE_TYPE_S:
-			return PIECE_S1
-		case PIECE_TYPE_N:
-			return PIECE_N1
-		case PIECE_TYPE_L:
-			return PIECE_L1
-		case PIECE_TYPE_P:
-			return PIECE_P1
-		case PIECE_TYPE_PR:
-			return PIECE_PR1
-		case PIECE_TYPE_PB:
-			return PIECE_PB1
-		case PIECE_TYPE_PS:
-			return PIECE_PS1
-		case PIECE_TYPE_PN:
-			return PIECE_PN1
-		case PIECE_TYPE_PL:
-			return PIECE_PL1
-		case PIECE_TYPE_PP:
-			return PIECE_PP1
-		default:
-			panic(fmt.Errorf("unknown piece type=%d", pieceType))
-		}
-	case SECOND:
-		switch pieceType {
-		case PIECE_TYPE_K:
-			return PIECE_K2
-		case PIECE_TYPE_R:
-			return PIECE_R2
-		case PIECE_TYPE_B:
-			return PIECE_B2
-		case PIECE_TYPE_G:
-			return PIECE_G2
-		case PIECE_TYPE_S:
-			return PIECE_S2
-		case PIECE_TYPE_N:
-			return PIECE_N2
-		case PIECE_TYPE_L:
-			return PIECE_L2
-		case PIECE_TYPE_P:
-			return PIECE_P2
-		case PIECE_TYPE_PR:
-			return PIECE_PR2
-		case PIECE_TYPE_PB:
-			return PIECE_PB2
-		case PIECE_TYPE_PS:
-			return PIECE_PS2
-		case PIECE_TYPE_PN:
-			return PIECE_PN2
-		case PIECE_TYPE_PL:
-			return PIECE_PL2
-		case PIECE_TYPE_PP:
-			return PIECE_PP2
-		default:
-			panic(fmt.Errorf("unknown piece type=%d", pieceType))
-		}
+// ToCodeOfPc - 文字列
+func ToCodeOfPc(pc l09.Piece) string {
+	switch pc {
+	case PIECE_EMPTY:
+		return ""
+	case PIECE_K1:
+		return "K"
+	case PIECE_R1:
+		return "R"
+	case PIECE_B1:
+		return "B"
+	case PIECE_G1:
+		return "G"
+	case PIECE_S1:
+		return "S"
+	case PIECE_N1:
+		return "N"
+	case PIECE_L1:
+		return "L"
+	case PIECE_P1:
+		return "P"
+	case PIECE_PR1:
+		return "+R"
+	case PIECE_PB1:
+		return "+B"
+	case PIECE_PS1:
+		return "+S"
+	case PIECE_PN1:
+		return "+N"
+	case PIECE_PL1:
+		return "+L"
+	case PIECE_PP1:
+		return "+P"
+	case PIECE_K2:
+		return "k"
+	case PIECE_R2:
+		return "r"
+	case PIECE_B2:
+		return "b"
+	case PIECE_G2:
+		return "g"
+	case PIECE_S2:
+		return "s"
+	case PIECE_N2:
+		return "n"
+	case PIECE_L2:
+		return "l"
+	case PIECE_P2:
+		return "p"
+	case PIECE_PR2:
+		return "+r"
+	case PIECE_PB2:
+		return "+b"
+	case PIECE_PS2:
+		return "+s"
+	case PIECE_PN2:
+		return "+n"
+	case PIECE_PL2:
+		return "+l"
+	case PIECE_PP2:
+		return "+p"
 	default:
-		panic(fmt.Errorf("unknown phase=%d", phase))
+		panic(fmt.Errorf("unknown piece=%d", pc))
 	}
 }

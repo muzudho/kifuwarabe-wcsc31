@@ -1,7 +1,7 @@
 package take15
 
 import (
-	l14 "github.com/muzudho/kifuwarabe-wcsc31/take14"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -33,66 +33,66 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 	case FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l14.PIECE_K1
+			return l13.PIECE_K1
 		case PIECE_TYPE_R:
-			return l14.PIECE_R1
+			return l13.PIECE_R1
 		case PIECE_TYPE_B:
-			return l14.PIECE_B1
+			return l13.PIECE_B1
 		case PIECE_TYPE_G:
-			return l14.PIECE_G1
+			return l13.PIECE_G1
 		case PIECE_TYPE_S:
-			return l14.PIECE_S1
+			return l13.PIECE_S1
 		case PIECE_TYPE_N:
-			return l14.PIECE_N1
+			return l13.PIECE_N1
 		case PIECE_TYPE_L:
-			return l14.PIECE_L1
+			return l13.PIECE_L1
 		case PIECE_TYPE_P:
-			return l14.PIECE_P1
+			return l13.PIECE_P1
 		case PIECE_TYPE_PR:
-			return l14.PIECE_PR1
+			return l13.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return l14.PIECE_PB1
+			return l13.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return l14.PIECE_PS1
+			return l13.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return l14.PIECE_PN1
+			return l13.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return l14.PIECE_PL1
+			return l13.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return l14.PIECE_PP1
+			return l13.PIECE_PP1
 		default:
 			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l14.PIECE_K2
+			return l13.PIECE_K2
 		case PIECE_TYPE_R:
-			return l14.PIECE_R2
+			return l13.PIECE_R2
 		case PIECE_TYPE_B:
-			return l14.PIECE_B2
+			return l13.PIECE_B2
 		case PIECE_TYPE_G:
-			return l14.PIECE_G2
+			return l13.PIECE_G2
 		case PIECE_TYPE_S:
-			return l14.PIECE_S2
+			return l13.PIECE_S2
 		case PIECE_TYPE_N:
-			return l14.PIECE_N2
+			return l13.PIECE_N2
 		case PIECE_TYPE_L:
-			return l14.PIECE_L2
+			return l13.PIECE_L2
 		case PIECE_TYPE_P:
-			return l14.PIECE_P2
+			return l13.PIECE_P2
 		case PIECE_TYPE_PR:
-			return l14.PIECE_PR2
+			return l13.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return l14.PIECE_PB2
+			return l13.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return l14.PIECE_PS2
+			return l13.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return l14.PIECE_PN2
+			return l13.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return l14.PIECE_PL2
+			return l13.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return l14.PIECE_PP2
+			return l13.PIECE_PP2
 		default:
 			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
@@ -102,8 +102,8 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 }
 
 var HandPieceMap1 = [HAND_SIZE]l09.Piece{
-	l14.PIECE_K1, l14.PIECE_R1, l14.PIECE_B1, l14.PIECE_G1, l14.PIECE_S1, l14.PIECE_N1, l14.PIECE_L1, l14.PIECE_P1,
-	l14.PIECE_K2, l14.PIECE_R2, l14.PIECE_B2, l14.PIECE_G2, l14.PIECE_S2, l14.PIECE_N2, l14.PIECE_L2, l14.PIECE_P2}
+	l13.PIECE_K1, l13.PIECE_R1, l13.PIECE_B1, l13.PIECE_G1, l13.PIECE_S1, l13.PIECE_N1, l13.PIECE_L1, l13.PIECE_P1,
+	l13.PIECE_K2, l13.PIECE_R2, l13.PIECE_B2, l13.PIECE_G2, l13.PIECE_S2, l13.PIECE_N2, l13.PIECE_L2, l13.PIECE_P2}
 
 // 開発 or リリース モード
 type BuildT int

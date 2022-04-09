@@ -3,17 +3,18 @@ package take14
 import (
 	"fmt"
 
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // Who - 駒が先手か後手か空升かを返します
 func Who(piece l09.Piece) Phase {
 	switch piece {
-	case PIECE_EMPTY: // 空きマス
+	case l13.PIECE_EMPTY: // 空きマス
 		return ZEROTH
-	case PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1, PIECE_PR1, PIECE_PB1, PIECE_PS1, PIECE_PN1, PIECE_PL1, PIECE_PP1:
+	case l13.PIECE_K1, l13.PIECE_R1, l13.PIECE_B1, l13.PIECE_G1, l13.PIECE_S1, l13.PIECE_N1, l13.PIECE_L1, l13.PIECE_P1, l13.PIECE_PR1, l13.PIECE_PB1, l13.PIECE_PS1, l13.PIECE_PN1, l13.PIECE_PL1, l13.PIECE_PP1:
 		return FIRST
-	case PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
+	case l13.PIECE_K2, l13.PIECE_R2, l13.PIECE_B2, l13.PIECE_G2, l13.PIECE_S2, l13.PIECE_N2, l13.PIECE_L2, l13.PIECE_P2, l13.PIECE_PR2, l13.PIECE_PB2, l13.PIECE_PS2, l13.PIECE_PN2, l13.PIECE_PL2, l13.PIECE_PP2:
 		return SECOND
 	default:
 		panic(fmt.Errorf("unknown piece=[%d]", piece))

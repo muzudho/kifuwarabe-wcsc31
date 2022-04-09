@@ -6,6 +6,8 @@ import (
 	"math"
 	"math/rand"
 	"sort"
+
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 )
 
 // TestControl
@@ -126,7 +128,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 				change := Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != PIECE_EMPTY {
+					if piece != l13.PIECE_EMPTY {
 						phase := Who(piece)
 						pieceType := What(piece)
 
@@ -195,7 +197,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = PIECE_EMPTY
+							pPos.Board[sq] = l13.PIECE_EMPTY
 						}
 					}
 
@@ -245,9 +247,9 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 			// 成／不成 変更
 			promote := Square(rand.Intn(10))
 			if promote == 0 {
-				pPos.Board[sq2] = Promote(pPos.Board[sq2])
+				pPos.Board[sq2] = l13.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
-				pPos.Board[sq2] = Demote(pPos.Board[sq2])
+				pPos.Board[sq2] = l13.Demote(pPos.Board[sq2])
 			}
 
 			// 駒の先後変更（玉除く）
@@ -463,8 +465,8 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 	for sq := 0; sq < 100; sq += 1 {
 		if pPos1.Board[sq] == pPos0.Board[sq] {
 			// 等しければ空マス
-			pPos2.Board[sq] = PIECE_EMPTY
-			pPos3.Board[sq] = PIECE_EMPTY
+			pPos2.Board[sq] = l13.PIECE_EMPTY
+			pPos3.Board[sq] = l13.PIECE_EMPTY
 
 		} else {
 			// 異なったら
