@@ -3,7 +3,7 @@ package take16
 import (
 	"fmt"
 
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l12 "github.com/muzudho/kifuwarabe-wcsc31/take12"
 )
 
 // Print - 局面出力（＾ｑ＾）
@@ -38,61 +38,61 @@ func (pPos *Position) SprintBoard() string {
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	if !pPos.IsEmptySq(90) {
-		zeroRanks[0] = l13.ToCodeOfPc(pPos.Board[90])
+		zeroRanks[0] = l12.ToCodeOfPc(pPos.Board[90])
 	}
 	if !pPos.IsEmptySq(80) {
-		zeroRanks[1] = l13.ToCodeOfPc(pPos.Board[80])
+		zeroRanks[1] = l12.ToCodeOfPc(pPos.Board[80])
 	}
 	if !pPos.IsEmptySq(70) {
-		zeroRanks[2] = l13.ToCodeOfPc(pPos.Board[70])
+		zeroRanks[2] = l12.ToCodeOfPc(pPos.Board[70])
 	}
 	if !pPos.IsEmptySq(60) {
-		zeroRanks[3] = l13.ToCodeOfPc(pPos.Board[60])
+		zeroRanks[3] = l12.ToCodeOfPc(pPos.Board[60])
 	}
 	if !pPos.IsEmptySq(50) {
-		zeroRanks[4] = l13.ToCodeOfPc(pPos.Board[50])
+		zeroRanks[4] = l12.ToCodeOfPc(pPos.Board[50])
 	}
 	if !pPos.IsEmptySq(40) {
-		zeroRanks[5] = l13.ToCodeOfPc(pPos.Board[40])
+		zeroRanks[5] = l12.ToCodeOfPc(pPos.Board[40])
 	}
 	if !pPos.IsEmptySq(30) {
-		zeroRanks[6] = l13.ToCodeOfPc(pPos.Board[30])
+		zeroRanks[6] = l12.ToCodeOfPc(pPos.Board[30])
 	}
 	if !pPos.IsEmptySq(20) {
-		zeroRanks[7] = l13.ToCodeOfPc(pPos.Board[20])
+		zeroRanks[7] = l12.ToCodeOfPc(pPos.Board[20])
 	}
 	if !pPos.IsEmptySq(10) {
-		zeroRanks[8] = l13.ToCodeOfPc(pPos.Board[10])
+		zeroRanks[8] = l12.ToCodeOfPc(pPos.Board[10])
 	}
 	if !pPos.IsEmptySq(0) {
-		zeroRanks[9] = l13.ToCodeOfPc(pPos.Board[0])
+		zeroRanks[9] = l12.ToCodeOfPc(pPos.Board[0])
 	}
 	if !pPos.IsEmptySq(1) {
-		zeroFiles[0] = l13.ToCodeOfPc(pPos.Board[1])
+		zeroFiles[0] = l12.ToCodeOfPc(pPos.Board[1])
 	}
 	if !pPos.IsEmptySq(2) {
-		zeroFiles[1] = l13.ToCodeOfPc(pPos.Board[2])
+		zeroFiles[1] = l12.ToCodeOfPc(pPos.Board[2])
 	}
 	if !pPos.IsEmptySq(3) {
-		zeroFiles[2] = l13.ToCodeOfPc(pPos.Board[3])
+		zeroFiles[2] = l12.ToCodeOfPc(pPos.Board[3])
 	}
 	if !pPos.IsEmptySq(4) {
-		zeroFiles[3] = l13.ToCodeOfPc(pPos.Board[4])
+		zeroFiles[3] = l12.ToCodeOfPc(pPos.Board[4])
 	}
 	if !pPos.IsEmptySq(5) {
-		zeroFiles[4] = l13.ToCodeOfPc(pPos.Board[5])
+		zeroFiles[4] = l12.ToCodeOfPc(pPos.Board[5])
 	}
 	if !pPos.IsEmptySq(6) {
-		zeroFiles[5] = l13.ToCodeOfPc(pPos.Board[6])
+		zeroFiles[5] = l12.ToCodeOfPc(pPos.Board[6])
 	}
 	if !pPos.IsEmptySq(7) {
-		zeroFiles[6] = l13.ToCodeOfPc(pPos.Board[7])
+		zeroFiles[6] = l12.ToCodeOfPc(pPos.Board[7])
 	}
 	if !pPos.IsEmptySq(8) {
-		zeroFiles[7] = l13.ToCodeOfPc(pPos.Board[8])
+		zeroFiles[7] = l12.ToCodeOfPc(pPos.Board[8])
 	}
 	if !pPos.IsEmptySq(9) {
-		zeroFiles[8] = l13.ToCodeOfPc(pPos.Board[9])
+		zeroFiles[8] = l12.ToCodeOfPc(pPos.Board[9])
 	}
 
 	var s1 = "\n" +
@@ -110,39 +110,39 @@ func (pPos *Position) SprintBoard() string {
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[91]), l13.ToCodeOfPc(pPos.Board[81]), l13.ToCodeOfPc(pPos.Board[71]), l13.ToCodeOfPc(pPos.Board[61]), l13.ToCodeOfPc(pPos.Board[51]), l13.ToCodeOfPc(pPos.Board[41]), l13.ToCodeOfPc(pPos.Board[31]), l13.ToCodeOfPc(pPos.Board[21]), l13.ToCodeOfPc(pPos.Board[11]), zeroFiles[0]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[91]), l12.ToCodeOfPc(pPos.Board[81]), l12.ToCodeOfPc(pPos.Board[71]), l12.ToCodeOfPc(pPos.Board[61]), l12.ToCodeOfPc(pPos.Board[51]), l12.ToCodeOfPc(pPos.Board[41]), l12.ToCodeOfPc(pPos.Board[31]), l12.ToCodeOfPc(pPos.Board[21]), l12.ToCodeOfPc(pPos.Board[11]), zeroFiles[0]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[92]), l13.ToCodeOfPc(pPos.Board[82]), l13.ToCodeOfPc(pPos.Board[72]), l13.ToCodeOfPc(pPos.Board[62]), l13.ToCodeOfPc(pPos.Board[52]), l13.ToCodeOfPc(pPos.Board[42]), l13.ToCodeOfPc(pPos.Board[32]), l13.ToCodeOfPc(pPos.Board[22]), l13.ToCodeOfPc(pPos.Board[12]), zeroFiles[1]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[92]), l12.ToCodeOfPc(pPos.Board[82]), l12.ToCodeOfPc(pPos.Board[72]), l12.ToCodeOfPc(pPos.Board[62]), l12.ToCodeOfPc(pPos.Board[52]), l12.ToCodeOfPc(pPos.Board[42]), l12.ToCodeOfPc(pPos.Board[32]), l12.ToCodeOfPc(pPos.Board[22]), l12.ToCodeOfPc(pPos.Board[12]), zeroFiles[1]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[93]), l13.ToCodeOfPc(pPos.Board[83]), l13.ToCodeOfPc(pPos.Board[73]), l13.ToCodeOfPc(pPos.Board[63]), l13.ToCodeOfPc(pPos.Board[53]), l13.ToCodeOfPc(pPos.Board[43]), l13.ToCodeOfPc(pPos.Board[33]), l13.ToCodeOfPc(pPos.Board[23]), l13.ToCodeOfPc(pPos.Board[13]), zeroFiles[2]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[93]), l12.ToCodeOfPc(pPos.Board[83]), l12.ToCodeOfPc(pPos.Board[73]), l12.ToCodeOfPc(pPos.Board[63]), l12.ToCodeOfPc(pPos.Board[53]), l12.ToCodeOfPc(pPos.Board[43]), l12.ToCodeOfPc(pPos.Board[33]), l12.ToCodeOfPc(pPos.Board[23]), l12.ToCodeOfPc(pPos.Board[13]), zeroFiles[2]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[94]), l13.ToCodeOfPc(pPos.Board[84]), l13.ToCodeOfPc(pPos.Board[74]), l13.ToCodeOfPc(pPos.Board[64]), l13.ToCodeOfPc(pPos.Board[54]), l13.ToCodeOfPc(pPos.Board[44]), l13.ToCodeOfPc(pPos.Board[34]), l13.ToCodeOfPc(pPos.Board[24]), l13.ToCodeOfPc(pPos.Board[14]), zeroFiles[3]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[94]), l12.ToCodeOfPc(pPos.Board[84]), l12.ToCodeOfPc(pPos.Board[74]), l12.ToCodeOfPc(pPos.Board[64]), l12.ToCodeOfPc(pPos.Board[54]), l12.ToCodeOfPc(pPos.Board[44]), l12.ToCodeOfPc(pPos.Board[34]), l12.ToCodeOfPc(pPos.Board[24]), l12.ToCodeOfPc(pPos.Board[14]), zeroFiles[3]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[95]), l13.ToCodeOfPc(pPos.Board[85]), l13.ToCodeOfPc(pPos.Board[75]), l13.ToCodeOfPc(pPos.Board[65]), l13.ToCodeOfPc(pPos.Board[55]), l13.ToCodeOfPc(pPos.Board[45]), l13.ToCodeOfPc(pPos.Board[35]), l13.ToCodeOfPc(pPos.Board[25]), l13.ToCodeOfPc(pPos.Board[15]), zeroFiles[4]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[95]), l12.ToCodeOfPc(pPos.Board[85]), l12.ToCodeOfPc(pPos.Board[75]), l12.ToCodeOfPc(pPos.Board[65]), l12.ToCodeOfPc(pPos.Board[55]), l12.ToCodeOfPc(pPos.Board[45]), l12.ToCodeOfPc(pPos.Board[35]), l12.ToCodeOfPc(pPos.Board[25]), l12.ToCodeOfPc(pPos.Board[15]), zeroFiles[4]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[96]), l13.ToCodeOfPc(pPos.Board[86]), l13.ToCodeOfPc(pPos.Board[76]), l13.ToCodeOfPc(pPos.Board[66]), l13.ToCodeOfPc(pPos.Board[56]), l13.ToCodeOfPc(pPos.Board[46]), l13.ToCodeOfPc(pPos.Board[36]), l13.ToCodeOfPc(pPos.Board[26]), l13.ToCodeOfPc(pPos.Board[16]), zeroFiles[5]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[96]), l12.ToCodeOfPc(pPos.Board[86]), l12.ToCodeOfPc(pPos.Board[76]), l12.ToCodeOfPc(pPos.Board[66]), l12.ToCodeOfPc(pPos.Board[56]), l12.ToCodeOfPc(pPos.Board[46]), l12.ToCodeOfPc(pPos.Board[36]), l12.ToCodeOfPc(pPos.Board[26]), l12.ToCodeOfPc(pPos.Board[16]), zeroFiles[5]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[97]), l13.ToCodeOfPc(pPos.Board[87]), l13.ToCodeOfPc(pPos.Board[77]), l13.ToCodeOfPc(pPos.Board[67]), l13.ToCodeOfPc(pPos.Board[57]), l13.ToCodeOfPc(pPos.Board[47]), l13.ToCodeOfPc(pPos.Board[37]), l13.ToCodeOfPc(pPos.Board[27]), l13.ToCodeOfPc(pPos.Board[17]), zeroFiles[6]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[97]), l12.ToCodeOfPc(pPos.Board[87]), l12.ToCodeOfPc(pPos.Board[77]), l12.ToCodeOfPc(pPos.Board[67]), l12.ToCodeOfPc(pPos.Board[57]), l12.ToCodeOfPc(pPos.Board[47]), l12.ToCodeOfPc(pPos.Board[37]), l12.ToCodeOfPc(pPos.Board[27]), l12.ToCodeOfPc(pPos.Board[17]), zeroFiles[6]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[98]), l13.ToCodeOfPc(pPos.Board[88]), l13.ToCodeOfPc(pPos.Board[78]), l13.ToCodeOfPc(pPos.Board[68]), l13.ToCodeOfPc(pPos.Board[58]), l13.ToCodeOfPc(pPos.Board[48]), l13.ToCodeOfPc(pPos.Board[38]), l13.ToCodeOfPc(pPos.Board[28]), l13.ToCodeOfPc(pPos.Board[18]), zeroFiles[7]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[98]), l12.ToCodeOfPc(pPos.Board[88]), l12.ToCodeOfPc(pPos.Board[78]), l12.ToCodeOfPc(pPos.Board[68]), l12.ToCodeOfPc(pPos.Board[58]), l12.ToCodeOfPc(pPos.Board[48]), l12.ToCodeOfPc(pPos.Board[38]), l12.ToCodeOfPc(pPos.Board[28]), l12.ToCodeOfPc(pPos.Board[18]), zeroFiles[7]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l13.ToCodeOfPc(pPos.Board[99]), l13.ToCodeOfPc(pPos.Board[89]), l13.ToCodeOfPc(pPos.Board[79]), l13.ToCodeOfPc(pPos.Board[69]), l13.ToCodeOfPc(pPos.Board[59]), l13.ToCodeOfPc(pPos.Board[49]), l13.ToCodeOfPc(pPos.Board[39]), l13.ToCodeOfPc(pPos.Board[29]), l13.ToCodeOfPc(pPos.Board[19]), zeroFiles[8]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%3s\n", l12.ToCodeOfPc(pPos.Board[99]), l12.ToCodeOfPc(pPos.Board[89]), l12.ToCodeOfPc(pPos.Board[79]), l12.ToCodeOfPc(pPos.Board[69]), l12.ToCodeOfPc(pPos.Board[59]), l12.ToCodeOfPc(pPos.Board[49]), l12.ToCodeOfPc(pPos.Board[39]), l12.ToCodeOfPc(pPos.Board[29]), l12.ToCodeOfPc(pPos.Board[19]), zeroFiles[8]) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
