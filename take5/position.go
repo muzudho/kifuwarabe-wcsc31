@@ -9,13 +9,6 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-const (
-	// 先手
-	FIRST = iota + 1
-	// 後手
-	SECOND
-)
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
