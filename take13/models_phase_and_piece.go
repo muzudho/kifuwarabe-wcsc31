@@ -16,6 +16,6 @@ func Who(piece l09.Piece) Phase {
 	case PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2, PIECE_PR2, PIECE_PB2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
 		return SECOND
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
+		panic(fmt.Errorf("unknown piece=[%d]", piece))
 	}
 }

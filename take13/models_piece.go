@@ -70,7 +70,7 @@ func Promote(piece l09.Piece) l09.Piece {
 	case PIECE_P2:
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
+		panic(fmt.Errorf("unknown piece=[%d]", piece))
 	}
 }
 
@@ -105,6 +105,6 @@ func Demote(piece l09.Piece) l09.Piece {
 	case PIECE_PP2:
 		return PIECE_P2
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
+		panic(fmt.Errorf("unknown piece=[%d]", piece))
 	}
 }

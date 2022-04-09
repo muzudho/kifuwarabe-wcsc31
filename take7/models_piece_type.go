@@ -57,6 +57,6 @@ func What(piece string) PieceType {
 	case PIECE_PP1, PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece))
 	}
 }

@@ -66,7 +66,7 @@ func Promote(piece string) string {
 	case PIECE_P2:
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece))
 	}
 }
 
@@ -101,6 +101,6 @@ func Demote(piece string) string {
 	case PIECE_PP2:
 		return PIECE_P2
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece))
 	}
 }

@@ -25,6 +25,6 @@ func EvalMaterial(piece Piece) int16 {
 	case PIECE_P1, PIECE_PP1, PIECE_P2, PIECE_PP2: // 歩、と
 		return 100
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
+		panic(fmt.Errorf("unknown piece=[%d]", piece))
 	}
 }

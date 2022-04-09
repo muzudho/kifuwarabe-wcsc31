@@ -537,7 +537,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 		}
 
 	} else {
-		fmt.Printf("error: unknown command=[%s]", command)
+		fmt.Printf("unknown command=[%s]", command)
 	}
 
 	// fmt.Printf("command[i:]=[%s]\n", command[i:])
@@ -945,7 +945,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		case PIECE_P2, PIECE_PP2:
 			cap_dst_sq = SQ_P1
 		default:
-			fmt.Printf("error: unknown captured=[%d]", captured)
+			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
 		if cap_dst_sq != SQUARE_EMPTY {
@@ -1291,7 +1291,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		case PIECE_P2, PIECE_PP2:
 			hand_sq = SQ_P1
 		default:
-			fmt.Printf("error: unknown captured=[%d]", captured)
+			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)

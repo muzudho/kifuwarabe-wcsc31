@@ -501,7 +501,7 @@ func (pos *Position) DoMove(move Move) {
 		case PIECE_PP2:
 			pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		default:
-			fmt.Printf("error: unknown captured=[%s]", captured)
+			fmt.Printf("unknown captured=[%s]", captured)
 		}
 	}
 
@@ -629,7 +629,7 @@ func (pos *Position) UndoMove() {
 		case PIECE_PP2:
 			pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
 		default:
-			fmt.Printf("error: unknown captured=[%s]", captured)
+			fmt.Printf("unknown captured=[%s]", captured)
 		}
 	}
 

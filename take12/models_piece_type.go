@@ -61,7 +61,7 @@ func What(piece l09.Piece) PieceType {
 	case PIECE_PP1, PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(fmt.Errorf("error: unknown piece=[%d]", piece))
+		panic(fmt.Errorf("unknown piece=[%d]", piece))
 	}
 }
 
@@ -83,6 +83,6 @@ func WhatHand(hand Square) PieceType {
 	case SQ_P1, SQ_P2:
 		return PIECE_TYPE_P
 	default:
-		panic(fmt.Errorf("error: unknown hand=[%d]", hand))
+		panic(fmt.Errorf("unknown hand=[%d]", hand))
 	}
 }

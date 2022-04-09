@@ -25,6 +25,6 @@ func EvalMaterial(piece l09.Piece) Value {
 	case PIECE_P1, PIECE_PP1, PIECE_P2, PIECE_PP2: // 歩、と
 		return 100
 	default:
-		panic(App.LogNotEcho.Fatal("error: unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
 	}
 }
