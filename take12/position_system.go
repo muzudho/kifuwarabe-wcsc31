@@ -774,7 +774,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		pPos, CONTROL_LAYER_DIFF1_LANCE_OFF, CONTROL_LAYER_DIFF2_LANCE_OFF, -1, from)
 
 	// まず、打かどうかで処理を分けます
-	sq_drop := from
+	sq_hand := from
 	var piece l09.Piece
 	switch from {
 	case SQ_K1:
@@ -810,15 +810,15 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 	case SQ_P2:
 		piece = PIECE_P2
 	default:
-		// Not drop
-		sq_drop = SQUARE_EMPTY
+		// Not hand
+		sq_hand = SQUARE_EMPTY
 	}
 
-	if sq_drop != 0 {
+	if sq_hand != 0 {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands1[sq_drop-SQ_HAND_START] -= 1
+		pPos.Hands1[sq_hand-SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -1016,7 +1016,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 	switch from {
 	case SQ_K1, SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_K2, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
 		// 打なら
-		drop := from
+		hand := from
 		// 行き先から駒を除去します
 		mov_piece_type = What(pPos.Board[to])
 		pPosSys.PControlBoardSystem.AddControlDiff(
@@ -1024,7 +1024,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands1[drop-SQ_HAND_START] += 1
+		pPos.Hands1[hand-SQ_HAND_START] += 1
 	default:
 		// 打でないなら
 
@@ -1139,7 +1139,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		// fmt.Printf("Debug: Drop from=%d\n", from)
 	default:
 		// 打でないなら
-		// fmt.Printf("Debug: Not drop from=%d\n", from)
+		// fmt.Printf("Debug: Not hand from=%d\n", from)
 
 		// 取った相手の駒があれば、自分の駒台から下ろします
 		switch captured {

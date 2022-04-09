@@ -446,37 +446,37 @@ func (pPos *Position) ReadPosition(command string) {
 		} else {
 		HandLoop:
 			for {
-				var drop_index Square
+				var hand_index Square
 				var piece = command[i]
 				switch piece {
 				case 'R':
-					drop_index = HAND_R1
+					hand_index = HAND_R1
 				case 'B':
-					drop_index = HAND_B1
+					hand_index = HAND_B1
 				case 'G':
-					drop_index = HAND_G1
+					hand_index = HAND_G1
 				case 'S':
-					drop_index = HAND_S1
+					hand_index = HAND_S1
 				case 'N':
-					drop_index = HAND_N1
+					hand_index = HAND_N1
 				case 'L':
-					drop_index = HAND_L1
+					hand_index = HAND_L1
 				case 'P':
-					drop_index = HAND_P1
+					hand_index = HAND_P1
 				case 'r':
-					drop_index = HAND_R2
+					hand_index = HAND_R2
 				case 'b':
-					drop_index = HAND_B2
+					hand_index = HAND_B2
 				case 'g':
-					drop_index = HAND_G2
+					hand_index = HAND_G2
 				case 's':
-					drop_index = HAND_S2
+					hand_index = HAND_S2
 				case 'n':
-					drop_index = HAND_N2
+					hand_index = HAND_N2
 				case 'l':
-					drop_index = HAND_L2
+					hand_index = HAND_L2
 				case 'p':
-					drop_index = HAND_P2
+					hand_index = HAND_P2
 				case ' ':
 					i += 1
 					break HandLoop
@@ -505,28 +505,28 @@ func (pPos *Position) ReadPosition(command string) {
 					}
 				}
 
-				pPos.Hands[drop_index-HAND_ORIGIN] = number
+				pPos.Hands[hand_index-HAND_ORIGIN] = number
 
 				// 長い利きの駒は位置を覚えておくぜ（＾～＾）
-				switch drop_index {
+				switch hand_index {
 				case HAND_R1, HAND_R2:
 					for i, sq := range pPos.RookLocations {
 						if sq == SQUARE_EMPTY {
-							pPos.RookLocations[i] = drop_index
+							pPos.RookLocations[i] = hand_index
 							break
 						}
 					}
 				case HAND_B1, HAND_B2:
 					for i, sq := range pPos.BishopLocations {
 						if sq == SQUARE_EMPTY {
-							pPos.BishopLocations[i] = drop_index
+							pPos.BishopLocations[i] = hand_index
 							break
 						}
 					}
 				case HAND_L1, HAND_L2:
 					for i, sq := range pPos.LanceLocations {
 						if sq == SQUARE_EMPTY {
-							pPos.LanceLocations[i] = drop_index
+							pPos.LanceLocations[i] = hand_index
 							break
 						}
 					}
@@ -750,7 +750,7 @@ func (pPos *Position) DoMove(move Move) {
 	pPos.AddControlDiffAllSlidingPiece(0, -1, from)
 
 	// まず、打かどうかで処理を分けます
-	drop := from
+	hand := from
 	var piece string
 	switch from {
 	case HAND_R1:
@@ -782,15 +782,15 @@ func (pPos *Position) DoMove(move Move) {
 	case HAND_P2:
 		piece = PIECE_P2
 	default:
-		// Not drop
-		drop = Square(0)
+		// Not hand
+		hand = Square(0)
 	}
 
-	if drop != 0 {
+	if hand != 0 {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands[drop-HAND_ORIGIN] -= 1
+		pPos.Hands[hand-HAND_ORIGIN] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -958,13 +958,13 @@ func (pPos *Position) UndoMove() {
 	switch from {
 	case HAND_R1, HAND_B1, HAND_G1, HAND_S1, HAND_N1, HAND_L1, HAND_P1, HAND_R2, HAND_B2, HAND_G2, HAND_S2, HAND_N2, HAND_L2, HAND_P2:
 		// 打なら
-		drop := from
+		hand := from
 		// 盤上から駒を除去します
 		mov_piece_type = What(pPos.Board[to])
 		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands[drop-HAND_ORIGIN] += 1
+		pPos.Hands[hand-HAND_ORIGIN] += 1
 		cap_dst_sq = 0
 	default:
 		// 打でないなら

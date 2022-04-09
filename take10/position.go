@@ -1110,7 +1110,7 @@ func (pPos *Position) DoMove(move Move) {
 	pPos.AddControlLance(CONTROL_LAYER_DIFF_LANCE_OFF, -1, from)
 
 	// まず、打かどうかで処理を分けます
-	sq_drop := from
+	sq_hand := from
 	var piece l09.Piece
 	switch from {
 	case SQ_R1:
@@ -1142,15 +1142,15 @@ func (pPos *Position) DoMove(move Move) {
 	case SQ_P2:
 		piece = PIECE_P2
 	default:
-		// Not drop
-		sq_drop = SQUARE_EMPTY
+		// Not hand
+		sq_hand = SQUARE_EMPTY
 	}
 
-	if sq_drop != 0 {
+	if sq_hand != 0 {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands[sq_drop-SQ_HAND_START] -= 1
+		pPos.Hands[sq_hand-SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -1326,14 +1326,14 @@ func (pPos *Position) UndoMove() {
 	switch from {
 	case SQ_R1, SQ_B1, SQ_G1, SQ_S1, SQ_N1, SQ_L1, SQ_P1, SQ_R2, SQ_B2, SQ_G2, SQ_S2, SQ_N2, SQ_L2, SQ_P2:
 		// 打なら
-		drop := from
+		hand := from
 		// 行き先から駒を除去します
 		mov_piece_type = What(pPos.Board[to])
 		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, -1)
 		pPos.Board[to] = PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands[drop-SQ_HAND_START] += 1
+		pPos.Hands[hand-SQ_HAND_START] += 1
 		cap_dst_sq = 0
 	default:
 		// 打でないなら

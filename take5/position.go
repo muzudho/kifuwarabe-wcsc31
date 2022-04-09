@@ -189,37 +189,37 @@ BoardLoop:
 	} else {
 	HandLoop:
 		for {
-			var drop_index int
+			var hand_index int
 			var piece = command[i]
 			switch piece {
 			case 'R':
-				drop_index = HAND_R1
+				hand_index = HAND_R1
 			case 'B':
-				drop_index = HAND_B1
+				hand_index = HAND_B1
 			case 'G':
-				drop_index = HAND_G1
+				hand_index = HAND_G1
 			case 'S':
-				drop_index = HAND_S1
+				hand_index = HAND_S1
 			case 'N':
-				drop_index = HAND_N1
+				hand_index = HAND_N1
 			case 'L':
-				drop_index = HAND_L1
+				hand_index = HAND_L1
 			case 'P':
-				drop_index = HAND_P1
+				hand_index = HAND_P1
 			case 'r':
-				drop_index = HAND_R2
+				hand_index = HAND_R2
 			case 'b':
-				drop_index = HAND_B2
+				hand_index = HAND_B2
 			case 'g':
-				drop_index = HAND_G2
+				hand_index = HAND_G2
 			case 's':
-				drop_index = HAND_S2
+				hand_index = HAND_S2
 			case 'n':
-				drop_index = HAND_N2
+				hand_index = HAND_N2
 			case 'l':
-				drop_index = HAND_L2
+				hand_index = HAND_L2
 			case 'p':
-				drop_index = HAND_P2
+				hand_index = HAND_P2
 			case ' ':
 				i += 1
 				break HandLoop
@@ -247,7 +247,7 @@ BoardLoop:
 				}
 			}
 
-			pos.Hands[drop_index] = number
+			pos.Hands[hand_index] = number
 		}
 	}
 
