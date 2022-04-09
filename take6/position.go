@@ -9,20 +9,8 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-// 1:先手 2:後手
-type Phase byte
-
 // マス番号 00～99,100～113
 type Square uint32
-
-const (
-	// 空マス
-	ZEROTH = Phase(0)
-	// 先手
-	FIRST = Phase(1)
-	// 後手
-	SECOND = Phase(2)
-)
 
 // 駒
 const (

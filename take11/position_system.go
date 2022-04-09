@@ -29,9 +29,6 @@ const (
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
-// 1:先手 2:後手
-type Phase byte
-
 // FlipPhase - 先後を反転します
 func FlipPhase(phase Phase) Phase {
 	return phase%2 + 1
@@ -57,15 +54,6 @@ func OnBoard(sq Square) bool {
 
 // マス番号を指定しないことを意味するマス番号
 const SQUARE_EMPTY = Square(0)
-
-const (
-	// 空マス
-	ZEROTH = Phase(0)
-	// 先手
-	FIRST = Phase(1)
-	// 後手
-	SECOND = Phase(2)
-)
 
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
