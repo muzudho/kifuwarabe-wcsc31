@@ -52,146 +52,6 @@ func OnBoard(sq Square) bool {
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
-// FromStringToPiece - 文字列
-func FromStringToPiece(piece string) l09.Piece {
-	switch piece {
-	case "":
-		return PIECE_EMPTY
-	case "K":
-		return PIECE_K1
-	case "R":
-		return PIECE_R1
-	case "B":
-		return PIECE_B1
-	case "G":
-		return PIECE_G1
-	case "S":
-		return PIECE_S1
-	case "N":
-		return PIECE_N1
-	case "L":
-		return PIECE_L1
-	case "P":
-		return PIECE_P1
-	case "+R":
-		return PIECE_PR1
-	case "+B":
-		return PIECE_PB1
-	case "+S":
-		return PIECE_PS1
-	case "+N":
-		return PIECE_PN1
-	case "+L":
-		return PIECE_PL1
-	case "+P":
-		return PIECE_PP1
-	case "k":
-		return PIECE_K2
-	case "r":
-		return PIECE_R2
-	case "b":
-		return PIECE_B2
-	case "g":
-		return PIECE_G2
-	case "s":
-		return PIECE_S2
-	case "n":
-		return PIECE_N2
-	case "l":
-		return PIECE_L2
-	case "p":
-		return PIECE_P2
-	case "+r":
-		return PIECE_PR2
-	case "+b":
-		return PIECE_PB2
-	case "+s":
-		return PIECE_PS2
-	case "+n":
-		return PIECE_PN2
-	case "+l":
-		return PIECE_PL2
-	case "+p":
-		return PIECE_PP2
-	default:
-		panic(fmt.Errorf("unknown piece=[%s]", piece))
-	}
-}
-
-// PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
-	switch phase {
-	case FIRST:
-		switch pieceType {
-		case PIECE_TYPE_K:
-			return PIECE_K1
-		case PIECE_TYPE_R:
-			return PIECE_R1
-		case PIECE_TYPE_B:
-			return PIECE_B1
-		case PIECE_TYPE_G:
-			return PIECE_G1
-		case PIECE_TYPE_S:
-			return PIECE_S1
-		case PIECE_TYPE_N:
-			return PIECE_N1
-		case PIECE_TYPE_L:
-			return PIECE_L1
-		case PIECE_TYPE_P:
-			return PIECE_P1
-		case PIECE_TYPE_PR:
-			return PIECE_PR1
-		case PIECE_TYPE_PB:
-			return PIECE_PB1
-		case PIECE_TYPE_PS:
-			return PIECE_PS1
-		case PIECE_TYPE_PN:
-			return PIECE_PN1
-		case PIECE_TYPE_PL:
-			return PIECE_PL1
-		case PIECE_TYPE_PP:
-			return PIECE_PP1
-		default:
-			panic(fmt.Errorf("unknown piece type=%d", pieceType))
-		}
-	case SECOND:
-		switch pieceType {
-		case PIECE_TYPE_K:
-			return PIECE_K2
-		case PIECE_TYPE_R:
-			return PIECE_R2
-		case PIECE_TYPE_B:
-			return PIECE_B2
-		case PIECE_TYPE_G:
-			return PIECE_G2
-		case PIECE_TYPE_S:
-			return PIECE_S2
-		case PIECE_TYPE_N:
-			return PIECE_N2
-		case PIECE_TYPE_L:
-			return PIECE_L2
-		case PIECE_TYPE_P:
-			return PIECE_P2
-		case PIECE_TYPE_PR:
-			return PIECE_PR2
-		case PIECE_TYPE_PB:
-			return PIECE_PB2
-		case PIECE_TYPE_PS:
-			return PIECE_PS2
-		case PIECE_TYPE_PN:
-			return PIECE_PN2
-		case PIECE_TYPE_PL:
-			return PIECE_PL2
-		case PIECE_TYPE_PP:
-			return PIECE_PP2
-		default:
-			panic(fmt.Errorf("unknown piece type=%d", pieceType))
-		}
-	default:
-		panic(fmt.Errorf("unknown phase=%d", phase))
-	}
-}
-
 var HandPieceMap1 = [HAND_SIZE]l09.Piece{
 	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
@@ -975,7 +835,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
 				}
 			} else {
 				// 取った時
@@ -986,7 +846,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:
