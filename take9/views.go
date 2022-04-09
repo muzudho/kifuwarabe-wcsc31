@@ -119,7 +119,7 @@ func (pPos *Position) SprintControl(phase Phase, flag int) string {
 	}
 
 	var ph = phase - 1
-	if 0 <= ph && ph < 2 {
+	if ph < 2 { // 0 <= ph &&
 		if flag == 0 {
 			title = "Control"
 			board = pPos.ControlBoards[ph]

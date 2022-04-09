@@ -3,11 +3,12 @@ package take8
 import (
 	"io/ioutil"
 
+	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	"github.com/pelletier/go-toml"
 )
 
 // LoadEngineConf - ゲーム設定ファイルを読み込みます。
-func LoadEngineConf(path string) (*EngineConf, error) {
+func LoadEngineConf(path string) (*l01.EngineConf, error) {
 
 	// ファイル読込
 	fileData, err := ioutil.ReadFile(path)
@@ -19,7 +20,7 @@ func LoadEngineConf(path string) (*EngineConf, error) {
 
 	// Toml解析
 	binary := []byte(string(fileData))
-	config := &EngineConf{}
+	config := &l01.EngineConf{}
 	toml.Unmarshal(binary, config)
 
 	return config, nil
