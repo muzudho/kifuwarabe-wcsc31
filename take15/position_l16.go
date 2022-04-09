@@ -101,8 +101,8 @@ func PieceFrom(piece string) l09.Piece {
 	}
 }
 
-// ToPieceCode - 文字列
-func ToPieceCode(pc l09.Piece) string {
+// ToPcCode - 文字列
+func ToPcCode(pc l09.Piece) string {
 	switch pc {
 	case PIECE_EMPTY:
 		return ""
