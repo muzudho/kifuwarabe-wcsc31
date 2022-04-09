@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	l12 "github.com/muzudho/kifuwarabe-wcsc31/take12"
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
 type SearchType uint8
@@ -211,14 +211,14 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			someBestMoves = append(someBestMoves, move)
 			cutting = CuttingKingCapture
 			alpha = VALUE_INFINITE_1
-		} else if search_type == SEARCH_CAPTURE && captured == l12.PIECE_EMPTY {
+		} else if search_type == SEARCH_CAPTURE && captured == l11.PIECE_EMPTY {
 			// 駒の取り合いを探索中に、駒を取らなかったら
 			// この手は見なかったことにするぜ（＾～＾）
 		} else {
 			// 駒を取っている場合は、探索を延長します
 			// TODO  if captured != PIECE_EMPTY
 			var search_type2 SearchType
-			if captured != l12.PIECE_EMPTY {
+			if captured != l11.PIECE_EMPTY {
 				search_type2 = SEARCH_CAPTURE
 			} else {
 				search_type2 = search_type

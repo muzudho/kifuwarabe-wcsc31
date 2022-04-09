@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	l12 "github.com/muzudho/kifuwarabe-wcsc31/take12"
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -201,7 +201,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 		for file := Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
-			if piece != l12.PIECE_EMPTY {
+			if piece != l11.PIECE_EMPTY {
 				if spaces > 0 {
 					buf = append(buf, OneDigitNumbers[spaces])
 					spaces = 0

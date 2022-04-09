@@ -3,7 +3,7 @@ package take14
 import (
 	"fmt"
 
-	l12 "github.com/muzudho/kifuwarabe-wcsc31/take12"
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -31,35 +31,35 @@ const (
 // What - 先後のない駒種類を返します。
 func What(piece l09.Piece) PieceType {
 	switch piece {
-	case l12.PIECE_EMPTY: // 空きマス
+	case l11.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY
-	case l12.PIECE_K1, l12.PIECE_K2:
+	case l11.PIECE_K1, l11.PIECE_K2:
 		return PIECE_TYPE_K
-	case l12.PIECE_R1, l12.PIECE_R2:
+	case l11.PIECE_R1, l11.PIECE_R2:
 		return PIECE_TYPE_R
-	case l12.PIECE_B1, l12.PIECE_B2:
+	case l11.PIECE_B1, l11.PIECE_B2:
 		return PIECE_TYPE_B
-	case l12.PIECE_G1, l12.PIECE_G2:
+	case l11.PIECE_G1, l11.PIECE_G2:
 		return PIECE_TYPE_G
-	case l12.PIECE_S1, l12.PIECE_S2:
+	case l11.PIECE_S1, l11.PIECE_S2:
 		return PIECE_TYPE_S
-	case l12.PIECE_N1, l12.PIECE_N2:
+	case l11.PIECE_N1, l11.PIECE_N2:
 		return PIECE_TYPE_N
-	case l12.PIECE_L1, l12.PIECE_L2:
+	case l11.PIECE_L1, l11.PIECE_L2:
 		return PIECE_TYPE_L
-	case l12.PIECE_P1, l12.PIECE_P2:
+	case l11.PIECE_P1, l11.PIECE_P2:
 		return PIECE_TYPE_P
-	case l12.PIECE_PR1, l12.PIECE_PR2:
+	case l11.PIECE_PR1, l11.PIECE_PR2:
 		return PIECE_TYPE_PR
-	case l12.PIECE_PB1, l12.PIECE_PB2:
+	case l11.PIECE_PB1, l11.PIECE_PB2:
 		return PIECE_TYPE_PB
-	case l12.PIECE_PS1, l12.PIECE_PS2:
+	case l11.PIECE_PS1, l11.PIECE_PS2:
 		return PIECE_TYPE_PS
-	case l12.PIECE_PN1, l12.PIECE_PN2:
+	case l11.PIECE_PN1, l11.PIECE_PN2:
 		return PIECE_TYPE_PN
-	case l12.PIECE_PL1, l12.PIECE_PL2:
+	case l11.PIECE_PL1, l11.PIECE_PL2:
 		return PIECE_TYPE_PL
-	case l12.PIECE_PP1, l12.PIECE_PP2:
+	case l11.PIECE_PP1, l11.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
 		panic(fmt.Errorf("unknown piece=[%d]", piece))

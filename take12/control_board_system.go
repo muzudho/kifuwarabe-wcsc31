@@ -1,6 +1,10 @@
 package take12
 
-import "fmt"
+import (
+	"fmt"
+
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+)
 
 // 利きテーブル・インデックス型
 type ControlLayerT int
@@ -189,7 +193,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 	}
 
 	piece := pPos.Board[from]
-	if piece == PIECE_EMPTY {
+	if piece == l11.PIECE_EMPTY {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
