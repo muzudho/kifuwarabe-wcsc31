@@ -3,7 +3,7 @@ package take13
 import (
 	"fmt"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -31,35 +31,35 @@ const (
 // What - 先後のない駒種類を返します。
 func What(piece l09.Piece) PieceType {
 	switch piece {
-	case l11.PIECE_EMPTY: // 空きマス
+	case l10.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY
-	case l11.PIECE_K1, l11.PIECE_K2:
+	case l10.PIECE_K1, l10.PIECE_K2:
 		return PIECE_TYPE_K
-	case l11.PIECE_R1, l11.PIECE_R2:
+	case l10.PIECE_R1, l10.PIECE_R2:
 		return PIECE_TYPE_R
-	case l11.PIECE_B1, l11.PIECE_B2:
+	case l10.PIECE_B1, l10.PIECE_B2:
 		return PIECE_TYPE_B
-	case l11.PIECE_G1, l11.PIECE_G2:
+	case l10.PIECE_G1, l10.PIECE_G2:
 		return PIECE_TYPE_G
-	case l11.PIECE_S1, l11.PIECE_S2:
+	case l10.PIECE_S1, l10.PIECE_S2:
 		return PIECE_TYPE_S
-	case l11.PIECE_N1, l11.PIECE_N2:
+	case l10.PIECE_N1, l10.PIECE_N2:
 		return PIECE_TYPE_N
-	case l11.PIECE_L1, l11.PIECE_L2:
+	case l10.PIECE_L1, l10.PIECE_L2:
 		return PIECE_TYPE_L
-	case l11.PIECE_P1, l11.PIECE_P2:
+	case l10.PIECE_P1, l10.PIECE_P2:
 		return PIECE_TYPE_P
-	case l11.PIECE_PR1, l11.PIECE_PR2:
+	case l10.PIECE_PR1, l10.PIECE_PR2:
 		return PIECE_TYPE_PR
-	case l11.PIECE_PB1, l11.PIECE_PB2:
+	case l10.PIECE_PB1, l10.PIECE_PB2:
 		return PIECE_TYPE_PB
-	case l11.PIECE_PS1, l11.PIECE_PS2:
+	case l10.PIECE_PS1, l10.PIECE_PS2:
 		return PIECE_TYPE_PS
-	case l11.PIECE_PN1, l11.PIECE_PN2:
+	case l10.PIECE_PN1, l10.PIECE_PN2:
 		return PIECE_TYPE_PN
-	case l11.PIECE_PL1, l11.PIECE_PL2:
+	case l10.PIECE_PL1, l10.PIECE_PL2:
 		return PIECE_TYPE_PL
-	case l11.PIECE_PP1, l11.PIECE_PP2:
+	case l10.PIECE_PP1, l10.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
 		panic(fmt.Errorf("unknown piece=[%d]", piece))
@@ -94,66 +94,66 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 	case FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l11.PIECE_K1
+			return l10.PIECE_K1
 		case PIECE_TYPE_R:
-			return l11.PIECE_R1
+			return l10.PIECE_R1
 		case PIECE_TYPE_B:
-			return l11.PIECE_B1
+			return l10.PIECE_B1
 		case PIECE_TYPE_G:
-			return l11.PIECE_G1
+			return l10.PIECE_G1
 		case PIECE_TYPE_S:
-			return l11.PIECE_S1
+			return l10.PIECE_S1
 		case PIECE_TYPE_N:
-			return l11.PIECE_N1
+			return l10.PIECE_N1
 		case PIECE_TYPE_L:
-			return l11.PIECE_L1
+			return l10.PIECE_L1
 		case PIECE_TYPE_P:
-			return l11.PIECE_P1
+			return l10.PIECE_P1
 		case PIECE_TYPE_PR:
-			return l11.PIECE_PR1
+			return l10.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return l11.PIECE_PB1
+			return l10.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return l11.PIECE_PS1
+			return l10.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return l11.PIECE_PN1
+			return l10.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return l11.PIECE_PL1
+			return l10.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return l11.PIECE_PP1
+			return l10.PIECE_PP1
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
 	case SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l11.PIECE_K2
+			return l10.PIECE_K2
 		case PIECE_TYPE_R:
-			return l11.PIECE_R2
+			return l10.PIECE_R2
 		case PIECE_TYPE_B:
-			return l11.PIECE_B2
+			return l10.PIECE_B2
 		case PIECE_TYPE_G:
-			return l11.PIECE_G2
+			return l10.PIECE_G2
 		case PIECE_TYPE_S:
-			return l11.PIECE_S2
+			return l10.PIECE_S2
 		case PIECE_TYPE_N:
-			return l11.PIECE_N2
+			return l10.PIECE_N2
 		case PIECE_TYPE_L:
-			return l11.PIECE_L2
+			return l10.PIECE_L2
 		case PIECE_TYPE_P:
-			return l11.PIECE_P2
+			return l10.PIECE_P2
 		case PIECE_TYPE_PR:
-			return l11.PIECE_PR2
+			return l10.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return l11.PIECE_PB2
+			return l10.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return l11.PIECE_PS2
+			return l10.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return l11.PIECE_PN2
+			return l10.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return l11.PIECE_PL2
+			return l10.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return l11.PIECE_PP2
+			return l10.PIECE_PP2
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}

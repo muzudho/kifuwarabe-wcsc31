@@ -3,7 +3,7 @@ package take12
 import (
 	"fmt"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 )
 
 // マス番号が正常値でなければ強制終了させます
@@ -82,7 +82,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから斜めに長い利き
 		switch piece {
-		case l11.PIECE_B1, l11.PIECE_PB1, l11.PIECE_B2, l11.PIECE_PB2:
+		case l10.PIECE_B1, l10.PIECE_PB1, l10.PIECE_B2, l10.PIECE_PB2:
 			if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 				for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 					ValidateSq(to)
@@ -125,7 +125,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから先手香車の長い利き
 		switch piece {
-		case l11.PIECE_L1, l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_R2, l11.PIECE_PR2:
+		case l10.PIECE_L1, l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_R2, l10.PIECE_PR2:
 			if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
 				for to := from - 2; Rank(to) != 0; to -= 1 { // 上
 					ValidateSq(to)
@@ -141,7 +141,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ先のマスから後手香車の長い利き
 		switch piece {
-		case l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_L2, l11.PIECE_R2, l11.PIECE_PR2:
+		case l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_L2, l10.PIECE_R2, l10.PIECE_PR2:
 			if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
 				for to := from + 2; Rank(to) != 0; to += 1 { // 下
 					ValidateSq(to)
@@ -157,7 +157,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// ２つ横のマスから飛の長い利き
 		switch piece {
-		case l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_R2, l11.PIECE_PR2:
+		case l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_R2, l10.PIECE_PR2:
 			if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 				for to := from + 20; File(to) != 0; to += 10 { // 左
 					ValidateSq(to)
@@ -181,7 +181,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		}
 
 		// 先手桂の利き
-		if piece == l11.PIECE_N1 && 2 < Rank(from) && Rank(from) < 10 {
+		if piece == l10.PIECE_N1 && 2 < Rank(from) && Rank(from) < 10 {
 			if 0 < File(from) && File(from) < 9 { // 左上桂馬飛び
 				to := from + 8
 				ValidateSq(to)
@@ -195,7 +195,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 		}
 
 		// 後手桂の利き
-		if piece == l11.PIECE_N2 {
+		if piece == l10.PIECE_N2 {
 			if to := from + 12; File(to) != 0 && Rank(to) != 0 && Rank(to) != 9 { // 左下
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -208,9 +208,9 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 先手歩の利き
 		switch piece {
-		case l11.PIECE_K1, l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_PB1, l11.PIECE_G1, l11.PIECE_S1, l11.PIECE_L1, l11.PIECE_P1, l11.PIECE_PS1,
-			l11.PIECE_PN1, l11.PIECE_PL1, l11.PIECE_PP1, l11.PIECE_K2, l11.PIECE_R2, l11.PIECE_PR2, l11.PIECE_PB2, l11.PIECE_G2, l11.PIECE_PS2,
-			l11.PIECE_PN2, l11.PIECE_PL2, l11.PIECE_PP2:
+		case l10.PIECE_K1, l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_PB1, l10.PIECE_G1, l10.PIECE_S1, l10.PIECE_L1, l10.PIECE_P1, l10.PIECE_PS1,
+			l10.PIECE_PN1, l10.PIECE_PL1, l10.PIECE_PP1, l10.PIECE_K2, l10.PIECE_R2, l10.PIECE_PR2, l10.PIECE_PB2, l10.PIECE_G2, l10.PIECE_PS2,
+			l10.PIECE_PN2, l10.PIECE_PL2, l10.PIECE_PP2:
 			if to := from - 1; Rank(to) != 0 { // 上
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -221,9 +221,9 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 後手歩の利き
 		switch piece {
-		case l11.PIECE_K2, l11.PIECE_R2, l11.PIECE_PR2, l11.PIECE_PB2, l11.PIECE_G2, l11.PIECE_S2, l11.PIECE_L2, l11.PIECE_P2, l11.PIECE_PS2,
-			l11.PIECE_PN2, l11.PIECE_PL2, l11.PIECE_PP2, l11.PIECE_K1, l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_PB1, l11.PIECE_G1, l11.PIECE_PS1,
-			l11.PIECE_PN1, l11.PIECE_PL1, l11.PIECE_PP1:
+		case l10.PIECE_K2, l10.PIECE_R2, l10.PIECE_PR2, l10.PIECE_PB2, l10.PIECE_G2, l10.PIECE_S2, l10.PIECE_L2, l10.PIECE_P2, l10.PIECE_PS2,
+			l10.PIECE_PN2, l10.PIECE_PL2, l10.PIECE_PP2, l10.PIECE_K1, l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_PB1, l10.PIECE_G1, l10.PIECE_PS1,
+			l10.PIECE_PN1, l10.PIECE_PL1, l10.PIECE_PP1:
 			if to := from + 1; Rank(to) != 0 { // 下
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -234,8 +234,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 先手斜め前の利き
 		switch piece {
-		case l11.PIECE_K1, l11.PIECE_PR1, l11.PIECE_B1, l11.PIECE_PB1, l11.PIECE_G1, l11.PIECE_S1, l11.PIECE_PS1, l11.PIECE_PN1, l11.PIECE_PL1,
-			l11.PIECE_PP1, l11.PIECE_K2, l11.PIECE_PR2, l11.PIECE_B2, l11.PIECE_PB2, l11.PIECE_S2:
+		case l10.PIECE_K1, l10.PIECE_PR1, l10.PIECE_B1, l10.PIECE_PB1, l10.PIECE_G1, l10.PIECE_S1, l10.PIECE_PS1, l10.PIECE_PN1, l10.PIECE_PL1,
+			l10.PIECE_PP1, l10.PIECE_K2, l10.PIECE_PR2, l10.PIECE_B2, l10.PIECE_PB2, l10.PIECE_S2:
 			if to := from + 9; File(to) != 0 && Rank(to) != 0 { // 左上
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -250,8 +250,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 後手斜め前の利き
 		switch piece {
-		case l11.PIECE_K2, l11.PIECE_PR2, l11.PIECE_B2, l11.PIECE_PB2, l11.PIECE_G2, l11.PIECE_S2, l11.PIECE_PS2, l11.PIECE_PN2, l11.PIECE_PL2,
-			l11.PIECE_PP2, l11.PIECE_K1, l11.PIECE_PR1, l11.PIECE_B1, l11.PIECE_PB1, l11.PIECE_S1:
+		case l10.PIECE_K2, l10.PIECE_PR2, l10.PIECE_B2, l10.PIECE_PB2, l10.PIECE_G2, l10.PIECE_S2, l10.PIECE_PS2, l10.PIECE_PN2, l10.PIECE_PL2,
+			l10.PIECE_PP2, l10.PIECE_K1, l10.PIECE_PR1, l10.PIECE_B1, l10.PIECE_PB1, l10.PIECE_S1:
 			if to := from + 11; File(to) != 0 && Rank(to) != 0 { // 左下
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -266,8 +266,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 		// 横１マスの利き
 		switch piece {
-		case l11.PIECE_K1, l11.PIECE_R1, l11.PIECE_PR1, l11.PIECE_PB1, l11.PIECE_G1, l11.PIECE_PS1, l11.PIECE_PN1, l11.PIECE_PL1, l11.PIECE_PP1,
-			l11.PIECE_K2, l11.PIECE_R2, l11.PIECE_PR2, l11.PIECE_PB2, l11.PIECE_G2, l11.PIECE_PS2, l11.PIECE_PN2, l11.PIECE_PL2, l11.PIECE_PP2:
+		case l10.PIECE_K1, l10.PIECE_R1, l10.PIECE_PR1, l10.PIECE_PB1, l10.PIECE_G1, l10.PIECE_PS1, l10.PIECE_PN1, l10.PIECE_PL1, l10.PIECE_PP1,
+			l10.PIECE_K2, l10.PIECE_R2, l10.PIECE_PR2, l10.PIECE_PB2, l10.PIECE_G2, l10.PIECE_PS2, l10.PIECE_PN2, l10.PIECE_PL2, l10.PIECE_PP2:
 			if to := from + 10; File(to) != 0 { // 左
 				ValidateSq(to)
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -287,7 +287,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 // NifuFirst - 先手で二歩になるか筋調べ
 func NifuFirst(pPos *Position, file Square) bool {
 	for rank := Square(2); rank < 10; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == l11.PIECE_P1 {
+		if pPos.Board[SquareFrom(file, rank)] == l10.PIECE_P1 {
 			return true
 		}
 	}
@@ -298,7 +298,7 @@ func NifuFirst(pPos *Position, file Square) bool {
 // NifuSecond - 後手で二歩になるか筋調べ
 func NifuSecond(pPos *Position, file Square) bool {
 	for rank := Square(1); rank < 9; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == l11.PIECE_P2 {
+		if pPos.Board[SquareFrom(file, rank)] == l10.PIECE_P2 {
 			return true
 		}
 	}
