@@ -30,23 +30,10 @@ const (
 	PCLOC_SIZE  = 10
 )
 
-// マス番号を指定しないことを意味するマス番号
-const SQUARE_EMPTY = Square(0)
-
 // 持ち駒
 var HandIndexToPiece = [HAND_SIZE]l09.Piece{
 	PIECE_K1, PIECE_R1, PIECE_B1, PIECE_G1, PIECE_S1, PIECE_N1, PIECE_L1, PIECE_P1,
 	PIECE_K2, PIECE_R2, PIECE_B2, PIECE_G2, PIECE_S2, PIECE_N2, PIECE_L2, PIECE_P2}
-
-// File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
-	return sq / 10 % 10
-}
-
-// Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
-	return sq % 10
-}
 
 // Promote - 成ります
 func Promote(piece l09.Piece) l09.Piece {

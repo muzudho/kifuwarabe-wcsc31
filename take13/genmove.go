@@ -2,16 +2,6 @@ package take13
 
 import "fmt"
 
-// File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
-	return sq / 10 % 10
-}
-
-// Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
-	return sq % 10
-}
-
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 // 成らないと移動できないが、成れば移動できるマスがあるので、移動先と成りの２つセットで返します。
 func GenMoveEnd(pPos *Position, from Square) []MoveEnd {

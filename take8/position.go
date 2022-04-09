@@ -30,9 +30,6 @@ func OnBoard(sq Square) bool {
 	return 10 < sq && sq < 100
 }
 
-// マス番号を指定しないことを意味するマス番号
-const SQUARE_EMPTY = Square(0)
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）

@@ -57,16 +57,6 @@ var genmv_dp2 = []int{31, 32, 33, 34, 35, 36} // と、二歩チェック
 // 成りの手は生成しません
 const NOT_PROMOTE = false
 
-// File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
-	return sq / 10 % 10
-}
-
-// Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
-	return sq % 10
-}
-
 // 条件Aの1. 移動元が敵陣だ
 func FromOpponent(phase Phase, from Square) bool {
 	switch phase {

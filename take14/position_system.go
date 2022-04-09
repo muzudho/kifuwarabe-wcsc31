@@ -49,9 +49,6 @@ func OnBoard(sq Square) bool {
 	return 10 < sq && sq < 100 && File(sq) != 0 && Rank(sq) != 0
 }
 
-// マス番号を指定しないことを意味するマス番号
-const SQUARE_EMPTY = Square(0)
-
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
