@@ -1,5 +1,8 @@
 package take10
 
+// マス番号 00～99,100～113
+type Square uint32
+
 const (
 	// 持ち駒を打つ 100～113
 	// 先手飛打

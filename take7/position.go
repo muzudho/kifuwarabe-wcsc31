@@ -12,42 +12,6 @@ const MOVES_SIZE = 512
 // 00～99
 const BOARD_SIZE = 100
 
-// マス番号 00～99,100～113
-type Square uint32
-
-// 駒
-const (
-	PIECE_EMPTY = ""
-	PIECE_K1    = "K"
-	PIECE_R1    = "R"
-	PIECE_B1    = "B"
-	PIECE_G1    = "G"
-	PIECE_S1    = "S"
-	PIECE_N1    = "N"
-	PIECE_L1    = "L"
-	PIECE_P1    = "P"
-	PIECE_PR1   = "+R"
-	PIECE_PB1   = "+B"
-	PIECE_PS1   = "+S"
-	PIECE_PN1   = "+N"
-	PIECE_PL1   = "+L"
-	PIECE_PP1   = "+P"
-	PIECE_K2    = "k"
-	PIECE_R2    = "r"
-	PIECE_B2    = "b"
-	PIECE_G2    = "g"
-	PIECE_S2    = "s"
-	PIECE_N2    = "n"
-	PIECE_L2    = "l"
-	PIECE_P2    = "p"
-	PIECE_PR2   = "+r"
-	PIECE_PB2   = "+b"
-	PIECE_PS2   = "+s"
-	PIECE_PN2   = "+n"
-	PIECE_PL2   = "+l"
-	PIECE_PP2   = "+p"
-)
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）

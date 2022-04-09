@@ -34,9 +34,6 @@ func FlipPhase(phase Phase) Phase {
 	return phase%2 + 1
 }
 
-// マス番号 00～99,100～113
-type Square uint32
-
 // From - 筋と段からマス番号を作成します
 func SquareFrom(file Square, rank Square) Square {
 	return Square(file*10 + rank)
@@ -57,39 +54,6 @@ const SQUARE_EMPTY = Square(0)
 
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
-
-// 駒
-const (
-	PIECE_EMPTY = iota
-	PIECE_K1
-	PIECE_R1
-	PIECE_B1
-	PIECE_G1
-	PIECE_S1
-	PIECE_N1
-	PIECE_L1
-	PIECE_P1
-	PIECE_PR1
-	PIECE_PB1
-	PIECE_PS1
-	PIECE_PN1
-	PIECE_PL1
-	PIECE_PP1
-	PIECE_K2
-	PIECE_R2
-	PIECE_B2
-	PIECE_G2
-	PIECE_S2
-	PIECE_N2
-	PIECE_L2
-	PIECE_P2
-	PIECE_PR2
-	PIECE_PB2
-	PIECE_PS2
-	PIECE_PN2
-	PIECE_PL2
-	PIECE_PP2
-)
 
 // PieceFrom - 文字列
 func PieceFrom(piece string) l09.Piece {
