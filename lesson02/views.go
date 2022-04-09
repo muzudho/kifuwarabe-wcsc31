@@ -1,8 +1,6 @@
 package lesson02
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
 func Sprint(pos *Position) string {
