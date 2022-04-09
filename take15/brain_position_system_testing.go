@@ -41,7 +41,7 @@ func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
 		// 元に戻っていればOK（＾～＾）
 		is_error := checkControl(pBrain, move_seq, move_total, move)
 		if is_error {
-			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, ToCode(move))
+			return is_error, fmt.Sprintf("Error! move_seq=(%d/%d) move=%s", move_seq, move_total, ToMCode(move))
 		}
 	}
 
@@ -307,7 +307,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 				for file := Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
-					fmt.Printf("%s,", pPos.Board[sq].ToCode())
+					fmt.Printf("%s,", pPos.Board[sq].ToPcCode())
 
 					piece := What(pPos.Board[sq])
 					switch piece {

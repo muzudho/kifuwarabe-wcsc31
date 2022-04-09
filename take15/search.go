@@ -45,7 +45,7 @@ func Search(pBrain *Brain) Move {
 
 	// 評価値出力（＾～＾）
 	App.Out.Print("info depth %d nodes %d score cp %d currmove %s pv %s\n",
-		curDepth, nodesNum, bestVal, ToCode(bestMove), ToCode(bestMove))
+		curDepth, nodesNum, bestVal, ToMCode(bestMove), ToMCode(bestMove))
 
 	// ゲーム向けの軽い乱数
 	return bestMove
@@ -97,7 +97,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
 			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
-				from, i, lenOfMoves, ToCode(younger_sibling_move)))
+				from, i, lenOfMoves, ToMCode(younger_sibling_move)))
 		}
 
 		pBrain.DoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], move)
@@ -185,7 +185,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
 			App.Out.Debug(pPosCopy.SprintLocation())
-			panic(App.LogNotEcho.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, ToCode(younger_sibling_move), ToCode(move)))
+			panic(App.LogNotEcho.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, ToMCode(younger_sibling_move), ToMCode(move)))
 		}
 
 		younger_sibling_move = move

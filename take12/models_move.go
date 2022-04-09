@@ -23,8 +23,8 @@ func NewMove2(from Square, to Square) Move {
 	return move.ReplaceDestination(to)
 }
 
-// ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func (move Move) ToCode() string {
+// ToMCode - SFEN の moves の後に続く指し手に使える文字列を返します
+func (move Move) ToMCode() string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {

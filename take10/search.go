@@ -47,7 +47,7 @@ func Search(pPos *Position) Move {
 	currMove := bestMoveList[rand.Intn(len(bestMoveList))]
 
 	// 評価値出力（＾～＾）
-	App.Out.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, currMove.ToCode(), currMove.ToCode())
+	App.Out.Print("info depth 0 nodes %d score cp %d currmove %s pv %s\n", nodesNum, bestVal, currMove.ToMCode(), currMove.ToMCode())
 
 	// ゲーム向けの軽い乱数
 	return currMove

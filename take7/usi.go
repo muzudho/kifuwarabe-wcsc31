@@ -105,7 +105,7 @@ MainLoop:
 			pPos.ReadPosition(command)
 		case "go":
 			bestmove := Search(pPos)
-			App.Out.Print("bestmove %s\n", bestmove.ToCode())
+			App.Out.Print("bestmove %s\n", bestmove.ToMCode())
 		case "quit":
 			break MainLoop
 		case "pos":

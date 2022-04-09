@@ -16,8 +16,8 @@ func NewMove(from Square, to Square, promotion bool) *Move {
 	return move
 }
 
-// ToCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func (move *Move) ToCode() string {
+// ToMCode - SFEN の moves の後に続く指し手に使える文字列を返します
+func (move *Move) ToMCode() string {
 	str := make([]byte, 0, 5)
 	count := 0
 

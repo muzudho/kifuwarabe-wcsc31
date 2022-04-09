@@ -112,7 +112,7 @@ MainLoop:
 			pBrain.ReadPosition(pBrain.PPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
 			bestmove := Search(pBrain)
-			App.Out.Print("bestmove %s\n", ToCode(bestmove))
+			App.Out.Print("bestmove %s\n", ToMCode(bestmove))
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -342,7 +342,7 @@ MainLoop:
 
 					// moveList(pBrain.PPosSys)
 					bestmove := Search(pBrain)
-					App.Out.Print("bestmove %s\n", ToCode(bestmove))
+					App.Out.Print("bestmove %s\n", ToMCode(bestmove))
 
 					if bestmove == Move(SQUARE_EMPTY) {
 						// 投了
@@ -539,7 +539,7 @@ func moveList(pBrain *Brain) {
 	for i, move := range move_list {
 		var pPos = pBrain.PPosSys.PPosition[POS_LAYER_MAIN]
 		pBrain.DoMove(pPos, move)
-		App.Out.Debug("(%3d) %-5s . %11d value\n", i, ToCode(move), pPos.MaterialValue)
+		App.Out.Debug("(%3d) %-5s . %11d value\n", i, ToMCode(move), pPos.MaterialValue)
 		pBrain.UndoMove(pBrain.PPosSys.PPosition[POS_LAYER_MAIN])
 		// App.Out.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
