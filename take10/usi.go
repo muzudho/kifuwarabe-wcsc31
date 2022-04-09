@@ -106,7 +106,7 @@ MainLoop:
 			pPos.ReadPosition(command)
 		case "go":
 			bestmove := Search(pPos)
-			App.Out.Print("bestmove %s\n", bestmove.ToMCode())
+			App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 		case "quit":
 			break MainLoop
 		// 以下、きふわらべ独自拡張コマンド
@@ -232,7 +232,7 @@ MainLoop:
 
 				// moveList(pPos)
 				bestmove := Search(pPos)
-				App.Out.Print("bestmove %s\n", bestmove.ToMCode())
+				App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
 				if bestmove == Move(SQUARE_EMPTY) {
 					// 投了
@@ -262,7 +262,7 @@ func moveList(pPos *Position) {
 	App.Out.Debug("--------\n")
 	move_list := GenMoveList(pPos)
 	for i, move := range move_list {
-		App.Out.Debug("(%d) %s\n", i, move.ToMCode())
+		App.Out.Debug("(%d) %s\n", i, move.ToCodeOfM())
 	}
 	App.Out.Debug("* Except for those to be removed during the search\n")
 }

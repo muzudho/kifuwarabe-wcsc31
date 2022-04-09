@@ -91,7 +91,7 @@ func (pPos *Position) createMovesText() string {
 	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for i := 0; i < pPos.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pPos.Moves[i].ToMCode()...)
+		moves_text = append(moves_text, pPos.Moves[i].ToCodeOfM()...)
 	}
 	return string(moves_text)
 }
@@ -367,7 +367,7 @@ func (pPos *Position) SprintRecord() string {
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
 	for i := 0; i < pPos.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, pPos.Moves[i].ToMCode()...)
+		record_text = append(record_text, pPos.Moves[i].ToCodeOfM()...)
 		record_text = append(record_text, ' ')
 		record_text = append(record_text, pPos.CapturedList[i]...)
 		record_text = append(record_text, '\n')

@@ -112,7 +112,7 @@ MainLoop:
 			pPosSys.ReadPosition(pPosSys.PPosition[POS_LAYER_MAIN], command)
 		case "go":
 			bestmove := Search(pPosSys)
-			App.Out.Print("bestmove %s\n", bestmove.ToMCode())
+			App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -342,7 +342,7 @@ MainLoop:
 
 					// moveList(pPosSys)
 					bestmove := Search(pPosSys)
-					App.Out.Print("bestmove %s\n", bestmove.ToMCode())
+					App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
 					if bestmove == Move(SQUARE_EMPTY) {
 						// 投了
@@ -537,7 +537,7 @@ func moveList(pPosSys *PositionSystem) {
 	App.Out.Debug("--------\n")
 	move_list := GenMoveList(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
-		App.Out.Debug("(%d) %s\n", i, move.ToMCode())
+		App.Out.Debug("(%d) %s\n", i, move.ToCodeOfM())
 	}
 	App.Out.Debug("* Except for those to be removed during the search\n")
 }

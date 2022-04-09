@@ -80,7 +80,7 @@ func Sprint(pos *Position) string {
 	moves_list := make([]byte, 0, 512*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for _, pMove := range pos.Moves {
 		moves_list = append(moves_list, ' ')
-		moves_list = append(moves_list, pMove.ToMCode()...)
+		moves_list = append(moves_list, pMove.ToCodeOfM()...)
 	}
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）

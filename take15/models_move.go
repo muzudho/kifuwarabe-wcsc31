@@ -41,8 +41,8 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	return Move(uint16(move) & 0xbfff)
 }
 
-// ToMCode - SFEN の moves の後に続く指し手に使える文字列を返します
-func ToMCode(move Move) string {
+// ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
+func ToCodeOfM(move Move) string {
 
 	// 投了（＾～＾）
 	if uint32(move) == 0 {

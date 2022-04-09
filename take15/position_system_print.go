@@ -25,14 +25,14 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	for file := 9; file > -1; file -= 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(Square(file*10)) {
-			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToPcCode(), pPosSys.PPosition[b2].Board[file*10].ToPcCode())
+			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10].ToCodeOfPc())
 		}
 	}
 
 	// 0筋目
 	for rank := Square(1); rank < 10; rank += 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(rank) || !pPosSys.PPosition[b2].IsEmptySq(rank) {
-			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToPcCode(), pPosSys.PPosition[b2].Board[rank].ToPcCode())
+			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[rank].ToCodeOfPc())
 		}
 	}
 
@@ -65,7 +65,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank := 1
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -75,7 +75,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 2
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -85,7 +85,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 3
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -95,7 +95,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 4
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -105,7 +105,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 5
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -115,7 +115,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 6
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -125,7 +125,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 7
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -135,7 +135,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 8
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -145,7 +145,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	buf.Reset()
 	rank = 9
 	for file := 9; file > 0; file-- {
-		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToPcCode(), pPosSys.PPosition[b2].Board[file*10+rank].ToPcCode()))
+		buf.WriteString(fmt.Sprintf("|%2s%2s", pPosSys.PPosition[b1].Board[file*10+rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10+rank].ToCodeOfPc()))
 	}
 	buf.WriteString(fmt.Sprintf("|%s\n", zeroFiles[rank-1]))
 	lines = append(lines, buf.String())
@@ -183,7 +183,7 @@ func (pPosSys *PositionSystem) createMovesText() string {
 	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
 		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, ToMCode(pPosSys.Moves[i])...)
+		moves_text = append(moves_text, ToCodeOfM(pPosSys.Moves[i])...)
 	}
 	return string(moves_text)
 }
@@ -205,7 +205,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 					spaces = 0
 				}
 
-				pieceString := piece.ToPcCode()
+				pieceString := piece.ToCodeOfPc()
 				length := len(pieceString)
 				switch length {
 				case 2:
@@ -381,9 +381,9 @@ func (pPosSys *PositionSystem) SprintRecord() string {
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
 	record_text := make([]byte, 0, MOVES_SIZE*9)
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, ToMCode(pPosSys.Moves[i])...)
+		record_text = append(record_text, ToCodeOfM(pPosSys.Moves[i])...)
 		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPosSys.CapturedList[i].ToPcCode()...)
+		record_text = append(record_text, pPosSys.CapturedList[i].ToCodeOfPc()...)
 		record_text = append(record_text, '\n')
 	}
 

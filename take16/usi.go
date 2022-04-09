@@ -147,7 +147,7 @@ MainLoop:
 		case "go":
 			pNerve.PStopwatchSearch.StartStopwatch()
 			bestmove := IterativeDeepeningSearch(pNerve, tokens)
-			App.Out.Print("bestmove %s\n", ToMCode(bestmove))
+			App.Out.Print("bestmove %s\n", ToCodeOfM(bestmove))
 		case "quit":
 			break MainLoop
 		case "gameover":
@@ -377,7 +377,7 @@ MainLoop:
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
-					App.Out.Print("bestmove %s\n", ToMCode(bestmove))
+					App.Out.Print("bestmove %s\n", ToCodeOfM(bestmove))
 
 					if bestmove == Move(SQUARE_EMPTY) {
 						// 投了
@@ -574,7 +574,7 @@ func moveList(pNerve *Nerve) {
 	for i, move := range move_list {
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		pNerve.DoMove(pPos, move)
-		App.Out.Debug("(%3d) %-5s . %11d value\n", i, ToMCode(move), pPos.MaterialValue)
+		App.Out.Debug("(%3d) %-5s . %11d value\n", i, ToCodeOfM(move), pPos.MaterialValue)
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		// App.Out.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
