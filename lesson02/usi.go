@@ -74,7 +74,7 @@ func MainLoop() {
 	App.Log.Trace("engineConfPath=%s\n", engineConfPath)
 
 	// 設定ファイル読込。ファイルが存在しなければ強制終了してしまうので注意！
-	config, err := LoadEngineConf(engineConfPath)
+	config, err := l01.LoadEngineConf(engineConfPath)
 	if err != nil {
 		panic(App.Log.Fatal(fmt.Sprintf("engineConfPath=[%s] err=[%s]", engineConfPath, err)))
 	}

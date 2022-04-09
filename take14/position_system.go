@@ -976,7 +976,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
 				}
 			} else {
 				// 取った時
@@ -987,7 +987,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 				case SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("Unknown before_move_phase=%d", before_move_phase))
+					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case PIECE_TYPE_R, PIECE_TYPE_PR:

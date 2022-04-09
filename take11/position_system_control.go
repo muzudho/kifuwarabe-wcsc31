@@ -55,7 +55,7 @@ func GetControlLayerName(c ControlLayerT) string {
 	case CONTROL_LAYER_TEST_RECALCULATION:
 		return "TestRecalc"
 	default:
-		panic(fmt.Errorf("Unknown controlLayer=%d", c))
+		panic(fmt.Errorf("unknown control layer=%d", c))
 	}
 }
 

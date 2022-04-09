@@ -125,7 +125,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(pPosSys.PPosition[0].SprintLocation())
 			App.Out.Debug(pPosCopy.SprintLocation())
-			panic(fmt.Errorf("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
+			panic(fmt.Errorf("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCode(), move.ToCode()))
 		}
 
 		younger_sibling_move = move
