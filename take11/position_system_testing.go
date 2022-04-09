@@ -281,7 +281,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 				for file := Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
-					fmt.Printf("%s,", pPos.Board[sq].ToPcCode())
+					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
 
 					piece := What(pPos.Board[sq])
 					switch piece {

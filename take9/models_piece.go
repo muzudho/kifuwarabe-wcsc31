@@ -108,8 +108,8 @@ func Demote(piece Piece) Piece {
 	}
 }
 
-// ToPcCode - 文字列
-func (pc Piece) ToPcCode() string {
+// ToCodeOfPc - 文字列
+func (pc Piece) ToCodeOfPc() string {
 	switch pc {
 	case PIECE_EMPTY:
 		return ""

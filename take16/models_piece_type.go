@@ -1,7 +1,7 @@
 package take16
 
 import (
-	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l14 "github.com/muzudho/kifuwarabe-wcsc31/take14"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -29,35 +29,35 @@ const (
 // What - 先後のない駒種類を返します。
 func What(piece l09.Piece) PieceType {
 	switch piece {
-	case l15.PIECE_EMPTY: // 空きマス
+	case l14.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY
-	case l15.PIECE_K1, l15.PIECE_K2:
+	case l14.PIECE_K1, l14.PIECE_K2:
 		return PIECE_TYPE_K
-	case l15.PIECE_R1, l15.PIECE_R2:
+	case l14.PIECE_R1, l14.PIECE_R2:
 		return PIECE_TYPE_R
-	case l15.PIECE_B1, l15.PIECE_B2:
+	case l14.PIECE_B1, l14.PIECE_B2:
 		return PIECE_TYPE_B
-	case l15.PIECE_G1, l15.PIECE_G2:
+	case l14.PIECE_G1, l14.PIECE_G2:
 		return PIECE_TYPE_G
-	case l15.PIECE_S1, l15.PIECE_S2:
+	case l14.PIECE_S1, l14.PIECE_S2:
 		return PIECE_TYPE_S
-	case l15.PIECE_N1, l15.PIECE_N2:
+	case l14.PIECE_N1, l14.PIECE_N2:
 		return PIECE_TYPE_N
-	case l15.PIECE_L1, l15.PIECE_L2:
+	case l14.PIECE_L1, l14.PIECE_L2:
 		return PIECE_TYPE_L
-	case l15.PIECE_P1, l15.PIECE_P2:
+	case l14.PIECE_P1, l14.PIECE_P2:
 		return PIECE_TYPE_P
-	case l15.PIECE_PR1, l15.PIECE_PR2:
+	case l14.PIECE_PR1, l14.PIECE_PR2:
 		return PIECE_TYPE_PR
-	case l15.PIECE_PB1, l15.PIECE_PB2:
+	case l14.PIECE_PB1, l14.PIECE_PB2:
 		return PIECE_TYPE_PB
-	case l15.PIECE_PS1, l15.PIECE_PS2:
+	case l14.PIECE_PS1, l14.PIECE_PS2:
 		return PIECE_TYPE_PS
-	case l15.PIECE_PN1, l15.PIECE_PN2:
+	case l14.PIECE_PN1, l14.PIECE_PN2:
 		return PIECE_TYPE_PN
-	case l15.PIECE_PL1, l15.PIECE_PL2:
+	case l14.PIECE_PL1, l14.PIECE_PL2:
 		return PIECE_TYPE_PL
-	case l15.PIECE_PP1, l15.PIECE_PP2:
+	case l14.PIECE_PP1, l14.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
 		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
