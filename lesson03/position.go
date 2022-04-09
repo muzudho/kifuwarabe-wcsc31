@@ -461,8 +461,6 @@ func (pos *Position) DoMove(move Move) {
 			pos.Hands[HAND_R2-HAND_ORIGIN] += 1
 		case PIECE_PB1:
 			pos.Hands[HAND_B2-HAND_ORIGIN] += 1
-		case PIECE_PG1:
-			pos.Hands[HAND_G2-HAND_ORIGIN] += 1
 		case PIECE_PS1:
 			pos.Hands[HAND_S2-HAND_ORIGIN] += 1
 		case PIECE_PN1:
@@ -491,8 +489,6 @@ func (pos *Position) DoMove(move Move) {
 			pos.Hands[HAND_R1-HAND_ORIGIN] += 1
 		case PIECE_PB2:
 			pos.Hands[HAND_B1-HAND_ORIGIN] += 1
-		case PIECE_PG2:
-			pos.Hands[HAND_G1-HAND_ORIGIN] += 1
 		case PIECE_PS2:
 			pos.Hands[HAND_S1-HAND_ORIGIN] += 1
 		case PIECE_PN2:
