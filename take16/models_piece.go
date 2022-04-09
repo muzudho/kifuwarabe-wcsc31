@@ -109,8 +109,8 @@ func Demote(piece l09.Piece) l09.Piece {
 	}
 }
 
-// PieceFrom - 文字列からPieceを作成
-func PieceFrom(piece string) l09.Piece {
+// FromStringToPiece - 文字列からPieceを作成
+func FromStringToPiece(piece string) l09.Piece {
 	switch piece {
 	case "":
 		return PIECE_EMPTY

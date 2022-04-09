@@ -38,8 +38,8 @@ func OnBoard(sq Square) bool {
 	return 10 < sq && sq < 100 && File(sq) != 0 && Rank(sq) != 0
 }
 
-// PieceFrom - 文字列
-func PieceFrom(piece string) l09.Piece {
+// FromStringToPiece - 文字列
+func FromStringToPiece(piece string) l09.Piece {
 	switch piece {
 	case "":
 		return PIECE_EMPTY
@@ -646,7 +646,7 @@ func (pPos *Position) ReadPosition(command string) {
 			promoted := false
 			switch pc := command[i]; pc {
 			case 'K', 'R', 'B', 'G', 'S', 'N', 'L', 'P', 'k', 'r', 'b', 'g', 's', 'n', 'l', 'p':
-				pPos.Board[file*10+rank] = PieceFrom(string(pc))
+				pPos.Board[file*10+rank] = FromStringToPiece(string(pc))
 				file -= 1
 				i += 1
 			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
@@ -673,7 +673,7 @@ func (pPos *Position) ReadPosition(command string) {
 			if promoted {
 				switch pc2 := command[i]; pc2 {
 				case 'R', 'B', 'S', 'N', 'L', 'P', 'r', 'b', 's', 'n', 'l', 'p':
-					pPos.Board[file*10+rank] = PieceFrom("+" + string(pc2))
+					pPos.Board[file*10+rank] = FromStringToPiece("+" + string(pc2))
 					file -= 1
 					i += 1
 				default:
