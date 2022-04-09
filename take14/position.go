@@ -1,16 +1,19 @@
 package take14
 
-import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+import (
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+)
 
 // Position - 局面
 // TODO 利きボードも含めたい
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]l09.Piece
+	Board [l11.BOARD_SIZE]l09.Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
-	PieceLocations [PCLOC_SIZE]Square
+	PieceLocations [l11.PCLOC_SIZE]Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
 	Hands1 [HAND_SIZE]int
 
