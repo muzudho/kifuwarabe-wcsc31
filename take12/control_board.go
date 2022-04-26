@@ -1,6 +1,6 @@
 package take12
 
-import l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 
 // ControlBoard - 利きボード
 type ControlBoard struct {
@@ -31,8 +31,8 @@ func NewControlBoard(title string) *ControlBoard {
 
 // Clear - 利きボードのクリアー
 func (pCB *ControlBoard) Clear() {
-	for sq := l11.Square(11); sq < 100; sq += 1 {
-		if l11.File(sq) != 0 && l11.Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			pCB.Board[sq] = 0
 		}
 	}

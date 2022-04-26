@@ -9,6 +9,7 @@ import (
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -90,8 +91,8 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	sumList := [2]int{0, 0}
 
 	cb1 := pNerve.PCtrlBrdSys.PBoards[ph1_c]
-	for from := l11.Square(11); from < BOARD_SIZE; from += 1 {
-		if l11.File(from) != 0 && l11.Rank(from) != 0 {
+	for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+		if l04.File(from) != 0 && l04.Rank(from) != 0 {
 
 			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
 
@@ -99,8 +100,8 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	}
 
 	cb2 := pNerve.PCtrlBrdSys.PBoards[ph2_c]
-	for from := l11.Square(11); from < BOARD_SIZE; from += 1 {
-		if l11.File(from) != 0 && l11.Rank(from) != 0 {
+	for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+		if l04.File(from) != 0 && l04.Rank(from) != 0 {
 
 			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
 
@@ -123,12 +124,12 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 	for i := 0; i < 200; i += 1 {
 
 		// 盤から駒台の方向
-		for rank := l11.Square(1); rank < 10; rank += 1 {
-			for file := l11.Square(9); file > 0; file -= 1 {
+		for rank := l04.Square(1); rank < 10; rank += 1 {
+			for file := l04.Square(9); file > 0; file -= 1 {
 				sq := SquareFrom(file, rank)
 
 				// 10マスに1マスは駒台へ
-				change := l11.Square(rand.Intn(10))
+				change := l04.Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
 					if piece != l09.PIECE_EMPTY {
@@ -219,7 +220,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 		for hand_index := l11.HAND_IDX_START; hand_index < l11.HAND_IDX_END; hand_index += 1 {
 			num := pPos.Hands1[hand_index]
 			if num > 0 {
-				sq := l11.Square(rand.Intn(100))
+				sq := l04.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
 					pPos.Board[sq] = HandIndexToPiece[hand_index]
@@ -239,8 +240,8 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 	// 盤上での移動
 	// 適当に大きな回数
 	for i := 0; i < 81*80; i += 1 {
-		sq1 := l11.Square(rand.Intn(100))
-		sq2 := l11.Square(rand.Intn(100))
+		sq1 := l04.Square(rand.Intn(100))
+		sq2 := l04.Square(rand.Intn(100))
 		if OnBoard(sq1) && OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
 			piece := pPos.Board[sq1]
 			// 位置スワップ
@@ -248,7 +249,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 			pPos.Board[sq2] = piece
 
 			// 成／不成 変更
-			promote := l11.Square(rand.Intn(10))
+			promote := l04.Square(rand.Intn(10))
 			if promote == 0 {
 				pPos.Board[sq2] = l09.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
@@ -264,7 +265,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 				phase := Who(piece)
 				pieceType := l11.What(piece)
 
-				change := l11.Square(rand.Intn(10))
+				change := l04.Square(rand.Intn(10))
 				if change == 0 {
 					phase = FlipPhase(phase)
 				}
@@ -308,8 +309,8 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 			countList = [8]int{}
 
 			// 盤上
-			for rank := l11.Square(1); rank < 10; rank += 1 {
-				for file := l11.Square(9); file > 0; file -= 1 {
+			for rank := l04.Square(1); rank < 10; rank += 1 {
+				for file := l04.Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
@@ -400,8 +401,8 @@ func CountAllPieces(pPos *Position) [8]int {
 	countList := [8]int{}
 
 	// 盤上
-	for rank := l11.Square(1); rank < 10; rank += 1 {
-		for file := l11.Square(9); file > 0; file -= 1 {
+	for rank := l04.Square(1); rank < 10; rank += 1 {
+		for file := l04.Square(9); file > 0; file -= 1 {
 			sq := SquareFrom(file, rank)
 
 			piece := l11.What(pPos.Board[sq])

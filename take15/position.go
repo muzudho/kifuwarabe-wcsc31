@@ -2,6 +2,7 @@ package take15
 
 import (
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -20,7 +21,7 @@ func (pPos *Position) setToStartpos() {
 		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_R2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_B1, l09.PIECE_N1,
 		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
 	}
-	pPos.PieceLocations = [PCLOC_SIZE]l11.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -42,7 +43,7 @@ func (pPos *Position) clearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l11.Square{l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}

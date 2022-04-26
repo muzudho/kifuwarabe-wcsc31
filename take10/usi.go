@@ -11,6 +11,7 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -235,7 +236,7 @@ MainLoop:
 				bestmove := Search(pPos)
 				App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-				if bestmove == Move(SQUARE_EMPTY) {
+				if bestmove == Move(l04.SQUARE_EMPTY) {
 					// 投了
 					break
 				}

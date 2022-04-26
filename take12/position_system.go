@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -37,18 +38,18 @@ func FlipPhase(phase l06.Phase) l06.Phase {
 }
 
 // From - 筋と段からマス番号を作成します
-func SquareFrom(file l11.Square, rank l11.Square) l11.Square {
-	return l11.Square(file*10 + rank)
+func SquareFrom(file l04.Square, rank l04.Square) l04.Square {
+	return l04.Square(file*10 + rank)
 }
 
 // OnHands - 持ち駒なら真
-func OnHands(sq l11.Square) bool {
-	return l11.SQ_HAND_START <= sq && sq < l11.SQ_HAND_END
+func OnHands(sq l04.Square) bool {
+	return l04.SQ_HAND_START <= sq && sq < l04.SQ_HAND_END
 }
 
 // OnBoard - 盤上なら真
-func OnBoard(sq l11.Square) bool {
-	return 10 < sq && sq < 100 && l11.File(sq) != 0 && l11.Rank(sq) != 0
+func OnBoard(sq l04.Square) bool {
+	return 10 < sq && sq < 100 && l04.File(sq) != 0 && l04.Rank(sq) != 0
 }
 
 // [0], [1]
@@ -151,8 +152,8 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 		pPos.clearBoard()
 		pPosSys.resetPosition()
 		i = 14
-		var rank = l11.Square(1)
-		var file = l11.Square(9)
+		var rank = l04.Square(1)
+		var file = l04.Square(9)
 
 	BoardLoop:
 		for {
@@ -197,13 +198,13 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.PieceLocations[PCLOC_K1] = l11.Square((file+1)*10 + rank)
+				pPos.PieceLocations[PCLOC_K1] = l04.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.PieceLocations[PCLOC_K2] = l11.Square((file+1)*10 + rank)
+				pPos.PieceLocations[PCLOC_K2] = l04.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l11.SQUARE_EMPTY {
+					if sq == l04.SQUARE_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -211,7 +212,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			case 'B', 'b':
 				for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l11.SQUARE_EMPTY {
+					if sq == l04.SQUARE_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -219,7 +220,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			case 'L', 'l':
 				for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l11.SQUARE_EMPTY {
+					if sq == l04.SQUARE_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -286,24 +287,24 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						case l11.HAND_R1, l11.HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l11.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = l11.Square(hand_index) + l11.SQ_HAND_START
+								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
 							}
 						case l11.HAND_B1, l11.HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l11.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = l11.Square(hand_index) + l11.SQ_HAND_START
+								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
 							}
 						case l11.HAND_L1, l11.HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l11.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[i] = l11.Square(hand_index) + l11.SQ_HAND_START
+								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
 							}
@@ -427,8 +428,8 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 	// 開始局面の利きを計算（＾～＾）
 	//fmt.Printf("Debug: 開始局面の利きを計算（＾～＾）\n")
-	for sq := l11.Square(11); sq < 100; sq += 1 {
-		if l11.File(sq) != 0 && l11.Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			if !pPos.IsEmptySq(sq) {
 				//fmt.Printf("Debug: sq=%d\n", sq)
 				// あとですぐクリアーするので、どのレイヤー使ってても関係ないんで、仮で PUTレイヤーを使っているぜ（＾～＾）
@@ -455,24 +456,24 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
 	var move = RESIGN_MOVE
 
-	var hand_sq = l11.SQUARE_EMPTY
+	var hand_sq = l04.SQUARE_EMPTY
 
 	// file
 	switch ch := command[*i]; ch {
 	case 'R':
-		hand_sq = l11.SQ_R1
+		hand_sq = l04.SQ_R1
 	case 'B':
-		hand_sq = l11.SQ_B1
+		hand_sq = l04.SQ_B1
 	case 'G':
-		hand_sq = l11.SQ_G1
+		hand_sq = l04.SQ_G1
 	case 'S':
-		hand_sq = l11.SQ_S1
+		hand_sq = l04.SQ_S1
 	case 'N':
-		hand_sq = l11.SQ_N1
+		hand_sq = l04.SQ_N1
 	case 'L':
-		hand_sq = l11.SQ_L1
+		hand_sq = l04.SQ_L1
 	case 'P':
-		hand_sq = l11.SQ_P1
+		hand_sq = l04.SQ_P1
 	default:
 		// Ignored
 	}
@@ -480,7 +481,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != l11.SQUARE_EMPTY {
+	if hand_sq != l04.SQUARE_EMPTY {
 		*i += 1
 		switch phase {
 		case l06.FIRST:
@@ -533,7 +534,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			}
 			*i += 1
 
-			sq := l11.Square(file*10 + rank)
+			sq := l04.Square(file*10 + rank)
 			if count == 0 {
 				move = move.ReplaceSource(sq)
 			} else if count == 1 {
@@ -570,8 +571,8 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		fmt.Printf("Error: %d square is empty\n", from)
 	}
 
-	var cap_src_sq l11.Square
-	var cap_dst_sq = l11.SQUARE_EMPTY
+	var cap_src_sq l04.Square
+	var cap_dst_sq = l04.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPosSys.PControlBoardSystem.ClearControlDiff()
@@ -588,48 +589,48 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 	sq_hand := from
 	var piece l09.Piece
 	switch from {
-	case l11.SQ_K1:
+	case l04.SQ_K1:
 		piece = l09.PIECE_K1
-	case l11.SQ_R1:
+	case l04.SQ_R1:
 		piece = l09.PIECE_R1
-	case l11.SQ_B1:
+	case l04.SQ_B1:
 		piece = l09.PIECE_B1
-	case l11.SQ_G1:
+	case l04.SQ_G1:
 		piece = l09.PIECE_G1
-	case l11.SQ_S1:
+	case l04.SQ_S1:
 		piece = l09.PIECE_S1
-	case l11.SQ_N1:
+	case l04.SQ_N1:
 		piece = l09.PIECE_N1
-	case l11.SQ_L1:
+	case l04.SQ_L1:
 		piece = l09.PIECE_L1
-	case l11.SQ_P1:
+	case l04.SQ_P1:
 		piece = l09.PIECE_P1
-	case l11.SQ_K2:
+	case l04.SQ_K2:
 		piece = l09.PIECE_K2
-	case l11.SQ_R2:
+	case l04.SQ_R2:
 		piece = l09.PIECE_R2
-	case l11.SQ_B2:
+	case l04.SQ_B2:
 		piece = l09.PIECE_B2
-	case l11.SQ_G2:
+	case l04.SQ_G2:
 		piece = l09.PIECE_G2
-	case l11.SQ_S2:
+	case l04.SQ_S2:
 		piece = l09.PIECE_S2
-	case l11.SQ_N2:
+	case l04.SQ_N2:
 		piece = l09.PIECE_N2
-	case l11.SQ_L2:
+	case l04.SQ_L2:
 		piece = l09.PIECE_L2
-	case l11.SQ_P2:
+	case l04.SQ_P2:
 		piece = l09.PIECE_P2
 	default:
 		// Not hand
-		sq_hand = l11.SQUARE_EMPTY
+		sq_hand = l04.SQUARE_EMPTY
 	}
 
 	if sq_hand != 0 {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands1[sq_hand-l11.SQ_HAND_START] -= 1
+		pPos.Hands1[sq_hand-l04.SQ_HAND_START] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -674,44 +675,44 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		switch captured {
 		case l09.PIECE_EMPTY: // Ignored
 		case l09.PIECE_K1: // Second player win
-			cap_dst_sq = l11.SQ_K2
+			cap_dst_sq = l04.SQ_K2
 		case l09.PIECE_R1, l09.PIECE_PR1:
-			cap_dst_sq = l11.SQ_R2
+			cap_dst_sq = l04.SQ_R2
 		case l09.PIECE_B1, l09.PIECE_PB1:
-			cap_dst_sq = l11.SQ_B2
+			cap_dst_sq = l04.SQ_B2
 		case l09.PIECE_G1:
-			cap_dst_sq = l11.SQ_G2
+			cap_dst_sq = l04.SQ_G2
 		case l09.PIECE_S1, l09.PIECE_PS1:
-			cap_dst_sq = l11.SQ_S2
+			cap_dst_sq = l04.SQ_S2
 		case l09.PIECE_N1, l09.PIECE_PN1:
-			cap_dst_sq = l11.SQ_N2
+			cap_dst_sq = l04.SQ_N2
 		case l09.PIECE_L1, l09.PIECE_PL1:
-			cap_dst_sq = l11.SQ_L2
+			cap_dst_sq = l04.SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
-			cap_dst_sq = l11.SQ_P2
+			cap_dst_sq = l04.SQ_P2
 		case l09.PIECE_K2: // l06.FIRST player win
-			cap_dst_sq = l11.SQ_K1
+			cap_dst_sq = l04.SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
-			cap_dst_sq = l11.SQ_R1
+			cap_dst_sq = l04.SQ_R1
 		case l09.PIECE_B2, l09.PIECE_PB2:
-			cap_dst_sq = l11.SQ_B1
+			cap_dst_sq = l04.SQ_B1
 		case l09.PIECE_G2:
-			cap_dst_sq = l11.SQ_G1
+			cap_dst_sq = l04.SQ_G1
 		case l09.PIECE_S2, l09.PIECE_PS2:
-			cap_dst_sq = l11.SQ_S1
+			cap_dst_sq = l04.SQ_S1
 		case l09.PIECE_N2, l09.PIECE_PN2:
-			cap_dst_sq = l11.SQ_N1
+			cap_dst_sq = l04.SQ_N1
 		case l09.PIECE_L2, l09.PIECE_PL2:
-			cap_dst_sq = l11.SQ_L1
+			cap_dst_sq = l04.SQ_L1
 		case l09.PIECE_P2, l09.PIECE_PP2:
-			cap_dst_sq = l11.SQ_P1
+			cap_dst_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_dst_sq != l11.SQUARE_EMPTY {
+		if cap_dst_sq != l04.SQUARE_EMPTY {
 			pPosSys.CapturedList[pPosSys.OffsetMovesIndex] = captured
-			pPos.Hands1[cap_dst_sq-l11.SQ_HAND_START] += 1
+			pPos.Hands1[cap_dst_sq-l04.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
 			pPosSys.CapturedList[pPosSys.OffsetMovesIndex] = l09.PIECE_EMPTY
@@ -726,8 +727,8 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []l11.PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []l11.Square{from, cap_src_sq}
-	dst_sq_list := []l11.Square{to, cap_dst_sq}
+	src_sq_list := []l04.Square{from, cap_src_sq}
+	dst_sq_list := []l04.Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case l11.PIECE_TYPE_K:
@@ -825,7 +826,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 
 	// 打かどうかで分けます
 	switch from {
-	case l11.SQ_K1, l11.SQ_R1, l11.SQ_B1, l11.SQ_G1, l11.SQ_S1, l11.SQ_N1, l11.SQ_L1, l11.SQ_P1, l11.SQ_K2, l11.SQ_R2, l11.SQ_B2, l11.SQ_G2, l11.SQ_S2, l11.SQ_N2, l11.SQ_L2, l11.SQ_P2:
+	case l04.SQ_K1, l04.SQ_R1, l04.SQ_B1, l04.SQ_G1, l04.SQ_S1, l04.SQ_N1, l04.SQ_L1, l04.SQ_P1, l04.SQ_K2, l04.SQ_R2, l04.SQ_B2, l04.SQ_G2, l04.SQ_S2, l04.SQ_N2, l04.SQ_L2, l04.SQ_P2:
 		// 打なら
 		hand := from
 		// 行き先から駒を除去します
@@ -835,7 +836,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		pPos.Board[to] = l09.PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands1[hand-l11.SQ_HAND_START] += 1
+		pPos.Hands1[hand-l04.SQ_HAND_START] += 1
 	default:
 		// 打でないなら
 
@@ -929,7 +930,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	from, to, _ := move.Destructure()
 
 	// 取った駒に関係するのは行き先だけ（＾～＾）
-	var hand_sq = l11.SQUARE_EMPTY
+	var hand_sq = l04.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPosSys.PControlBoardSystem.ClearControlDiff()
@@ -945,7 +946,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 
 	// 打かどうかで分けます
 	switch from {
-	case l11.SQ_K1, l11.SQ_R1, l11.SQ_B1, l11.SQ_G1, l11.SQ_S1, l11.SQ_N1, l11.SQ_L1, l11.SQ_P1, l11.SQ_K2, l11.SQ_R2, l11.SQ_B2, l11.SQ_G2, l11.SQ_S2, l11.SQ_N2, l11.SQ_L2, l11.SQ_P2:
+	case l04.SQ_K1, l04.SQ_R1, l04.SQ_B1, l04.SQ_G1, l04.SQ_S1, l04.SQ_N1, l04.SQ_L1, l04.SQ_P1, l04.SQ_K2, l04.SQ_R2, l04.SQ_B2, l04.SQ_G2, l04.SQ_S2, l04.SQ_N2, l04.SQ_L2, l04.SQ_P2:
 		// 打で取れる駒はないぜ（＾～＾）
 		// fmt.Printf("Debug: Drop from=%d\n", from)
 	default:
@@ -956,45 +957,45 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		switch captured {
 		case l09.PIECE_EMPTY: // Ignored
 		case l09.PIECE_K1: // Second player win
-			hand_sq = l11.SQ_K2
+			hand_sq = l04.SQ_K2
 		case l09.PIECE_R1, l09.PIECE_PR1:
-			hand_sq = l11.SQ_R2
+			hand_sq = l04.SQ_R2
 		case l09.PIECE_B1, l09.PIECE_PB1:
-			hand_sq = l11.SQ_B2
+			hand_sq = l04.SQ_B2
 		case l09.PIECE_G1:
-			hand_sq = l11.SQ_G2
+			hand_sq = l04.SQ_G2
 		case l09.PIECE_S1, l09.PIECE_PS1:
-			hand_sq = l11.SQ_S2
+			hand_sq = l04.SQ_S2
 		case l09.PIECE_N1, l09.PIECE_PN1:
-			hand_sq = l11.SQ_N2
+			hand_sq = l04.SQ_N2
 		case l09.PIECE_L1, l09.PIECE_PL1:
-			hand_sq = l11.SQ_L2
+			hand_sq = l04.SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
-			hand_sq = l11.SQ_P2
+			hand_sq = l04.SQ_P2
 		case l09.PIECE_K2: // l06.FIRST player win
-			hand_sq = l11.SQ_K1
+			hand_sq = l04.SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
-			hand_sq = l11.SQ_R1
+			hand_sq = l04.SQ_R1
 		case l09.PIECE_B2, l09.PIECE_PB2:
-			hand_sq = l11.SQ_B1
+			hand_sq = l04.SQ_B1
 		case l09.PIECE_G2:
-			hand_sq = l11.SQ_G1
+			hand_sq = l04.SQ_G1
 		case l09.PIECE_S2, l09.PIECE_PS2:
-			hand_sq = l11.SQ_S1
+			hand_sq = l04.SQ_S1
 		case l09.PIECE_N2, l09.PIECE_PN2:
-			hand_sq = l11.SQ_N1
+			hand_sq = l04.SQ_N1
 		case l09.PIECE_L2, l09.PIECE_PL2:
-			hand_sq = l11.SQ_L1
+			hand_sq = l04.SQ_L1
 		case l09.PIECE_P2, l09.PIECE_PP2:
-			hand_sq = l11.SQ_P1
+			hand_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)
 
-		if hand_sq != l11.SQUARE_EMPTY {
-			pPos.Hands1[hand_sq-l11.SQ_HAND_START] -= 1
+		if hand_sq != l04.SQUARE_EMPTY {
+			pPos.Hands1[hand_sq-l04.SQ_HAND_START] -= 1
 
 			// 取っていた駒を行き先に戻します
 			cap_piece_type = l11.What(captured)

@@ -1,6 +1,6 @@
 package take15
 
-import l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 
 // ControlBoard - 利きボード
 type ControlBoard struct {
@@ -31,15 +31,15 @@ func NewControlBoard(title string) *ControlBoard {
 
 // Clear - 利きボードのクリアー
 func (pCB *ControlBoard) Clear() {
-	for sq := l11.Square(11); sq < 100; sq += 1 {
-		if l11.File(sq) != 0 && l11.Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			pCB.Board1[sq] = 0
 		}
 	}
 }
 
 // AddControl - 盤上のマスを指定することで、そこにある駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pCB *ControlBoard) AddControl(sq_list []l11.Square, from l11.Square, sign int16) {
+func (pCB *ControlBoard) AddControl(sq_list []l04.Square, from l04.Square, sign int16) {
 
 	// if from > 99 {
 	// 	// 持ち駒は無視します

@@ -3,7 +3,7 @@ package take12 // not same take13
 import (
 	"fmt"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // Move - 指し手
@@ -21,7 +21,7 @@ const RESIGN_MOVE = Move(0)
 
 // NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
 // TODO 成、不成も欲しいぜ（＾～＾）
-func NewMove2(from l11.Square, to l11.Square) Move {
+func NewMove2(from l04.Square, to l04.Square) Move {
 	move := RESIGN_MOVE
 	move = move.ReplaceSource(from)
 	return move.ReplaceDestination(to)
@@ -42,25 +42,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case l11.SQ_R1, l11.SQ_R2:
+	case l04.SQ_R1, l04.SQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case l11.SQ_B1, l11.SQ_B2:
+	case l04.SQ_B1, l04.SQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case l11.SQ_G1, l11.SQ_G2:
+	case l04.SQ_G1, l04.SQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case l11.SQ_S1, l11.SQ_S2:
+	case l04.SQ_S1, l04.SQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case l11.SQ_N1, l11.SQ_N2:
+	case l04.SQ_N1, l04.SQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case l11.SQ_L1, l11.SQ_L2:
+	case l04.SQ_L1, l04.SQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case l11.SQ_P1, l11.SQ_P2:
+	case l04.SQ_P1, l04.SQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -73,7 +73,7 @@ func (move Move) ToCodeOfM() string {
 	}
 
 	for count < 2 {
-		var sq l11.Square // マス番号
+		var sq l04.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -104,14 +104,14 @@ func (move Move) ToCodeOfM() string {
 // ReplaceSource - 移動元マス
 // 1111 1111 1000 0000 (Clear) 0xff80
 // .pdd dddd dsss ssss
-func (move Move) ReplaceSource(sq l11.Square) Move {
+func (move Move) ReplaceSource(sq l04.Square) Move {
 	return Move(uint16(move)&0xff80 | uint16(sq))
 }
 
 // ReplaceDestination - 移動先マス
 // 1100 0000 0111 1111 (Clear) 0xc07f
 // .pdd dddd dsss ssss
-func (move Move) ReplaceDestination(sq l11.Square) Move {
+func (move Move) ReplaceDestination(sq l04.Square) Move {
 	return Move(uint16(move)&0xc07f | (uint16(sq) << 7))
 }
 
@@ -140,9 +140,9 @@ func (move Move) ReplacePromotion(promotion bool) Move {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) Destructure() (l11.Square, l11.Square, bool) {
-	var from = l11.Square(uint16(move) & 0x007f)
-	var to = l11.Square((uint16(move) & 0x3f80) >> 7)
+func (move Move) Destructure() (l04.Square, l04.Square, bool) {
+	var from = l04.Square(uint16(move) & 0x007f)
+	var to = l04.Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

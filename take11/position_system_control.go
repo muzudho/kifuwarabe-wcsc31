@@ -4,6 +4,7 @@ package take11
 import (
 	"fmt"
 
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -64,7 +65,7 @@ func GetControlLayerName(c ControlLayerT) string {
 }
 
 // AddControlRook - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPosSys *PositionSystem) AddControlRook(pPos *Position, c ControlLayerT, sign int8, excludeFrom Square) {
+func (pPosSys *PositionSystem) AddControlRook(pPos *Position, c ControlLayerT, sign int8, excludeFrom l04.Square) {
 	for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
@@ -76,7 +77,7 @@ func (pPosSys *PositionSystem) AddControlRook(pPos *Position, c ControlLayerT, s
 }
 
 // AddControlBishop - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPosSys *PositionSystem) AddControlBishop(pPos *Position, c ControlLayerT, sign int8, excludeFrom Square) {
+func (pPosSys *PositionSystem) AddControlBishop(pPos *Position, c ControlLayerT, sign int8, excludeFrom l04.Square) {
 	for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
@@ -88,7 +89,7 @@ func (pPosSys *PositionSystem) AddControlBishop(pPos *Position, c ControlLayerT,
 }
 
 // AddControlLance - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPosSys *PositionSystem) AddControlLance(pPos *Position, c ControlLayerT, sign int8, excludeFrom Square) {
+func (pPosSys *PositionSystem) AddControlLance(pPos *Position, c ControlLayerT, sign int8, excludeFrom l04.Square) {
 	for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
@@ -101,7 +102,7 @@ func (pPosSys *PositionSystem) AddControlLance(pPos *Position, c ControlLayerT, 
 }
 
 // AddControlDiff - 盤上のマスを指定することで、そこにある駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPosSys *PositionSystem) AddControlDiff(pPos *Position, c ControlLayerT, from Square, sign int8) {
+func (pPosSys *PositionSystem) AddControlDiff(pPos *Position, c ControlLayerT, from l04.Square, sign int8) {
 	if from > 99 {
 		// 持ち駒は無視します
 		return
@@ -133,8 +134,8 @@ func (pPosSys *PositionSystem) ClearControlDiff() {
 }
 
 func (pPosSys *PositionSystem) ClearControlLayer(c ControlLayerT) {
-	for sq := Square(11); sq < 100; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			pPosSys.ControlBoards[0][c][sq] = 0
 			pPosSys.ControlBoards[1][c][sq] = 0
 		}
@@ -143,8 +144,8 @@ func (pPosSys *PositionSystem) ClearControlLayer(c ControlLayerT) {
 
 // MergeControlDiff - 利きの差分を解消するぜ（＾～＾）
 func (pPosSys *PositionSystem) MergeControlDiff() {
-	for sq := Square(11); sq < BOARD_SIZE; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < BOARD_SIZE; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			// c=0 を除く
 			for c := CONTROL_LAYER_DIFF_START; c < CONTROL_LAYER_DIFF_END; c += 1 {
 				pPosSys.ControlBoards[0][CONTROL_LAYER_SUM][sq] += pPosSys.ControlBoards[0][c][sq]
@@ -159,8 +160,8 @@ func (pPosSys *PositionSystem) RecalculateControl(pPos *Position, c1 ControlLaye
 
 	pPosSys.ClearControlLayer(c1)
 
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 && !pPos.IsEmptySq(from) {
+	for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+		if l04.File(from) != 0 && l04.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
 			sq_list := GenMoveEnd(pPos, from)
@@ -179,8 +180,8 @@ func (pPosSys *PositionSystem) DiffControl(c1 ControlLayerT, c2 ControlLayerT, c
 	pPosSys.ClearControlLayer(c3)
 
 	for phase := 0; phase < 2; phase += 1 {
-		for from := Square(11); from < BOARD_SIZE; from += 1 {
-			if File(from) != 0 && Rank(from) != 0 {
+		for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+			if l04.File(from) != 0 && l04.Rank(from) != 0 {
 
 				pPosSys.ControlBoards[phase][c3][from] = pPosSys.ControlBoards[phase][c1][from] - pPosSys.ControlBoards[phase][c2][from]
 
