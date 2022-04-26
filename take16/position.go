@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -130,7 +131,7 @@ func (pPos *Position) IsEmptySq(sq Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
 	var hand_sq = SQUARE_EMPTY
 
@@ -164,9 +165,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	if hand_sq != SQUARE_EMPTY {
 		*i += 1
 		switch phase {
-		case FIRST:
+		case l06.FIRST:
 			from = hand_sq
-		case SECOND:
+		case l06.SECOND:
 			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)

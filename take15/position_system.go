@@ -2,6 +2,7 @@ package take15
 
 import (
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -20,7 +21,7 @@ const (
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // FlipPhase - 先後を反転します
-func FlipPhase(phase Phase) Phase {
+func FlipPhase(phase l06.Phase) l06.Phase {
 	return phase%2 + 1
 }
 
@@ -28,9 +29,9 @@ func FlipPhase(phase Phase) Phase {
 const PHASE_ARRAY_SIZE = 2
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K1
@@ -63,7 +64,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		default:
 			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
-	case SECOND:
+	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K2
@@ -121,7 +122,7 @@ type PositionSystem struct {
 	PPosition [POS_LAYER_SIZE]*Position
 
 	// 先手が1、後手が2（＾～＾）
-	phase Phase
+	phase l06.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -149,14 +150,14 @@ func (pPosSys *PositionSystem) FlipPhase() {
 }
 
 // GetPhase - フェーズ
-func (pPosSys *PositionSystem) GetPhase() Phase {
+func (pPosSys *PositionSystem) GetPhase() l06.Phase {
 	return pPosSys.phase
 }
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPosSys *PositionSystem) resetPosition() {
 	// 先手の局面
-	pPosSys.phase = FIRST
+	pPosSys.phase = l06.FIRST
 	// 何手目か
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0

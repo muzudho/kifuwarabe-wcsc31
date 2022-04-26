@@ -1,18 +1,22 @@
 package take15
 
-import "fmt"
+import (
+	"fmt"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+)
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pPos *Position, phase Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
 
 	var phase_str string
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		phase_str = "First"
-	case SECOND:
+	case l06.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"

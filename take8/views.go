@@ -1,13 +1,17 @@
 package take8
 
-import "fmt"
+import (
+	"fmt"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+)
 
 // Print - 局面出力（＾ｑ＾）
 func Sprint(pPos *Position) string {
 	var phase_str = "?"
-	if pPos.Phase == FIRST {
+	if pPos.Phase == l06.FIRST {
 		phase_str = "First"
-	} else if pPos.Phase == SECOND {
+	} else if pPos.Phase == l06.SECOND {
 		phase_str = "Second"
 	}
 
@@ -101,15 +105,15 @@ func (pPos *Position) createMovesText() string {
 // Parameters
 // ----------
 // * `flag` - 0: 利き数ボード, 1-5:利き数の差分ボードのレイヤー[0]～[4]
-func (pPos *Position) SprintControl(phase Phase, flag int) string {
+func (pPos *Position) SprintControl(phase l06.Phase, flag int) string {
 	var board [BOARD_SIZE]int8
 	var phase_str string
 	var title string
 
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		phase_str = "First"
-	case SECOND:
+	case l06.SECOND:
 		phase_str = "Second"
 	default:
 		return "\n"
@@ -240,9 +244,9 @@ func (pPos *Position) SprintSfen() string {
 	// 手番
 	var phaseStr string
 	switch pPos.Phase {
-	case FIRST:
+	case l06.FIRST:
 		phaseStr = "b"
-	case SECOND:
+	case l06.SECOND:
 		phaseStr = "w"
 	default:
 		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPos.Phase))

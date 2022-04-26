@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"sort"
 
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -108,7 +109,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 
 						ok := false
 						switch phase {
-						case FIRST:
+						case l06.FIRST:
 							switch pieceType {
 							case PIECE_TYPE_K:
 								pPos.Hands1[HAND_K1] += 1
@@ -137,7 +138,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 							default:
 								// Ignored
 							}
-						case SECOND:
+						case l06.SECOND:
 							switch pieceType {
 							case PIECE_TYPE_K:
 								pPos.Hands1[HAND_K2] += 1
@@ -255,9 +256,9 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pPosSys.phase = FIRST
+		pPosSys.phase = l06.FIRST
 	default:
-		pPosSys.phase = SECOND
+		pPosSys.phase = l06.SECOND
 	}
 
 	// 手目は 1 に戻します

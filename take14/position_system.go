@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -31,7 +32,7 @@ const (
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // FlipPhase - 先後を反転します
-func FlipPhase(phase Phase) Phase {
+func FlipPhase(phase l06.Phase) l06.Phase {
 	return phase%2 + 1
 }
 
@@ -54,9 +55,9 @@ func OnBoard(sq Square) bool {
 const PHASE_ARRAY_SIZE = 2
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K1
@@ -89,7 +90,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
-	case SECOND:
+	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K2
@@ -167,7 +168,7 @@ type PositionSystem struct {
 	PControlBoardSystem *ControlBoardSystem
 
 	// 先手が1、後手が2（＾～＾）
-	phase Phase
+	phase l06.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -195,7 +196,7 @@ func (pPosSys *PositionSystem) FlipPhase() {
 }
 
 // GetPhase - フェーズ
-func (pPosSys *PositionSystem) GetPhase() Phase {
+func (pPosSys *PositionSystem) GetPhase() l06.Phase {
 	return pPosSys.phase
 }
 
@@ -204,7 +205,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.PControlBoardSystem = NewControlBoardSystem()
 
 	// 先手の局面
-	pPosSys.phase = FIRST
+	pPosSys.phase = l06.FIRST
 	// 何手目か
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
@@ -314,10 +315,10 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pPosSys.phase = FIRST
+			pPosSys.phase = l06.FIRST
 			i += 1
 		case 'w':
-			pPosSys.phase = SECOND
+			pPosSys.phase = l06.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -554,7 +555,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
 	var hand_sq = SQUARE_EMPTY
 
@@ -588,9 +589,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	if hand_sq != SQUARE_EMPTY {
 		*i += 1
 		switch phase {
-		case FIRST:
+		case l06.FIRST:
 			from = hand_sq
-		case SECOND:
+		case l06.SECOND:
 			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
@@ -794,7 +795,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 
 			// 駒得評価値の計算（＾ｑ＾）
 			material_val := EvalMaterial(captured)
-			if before_move_phase != FIRST {
+			if before_move_phase != l06.FIRST {
 				material_val = -material_val
 			}
 			pPos.MaterialValue += material_val
@@ -863,7 +864,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 			cap_dst_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_dst_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			cap_dst_sq = SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_dst_sq = SQ_R1
@@ -906,9 +907,9 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		case PIECE_TYPE_K:
 			if j == 0 {
 				switch before_move_phase {
-				case FIRST:
+				case l06.FIRST:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
-				case SECOND:
+				case l06.SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
@@ -916,10 +917,10 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 			} else {
 				// 取った時
 				switch before_move_phase {
-				case FIRST:
+				case l06.FIRST:
 					// 相手玉
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
-				case SECOND:
+				case l06.SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
@@ -1089,9 +1090,9 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 	case PIECE_TYPE_K:
 		// 玉を動かした
 		switch pPosSys.phase { // next_phase
-		case FIRST:
+		case l06.FIRST:
 			pPos.PieceLocations[PCLOC_K1] = from
-		case SECOND:
+		case l06.SECOND:
 			pPos.PieceLocations[PCLOC_K2] = from
 		default:
 			panic(fmt.Errorf("unknown p_pos_sys.phase=%d", pPosSys.phase))
@@ -1209,7 +1210,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			hand_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			hand_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			hand_sq = SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			hand_sq = SQ_R1
@@ -1261,10 +1262,10 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	case PIECE_TYPE_K:
 		// 玉を取っていた
 		switch pPosSys.phase { // next_phase
-		case FIRST:
+		case l06.FIRST:
 			// 後手の玉
 			pPos.PieceLocations[PCLOC_K2] = to
-		case SECOND:
+		case l06.SECOND:
 			// 先手の玉
 			pPos.PieceLocations[PCLOC_K1] = to
 		default:
@@ -1298,7 +1299,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 
 	// 駒得評価値の計算（＾ｑ＾）
 	material_val := EvalMaterial(captured)
-	if pPosSys.phase != FIRST {
+	if pPosSys.phase != l06.FIRST {
 		material_val = -material_val
 	}
 	pPos.MaterialValue -= material_val

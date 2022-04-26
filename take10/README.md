@@ -48,7 +48,7 @@ position startpos
 # 利きボード目視確認
 control layer 0
 
-[Control(0)Sum First]
+[Control(0)Sum l06.FIRST]
 
   9  8  7  6  5  4  3  2  1
 +--+--+--+--+--+--+--+--+--+
@@ -101,7 +101,7 @@ control recalc 12
 # 目視確認
 control layer 12
 
-[Control(12)TestRecalc First]
+[Control(12)TestRecalc l06.FIRST]
 
   9  8  7  6  5  4  3  2  1
 +--+--+--+--+--+--+--+--+--+
@@ -158,7 +158,7 @@ ControlTest: SumAbs=0,0
 # 目視確認
 control layer 0
 
-[Control(0)Sum First]
+[Control(0)Sum l06.FIRST]
 
   9  8  7  6  5  4  3  2  1
 +--+--+--+--+--+--+--+--+--+
@@ -208,7 +208,7 @@ control layer 0
 # 目視確認
 control layer 10
 
-[Control(10)TestCopy First]
+[Control(10)TestCopy l06.FIRST]
 
   9  8  7  6  5  4  3  2  1
 +--+--+--+--+--+--+--+--+--+

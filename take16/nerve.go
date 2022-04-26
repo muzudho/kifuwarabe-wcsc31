@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -159,10 +160,10 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pNerve.PPosSys.phase = FIRST
+			pNerve.PPosSys.phase = l06.FIRST
 			i += 1
 		case 'w':
-			pNerve.PPosSys.phase = SECOND
+			pNerve.PPosSys.phase = l06.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -399,9 +400,9 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 }
 
 // 長い利きの駒から王手を受けていないかチェック（＾～＾）
-func (pNerve *Nerve) IsCheckmate(phase Phase) bool {
+func (pNerve *Nerve) IsCheckmate(phase l06.Phase) bool {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		// 先手玉への王手を調べます
 		// 先手玉の位置を調べます
 		var k1 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
@@ -421,7 +422,7 @@ func (pNerve *Nerve) IsCheckmate(phase Phase) bool {
 		if 0 < l2 {
 			return true
 		}
-	case SECOND:
+	case l06.SECOND:
 		// 後手玉の王手を調べます
 		// 後手玉の位置を調べます
 		var k2 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
@@ -647,7 +648,7 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 			cap_dst_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_dst_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			cap_dst_sq = SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_dst_sq = SQ_R1
@@ -690,9 +691,9 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 		case PIECE_TYPE_K:
 			if j == 0 {
 				switch before_move_phase {
-				case FIRST:
+				case l06.FIRST:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
-				case SECOND:
+				case l06.SECOND:
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
@@ -700,10 +701,10 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 			} else {
 				// 取った時
 				switch before_move_phase {
-				case FIRST:
+				case l06.FIRST:
 					// 相手玉
 					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
-				case SECOND:
+				case l06.SECOND:
 					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
@@ -873,9 +874,9 @@ func (pNerve *Nerve) UndoMove(pPos *Position) {
 	case PIECE_TYPE_K:
 		// 玉を動かした
 		switch pNerve.PPosSys.phase { // next_phase
-		case FIRST:
+		case l06.FIRST:
 			pPos.PieceLocations[PCLOC_K1] = from
-		case SECOND:
+		case l06.SECOND:
 			pPos.PieceLocations[PCLOC_K2] = from
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pNerve.PPosSys.phase=%d", pNerve.PPosSys.phase))
@@ -998,7 +999,7 @@ func (pNerve *Nerve) undoCapture(pPos *Position) {
 			hand_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			hand_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			hand_sq = SQ_K1
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			hand_sq = SQ_R1
@@ -1050,10 +1051,10 @@ func (pNerve *Nerve) undoCapture(pPos *Position) {
 	case PIECE_TYPE_K:
 		// 玉を取っていた
 		switch pNerve.PPosSys.phase { // next_phase
-		case FIRST:
+		case l06.FIRST:
 			// 後手の玉
 			pPos.PieceLocations[PCLOC_K2] = to
-		case SECOND:
+		case l06.SECOND:
 			// 先手の玉
 			pPos.PieceLocations[PCLOC_K1] = to
 		default:

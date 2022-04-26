@@ -11,6 +11,7 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // App - アプリケーション変数の宣言
@@ -133,8 +134,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				App.Out.Debug(pPos.SprintControl(FIRST, 0))
-				App.Out.Debug(pPos.SprintControl(SECOND, 0))
+				App.Out.Debug(pPos.SprintControl(l06.FIRST, 0))
+				App.Out.Debug(pPos.SprintControl(l06.SECOND, 0))
 				ok = true
 			} else if length == 3 && tokens[1] == "diff" {
 				// 利きの差分の表示（＾～＾）
@@ -142,8 +143,8 @@ MainLoop:
 				if err != nil {
 					fmt.Printf("Error: %s", err)
 				} else if 0 <= layer && layer < 5 {
-					App.Out.Debug(pPos.SprintControl(FIRST, layer+1))
-					App.Out.Debug(pPos.SprintControl(SECOND, layer+1))
+					App.Out.Debug(pPos.SprintControl(l06.FIRST, layer+1))
+					App.Out.Debug(pPos.SprintControl(l06.SECOND, layer+1))
 					ok = true
 				}
 			}

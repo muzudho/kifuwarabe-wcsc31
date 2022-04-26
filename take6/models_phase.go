@@ -1,4 +1,4 @@
-package take6
+package take6 // same take7
 
 // 1:先手 2:後手
 type Phase byte

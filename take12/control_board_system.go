@@ -3,6 +3,7 @@ package take12
 import (
 	"fmt"
 
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -140,9 +141,9 @@ func (pControlBoardSys *ControlBoardSystem) RecalculateControl(
 
 			var pCB *ControlBoard
 			switch phase {
-			case FIRST:
+			case l06.FIRST:
 				pCB = pControlBoardSys.Boards[ph1_c1]
-			case SECOND:
+			case l06.SECOND:
 				pCB = pControlBoardSys.Boards[ph2_c1]
 			default:
 				panic(fmt.Errorf("unknown phase=%d", phase))
@@ -204,9 +205,9 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 
 	var pCB *ControlBoard
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		pCB = pControlBoardSys.Boards[ph1_c]
-	case SECOND:
+	case l06.SECOND:
 		pCB = pControlBoardSys.Boards[ph2_c]
 	default:
 		panic(fmt.Errorf("unknown phase=%d", phase))

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -19,7 +20,7 @@ const BOARD_SIZE = 100
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // FlipPhase - 先後を反転します
-func FlipPhase(phase Phase) Phase {
+func FlipPhase(phase l06.Phase) l06.Phase {
 	return phase%2 + 1
 }
 
@@ -39,9 +40,9 @@ func OnBoard(sq Square) bool {
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K1
@@ -74,7 +75,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
-	case SECOND:
+	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K2
@@ -149,7 +150,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	phase Phase
+	phase l06.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -173,7 +174,7 @@ func (pPos *Position) FlipPhase() {
 }
 
 // GetPhase - フェーズ
-func (pPos *Position) GetPhase() Phase {
+func (pPos *Position) GetPhase() l06.Phase {
 	return pPos.phase
 }
 
@@ -522,7 +523,7 @@ func (pPos *Position) resetToZero() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}
 	// 先手の局面
-	pPos.phase = FIRST
+	pPos.phase = l06.FIRST
 	// 何手目か
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
@@ -648,10 +649,10 @@ func (pPos *Position) ReadPosition(command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pPos.phase = FIRST
+			pPos.phase = l06.FIRST
 			i += 1
 		case 'w':
-			pPos.phase = SECOND
+			pPos.phase = l06.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -860,7 +861,7 @@ func (pPos *Position) ReadPosition(command string) {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
 	var hand_sq = SQUARE_EMPTY
 
@@ -894,9 +895,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	if hand_sq != SQUARE_EMPTY {
 		*i += 1
 		switch phase {
-		case FIRST:
+		case l06.FIRST:
 			from = hand_sq
-		case SECOND:
+		case l06.SECOND:
 			from = hand_sq + HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
@@ -1074,7 +1075,7 @@ func (pPos *Position) DoMove(move Move) {
 		switch captured {
 		case l09.PIECE_EMPTY: // Ignored
 		case l09.PIECE_K1: // Second player win
-			// Lost first king
+			// Lost l06.FIRST king
 		case l09.PIECE_R1, l09.PIECE_PR1:
 			cap_dst_sq = SQ_R2
 		case l09.PIECE_B1, l09.PIECE_PB1:
@@ -1089,7 +1090,7 @@ func (pPos *Position) DoMove(move Move) {
 			cap_dst_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_dst_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_dst_sq = SQ_R1
@@ -1132,9 +1133,9 @@ func (pPos *Position) DoMove(move Move) {
 		switch piece_type {
 		case PIECE_TYPE_K:
 			switch prev_phase {
-			case FIRST:
+			case l06.FIRST:
 				pPos.kingLocations[0] = dst_sq_list[j]
-			case SECOND:
+			case l06.SECOND:
 				pPos.kingLocations[1] = dst_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
@@ -1237,7 +1238,7 @@ func (pPos *Position) UndoMove() {
 		switch captured {
 		case l09.PIECE_EMPTY: // Ignored
 		case l09.PIECE_K1: // Second player win
-			// Lost first king
+			// Lost l06.FIRST king
 		case l09.PIECE_R1, l09.PIECE_PR1:
 			cap_src_sq = SQ_R2
 		case l09.PIECE_B1, l09.PIECE_PB1:
@@ -1252,7 +1253,7 @@ func (pPos *Position) UndoMove() {
 			cap_src_sq = SQ_L2
 		case l09.PIECE_P1, l09.PIECE_PP1:
 			cap_src_sq = SQ_P2
-		case l09.PIECE_K2: // First player win
+		case l09.PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case l09.PIECE_R2, l09.PIECE_PR2:
 			cap_src_sq = SQ_R1
@@ -1305,9 +1306,9 @@ func (pPos *Position) UndoMove() {
 		switch moving_piece_type {
 		case PIECE_TYPE_K:
 			switch pPos.phase { // next_phase
-			case FIRST:
+			case l06.FIRST:
 				pPos.kingLocations[0] = src_sq_list[j]
-			case SECOND:
+			case l06.SECOND:
 				pPos.kingLocations[1] = src_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown pPos.phase=%d", pPos.phase))

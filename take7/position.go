@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // 電竜戦が一番長いだろ（＾～＾）
@@ -30,7 +32,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase Phase
+	Phase l06.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -95,7 +97,7 @@ func (pPos *Position) ResetToStartpos() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}
 	// 先手の局面
-	pPos.Phase = FIRST
+	pPos.Phase = l06.FIRST
 	// 何手目か
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
@@ -167,10 +169,10 @@ func (pPos *Position) ReadPosition(command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pPos.Phase = FIRST
+			pPos.Phase = l06.FIRST
 			i += 1
 		case 'w':
-			pPos.Phase = SECOND
+			pPos.Phase = l06.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -317,7 +319,7 @@ func (pPos *Position) ReadPosition(command string) {
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
 	var hand1 = Square(0)
 
@@ -357,9 +359,9 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 	if hand1 != 0 {
 		switch phase {
-		case FIRST:
+		case l06.FIRST:
 			from = hand1
-		case SECOND:
+		case l06.SECOND:
 			from = hand1 + HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
@@ -431,14 +433,14 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 }
 
 // Print - 利き数ボード出力（＾ｑ＾）
-func (pPos *Position) SprintControl(phase Phase) string {
+func (pPos *Position) SprintControl(phase l06.Phase) string {
 	var board [BOARD_SIZE]int8
 	var phase_str string
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		phase_str = "First"
 		board = pPos.ControlBoards[0]
-	case SECOND:
+	case l06.SECOND:
 		phase_str = "Second"
 		board = pPos.ControlBoards[1]
 	default:
@@ -575,7 +577,7 @@ func (pPos *Position) DoMove(move Move) {
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
-			// Lost first king
+			// Lost l06.FIRST king
 		case PIECE_R1, PIECE_PR1:
 			hand = HAND_R2
 		case PIECE_B1, PIECE_PB1:
@@ -590,7 +592,7 @@ func (pPos *Position) DoMove(move Move) {
 			hand = HAND_L2
 		case PIECE_P1, PIECE_PP1:
 			hand = HAND_P2
-		case PIECE_K2: // First player win
+		case PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
 			hand = HAND_R1
@@ -691,7 +693,7 @@ func (pPos *Position) UndoMove() {
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
-			// Lost first king
+			// Lost l06.FIRST king
 		case PIECE_R1, PIECE_PR1:
 			cap = HAND_R2
 		case PIECE_B1, PIECE_PB1:
@@ -706,7 +708,7 @@ func (pPos *Position) UndoMove() {
 			cap = HAND_L2
 		case PIECE_P1, PIECE_PP1:
 			cap = HAND_P2
-		case PIECE_K2: // First player win
+		case PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
 			cap = HAND_R1

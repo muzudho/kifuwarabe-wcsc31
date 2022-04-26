@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -63,11 +64,11 @@ var genmv_dp2 = []int{31, 32, 33, 34, 35, 36} // と、二歩チェック
 const NOT_PROMOTE = false
 
 // 条件Aの1. 移動元が敵陣だ
-func FromOpponent(phase Phase, from Square) bool {
+func FromOpponent(phase l06.Phase, from Square) bool {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		return Rank(from) < 4
-	case SECOND:
+	case l06.SECOND:
 		return Rank(from) > 6
 	default:
 		panic(fmt.Errorf("unknown phase=%d", phase))
@@ -468,9 +469,9 @@ func makeBackPromotion(from Square, promote bool, moveEndList []MoveEnd) {
 }
 
 // 8 ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
-func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
+func makeDiagonalPromotion(pPos *Position, phase l06.Phase, from Square, moveEndList []MoveEnd) {
 	var src_pro bool
-	if (phase == FIRST && Rank(from) < 4) || (phase == SECOND && Rank(from) > 6) {
+	if (phase == l06.FIRST && Rank(from) < 4) || (phase == l06.SECOND && Rank(from) > 6) {
 		src_pro = true
 	} else {
 		src_pro = false
@@ -479,7 +480,7 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 	if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 		for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -490,7 +491,7 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 	if File(from) > 2 && Rank(from) > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
 		for to := from - 22; File(to) != 0 && Rank(to) != 0; to -= 11 { // ２つ右上から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -501,7 +502,7 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 	if File(from) < 8 && Rank(from) < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
 		for to := from + 22; File(to) != 0 && Rank(to) != 0; to += 11 { // ２つ左下から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -512,7 +513,7 @@ func makeDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList
 	if File(from) > 2 && Rank(from) < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
 		for to := from - 18; File(to) != 0 && Rank(to) != 0; to -= 9 { // ２つ右下から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -659,9 +660,9 @@ func makeLongSide(pPos *Position, from Square, promote bool, moveEndList []MoveE
 }
 
 // 15 ２つ先のマスからの斜めへの長い利き（成り手のみの生成）
-func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEndList []MoveEnd) {
+func makeLongDiagonalPromotion(pPos *Position, phase l06.Phase, from Square, moveEndList []MoveEnd) {
 	var src_pro bool
-	if (phase == FIRST && Rank(from) < 4) || (phase == SECOND && Rank(from) > 6) {
+	if (phase == l06.FIRST && Rank(from) < 4) || (phase == l06.SECOND && Rank(from) > 6) {
 		src_pro = true
 	} else {
 		src_pro = false
@@ -670,7 +671,7 @@ func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEnd
 	if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 		for to := from + 18; File(to) != 0 && Rank(to) != 0; to += 9 { // ２つ左上から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -681,7 +682,7 @@ func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEnd
 	if File(from) > 2 && Rank(from) > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
 		for to := from - 22; File(to) != 0 && Rank(to) != 0; to -= 11 { // ２つ右上から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -692,7 +693,7 @@ func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEnd
 	if File(from) < 8 && Rank(from) < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
 		for to := from + 22; File(to) != 0 && Rank(to) != 0; to += 11 { // ２つ左下から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -703,7 +704,7 @@ func makeLongDiagonalPromotion(pPos *Position, phase Phase, from Square, moveEnd
 	if File(from) > 2 && Rank(from) < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
 		for to := from - 18; File(to) != 0 && Rank(to) != 0; to -= 9 { // ２つ右下から
 			ValidateSq(to)
-			if src_pro || (phase == FIRST && Rank(to) < 4) || (phase == SECOND && Rank(to) > 6) {
+			if src_pro || (phase == l06.FIRST && Rank(to) < 4) || (phase == l06.SECOND && Rank(to) > 6) {
 				moveEndList = append(moveEndList, NewMoveEnd(to, true))
 			}
 			if !pPos.IsEmptySq(to) {
@@ -896,11 +897,11 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	var hand_end int
 	// var opponentKingSq Square
 	var pOpponentSumCB *ControlBoard
-	if friend == FIRST {
+	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
 		hand_start = l11.HAND_IDX_START
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2]
-	} else if friend == SECOND {
+	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
 		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]

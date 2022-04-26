@@ -8,6 +8,7 @@ import (
 	"sort"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -91,7 +92,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	for from := Square(11); from < BOARD_SIZE; from += 1 {
 		if File(from) != 0 && Rank(from) != 0 {
 
-			sumList[FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
+			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
 
 		}
 	}
@@ -100,7 +101,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	for from := Square(11); from < BOARD_SIZE; from += 1 {
 		if File(from) != 0 && Rank(from) != 0 {
 
-			sumList[SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
+			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
 
 		}
 	}
@@ -135,7 +136,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 
 						ok := false
 						switch phase {
-						case FIRST:
+						case l06.FIRST:
 							switch pieceType {
 							case PIECE_TYPE_K:
 								pPos.Hands1[l11.HAND_K1] += 1
@@ -164,7 +165,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 							default:
 								// Ignored
 							}
-						case SECOND:
+						case l06.SECOND:
 							switch pieceType {
 							case PIECE_TYPE_K:
 								pPos.Hands1[l11.HAND_K2] += 1
@@ -282,9 +283,9 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pNerve.PPosSys.phase = FIRST
+		pNerve.PPosSys.phase = l06.FIRST
 	default:
-		pNerve.PPosSys.phase = SECOND
+		pNerve.PPosSys.phase = l06.SECOND
 	}
 
 	// 手目は 1 に戻します

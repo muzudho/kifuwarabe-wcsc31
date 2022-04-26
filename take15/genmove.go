@@ -2,6 +2,7 @@ package take15
 
 import (
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -551,11 +552,11 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 	var hand_end int
 	// var opponentKingSq Square
 	var pOpponentSumCB *ControlBoard
-	if friend == FIRST {
+	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
 		hand_start = l11.HAND_IDX_START
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
-	} else if friend == SECOND {
+	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
 		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]

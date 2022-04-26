@@ -3,6 +3,7 @@ package take13
 import (
 	"fmt"
 
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -88,9 +89,9 @@ func WhatHand(hand Square) PieceType {
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K1
@@ -123,7 +124,7 @@ func PieceFromPhPt(phase Phase, pieceType PieceType) l09.Piece {
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
-	case SECOND:
+	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
 			return l09.PIECE_K2

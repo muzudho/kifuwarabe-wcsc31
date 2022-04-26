@@ -1,6 +1,10 @@
 package take14
 
-import "fmt"
+import (
+	"fmt"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+)
 
 // 利きテーブル・インデックス型
 type ControlLayerT int
@@ -256,13 +260,13 @@ func AddControlRook(pPos *Position,
 }
 
 func ControllBoardFromPhase(
-	phase Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
+	phase l06.Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
 
 	// fmt.Printf("Debug: phase=%d\n", phase)
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		return pPh1_CB
-	case SECOND:
+	case l06.SECOND:
 		return pPh2_CB
 	default:
 		panic(fmt.Errorf("unknown phase=%d", phase))

@@ -3,6 +3,7 @@ package take11
 import (
 	"fmt"
 
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -318,10 +319,10 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	var hand_start int
 	var hand_end int
 	// var opponentKingSq Square
-	if friend == FIRST {
+	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
 		hand_start = HAND_IDX_START
-	} else if friend == SECOND {
+	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
 		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
 	} else {

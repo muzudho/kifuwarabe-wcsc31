@@ -1,13 +1,17 @@
 package take7
 
-import "fmt"
+import (
+	"fmt"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+)
 
 // Print - 局面出力（＾ｑ＾）
 func Sprint(pPos *Position) string {
 	var phase_str = "?"
-	if pPos.Phase == FIRST {
+	if pPos.Phase == l06.FIRST {
 		phase_str = "First"
-	} else if pPos.Phase == SECOND {
+	} else if pPos.Phase == l06.SECOND {
 		phase_str = "Second"
 	}
 

@@ -2,15 +2,17 @@ package take15
 
 import (
 	"fmt"
+
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) SprintBoardHeader(phase Phase, startMovesNum int, offsetMovesIndex int) string {
+func (pPos *Position) SprintBoardHeader(phase l06.Phase, startMovesNum int, offsetMovesIndex int) string {
 	var phase_str string
 	switch phase {
-	case FIRST:
+	case l06.FIRST:
 		phase_str = "First"
-	case SECOND:
+	case l06.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"
