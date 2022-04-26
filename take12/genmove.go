@@ -3,6 +3,7 @@ package take12
 import (
 	"fmt"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -320,16 +321,16 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	var pOpponentSumCB *ControlBoard
 	if friend == FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
-		hand_start = HAND_IDX_START
+		hand_start = l11.HAND_IDX_START
 		pOpponentSumCB = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM2]
 	} else if friend == SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
-		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
+		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + HAND_TYPE_SIZE
+	hand_end = hand_start + l11.HAND_TYPE_SIZE
 
 	// 相手の利きテーブルの自玉のマスに利きがあるか
 	if pOpponentSumCB.Board[friendKingSq] > 0 {

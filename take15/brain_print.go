@@ -3,6 +3,8 @@ package take15
 import (
 	"bytes"
 	"fmt"
+
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
@@ -31,7 +33,7 @@ func (pBrain *Brain) Dump() string {
 	for b := PosLayerT(0); b < 2; b += 1 {
 		buffer.WriteString(fmt.Sprintf("Position[%d]:", b))
 		buffer.WriteString("Hands:")
-		for i := HAND_IDX_START; i < HAND_IDX_END; i += 1 {
+		for i := l11.HAND_IDX_START; i < l11.HAND_IDX_END; i += 1 {
 			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[b].Hands1[i]))
 		}
 		buffer.WriteString("\n")

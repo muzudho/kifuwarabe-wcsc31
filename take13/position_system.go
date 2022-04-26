@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -52,7 +53,7 @@ func OnBoard(sq Square) bool {
 // [0], [1]
 const PHASE_ARRAY_SIZE = 2
 
-var HandPieceMap1 = [HAND_SIZE]l09.Piece{
+var HandPieceMap1 = [l11.HAND_SIZE]l09.Piece{
 	l09.PIECE_K1, l09.PIECE_R1, l09.PIECE_B1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_N1, l09.PIECE_L1, l09.PIECE_P1,
 	l09.PIECE_K2, l09.PIECE_R2, l09.PIECE_B2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_N2, l09.PIECE_L2, l09.PIECE_P2}
 
@@ -292,7 +293,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case HAND_R1, HAND_R2:
+						case l11.HAND_R1, l11.HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -300,7 +301,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_B1, HAND_B2:
+						case l11.HAND_B1, l11.HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -308,7 +309,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_L1, HAND_L2:
+						case l11.HAND_L1, l11.HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -322,33 +323,33 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = HAND_R1
+						hand_index = l11.HAND_R1
 					case 'B':
-						hand_index = HAND_B1
+						hand_index = l11.HAND_B1
 					case 'G':
-						hand_index = HAND_G1
+						hand_index = l11.HAND_G1
 					case 'S':
-						hand_index = HAND_S1
+						hand_index = l11.HAND_S1
 					case 'N':
-						hand_index = HAND_N1
+						hand_index = l11.HAND_N1
 					case 'L':
-						hand_index = HAND_L1
+						hand_index = l11.HAND_L1
 					case 'P':
-						hand_index = HAND_P1
+						hand_index = l11.HAND_P1
 					case 'r':
-						hand_index = HAND_R2
+						hand_index = l11.HAND_R2
 					case 'b':
-						hand_index = HAND_B2
+						hand_index = l11.HAND_B2
 					case 'g':
-						hand_index = HAND_G2
+						hand_index = l11.HAND_G2
 					case 's':
-						hand_index = HAND_S2
+						hand_index = l11.HAND_S2
 					case 'n':
-						hand_index = HAND_N2
+						hand_index = l11.HAND_N2
 					case 'l':
-						hand_index = HAND_L2
+						hand_index = l11.HAND_L2
 					case 'p':
-						hand_index = HAND_P2
+						hand_index = l11.HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop
@@ -516,7 +517,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case FIRST:
 			from = hand_sq
 		case SECOND:
-			from = hand_sq + HAND_TYPE_SIZE
+			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}

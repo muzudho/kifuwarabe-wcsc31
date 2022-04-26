@@ -1,6 +1,9 @@
 package take15
 
-import l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+import (
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
+)
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
 // 成らないと移動できないが、成れば移動できるマスがあるので、移動先と成りの２つセットで返します。
@@ -550,16 +553,16 @@ func GenMoveList(pBrain *Brain, pPos *Position) []Move {
 	var pOpponentSumCB *ControlBoard
 	if friend == FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
-		hand_start = HAND_IDX_START
+		hand_start = l11.HAND_IDX_START
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
-		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
+		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + HAND_TYPE_SIZE
+	hand_end = hand_start + l11.HAND_TYPE_SIZE
 
 	if !OnBoard(friendKingSq) {
 		// 自玉が盤上にない場合は、指し手を返しません

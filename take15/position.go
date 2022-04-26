@@ -1,6 +1,7 @@
 package take15
 
 import (
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -22,7 +23,7 @@ func (pPos *Position) setToStartpos() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
 // clearBoard - 駒を置いていな状態でリセットします
@@ -44,5 +45,5 @@ func (pPos *Position) clearBoard() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }

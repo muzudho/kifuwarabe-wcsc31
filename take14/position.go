@@ -15,7 +15,7 @@ type Position struct {
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [l11.PCLOC_SIZE]Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
-	Hands1 [HAND_SIZE]int
+	Hands1 [l11.HAND_SIZE]int
 
 	// 先手から見た駒得評価値
 	MaterialValue int16
@@ -41,7 +41,7 @@ func NewPosition() *Position {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 	return pPos
 }
@@ -64,7 +64,7 @@ func (pPos *Position) setToStartpos() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
 func (pPos *Position) GetPieceLocation(index int) Square {
@@ -90,7 +90,7 @@ func (pPos *Position) clearBoard() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
 // Homo - 移動元と移動先の駒を持つプレイヤーが等しければ真。移動先が空なら偽

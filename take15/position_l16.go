@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -14,7 +15,7 @@ type Value int32
 const BOARD_SIZE = 100
 
 // 持ち駒
-var HandIndexToPiece = [HAND_SIZE]l09.Piece{
+var HandIndexToPiece = [l11.HAND_SIZE]l09.Piece{
 	l09.PIECE_K1, l09.PIECE_R1, l09.PIECE_B1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_N1, l09.PIECE_L1, l09.PIECE_P1,
 	l09.PIECE_K2, l09.PIECE_R2, l09.PIECE_B2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_N2, l09.PIECE_L2, l09.PIECE_P2}
 
@@ -27,7 +28,7 @@ type Position struct {
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
-	Hands1 [HAND_SIZE]int
+	Hands1 [l11.HAND_SIZE]int
 
 	// 現局面の手番から見た駒得評価値
 	MaterialValue Value
@@ -53,7 +54,7 @@ func NewPosition() *Position {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 
 	return pPos
 }
@@ -76,7 +77,7 @@ func (pPos *Position) SetToStartpos() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
 func (pPos *Position) GetPieceLocation(index int) Square {
@@ -102,7 +103,7 @@ func (pPos *Position) ClearBoard() {
 	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
 
 	// 持ち駒の数
-	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
 // Homo - 移動元と移動先の駒を持つプレイヤーが等しければ真。移動先が空なら偽
@@ -166,7 +167,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		case FIRST:
 			from = hand_sq
 		case SECOND:
-			from = hand_sq + HAND_TYPE_SIZE
+			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
