@@ -81,7 +81,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range someMoves {
 		// App.Out.Debug("move=%s\n", move.ToCode())
-		from, _, _ := Destructure(move)
+		from, _, _ := move.Destructure()
 
 		// デバッグに使うために、盤をコピーしておきます
 		pPosCopy := NewPosition()

@@ -460,7 +460,7 @@ func (pNerve *Nerve) DoMove(pPos *Position, move Move) {
 	cap_piece_type := l11.PIECE_TYPE_EMPTY
 
 	// 移動元マス、移動先マス、成りの有無
-	from, to, pro := Destructure(move)
+	from, to, pro := move.Destructure()
 	if pPos.IsEmptySq(from) {
 		// 人間の打鍵ミスか（＾～＾）
 		fmt.Printf("Error: %d square is empty\n", from)
@@ -770,7 +770,7 @@ func (pNerve *Nerve) UndoMove(pPos *Position) {
 	// next_phase := pNerve.PPosSys.GetPhase()
 	pNerve.PPosSys.FlipPhase()
 
-	from, to, pro := Destructure(move)
+	from, to, pro := move.Destructure()
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pNerve.PCtrlBrdSys.ClearControlDiff(pNerve.BuildType)
@@ -948,7 +948,7 @@ func (pNerve *Nerve) undoCapture(pPos *Position) {
 	pPos.MaterialValue = -pPos.MaterialValue
 
 	// 取った駒に関係するのは行き先だけ（＾～＾）
-	from, to, _ := Destructure(move)
+	from, to, _ := move.Destructure()
 	// fmt.Printf("Debug: to=%d\n", to)
 
 	var hand_sq = l11.SQUARE_EMPTY

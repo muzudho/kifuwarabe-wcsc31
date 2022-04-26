@@ -19,21 +19,21 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove - 初期値として 移動元マス、移動先マスを指定してください
+// NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
 func NewMove(from l11.Square, to l11.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
-	// ReplaceSource - 移動元マス
+	// Replace 7 source square bits
 	// 1111 1111 1000 0000 (Clear) 0xff80
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xff80 | uint16(from))
 
-	// ReplaceDestination - 移動先マス
+	// Replace 7 destination square bits
 	// 1100 0000 0111 1111 (Clear) 0xc07f
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
-	// ReplacePromotion - 成
+	// Replace 1 promotion bit
 	// 0100 0000 0000 0000 (Stand) 0x4000
 	// 1011 1111 1111 1111 (Clear) 0xbfff
 	// .pdd dddd dsss ssss
@@ -55,6 +55,7 @@ func (move Move) ToCodeOfM() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
+	// 移動元マス、移動先マス、成りの有無
 	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)

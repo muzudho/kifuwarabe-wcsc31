@@ -174,7 +174,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		}
 
 		// App.Out.Debug("move=%s\n", move.ToCode())
-		from, _, _ := Destructure(move)
+		from, _, _ := move.Destructure()
 
 		// デバッグに使うために、盤をコピーしておきます
 		pPosCopy := NewPosition()
