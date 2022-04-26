@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/rand"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -97,7 +98,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		materialVal := EvalMaterial(captured)
 
 		// 玉を取るのは最善手
-		if What(captured) == PIECE_TYPE_K {
+		if l11.What(captured) == l11.PIECE_TYPE_K {
 			bestmove = move
 			// bestMoveList = nil
 			// bestMoveList = append(bestMoveList, move)

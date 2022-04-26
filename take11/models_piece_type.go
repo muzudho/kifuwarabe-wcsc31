@@ -1,8 +1,7 @@
-package take11
+package take11 // same take12
 
 import (
-	"fmt"
-
+	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -61,7 +60,7 @@ func What(piece l09.Piece) PieceType {
 	case l09.PIECE_PP1, l09.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(fmt.Errorf("unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
 	}
 }
 
@@ -83,6 +82,80 @@ func WhatHand(hand Square) PieceType {
 	case SQ_P1, SQ_P2:
 		return PIECE_TYPE_P
 	default:
-		panic(fmt.Errorf("unknown hand=[%d]", hand))
+		panic(App.LogNotEcho.Fatal("unknown hand=[%d]", hand))
+	}
+}
+
+// PieceFromPhPt - 駒作成。空マスは作れません
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
+	switch phase {
+	case l06.FIRST:
+		switch pieceType {
+		case PIECE_TYPE_K:
+			return l09.PIECE_K1
+		case PIECE_TYPE_R:
+			return l09.PIECE_R1
+		case PIECE_TYPE_B:
+			return l09.PIECE_B1
+		case PIECE_TYPE_G:
+			return l09.PIECE_G1
+		case PIECE_TYPE_S:
+			return l09.PIECE_S1
+		case PIECE_TYPE_N:
+			return l09.PIECE_N1
+		case PIECE_TYPE_L:
+			return l09.PIECE_L1
+		case PIECE_TYPE_P:
+			return l09.PIECE_P1
+		case PIECE_TYPE_PR:
+			return l09.PIECE_PR1
+		case PIECE_TYPE_PB:
+			return l09.PIECE_PB1
+		case PIECE_TYPE_PS:
+			return l09.PIECE_PS1
+		case PIECE_TYPE_PN:
+			return l09.PIECE_PN1
+		case PIECE_TYPE_PL:
+			return l09.PIECE_PL1
+		case PIECE_TYPE_PP:
+			return l09.PIECE_PP1
+		default:
+			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
+		}
+	case l06.SECOND:
+		switch pieceType {
+		case PIECE_TYPE_K:
+			return l09.PIECE_K2
+		case PIECE_TYPE_R:
+			return l09.PIECE_R2
+		case PIECE_TYPE_B:
+			return l09.PIECE_B2
+		case PIECE_TYPE_G:
+			return l09.PIECE_G2
+		case PIECE_TYPE_S:
+			return l09.PIECE_S2
+		case PIECE_TYPE_N:
+			return l09.PIECE_N2
+		case PIECE_TYPE_L:
+			return l09.PIECE_L2
+		case PIECE_TYPE_P:
+			return l09.PIECE_P2
+		case PIECE_TYPE_PR:
+			return l09.PIECE_PR2
+		case PIECE_TYPE_PB:
+			return l09.PIECE_PB2
+		case PIECE_TYPE_PS:
+			return l09.PIECE_PS2
+		case PIECE_TYPE_PN:
+			return l09.PIECE_PN2
+		case PIECE_TYPE_PL:
+			return l09.PIECE_PL2
+		case PIECE_TYPE_PP:
+			return l09.PIECE_PP2
+		default:
+			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
+		}
+	default:
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 }

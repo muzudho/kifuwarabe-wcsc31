@@ -3,6 +3,8 @@ package take13
 import (
 	"fmt"
 	"math/rand"
+
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
 const RESIGN_VALUE = -32768
@@ -95,7 +97,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		captured := pPosSys.CapturedList[pPosSys.OffsetMovesIndex-1]
 
 		// 玉を取るのは最善手
-		if What(captured) == PIECE_TYPE_K {
+		if l11.What(captured) == l11.PIECE_TYPE_K {
 			bestMove = move
 			bestVal = pPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture

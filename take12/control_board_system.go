@@ -229,7 +229,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlLance(pPos *Position,
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
 			from != excludeFrom && // 除外マスは除外
-			PIECE_TYPE_PL != What(pPos.Board[from]) { // 杏は除外
+			l11.PIECE_TYPE_PL != l11.What(pPos.Board[from]) { // 杏は除外
 			pControlBoardSys.AddControlDiff(pPos, ph1_c, ph2_c, from, sign)
 		}
 	}

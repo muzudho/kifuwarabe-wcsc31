@@ -19,7 +19,8 @@ func (pStopwatch *Stopwatch) StartStopwatch() {
 
 /// Elapsed - 経過時間取得
 func (pStopwatch *Stopwatch) Elapsed() time.Duration {
-	return time.Now().Sub(pStopwatch.startTime)
+	// return time.Now().Sub(pStopwatch.startTime)
+	return time.Since(pStopwatch.startTime)
 }
 
 /// ElapsedSeconds - 経過時間取得（秒）

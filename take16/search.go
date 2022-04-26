@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"strconv"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -205,7 +206,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
-		} else if What(captured) == PIECE_TYPE_K {
+		} else if l11.What(captured) == l11.PIECE_TYPE_K {
 			// 玉を取るのは最善手
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)
