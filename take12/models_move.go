@@ -1,4 +1,4 @@
-package take12
+package take12 // not same take13
 
 import (
 	"fmt"

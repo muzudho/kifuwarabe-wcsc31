@@ -8,6 +8,7 @@ import (
 	"sort"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -53,7 +54,7 @@ func TestControl(pNerve *Nerve, pPos *Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pNerve *Nerve, move_seq int, move_total int, move Move) bool {
+func checkControl(pNerve *Nerve, move_seq int, move_total int, move l13.Move) bool {
 
 	is_error := false
 

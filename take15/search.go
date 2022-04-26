@@ -4,6 +4,7 @@ import (
 	"math/rand"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 )
 
 /*
@@ -37,7 +38,7 @@ const (
 )
 
 // Search - 探索部
-func Search(pBrain *Brain) Move {
+func Search(pBrain *Brain) l13.Move {
 
 	nodesNum = 0
 	curDepth := 0
@@ -54,7 +55,7 @@ func Search(pBrain *Brain) Move {
 }
 
 // search2 - 探索部
-func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type SearchType
+func search2(pBrain *Brain, curDepth int) (l13.Move, Value) { //, search_type SearchType
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -65,16 +66,16 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 
 	if lenOfMoves == 0 {
 		// ステイルメートされたら負け（＾～＾）
-		return RESIGN_MOVE, RESIGN_VALUE
+		return l13.RESIGN_MOVE, RESIGN_VALUE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var someBestMoves []Move
+	var someBestMoves []l13.Move
 
 	// 次の相手の手の評価値（自分は これを最小にしたい）
 	var opponentWorstVal Value = ANTI_RESIGN_VALUE
 	// 前回のムーブ
-	var younger_sibling_move = RESIGN_MOVE
+	var younger_sibling_move = l13.RESIGN_MOVE
 	// 探索終了
 	var cutting = CuttingNone
 
@@ -198,7 +199,7 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 
 		/*
 			// Debug ここから
-			var debugBestMove = RESIGN_MOVE
+			var debugBestMove = l13.RESIGN_MOVE
 			bestmoveListLen := len(someBestMoves)
 			if bestmoveListLen > 0 {
 				debugBestMove = someBestMoves[rand.Intn(bestmoveListLen)]
@@ -209,13 +210,13 @@ func search2(pBrain *Brain, curDepth int) (Move, Value) { //, search_type Search
 	}
 
 	// bestMoveは、１手目しか使わないけど（＾～＾）
-	var bestMove = RESIGN_MOVE
+	var bestMove = l13.RESIGN_MOVE
 
 	bestmoveListLen := len(someBestMoves)
 	//fmt.Printf("%d/%d bestmoveListLen=%d\n", curDepth, depthEnd, bestmoveListLen)
 	if bestmoveListLen < 1 {
 		// 指せる手なし
-		return RESIGN_MOVE, RESIGN_VALUE
+		return l13.RESIGN_MOVE, RESIGN_VALUE
 	}
 	bestMove = someBestMoves[rand.Intn(bestmoveListLen)]
 	// 評価値出力（＾～＾）

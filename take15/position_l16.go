@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -131,7 +132,7 @@ func (pPos *Position) IsEmptySq(sq l11.Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	var len = len(command)
 	var hand_sq = l11.SQUARE_EMPTY
 
@@ -170,11 +171,11 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		case l06.SECOND:
 			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("fatal: not *")
+			return *new(l13.Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -211,7 +212,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
+				return *new(l13.Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -221,10 +222,10 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l13.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l13.Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -235,7 +236,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return l13.NewMove(from, to, pro), nil
 }
 
 // From - 筋と段からマス番号を作成します

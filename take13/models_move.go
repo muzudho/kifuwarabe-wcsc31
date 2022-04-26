@@ -1,4 +1,4 @@
-package take13
+package take13 // same take14
 
 import (
 	"fmt"
@@ -23,17 +23,17 @@ const RESIGN_MOVE = Move(0)
 func NewMove(from l11.Square, to l11.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
-	// replaceSource - 移動元マス
+	// Replace 7 source square bits
 	// 1111 1111 1000 0000 (Clear) 0xff80
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xff80 | uint16(from))
 
-	// replaceDestination - 移動先マス
+	// Replace 7 destination square bits
 	// 1100 0000 0111 1111 (Clear) 0xc07f
 	// .pdd dddd dsss ssss
 	move = Move(uint16(move)&0xc07f | (uint16(to) << 7))
 
-	// replacePromotion - 成
+	// Replace 1 promotion bit
 	// 0100 0000 0000 0000 (Stand) 0x4000
 	// 1011 1111 1111 1111 (Clear) 0xbfff
 	// .pdd dddd dsss ssss

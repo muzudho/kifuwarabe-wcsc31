@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -101,7 +102,7 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [MOVES_SIZE]l13.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]l09.Piece
 }
@@ -136,7 +137,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [MOVES_SIZE]Move{}
+	pPosSys.Moves = [MOVES_SIZE]l13.Move{}
 	// 取った駒のリスト
 	pPosSys.CapturedList = [MOVES_SIZE]l09.Piece{}
 }
@@ -470,7 +471,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 		pPosSys.PControlBoardSystem.MergeControlDiff(pPosSys.BuildType)
 	}
 
-	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l13.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pPosSys.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pPosSys.OffsetMovesIndex = 0
@@ -481,7 +482,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	var len = len(command)
 	var hand_sq = l11.SQUARE_EMPTY
 
@@ -520,11 +521,11 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		case l06.SECOND:
 			from = hand_sq + l11.HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("fatal: not *")
+			return *new(l13.Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -561,7 +562,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(l13.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -571,10 +572,10 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l13.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l13.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -585,11 +586,11 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return l13.NewMove(from, to, pro), nil
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
+func (pPosSys *PositionSystem) DoMove(pPos *Position, move l13.Move) {
 	before_move_phase := pPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
