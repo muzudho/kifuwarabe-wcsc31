@@ -80,6 +80,7 @@ func main() {
 		rand.Seed(time.Now().UnixNano())
 		take15.MainLoop()
 	case "lesson16":
+	default:
 		// 最終版
 		rand.Seed(time.Now().UnixNano())
 		take16.MainLoop()
