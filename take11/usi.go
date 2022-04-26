@@ -295,7 +295,7 @@ MainLoop:
 				bestmove := Search(pPosSys)
 				App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-				if bestmove == Move(l04.SQUARE_EMPTY) {
+				if bestmove == Move(l04.SQ_EMPTY) {
 					// 投了
 					break
 				}

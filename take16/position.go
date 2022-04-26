@@ -54,7 +54,7 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -103,7 +103,7 @@ func (pPos *Position) ClearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -135,7 +135,7 @@ func (pPos *Position) IsEmptySq(sq l04.Square) bool {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	var len = len(command)
-	var hand_sq = l04.SQUARE_EMPTY
+	var hand_sq = l04.SQ_EMPTY
 
 	var from l04.Square
 	var to l04.Square
@@ -164,7 +164,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != l04.SQUARE_EMPTY {
+	if hand_sq != l04.SQ_EMPTY {
 		*i += 1
 		switch phase {
 		case l06.FIRST:

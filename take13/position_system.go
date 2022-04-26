@@ -215,7 +215,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -223,7 +223,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			case 'B', 'b':
 				for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -231,7 +231,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			case 'L', 'l':
 				for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
 						break
 					}
@@ -298,7 +298,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						case l11.HAND_R1, l11.HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
@@ -306,7 +306,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						case l11.HAND_B1, l11.HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
@@ -314,7 +314,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						case l11.HAND_L1, l11.HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
-								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
@@ -484,7 +484,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
-	var hand_sq = l04.SQUARE_EMPTY
+	var hand_sq = l04.SQ_EMPTY
 
 	var from l04.Square
 	var to l04.Square
@@ -513,7 +513,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != l04.SQUARE_EMPTY {
+	if hand_sq != l04.SQ_EMPTY {
 		*i += 1
 		switch phase {
 		case l06.FIRST:
@@ -605,7 +605,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		fmt.Printf("Error: %d square is empty\n", from)
 	}
 	var cap_src_sq l04.Square
-	var cap_dst_sq = l04.SQUARE_EMPTY
+	var cap_dst_sq = l04.SQ_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPosSys.PControlBoardSystem.ClearControlDiff(pPosSys.BuildType)
@@ -662,7 +662,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 		piece = l09.PIECE_P2
 	default:
 		// Not hand
-		sq_hand = l04.SQUARE_EMPTY
+		sq_hand = l04.SQ_EMPTY
 	}
 
 	if sq_hand != 0 {
@@ -810,7 +810,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move Move) {
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_dst_sq != l04.SQUARE_EMPTY {
+		if cap_dst_sq != l04.SQ_EMPTY {
 			pPosSys.CapturedList[pPosSys.OffsetMovesIndex] = captured
 			pPos.Hands1[cap_dst_sq-l04.SQ_HAND_START] += 1
 		} else {
@@ -1088,7 +1088,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 	from, to, _ := move.Destructure()
 	// fmt.Printf("Debug: to=%d\n", to)
 
-	var hand_sq = l04.SQUARE_EMPTY
+	var hand_sq = l04.SQ_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPosSys.PControlBoardSystem.ClearControlDiff(pPosSys.BuildType)
@@ -1158,7 +1158,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 
 		// fmt.Printf("Debug: hand_sq=%d\n", hand_sq)
 
-		if hand_sq != l04.SQUARE_EMPTY {
+		if hand_sq != l04.SQ_EMPTY {
 			pPos.Hands1[hand_sq-l04.SQ_HAND_START] -= 1
 
 			// 取っていた駒を行き先に戻します

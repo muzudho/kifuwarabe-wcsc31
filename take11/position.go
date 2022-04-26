@@ -35,7 +35,7 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -84,7 +84,7 @@ func (pPos *Position) clearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}

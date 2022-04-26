@@ -63,7 +63,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 		dp2 := []int{37}
 	*/
 
-	if from == l04.SQUARE_EMPTY {
+	if from == l04.SQ_EMPTY {
 		panic(fmt.Errorf("GenMoveEnd has empty square"))
 	} else if OnHands(from) {
 		// どこに打てるか

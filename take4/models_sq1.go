@@ -4,7 +4,7 @@ package take4
 type Square uint32
 
 const (
-	SQUARE_EMPTY  = Square(0)   // マス番号を指定しないことを意味するマス番号
+	SQ_EMPTY      = Square(0)   // マス番号を指定しないことを意味するマス番号
 	SQ_K1         = Square(100) // 持ち駒を打つ 100～115
 	SQ_R1         = Square(101) // 先手飛打
 	SQ_B1         = Square(102)

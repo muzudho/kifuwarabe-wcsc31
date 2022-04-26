@@ -514,10 +514,10 @@ func (pPos *Position) resetToZero() {
 		},
 	}}
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.kingLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
-	pPos.RookLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
-	pPos.BishopLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
-	pPos.LanceLocations = [4]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.kingLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.RookLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.BishopLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.LanceLocations = [4]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands = []int{
@@ -625,21 +625,21 @@ func (pPos *Position) ReadPosition(command string) {
 				pPos.kingLocations[1] = l04.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i, sq := range pPos.RookLocations {
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.RookLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
 				}
 			case 'B', 'b':
 				for i, sq := range pPos.BishopLocations {
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.BishopLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
 				}
 			case 'L', 'l':
 				for i, sq := range pPos.LanceLocations {
-					if sq == l04.SQUARE_EMPTY {
+					if sq == l04.SQ_EMPTY {
 						pPos.LanceLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
@@ -705,21 +705,21 @@ func (pPos *Position) ReadPosition(command string) {
 						switch hand_index {
 						case HAND_R1, HAND_R2:
 							for i, sq := range pPos.RookLocations {
-								if sq == l04.SQUARE_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
+								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.RookLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
 							}
 						case HAND_B1, HAND_B2:
 							for i, sq := range pPos.BishopLocations {
-								if sq == l04.SQUARE_EMPTY {
+								if sq == l04.SQ_EMPTY {
 									pPos.BishopLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
 							}
 						case HAND_L1, HAND_L2:
 							for i, sq := range pPos.LanceLocations {
-								if sq == l04.SQUARE_EMPTY {
+								if sq == l04.SQ_EMPTY {
 									pPos.LanceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
 									break
 								}
@@ -864,7 +864,7 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
-	var hand_sq = l04.SQUARE_EMPTY
+	var hand_sq = l04.SQ_EMPTY
 
 	var from l04.Square
 	var to l04.Square
@@ -893,7 +893,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != l04.SQUARE_EMPTY {
+	if hand_sq != l04.SQ_EMPTY {
 		*i += 1
 		switch phase {
 		case l06.FIRST:
@@ -984,7 +984,7 @@ func (pPos *Position) DoMove(move Move) {
 	}
 
 	var cap_src_sq l04.Square
-	var cap_dst_sq = l04.SQUARE_EMPTY
+	var cap_dst_sq = l04.SQ_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPos.ClearControlDiff()
@@ -1028,7 +1028,7 @@ func (pPos *Position) DoMove(move Move) {
 		piece = l09.PIECE_P2
 	default:
 		// Not hand
-		sq_hand = l04.SQUARE_EMPTY
+		sq_hand = l04.SQ_EMPTY
 	}
 
 	if sq_hand != 0 {
@@ -1111,7 +1111,7 @@ func (pPos *Position) DoMove(move Move) {
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_dst_sq != l04.SQUARE_EMPTY {
+		if cap_dst_sq != l04.SQ_EMPTY {
 			pPos.CapturedList[pPos.OffsetMovesIndex] = captured
 			pPos.Hands[cap_dst_sq-l04.SQ_HAND_START] += 1
 		} else {
@@ -1196,7 +1196,7 @@ func (pPos *Position) UndoMove() {
 	from, to, pro := move.Destructure()
 
 	var cap_dst_sq l04.Square
-	var cap_src_sq = l04.SQUARE_EMPTY
+	var cap_src_sq = l04.SQ_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPos.ClearControlDiff()
@@ -1274,7 +1274,7 @@ func (pPos *Position) UndoMove() {
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_src_sq != l04.SQUARE_EMPTY {
+		if cap_src_sq != l04.SQ_EMPTY {
 			cap_dst_sq = cap_src_sq
 			pPos.Hands[cap_src_sq-l04.SQ_HAND_START] -= 1
 

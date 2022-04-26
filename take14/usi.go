@@ -343,7 +343,7 @@ MainLoop:
 					bestmove := Search(pPosSys)
 					App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-					if bestmove == l13.Move(l04.SQUARE_EMPTY) {
+					if bestmove == l13.Move(l04.SQ_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}
