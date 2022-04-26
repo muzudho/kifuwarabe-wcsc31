@@ -3,6 +3,7 @@ package take12
 import (
 	"fmt"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -66,21 +67,21 @@ func What(piece l09.Piece) PieceType {
 }
 
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
-func WhatHand(hand Square) PieceType {
+func WhatHand(hand l11.Square) PieceType {
 	switch hand {
-	case SQ_R1, SQ_R2:
+	case l11.SQ_R1, l11.SQ_R2:
 		return PIECE_TYPE_R
-	case SQ_B1, SQ_B2:
+	case l11.SQ_B1, l11.SQ_B2:
 		return PIECE_TYPE_B
-	case SQ_G1, SQ_G2:
+	case l11.SQ_G1, l11.SQ_G2:
 		return PIECE_TYPE_G
-	case SQ_S1, SQ_S2:
+	case l11.SQ_S1, l11.SQ_S2:
 		return PIECE_TYPE_S
-	case SQ_N1, SQ_N2:
+	case l11.SQ_N1, l11.SQ_N2:
 		return PIECE_TYPE_N
-	case SQ_L1, SQ_L2:
+	case l11.SQ_L1, l11.SQ_L2:
 		return PIECE_TYPE_L
-	case SQ_P1, SQ_P2:
+	case l11.SQ_P1, l11.SQ_P2:
 		return PIECE_TYPE_P
 	default:
 		panic(fmt.Errorf("unknown hand=[%d]", hand))

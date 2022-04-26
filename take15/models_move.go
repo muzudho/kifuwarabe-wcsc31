@@ -1,7 +1,11 @@
 //! Position と Record を疎結合にするための仕掛け。両方から参照されるもの（＾～＾）
 package take15
 
-import "fmt"
+import (
+	"fmt"
+
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+)
 
 // 指し手
 //
@@ -17,7 +21,7 @@ type Move uint16
 const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+func NewMove(from l11.Square, to l11.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// replaceSource - 移動元マス
@@ -57,25 +61,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case SQ_R1, SQ_R2:
+	case l11.SQ_R1, l11.SQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case SQ_B1, SQ_B2:
+	case l11.SQ_B1, l11.SQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case SQ_G1, SQ_G2:
+	case l11.SQ_G1, l11.SQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case SQ_S1, SQ_S2:
+	case l11.SQ_S1, l11.SQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case SQ_N1, SQ_N2:
+	case l11.SQ_N1, l11.SQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case SQ_L1, SQ_L2:
+	case l11.SQ_L1, l11.SQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case SQ_P1, SQ_P2:
+	case l11.SQ_P1, l11.SQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -88,7 +92,7 @@ func (move Move) ToCodeOfM() string {
 	}
 
 	for count < 2 {
-		var sq Square // マス番号
+		var sq l11.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -129,9 +133,9 @@ func (move Move) ToCodeOfM() string {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func Destructure(move Move) (Square, Square, bool) {
-	var from = Square(uint16(move) & 0x007f)
-	var to = Square((uint16(move) & 0x3f80) >> 7)
+func Destructure(move Move) (l11.Square, l11.Square, bool) {
+	var from = l11.Square(uint16(move) & 0x007f)
+	var to = l11.Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

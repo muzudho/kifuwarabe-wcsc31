@@ -1,7 +1,9 @@
 package take12
 
+import l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+
 // 将棋盤の内側をスキャンします。
-var centerScanningLine = []Square{
+var centerScanningLine = []l11.Square{
 	82, 72, 62, 52, 42, 32, 22,
 	83, 73, 63, 53, 43, 33, 23,
 	84, 74, 64, 54, 44, 34, 24,
@@ -18,7 +20,7 @@ var centerBrushingArea = []int32{
 	11, 1, -9}
 
 // 上辺用
-var topScanningLine = []Square{
+var topScanningLine = []l11.Square{
 	81, 71, 61, 51, 41, 31, 21,
 }
 var topBrushingArea = []int32{
@@ -26,7 +28,7 @@ var topBrushingArea = []int32{
 	11, 1, -9}
 
 // 右上用
-var rightTopScanningLine = []Square{
+var rightTopScanningLine = []l11.Square{
 	11,
 }
 var rightTopBrushingArea = []int32{
@@ -34,7 +36,7 @@ var rightTopBrushingArea = []int32{
 	11, 1}
 
 // 右辺用
-var rightScanningLine = []Square{
+var rightScanningLine = []l11.Square{
 	12,
 	13,
 	14,
@@ -49,7 +51,7 @@ var rightBrushingArea = []int32{
 	11, 1}
 
 // 右下用
-var rightBottomScanningLine = []Square{
+var rightBottomScanningLine = []l11.Square{
 	19,
 }
 var rightBottomBrushingArea = []int32{
@@ -57,7 +59,7 @@ var rightBottomBrushingArea = []int32{
 	10}
 
 // 下辺用
-var bottomScanningLine = []Square{
+var bottomScanningLine = []l11.Square{
 	89, 79, 69, 59, 49, 39, 29,
 }
 var bottomBrushingArea = []int32{
@@ -65,7 +67,7 @@ var bottomBrushingArea = []int32{
 	10, -10}
 
 // 左下用
-var leftBottomScanningLine = []Square{
+var leftBottomScanningLine = []l11.Square{
 	99,
 }
 var leftBottomBrushingArea = []int32{
@@ -73,7 +75,7 @@ var leftBottomBrushingArea = []int32{
 	-10}
 
 // 左辺用
-var leftScanningLine = []Square{
+var leftScanningLine = []l11.Square{
 	92,
 	93,
 	94,
@@ -88,7 +90,7 @@ var leftBrushingArea = []int32{
 	1, -9}
 
 // 左上用
-var leftTopScanningLine = []Square{
+var leftTopScanningLine = []l11.Square{
 	91,
 }
 var leftTopBrushingArea = []int32{
@@ -135,7 +137,7 @@ func WaterColor(pCB1 *ControlBoard, pCB2 *ControlBoard, pCB3 *ControlBoard, pCB4
 	waterColor2(leftTopScanningLine, leftTopBrushingArea, pW, pX, pY)
 }
 
-func waterColor2(scanningLine []Square, brushingArea []int32, pCB1 *ControlBoard, pCB2 *ControlBoard, pCB3 *ControlBoard) {
+func waterColor2(scanningLine []l11.Square, brushingArea []int32, pCB1 *ControlBoard, pCB2 *ControlBoard, pCB3 *ControlBoard) {
 	brushAreaSize := int8(len(brushingArea))
 
 	// 真ん中
@@ -143,13 +145,13 @@ func waterColor2(scanningLine []Square, brushingArea []int32, pCB1 *ControlBoard
 		// ブラシの面積分の利きを総和します
 		var sum int8 = 0
 		for _, rel := range brushingArea {
-			sq2 := Square(int32(sq1) + rel)
+			sq2 := l11.Square(int32(sq1) + rel)
 			sum += pCB1.Board[sq2] - pCB2.Board[sq2]
 		}
 		sum /= brushAreaSize
 		// 総和したものを平均し、結果表に上乗せします
 		for _, rel := range brushingArea {
-			sq2 := Square(int32(sq1) + rel)
+			sq2 := l11.Square(int32(sq1) + rel)
 			pCB3.Board[sq2] += sum
 		}
 	}

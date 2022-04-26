@@ -89,8 +89,8 @@ func SumAbsControl(pPosSys *PositionSystem, ph1_c ControlLayerT, ph2_c ControlLa
 	sumList := [2]int{0, 0}
 
 	cb1 := pPosSys.PControlBoardSystem.PBoards[ph1_c]
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 {
+	for from := l11.Square(11); from < BOARD_SIZE; from += 1 {
+		if l11.File(from) != 0 && l11.Rank(from) != 0 {
 
 			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
 
@@ -98,8 +98,8 @@ func SumAbsControl(pPosSys *PositionSystem, ph1_c ControlLayerT, ph2_c ControlLa
 	}
 
 	cb2 := pPosSys.PControlBoardSystem.PBoards[ph2_c]
-	for from := Square(11); from < BOARD_SIZE; from += 1 {
-		if File(from) != 0 && Rank(from) != 0 {
+	for from := l11.Square(11); from < BOARD_SIZE; from += 1 {
+		if l11.File(from) != 0 && l11.Rank(from) != 0 {
 
 			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
 
@@ -122,12 +122,12 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	for i := 0; i < 200; i += 1 {
 
 		// 盤から駒台の方向
-		for rank := Square(1); rank < 10; rank += 1 {
-			for file := Square(9); file > 0; file -= 1 {
+		for rank := l11.Square(1); rank < 10; rank += 1 {
+			for file := l11.Square(9); file > 0; file -= 1 {
 				sq := SquareFrom(file, rank)
 
 				// 10マスに1マスは駒台へ
-				change := Square(rand.Intn(10))
+				change := l11.Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
 					if piece != l09.PIECE_EMPTY {
@@ -218,7 +218,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 		for hand_index := l11.HAND_IDX_START; hand_index < l11.HAND_IDX_END; hand_index += 1 {
 			num := pPos.Hands1[hand_index]
 			if num > 0 {
-				sq := Square(rand.Intn(100))
+				sq := l11.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
 					pPos.Board[sq] = HandPieceMap1[hand_index]
@@ -238,8 +238,8 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	// 盤上での移動
 	// 適当に大きな回数
 	for i := 0; i < 81*80; i += 1 {
-		sq1 := Square(rand.Intn(100))
-		sq2 := Square(rand.Intn(100))
+		sq1 := l11.Square(rand.Intn(100))
+		sq2 := l11.Square(rand.Intn(100))
 		if OnBoard(sq1) && OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
 			piece := pPos.Board[sq1]
 			// 位置スワップ
@@ -247,7 +247,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 			pPos.Board[sq2] = piece
 
 			// 成／不成 変更
-			promote := Square(rand.Intn(10))
+			promote := l11.Square(rand.Intn(10))
 			if promote == 0 {
 				pPos.Board[sq2] = l09.Promote(pPos.Board[sq2])
 			} else if promote == 1 {
@@ -263,7 +263,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 				phase := Who(piece)
 				pieceType := What(piece)
 
-				change := Square(rand.Intn(10))
+				change := l11.Square(rand.Intn(10))
 				if change == 0 {
 					phase = FlipPhase(phase)
 				}
@@ -307,8 +307,8 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 			countList = [8]int{}
 
 			// 盤上
-			for rank := Square(1); rank < 10; rank += 1 {
-				for file := Square(9); file > 0; file -= 1 {
+			for rank := l11.Square(1); rank < 10; rank += 1 {
+				for file := l11.Square(9); file > 0; file -= 1 {
 					sq := SquareFrom(file, rank)
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
@@ -399,8 +399,8 @@ func CountAllPieces(pPos *Position) [8]int {
 	countList := [8]int{}
 
 	// 盤上
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
+	for rank := l11.Square(1); rank < 10; rank += 1 {
+		for file := l11.Square(9); file > 0; file -= 1 {
 			sq := SquareFrom(file, rank)
 
 			piece := What(pPos.Board[sq])

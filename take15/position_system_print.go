@@ -28,13 +28,13 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	for file := 9; file > -1; file -= 1 {
-		if !pPosSys.PPosition[b1].IsEmptySq(Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(Square(file*10)) {
+		if !pPosSys.PPosition[b1].IsEmptySq(l11.Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(l11.Square(file*10)) {
 			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10].ToCodeOfPc())
 		}
 	}
 
 	// 0筋目
-	for rank := Square(1); rank < 10; rank += 1 {
+	for rank := l11.Square(1); rank < 10; rank += 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(rank) || !pPosSys.PPosition[b2].IsEmptySq(rank) {
 			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[rank].ToCodeOfPc())
 		}
@@ -199,8 +199,8 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	buf := make([]byte, 0, 200)
 
 	spaces := 0
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
+	for rank := l11.Square(1); rank < 10; rank += 1 {
+		for file := l11.Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
 			if piece != l09.PIECE_EMPTY {

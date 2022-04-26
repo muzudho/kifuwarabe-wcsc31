@@ -1,4 +1,4 @@
-package take10
+package take10 // not same take11
 
 // マス番号 00～99,100～113
 type Square uint32

@@ -13,6 +13,7 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
 // App - アプリケーション変数の宣言
@@ -344,7 +345,7 @@ MainLoop:
 					bestmove := Search(pPosSys)
 					App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-					if bestmove == Move(SQUARE_EMPTY) {
+					if bestmove == Move(l11.SQUARE_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}

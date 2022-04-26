@@ -13,7 +13,7 @@ type Position struct {
 	Board [l11.BOARD_SIZE]l09.Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
-	PieceLocations [l11.PCLOC_SIZE]Square
+	PieceLocations [l11.PCLOC_SIZE]l11.Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
 	Hands1 [l11.HAND_SIZE]int
 
@@ -38,7 +38,7 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l11.Square{l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -61,13 +61,13 @@ func (pPos *Position) setToStartpos() {
 		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_R2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_B1, l09.PIECE_N1,
 		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
 	}
-	pPos.PieceLocations = [PCLOC_SIZE]Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
+	pPos.PieceLocations = [PCLOC_SIZE]l11.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
-func (pPos *Position) GetPieceLocation(index int) Square {
+func (pPos *Position) GetPieceLocation(index int) l11.Square {
 	return pPos.PieceLocations[index]
 }
 
@@ -87,7 +87,7 @@ func (pPos *Position) clearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l11.Square{l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY, l11.SQUARE_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l11.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -95,7 +95,7 @@ func (pPos *Position) clearBoard() {
 
 // Homo - 移動元と移動先の駒を持つプレイヤーが等しければ真。移動先が空なら偽
 // 持ち駒は指定してはいけません。
-func (pPos *Position) Homo(from Square, to Square) bool {
+func (pPos *Position) Homo(from l11.Square, to l11.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) == Who(pPos.Board[to])
 }
@@ -103,13 +103,13 @@ func (pPos *Position) Homo(from Square, to Square) bool {
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // 持ち駒は指定してはいけません。
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
-func (pPos *Position) Hetero(from Square, to Square) bool {
+func (pPos *Position) Hetero(from l11.Square, to l11.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) != Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽
-func (pPos *Position) IsEmptySq(sq Square) bool {
+func (pPos *Position) IsEmptySq(sq l11.Square) bool {
 	if sq > 99 {
 		return false
 	}
