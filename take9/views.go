@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -209,8 +210,8 @@ func (pPos *Position) SprintSfen() string {
 	buf := make([]byte, 0, 200)
 
 	spaces := 0
-	for rank := Square(1); rank < 10; rank += 1 {
-		for file := Square(9); file > 0; file -= 1 {
+	for rank := l04.Square(1); rank < 10; rank += 1 {
+		for file := l04.Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[SquareFrom(file, rank)]
 
 			if piece != PIECE_EMPTY {

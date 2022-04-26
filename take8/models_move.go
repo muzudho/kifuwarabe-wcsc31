@@ -1,6 +1,10 @@
-package take8
+package take8 // not same take7
 
-import "fmt"
+import (
+	"fmt"
+
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+)
 
 // Move - 指し手
 //
@@ -16,7 +20,7 @@ type Move uint16
 const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マスを指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+func NewMove(from l04.Square, to l04.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// ReplaceSource - 移動元マス
@@ -85,7 +89,7 @@ func (move Move) ToCodeOfM() string {
 	}
 
 	for count < 2 {
-		var sq Square // マス番号
+		var sq l04.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -126,9 +130,9 @@ func (move Move) ToCodeOfM() string {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) Destructure() (Square, Square, bool) {
-	var from = Square(uint16(move) & 0x007f)
-	var to = Square((uint16(move) & 0x3f80) >> 7)
+func (move Move) Destructure() (l04.Square, l04.Square, bool) {
+	var from = l04.Square(uint16(move) & 0x007f)
+	var to = l04.Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

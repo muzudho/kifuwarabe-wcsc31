@@ -1,4 +1,4 @@
-package take4
+package take4 // not same lesson03
 
 import "fmt"
 
@@ -23,7 +23,7 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	move = Move(uint32(move)&0xffffff00 | uint32(from))
 
 	// ReplaceDestination - 移動先マス
-	move = Move(uint32(move)&0xffff00ff | uint32(to<<8))
+	move = Move(uint32(move)&0xffff00ff | (uint32(to) << 8))
 
 	// ReplacePromotion - 成
 	if promotion {
@@ -35,6 +35,12 @@ func NewMove(from Square, to Square, promotion bool) Move {
 
 // ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
 func (move Move) ToCodeOfM() string {
+
+	// 投了（＾～＾）
+	if uint32(move) == 0 {
+		return "resign"
+	}
+
 	str := make([]byte, 0, 5)
 	count := 0
 
@@ -89,7 +95,6 @@ func (move Move) ToCodeOfM() string {
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
 		str = append(str, rank+96)
-		fmt.Printf("Debug: file=%d rank=%d\n", file, rank)
 		count += 1
 	}
 

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // 電竜戦が一番長いだろ（＾～＾）
@@ -24,7 +26,7 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [MOVES_SIZE]l04.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]string
 }
@@ -60,7 +62,7 @@ func (pos *Position) ResetToStartpos() {
 	pos.StartMovesNum = 1
 	pos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pos.Moves = [MOVES_SIZE]Move{}
+	pos.Moves = [MOVES_SIZE]l04.Move{}
 	// 取った駒のリスト
 	pos.CapturedList = [MOVES_SIZE]string{}
 }
@@ -148,33 +150,33 @@ BoardLoop:
 			var piece = command[i]
 			switch piece {
 			case 'R':
-				hand_index = HAND_R1
+				hand_index = l04.HAND_R1
 			case 'B':
-				hand_index = HAND_B1
+				hand_index = l04.HAND_B1
 			case 'G':
-				hand_index = HAND_G1
+				hand_index = l04.HAND_G1
 			case 'S':
-				hand_index = HAND_S1
+				hand_index = l04.HAND_S1
 			case 'N':
-				hand_index = HAND_N1
+				hand_index = l04.HAND_N1
 			case 'L':
-				hand_index = HAND_L1
+				hand_index = l04.HAND_L1
 			case 'P':
-				hand_index = HAND_P1
+				hand_index = l04.HAND_P1
 			case 'r':
-				hand_index = HAND_R2
+				hand_index = l04.HAND_R2
 			case 'b':
-				hand_index = HAND_B2
+				hand_index = l04.HAND_B2
 			case 'g':
-				hand_index = HAND_G2
+				hand_index = l04.HAND_G2
 			case 's':
-				hand_index = HAND_S2
+				hand_index = l04.HAND_S2
 			case 'n':
-				hand_index = HAND_N2
+				hand_index = l04.HAND_N2
 			case 'l':
-				hand_index = HAND_L2
+				hand_index = l04.HAND_L2
 			case 'p':
-				hand_index = HAND_P2
+				hand_index = l04.HAND_P2
 			case ' ':
 				i += 1
 				break HandLoop
@@ -252,7 +254,7 @@ MovesNumLoop:
 		pos.OffsetMovesIndex += 1
 	}
 
-	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l04.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pos.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pos.OffsetMovesIndex = 0
@@ -262,11 +264,11 @@ MovesNumLoop:
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase int) (Move, error) {
+func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 	var len = len(command)
 
-	var from Square
-	var to Square
+	var from l04.Square
+	var to l04.Square
 	var pro = false
 
 	// 0=移動元 1=移動先
@@ -279,77 +281,77 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_R1)
+			from = l04.Square(HAND_R1)
 		case SECOND:
-			from = Square(HAND_R2)
+			from = l04.Square(HAND_R2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'B':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_B1)
+			from = l04.Square(HAND_B1)
 		case SECOND:
-			from = Square(HAND_B2)
+			from = l04.Square(HAND_B2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'G':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_G1)
+			from = l04.Square(HAND_G1)
 		case SECOND:
-			from = Square(HAND_G2)
+			from = l04.Square(HAND_G2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'S':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_S1)
+			from = l04.Square(HAND_S1)
 		case SECOND:
-			from = Square(HAND_S2)
+			from = l04.Square(HAND_S2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'N':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_N1)
+			from = l04.Square(HAND_N1)
 		case SECOND:
-			from = Square(HAND_N2)
+			from = l04.Square(HAND_N2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'L':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_L1)
+			from = l04.Square(HAND_L1)
 		case SECOND:
-			from = Square(HAND_L2)
+			from = l04.Square(HAND_L2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'P':
 		*i += 1
 		count = 1
 		switch phase {
 		case FIRST:
-			from = Square(HAND_P1)
+			from = l04.Square(HAND_P1)
 		case SECOND:
-			from = Square(HAND_P2)
+			from = l04.Square(HAND_P2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	default:
 		// Ignored
@@ -357,7 +359,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 
 	if count == 1 {
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("fatal: no *")
+			return *new(l04.Move), fmt.Errorf("fatal: no *")
 		}
 		*i += 1
 	}
@@ -394,20 +396,20 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(l04.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
-			sq := Square(file*10 + rank)
+			sq := l04.Square(file*10 + rank)
 			if count == 0 {
 				from = sq
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l04.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l04.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -418,53 +420,53 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return l04.NewMove(from, to, pro), nil
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pos *Position) DoMove(move Move) {
+func (pos *Position) DoMove(move l04.Move) {
 	from, to, _ := move.Destructure()
 	switch from {
-	case HAND_R1:
+	case l04.HAND_R1:
 		pos.Hands[HAND_R1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_R1
-	case HAND_B1:
+	case l04.HAND_B1:
 		pos.Hands[HAND_B1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_B1
-	case HAND_G1:
+	case l04.HAND_G1:
 		pos.Hands[HAND_G1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_G1
-	case HAND_S1:
+	case l04.HAND_S1:
 		pos.Hands[HAND_S1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_S1
-	case HAND_N1:
+	case l04.HAND_N1:
 		pos.Hands[HAND_N1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_N1
-	case HAND_L1:
+	case l04.HAND_L1:
 		pos.Hands[HAND_L1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_L1
-	case HAND_P1:
+	case l04.HAND_P1:
 		pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_P1
-	case HAND_R2:
+	case l04.HAND_R2:
 		pos.Hands[HAND_R2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_R2
-	case HAND_B2:
+	case l04.HAND_B2:
 		pos.Hands[HAND_B2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_B2
-	case HAND_G2:
+	case l04.HAND_G2:
 		pos.Hands[HAND_G2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_G2
-	case HAND_S2:
+	case l04.HAND_S2:
 		pos.Hands[HAND_S2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_S2
-	case HAND_N2:
+	case l04.HAND_N2:
 		pos.Hands[HAND_N2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_N2
-	case HAND_L2:
+	case l04.HAND_L2:
 		pos.Hands[HAND_L2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_L2
-	case HAND_P2:
+	case l04.HAND_P2:
 		pos.Hands[HAND_P2-HAND_ORIGIN] -= 1
 		pos.Board[to] = PIECE_P2
 	default:
@@ -552,46 +554,46 @@ func (pos *Position) UndoMove() {
 	from, to, _ := move.Destructure()
 
 	switch from {
-	case HAND_R1:
+	case l04.HAND_R1:
 		pos.Hands[HAND_R1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_B1:
+	case l04.HAND_B1:
 		pos.Hands[HAND_B1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_G1:
+	case l04.HAND_G1:
 		pos.Hands[HAND_G1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_S1:
+	case l04.HAND_S1:
 		pos.Hands[HAND_S1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_N1:
+	case l04.HAND_N1:
 		pos.Hands[HAND_N1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_L1:
+	case l04.HAND_L1:
 		pos.Hands[HAND_L1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_P1:
+	case l04.HAND_P1:
 		pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_R2:
+	case l04.HAND_R2:
 		pos.Hands[HAND_R2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_B2:
+	case l04.HAND_B2:
 		pos.Hands[HAND_B2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_G2:
+	case l04.HAND_G2:
 		pos.Hands[HAND_G2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_S2:
+	case l04.HAND_S2:
 		pos.Hands[HAND_S2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_N2:
+	case l04.HAND_N2:
 		pos.Hands[HAND_N2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_L2:
+	case l04.HAND_L2:
 		pos.Hands[HAND_L2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
-	case HAND_P2:
+	case l04.HAND_P2:
 		pos.Hands[HAND_P2-HAND_ORIGIN] += 1
 		pos.Board[to] = PIECE_EMPTY
 	default:

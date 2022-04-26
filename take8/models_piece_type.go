@@ -1,6 +1,10 @@
 package take8
 
-import "fmt"
+import (
+	"fmt"
+
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+)
 
 // 先後のない駒種類
 type PieceType byte
@@ -62,7 +66,7 @@ func What(piece string) PieceType {
 }
 
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
-func WhatHand(hand Square) PieceType {
+func WhatHand(hand l04.Square) PieceType {
 	switch hand {
 	case HAND_R1, HAND_R2:
 		return PIECE_TYPE_R

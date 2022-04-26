@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -23,12 +24,12 @@ func FlipPhase(phase l06.Phase) l06.Phase {
 }
 
 // From - 筋と段からマス番号を作成します
-func SquareFrom(file Square, rank Square) Square {
-	return Square(file*10 + rank)
+func SquareFrom(file l04.Square, rank l04.Square) l04.Square {
+	return l04.Square(file*10 + rank)
 }
 
 // 盤上なら真。ラベルのとこを指定しても場所によっては真だがめんどくさいんでOKで（＾～＾）
-func OnBoard(sq Square) bool {
+func OnBoard(sq l04.Square) bool {
 	return 10 < sq && sq < 100
 }
 
@@ -38,13 +39,13 @@ type Position struct {
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
 	Board [BOARD_SIZE]Piece
 	// [0]先手 [1]後手
-	KingLocations [2]Square
+	KingLocations [2]l04.Square
 	// 飛車の場所。長い利きを消すために必要（＾～＾）
-	RookLocations [2]Square
+	RookLocations [2]l04.Square
 	// 角の場所。長い利きを消すために必要（＾～＾）
-	BishopLocations [2]Square
+	BishopLocations [2]l04.Square
 	// 香の場所。長い利きを消すために必要（＾～＾）
-	LanceLocations [4]Square
+	LanceLocations [4]l04.Square
 	// 利きテーブル [0]先手 [1]後手
 	// マスへの利き数が入っています
 	ControlBoards [2][BOARD_SIZE]int8
@@ -235,10 +236,10 @@ func (pPos *Position) resetToZero() {
 		},
 	}}
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.KingLocations = [2]Square{SQUARE_EMPTY, SQUARE_EMPTY}
-	pPos.RookLocations = [2]Square{SQUARE_EMPTY, SQUARE_EMPTY}
-	pPos.BishopLocations = [2]Square{SQUARE_EMPTY, SQUARE_EMPTY}
-	pPos.LanceLocations = [4]Square{SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY, SQUARE_EMPTY}
+	pPos.KingLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.RookLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.BishopLocations = [2]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
+	pPos.LanceLocations = [4]l04.Square{l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY, l04.SQUARE_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands = []int{
@@ -270,10 +271,10 @@ func (pPos *Position) setToStartpos() {
 		PIECE_EMPTY, PIECE_N2, PIECE_R2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_B1, PIECE_N1,
 		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
 	}
-	pPos.KingLocations = [2]Square{59, 51}
-	pPos.RookLocations = [2]Square{28, 82}
-	pPos.BishopLocations = [2]Square{22, 88}
-	pPos.LanceLocations = [4]Square{11, 19, 91, 99}
+	pPos.KingLocations = [2]l04.Square{59, 51}
+	pPos.RookLocations = [2]l04.Square{28, 82}
+	pPos.BishopLocations = [2]l04.Square{22, 88}
+	pPos.LanceLocations = [4]l04.Square{11, 19, 91, 99}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
@@ -341,27 +342,27 @@ func (pPos *Position) ReadPosition(command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.KingLocations[0] = Square((file+1)*10 + rank)
+				pPos.KingLocations[0] = l04.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.KingLocations[1] = Square((file+1)*10 + rank)
+				pPos.KingLocations[1] = l04.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i, sq := range pPos.RookLocations {
-					if sq == SQUARE_EMPTY {
-						pPos.RookLocations[i] = Square((file+1)*10 + rank)
+					if sq == l04.SQUARE_EMPTY {
+						pPos.RookLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
 				}
 			case 'B', 'b':
 				for i, sq := range pPos.BishopLocations {
-					if sq == SQUARE_EMPTY {
-						pPos.BishopLocations[i] = Square((file+1)*10 + rank)
+					if sq == l04.SQUARE_EMPTY {
+						pPos.BishopLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
 				}
 			case 'L', 'l':
 				for i, sq := range pPos.LanceLocations {
-					if sq == SQUARE_EMPTY {
-						pPos.LanceLocations[i] = Square((file+1)*10 + rank)
+					if sq == l04.SQUARE_EMPTY {
+						pPos.LanceLocations[i] = l04.Square((file+1)*10 + rank)
 						break
 					}
 				}
@@ -397,7 +398,7 @@ func (pPos *Position) ReadPosition(command string) {
 		} else {
 		HandLoop:
 			for {
-				var hand_index Square
+				var hand_index l04.Square
 				var piece = command[i]
 				switch piece {
 				case 'R':
@@ -462,21 +463,21 @@ func (pPos *Position) ReadPosition(command string) {
 				switch hand_index {
 				case HAND_R1, HAND_R2:
 					for i, sq := range pPos.RookLocations {
-						if sq == SQUARE_EMPTY {
+						if sq == l04.SQUARE_EMPTY {
 							pPos.RookLocations[i] = hand_index
 							break
 						}
 					}
 				case HAND_B1, HAND_B2:
 					for i, sq := range pPos.BishopLocations {
-						if sq == SQUARE_EMPTY {
+						if sq == l04.SQUARE_EMPTY {
 							pPos.BishopLocations[i] = hand_index
 							break
 						}
 					}
 				case HAND_L1, HAND_L2:
 					for i, sq := range pPos.LanceLocations {
-						if sq == SQUARE_EMPTY {
+						if sq == l04.SQUARE_EMPTY {
 							pPos.LanceLocations[i] = hand_index
 							break
 						}
@@ -542,8 +543,8 @@ func (pPos *Position) ReadPosition(command string) {
 
 	// 開始局面の利きを計算（＾～＾）
 	//fmt.Printf("Debug: 開始局面の利きを計算（＾～＾）\n")
-	for sq := Square(11); sq < 100; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			if !pPos.IsEmptySq(sq) {
 				//fmt.Printf("Debug: sq=%d\n", sq)
 				pPos.AddControlDiff(0, sq, 1)
@@ -566,10 +567,10 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 	var len = len(command)
-	var hand1 = Square(0)
+	var hand1 = l04.Square(0)
 
-	var from Square
-	var to Square
+	var from l04.Square
+	var to l04.Square
 	var pro = false
 
 	// file
@@ -654,7 +655,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			}
 			*i += 1
 
-			sq := Square(file*10 + rank)
+			sq := l04.Square(file*10 + rank)
 			if count == 0 {
 				from = sq
 			} else if count == 1 {
@@ -691,8 +692,8 @@ func (pPos *Position) DoMove(move Move) {
 		fmt.Printf("Error: %d square is empty\n", from)
 	}
 
-	var cap_src_sq Square
-	var cap_dst_sq = SQUARE_EMPTY
+	var cap_src_sq l04.Square
+	var cap_dst_sq = l04.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPos.ClearControlDiff()
@@ -734,7 +735,7 @@ func (pPos *Position) DoMove(move Move) {
 		piece = PIECE_P2
 	default:
 		// Not hand
-		hand = Square(0)
+		hand = l04.Square(0)
 	}
 
 	if hand != 0 {
@@ -817,7 +818,7 @@ func (pPos *Position) DoMove(move Move) {
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_dst_sq != SQUARE_EMPTY {
+		if cap_dst_sq != l04.SQUARE_EMPTY {
 			pPos.CapturedList[pPos.OffsetMovesIndex] = captured
 			pPos.Hands[cap_dst_sq-HAND_ORIGIN] += 1
 		} else {
@@ -833,8 +834,8 @@ func (pPos *Position) DoMove(move Move) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	src_sq_list := []Square{from, cap_src_sq}
-	dst_sq_list := []Square{to, cap_dst_sq}
+	src_sq_list := []l04.Square{from, cap_src_sq}
+	dst_sq_list := []l04.Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
 		case PIECE_TYPE_K:
@@ -896,8 +897,8 @@ func (pPos *Position) UndoMove() {
 
 	from, to, pro := move.Destructure()
 
-	var cap_dst_sq Square
-	var cap_src_sq = SQUARE_EMPTY
+	var cap_dst_sq l04.Square
+	var cap_src_sq = l04.SQUARE_EMPTY
 
 	// 利きの差分テーブルをクリアー（＾～＾）
 	pPos.ClearControlDiff()
@@ -971,7 +972,7 @@ func (pPos *Position) UndoMove() {
 			fmt.Printf("unknown captured=[%d]", captured)
 		}
 
-		if cap_src_sq != SQUARE_EMPTY {
+		if cap_src_sq != l04.SQUARE_EMPTY {
 			cap_dst_sq = cap_src_sq
 			pPos.Hands[cap_src_sq-HAND_ORIGIN] -= 1
 
@@ -996,8 +997,8 @@ func (pPos *Position) UndoMove() {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
-	dst_sq_list := []Square{to, cap_dst_sq}
-	src_sq_list := []Square{from, cap_src_sq}
+	dst_sq_list := []l04.Square{to, cap_dst_sq}
+	src_sq_list := []l04.Square{from, cap_src_sq}
 	for j, moving_piece_type := range piece_type_list {
 		switch moving_piece_type {
 		case PIECE_TYPE_K:
@@ -1037,7 +1038,7 @@ func (pPos *Position) UndoMove() {
 }
 
 // AddControlDiffAllSlidingPiece - すべての長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPos *Position) AddControlDiffAllSlidingPiece(layer int, sign int8, excludeFrom Square) {
+func (pPos *Position) AddControlDiffAllSlidingPiece(layer int, sign int8, excludeFrom l04.Square) {
 	for _, from := range pPos.RookLocations {
 		if OnBoard(from) && from != excludeFrom {
 			pPos.AddControlDiff(layer, from, sign)
@@ -1056,7 +1057,7 @@ func (pPos *Position) AddControlDiffAllSlidingPiece(layer int, sign int8, exclud
 }
 
 // AddControlDiff - 盤上のマスを指定することで、そこにある駒の利きを調べて、利きの差分テーブルの値を増減させます
-func (pPos *Position) AddControlDiff(layer int, from Square, sign int8) {
+func (pPos *Position) AddControlDiff(layer int, from l04.Square, sign int8) {
 	if from > 99 {
 		// 持ち駒は無視します
 		return
@@ -1081,8 +1082,8 @@ func (pPos *Position) AddControlDiff(layer int, from Square, sign int8) {
 
 // ClearControlDiff - 利きの差分テーブルをクリアーするぜ（＾～＾）
 func (pPos *Position) ClearControlDiff() {
-	for sq := Square(11); sq < 100; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			for layer := 0; layer < 5; layer += 1 {
 				pPos.ControlBoardsDiff[0][layer][sq] = 0
 				pPos.ControlBoardsDiff[1][layer][sq] = 0
@@ -1093,8 +1094,8 @@ func (pPos *Position) ClearControlDiff() {
 
 // MergeControlDiff - 利きの差分を解消するぜ（＾～＾）
 func (pPos *Position) MergeControlDiff() {
-	for sq := Square(11); sq < 100; sq += 1 {
-		if File(sq) != 0 && Rank(sq) != 0 {
+	for sq := l04.Square(11); sq < 100; sq += 1 {
+		if l04.File(sq) != 0 && l04.Rank(sq) != 0 {
 			for layer := 0; layer < 5; layer += 1 {
 				pPos.ControlBoards[0][sq] += pPos.ControlBoardsDiff[0][layer][sq]
 				pPos.ControlBoards[1][sq] += pPos.ControlBoardsDiff[1][layer][sq]
@@ -1105,7 +1106,7 @@ func (pPos *Position) MergeControlDiff() {
 
 // Homo - 移動元と移動先の駒を持つプレイヤーが等しければ真。移動先が空なら偽
 // 持ち駒は指定してはいけません。
-func (pPos *Position) Homo(from Square, to Square) bool {
+func (pPos *Position) Homo(from l04.Square, to l04.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) == Who(pPos.Board[to])
 }
@@ -1113,13 +1114,13 @@ func (pPos *Position) Homo(from Square, to Square) bool {
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // 持ち駒は指定してはいけません。
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
-func (pPos *Position) Hetero(from Square, to Square) bool {
+func (pPos *Position) Hetero(from l04.Square, to l04.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) != Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽
-func (pPos *Position) IsEmptySq(sq Square) bool {
+func (pPos *Position) IsEmptySq(sq l04.Square) bool {
 	if sq > 99 {
 		return false
 	}

@@ -1,6 +1,8 @@
 package take7
 
-func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
+import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+
+func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
 	piece := pPos.Board[from]
@@ -8,23 +10,23 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	// ２つ先のマスから斜めに長い利き
 	switch piece {
 	case PIECE_B1, PIECE_PB1, PIECE_B2, PIECE_PB2:
-		if File(from) < 8 && Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
-			for to := from + 18; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to); to += 9 { // ２つ左上から
+		if l04.File(from) < 8 && l04.Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
+			for to := from + 18; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to); to += 9 { // ２つ左上から
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
-		if File(from) > 2 && Rank(from) > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
-			for to := from - 22; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to); to -= 11 { // ２つ右上から
+		if l04.File(from) > 2 && l04.Rank(from) > 2 && pPos.IsEmptySq(from-11) { // 1～2筋にある駒でもなく、1～2段目でもなく、１つ右上が空マスなら
+			for to := from - 22; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to); to -= 11 { // ２つ右上から
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
-		if File(from) < 8 && Rank(from) < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
-			for to := from + 22; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to); to += 11 { // ２つ左下から
+		if l04.File(from) < 8 && l04.Rank(from) < 8 && pPos.IsEmptySq(from+11) { // 8～9筋にある駒でもなく、8～9段目でもなく、１つ左下が空マスなら
+			for to := from + 22; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to); to += 11 { // ２つ左下から
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
-		if File(from) > 2 && Rank(from) < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
-			for to := from - 18; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to); to -= 9 { // ２つ右下から
+		if l04.File(from) > 2 && l04.Rank(from) < 8 && pPos.IsEmptySq(from-9) { // 1～2筋にある駒でもなく、8～9段目でもなく、１つ右下が空マスなら
+			for to := from - 18; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to); to -= 9 { // ２つ右下から
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
@@ -35,8 +37,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	// ２つ先のマスから先手香車の長い利き
 	switch piece {
 	case PIECE_L1, PIECE_R1, PIECE_PR1, PIECE_R2, PIECE_PR2:
-		if Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
-			for to := from - 2; Rank(to) != 0 && pPos.Hetero(to); to -= 1 { // 上
+		if l04.Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
+			for to := from - 2; l04.Rank(to) != 0 && pPos.Hetero(to); to -= 1 { // 上
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
@@ -47,8 +49,8 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	// ２つ先のマスから後手香車の長い利き
 	switch piece {
 	case PIECE_R1, PIECE_PR1, PIECE_L2, PIECE_R2, PIECE_PR2:
-		if Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
-			for to := from + 2; Rank(to) != 0 && pPos.Hetero(to); to += 1 { // 下
+		if l04.Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
+			for to := from + 2; l04.Rank(to) != 0 && pPos.Hetero(to); to += 1 { // 下
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
@@ -59,13 +61,13 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	// ２つ横のマスから飛の長い利き
 	switch piece {
 	case PIECE_R1, PIECE_PR1, PIECE_R2, PIECE_PR2:
-		if File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
-			for to := from + 20; File(to) != 0 && pPos.Hetero(to); to += 10 { // 左
+		if l04.File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
+			for to := from + 20; l04.File(to) != 0 && pPos.Hetero(to); to += 10 { // 左
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
-		if File(from) > 2 && pPos.IsEmptySq(from-10) { // 1～2筋にある駒でもなく、１つ右が空マスなら
-			for to := from - 20; File(to) != 0 && pPos.Hetero(to); to -= 10 { // 右
+		if l04.File(from) > 2 && pPos.IsEmptySq(from-10) { // 1～2筋にある駒でもなく、１つ右が空マスなら
+			for to := from - 20; l04.File(to) != 0 && pPos.Hetero(to); to -= 10 { // 右
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
 			}
 		}
@@ -75,20 +77,20 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 
 	// 先手桂の動き
 	if piece == PIECE_N1 {
-		if to := from + 8; File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左上桂馬飛び
+		if to := from + 8; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左上桂馬飛び
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
-		if to := from - 12; File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 右上桂馬飛び
+		if to := from - 12; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 右上桂馬飛び
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	}
 
 	// 後手桂の動き
 	if piece == PIECE_N2 {
-		if to := from + 12; File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左下
+		if to := from + 12; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
-		if to := from - 8; File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 右下
+		if to := from - 8; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 右下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	}
@@ -98,7 +100,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	case PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_S1, PIECE_L1, PIECE_P1, PIECE_PS1,
 		PIECE_PN1, PIECE_PL1, PIECE_PP1, PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_PS2,
 		PIECE_PN2, PIECE_PL2, PIECE_PP2:
-		if to := from - 1; Rank(to) != 0 && pPos.Hetero(to) { // 上
+		if to := from - 1; l04.Rank(to) != 0 && pPos.Hetero(to) { // 上
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	default:
@@ -110,7 +112,7 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	case PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_S2, PIECE_L2, PIECE_P2, PIECE_PS2,
 		PIECE_PN2, PIECE_PL2, PIECE_PP2, PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_PS1,
 		PIECE_PN1, PIECE_PL1, PIECE_PP1:
-		if to := from + 1; Rank(to) != 0 && pPos.Hetero(to) { // 下
+		if to := from + 1; l04.Rank(to) != 0 && pPos.Hetero(to) { // 下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	default:
@@ -121,10 +123,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	switch piece {
 	case PIECE_K1, PIECE_PR1, PIECE_B1, PIECE_PB1, PIECE_G1, PIECE_S1, PIECE_PS1, PIECE_PN1, PIECE_PL1,
 		PIECE_PP1, PIECE_K2, PIECE_PR2, PIECE_B2, PIECE_PB2, PIECE_S2:
-		if to := from + 9; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to) { // 左上
+		if to := from + 9; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 左上
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
-		if to := from - 11; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to) { // 右上
+		if to := from - 11; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 右上
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	default:
@@ -135,10 +137,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	switch piece {
 	case PIECE_K2, PIECE_PR2, PIECE_B2, PIECE_PB2, PIECE_G2, PIECE_S2, PIECE_PS2, PIECE_PN2, PIECE_PL2,
 		PIECE_PP2, PIECE_K1, PIECE_PR1, PIECE_B1, PIECE_PB1, PIECE_S1:
-		if to := from + 11; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to) { // 左下
+		if to := from + 11; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 左下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
-		if to := from - 9; File(to) != 0 && Rank(to) != 0 && pPos.Hetero(to) { // 右下
+		if to := from - 9; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 右下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	default:
@@ -149,10 +151,10 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 	switch piece {
 	case PIECE_K1, PIECE_R1, PIECE_PR1, PIECE_PB1, PIECE_G1, PIECE_PS1, PIECE_PN1, PIECE_PL1, PIECE_PP1,
 		PIECE_K2, PIECE_R2, PIECE_PR2, PIECE_PB2, PIECE_G2, PIECE_PS2, PIECE_PN2, PIECE_PL2, PIECE_PP2:
-		if to := from + 10; File(to) != 0 && pPos.Hetero(to) { // 左
+		if to := from + 10; l04.File(to) != 0 && pPos.Hetero(to) { // 左
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
-		if to := from - 10; File(to) != 0 && pPos.Hetero(to) { // 右
+		if to := from - 10; l04.File(to) != 0 && pPos.Hetero(to) { // 右
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
 	default:
@@ -163,20 +165,20 @@ func GenMoveEnd(pPos *Position, from Square) []MoveEnd {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pPos *Position) []Move {
+func GenMoveList(pPos *Position) []l04.Move {
 
-	move_list := []Move{}
+	move_list := []l04.Move{}
 
 	// 盤面スキャンしたくないけど、駒の位置インデックスを作ってないから 仕方ない（＾～＾）
 	for rank := 1; rank < 10; rank += 1 {
 		for file := 1; file < 10; file += 1 {
-			from := Square(file*10 + rank)
+			from := l04.Square(file*10 + rank)
 			if pPos.Homo(from) {
 				moveEndList := GenMoveEnd(pPos, from)
 
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
-					move_list = append(move_list, NewMove(from, to, pro))
+					move_list = append(move_list, l04.NewMove(from, to, pro))
 				}
 			}
 		}

@@ -1,10 +1,4 @@
-package take10 // not same take11
-
-// マス番号 00～99,100～113
-type Square uint32
-
-// マス番号を指定しないことを意味するマス番号
-const SQUARE_EMPTY = Square(0)
+package take10 // not same take9 and take11
 
 const (
 	// 持ち駒を打つ 100～113
@@ -26,13 +20,3 @@ const (
 	SQ_HAND_START = SQ_R1
 	SQ_HAND_END   = SQ_P2 + 1 // この数を含まない
 )
-
-// File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
-	return sq / 10 % 10
-}
-
-// Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
-	return sq % 10
-}

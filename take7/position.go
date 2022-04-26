@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -20,11 +21,11 @@ type Position struct {
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
 	Board [BOARD_SIZE]string
 	// 飛車の場所。長い利きを消すために必要（＾～＾）
-	RookLocations [2]Square
+	RookLocations [2]l04.Square
 	// 角の場所。長い利きを消すために必要（＾～＾）
-	BishopLocations [2]Square
+	BishopLocations [2]l04.Square
 	// 香の場所。長い利きを消すために必要（＾～＾）
-	LanceLocations [4]Square
+	LanceLocations [4]l04.Square
 	// 利きテーブル [0]先手 [1]後手
 	// マスへの利き数が入っています
 	ControlBoards [2][BOARD_SIZE]int8
@@ -39,7 +40,7 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [MOVES_SIZE]l04.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [MOVES_SIZE]string
 }
@@ -88,9 +89,9 @@ func (pPos *Position) ResetToStartpos() {
 		0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
 		0, 0, 2, 2, 1, 0, 0, 0, 0, 0,
 	}}
-	pPos.RookLocations = [2]Square{28, 82}
-	pPos.BishopLocations = [2]Square{22, 88}
-	pPos.LanceLocations = [4]Square{11, 19, 91, 99}
+	pPos.RookLocations = [2]l04.Square{28, 82}
+	pPos.BishopLocations = [2]l04.Square{22, 88}
+	pPos.LanceLocations = [4]l04.Square{11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands = []int{
@@ -102,7 +103,7 @@ func (pPos *Position) ResetToStartpos() {
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPos.Moves = [MOVES_SIZE]Move{}
+	pPos.Moves = [MOVES_SIZE]l04.Move{}
 	// 取った駒のリスト
 	pPos.CapturedList = [MOVES_SIZE]string{}
 }
@@ -195,37 +196,37 @@ func (pPos *Position) ReadPosition(command string) {
 		} else {
 		HandLoop:
 			for {
-				var hand_index Square
+				var hand_index l04.Square
 				var piece = command[i]
 				switch piece {
 				case 'R':
-					hand_index = HAND_R1
+					hand_index = l04.HAND_R1
 				case 'B':
-					hand_index = HAND_B1
+					hand_index = l04.HAND_B1
 				case 'G':
-					hand_index = HAND_G1
+					hand_index = l04.HAND_G1
 				case 'S':
-					hand_index = HAND_S1
+					hand_index = l04.HAND_S1
 				case 'N':
-					hand_index = HAND_N1
+					hand_index = l04.HAND_N1
 				case 'L':
-					hand_index = HAND_L1
+					hand_index = l04.HAND_L1
 				case 'P':
-					hand_index = HAND_P1
+					hand_index = l04.HAND_P1
 				case 'r':
-					hand_index = HAND_R2
+					hand_index = l04.HAND_R2
 				case 'b':
-					hand_index = HAND_B2
+					hand_index = l04.HAND_B2
 				case 'g':
-					hand_index = HAND_G2
+					hand_index = l04.HAND_G2
 				case 's':
-					hand_index = HAND_S2
+					hand_index = l04.HAND_S2
 				case 'n':
-					hand_index = HAND_N2
+					hand_index = l04.HAND_N2
 				case 'l':
-					hand_index = HAND_L2
+					hand_index = l04.HAND_L2
 				case 'p':
-					hand_index = HAND_P2
+					hand_index = l04.HAND_P2
 				case ' ':
 					i += 1
 					break HandLoop
@@ -308,7 +309,7 @@ func (pPos *Position) ReadPosition(command string) {
 		pPos.Phase = pPos.Phase%2 + 1
 	}
 
-	// 読込んだ Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l04.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pPos.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pPos.OffsetMovesIndex = 0
@@ -319,37 +320,37 @@ func (pPos *Position) ReadPosition(command string) {
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 	var len = len(command)
-	var hand1 = Square(0)
+	var hand1 = l04.Square(0)
 
-	var from Square
-	var to Square
+	var from l04.Square
+	var to l04.Square
 	var pro = false
 
 	// file
 	switch ch := command[*i]; ch {
 	case 'R':
 		*i += 1
-		hand1 = HAND_R1
+		hand1 = l04.HAND_R1
 	case 'B':
 		*i += 1
-		hand1 = HAND_B1
+		hand1 = l04.HAND_B1
 	case 'G':
 		*i += 1
-		hand1 = HAND_G1
+		hand1 = l04.HAND_G1
 	case 'S':
 		*i += 1
-		hand1 = HAND_S1
+		hand1 = l04.HAND_S1
 	case 'N':
 		*i += 1
-		hand1 = HAND_N1
+		hand1 = l04.HAND_N1
 	case 'L':
 		*i += 1
-		hand1 = HAND_L1
+		hand1 = l04.HAND_L1
 	case 'P':
 		*i += 1
-		hand1 = HAND_P1
+		hand1 = l04.HAND_P1
 	default:
 		// Ignored
 	}
@@ -364,11 +365,11 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		case l06.SECOND:
 			from = hand1 + HAND_TYPE_SIZE
 		default:
-			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(Move), fmt.Errorf("fatal: not *")
+			return *new(l04.Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -405,20 +406,20 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(l04.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
-			sq := Square(file*10 + rank)
+			sq := l04.Square(file*10 + rank)
 			if count == 0 {
 				from = sq
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l04.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l04.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -429,7 +430,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return l04.NewMove(from, to, pro), nil
 }
 
 // Print - 利き数ボード出力（＾ｑ＾）
@@ -497,7 +498,7 @@ func (pPos *Position) SprintControl(phase l06.Phase) string {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pPos *Position) DoMove(move Move) {
+func (pPos *Position) DoMove(move l04.Move) {
 	// 作業前に、長い利きの駒の利きを -1 します
 	pPos.AddControlAllSlidingPiece(-1)
 
@@ -510,38 +511,38 @@ func (pPos *Position) DoMove(move Move) {
 	hand := from
 	var piece string
 	switch from {
-	case HAND_R1:
+	case l04.HAND_R1:
 		piece = PIECE_R1
-	case HAND_B1:
+	case l04.HAND_B1:
 		piece = PIECE_B1
-	case HAND_G1:
+	case l04.HAND_G1:
 		piece = PIECE_G1
-	case HAND_S1:
+	case l04.HAND_S1:
 		piece = PIECE_S1
-	case HAND_N1:
+	case l04.HAND_N1:
 		piece = PIECE_N1
-	case HAND_L1:
+	case l04.HAND_L1:
 		piece = PIECE_L1
-	case HAND_P1:
+	case l04.HAND_P1:
 		piece = PIECE_P1
-	case HAND_R2:
+	case l04.HAND_R2:
 		piece = PIECE_R2
-	case HAND_B2:
+	case l04.HAND_B2:
 		piece = PIECE_B2
-	case HAND_G2:
+	case l04.HAND_G2:
 		piece = PIECE_G2
-	case HAND_S2:
+	case l04.HAND_S2:
 		piece = PIECE_S2
-	case HAND_N2:
+	case l04.HAND_N2:
 		piece = PIECE_N2
-	case HAND_L2:
+	case l04.HAND_L2:
 		piece = PIECE_L2
-	case HAND_P2:
+	case l04.HAND_P2:
 		hand = from
 		piece = PIECE_P2
 	default:
 		// Not hand
-		hand = Square(0)
+		hand = l04.Square(0)
 	}
 
 	if hand != 0 {
@@ -573,41 +574,41 @@ func (pPos *Position) DoMove(move Move) {
 		pPos.Board[from] = PIECE_EMPTY
 		pPos.AddControl(to, 1)
 
-		hand := Square(0)
+		hand := l04.Square(0)
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
 			// Lost l06.FIRST king
 		case PIECE_R1, PIECE_PR1:
-			hand = HAND_R2
+			hand = l04.HAND_R2
 		case PIECE_B1, PIECE_PB1:
-			hand = HAND_B2
+			hand = l04.HAND_B2
 		case PIECE_G1:
-			hand = HAND_G2
+			hand = l04.HAND_G2
 		case PIECE_S1, PIECE_PS1:
-			hand = HAND_S2
+			hand = l04.HAND_S2
 		case PIECE_N1, PIECE_PN1:
-			hand = HAND_N2
+			hand = l04.HAND_N2
 		case PIECE_L1, PIECE_PL1:
-			hand = HAND_L2
+			hand = l04.HAND_L2
 		case PIECE_P1, PIECE_PP1:
-			hand = HAND_P2
+			hand = l04.HAND_P2
 		case PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
-			hand = HAND_R1
+			hand = l04.HAND_R1
 		case PIECE_B2, PIECE_PB2:
-			hand = HAND_B1
+			hand = l04.HAND_B1
 		case PIECE_G2:
-			hand = HAND_G1
+			hand = l04.HAND_G1
 		case PIECE_S2, PIECE_PS2:
-			hand = HAND_S1
+			hand = l04.HAND_S1
 		case PIECE_N2, PIECE_PN2:
-			hand = HAND_N1
+			hand = l04.HAND_N1
 		case PIECE_L2, PIECE_PL2:
-			hand = HAND_L1
+			hand = l04.HAND_L1
 		case PIECE_P2, PIECE_PP2:
-			hand = HAND_P1
+			hand = l04.HAND_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
 		}
@@ -670,7 +671,7 @@ func (pPos *Position) UndoMove() {
 
 	// 打かどうかで分けます
 	switch from {
-	case HAND_R1, HAND_B1, HAND_G1, HAND_S1, HAND_N1, HAND_L1, HAND_P1, HAND_R2, HAND_B2, HAND_G2, HAND_S2, HAND_N2, HAND_L2, HAND_P2:
+	case l04.HAND_R1, l04.HAND_B1, l04.HAND_G1, l04.HAND_S1, l04.HAND_N1, l04.HAND_L1, l04.HAND_P1, l04.HAND_R2, l04.HAND_B2, l04.HAND_G2, l04.HAND_S2, l04.HAND_N2, l04.HAND_L2, l04.HAND_P2:
 		// 打なら
 		hand := from
 		// 盤上から駒を除去します
@@ -689,41 +690,41 @@ func (pPos *Position) UndoMove() {
 		pPos.Board[from] = pPos.Board[to]
 
 		// あれば、取った駒は駒台から下ろします
-		cap := Square(0)
+		cap := l04.Square(0)
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
 			// Lost l06.FIRST king
 		case PIECE_R1, PIECE_PR1:
-			cap = HAND_R2
+			cap = l04.HAND_R2
 		case PIECE_B1, PIECE_PB1:
-			cap = HAND_B2
+			cap = l04.HAND_B2
 		case PIECE_G1:
-			cap = HAND_G2
+			cap = l04.HAND_G2
 		case PIECE_S1, PIECE_PS1:
-			cap = HAND_S2
+			cap = l04.HAND_S2
 		case PIECE_N1, PIECE_PN1:
-			cap = HAND_N2
+			cap = l04.HAND_N2
 		case PIECE_L1, PIECE_PL1:
-			cap = HAND_L2
+			cap = l04.HAND_L2
 		case PIECE_P1, PIECE_PP1:
-			cap = HAND_P2
+			cap = l04.HAND_P2
 		case PIECE_K2: // l06.FIRST player win
 			// Lost second king
 		case PIECE_R2, PIECE_PR2:
-			cap = HAND_R1
+			cap = l04.HAND_R1
 		case PIECE_B2, PIECE_PB2:
-			cap = HAND_B1
+			cap = l04.HAND_B1
 		case PIECE_G2:
-			cap = HAND_G1
+			cap = l04.HAND_G1
 		case PIECE_S2, PIECE_PS2:
-			cap = HAND_S1
+			cap = l04.HAND_S1
 		case PIECE_N2, PIECE_PN2:
-			cap = HAND_N1
+			cap = l04.HAND_N1
 		case PIECE_L2, PIECE_PL2:
-			cap = HAND_L1
+			cap = l04.HAND_L1
 		case PIECE_P2, PIECE_PP2:
-			cap = HAND_P1
+			cap = l04.HAND_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
 		}
@@ -781,7 +782,7 @@ func (pPos *Position) AddControlAllSlidingPiece(sign int8) {
 }
 
 // AddControl - 盤上のマスを指定することで、そこにある駒の利きを増減させます
-func (pPos *Position) AddControl(from Square, sign int8) {
+func (pPos *Position) AddControl(from l04.Square, sign int8) {
 	if from > 99 {
 		// 持ち駒は無視します
 		return
@@ -803,18 +804,18 @@ func (pPos *Position) AddControl(from Square, sign int8) {
 }
 
 // Homo - 手番と移動元の駒を持つプレイヤーが等しければ真。移動先が空なら偽
-func (pPos *Position) Homo(to Square) bool {
+func (pPos *Position) Homo(to l04.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return pPos.Phase == Who(pPos.Board[to])
 }
 
 // Hetero - 手番と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
-func (pPos *Position) Hetero(to Square) bool {
+func (pPos *Position) Hetero(to l04.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return pPos.Phase != Who(pPos.Board[to])
 }
 
-func (pPos *Position) IsEmptySq(sq Square) bool {
+func (pPos *Position) IsEmptySq(sq l04.Square) bool {
 	return pPos.Board[sq] == PIECE_EMPTY
 }
