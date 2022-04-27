@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"sort"
 
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
@@ -223,7 +224,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 				sq := l04.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
-					pPos.Board[sq] = HandIndexToPiece[hand_index]
+					pPos.Board[sq] = l10.HandPieceArray[hand_index]
 					pPos.Hands1[hand_index] -= 1
 				}
 			}
