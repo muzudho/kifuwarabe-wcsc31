@@ -1,4 +1,4 @@
-package take16
+package take16 // same take11
 
 // Piece location
 const (
