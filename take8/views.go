@@ -182,26 +182,6 @@ func (pPos *Position) SprintControl(phase l06.Phase, flag int) string {
 		"\n"
 }
 
-// SprintLocation2 - あの駒どこにいんの？を表示
-func SprintLocation2(pPos *Position) string {
-	return "\n" +
-		//
-		" K   k      R          B          L\n" +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		// 持ち駒は３桁になるぜ（＾～＾）
-		fmt.Sprintf("|%3d|%3d|  |%3d|%3d|  |%3d|%3d|  |%3d|%3d|%3d|%3d|\n",
-			pPos.KingLocations[0], pPos.KingLocations[1],
-			pPos.RookLocations[0], pPos.RookLocations[1],
-			pPos.BishopLocations[0], pPos.BishopLocations[1],
-			pPos.LanceLocations[0], pPos.LanceLocations[1],
-			pPos.LanceLocations[2], pPos.LanceLocations[3]) +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		//
-		"\n"
-}
-
 // SprintSfen - SFEN文字列返せよ（＾～＾）
 func (pPos *Position) SprintSfen() string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
