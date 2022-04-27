@@ -97,11 +97,11 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.PieceLocations[PCLOC_K1] = l04.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l11.PCLOC_K1] = l04.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.PieceLocations[PCLOC_K2] = l04.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l11.PCLOC_K2] = l04.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
-				for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+				for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -109,7 +109,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 					}
 				}
 			case 'B', 'b':
-				for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+				for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -117,7 +117,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 					}
 				}
 			case 'L', 'l':
-				for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+				for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -184,7 +184,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
 						case l11.HAND_R1, l11.HAND_R2:
-							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+							for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
@@ -192,7 +192,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 								}
 							}
 						case l11.HAND_B1, l11.HAND_B2:
-							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+							for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
@@ -200,7 +200,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 								}
 							}
 						case l11.HAND_L1, l11.HAND_L2:
-							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+							for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l04.Square(hand_index) + l04.SQ_HAND_START
@@ -375,7 +375,7 @@ func (pBrain *Brain) IsCheckmate(phase l06.Phase) bool {
 	case l06.FIRST:
 		// 先手玉への王手を調べます
 		// 先手玉の位置を調べます
-		var k1 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
+		var k1 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K1]
 		// 後手の角の利きボードの、先手玉の位置のマスの数を調べます
 		var b2 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON].Board1[k1] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF].Board1[k1]
 		if 0 < b2 {
@@ -395,7 +395,7 @@ func (pBrain *Brain) IsCheckmate(phase l06.Phase) bool {
 	case l06.SECOND:
 		// 後手玉の王手を調べます
 		// 後手玉の位置を調べます
-		var k2 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
+		var k2 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
 		// 先手の角の利きボードの、先手玉の位置のマスの数を調べます
 		var b1 = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON].Board1[k2] + pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF].Board1[k2]
 		if 0 < b1 {
@@ -662,9 +662,9 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 			if j == 0 {
 				switch before_move_phase {
 				case l06.FIRST:
-					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
 				case l06.SECOND:
-					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
@@ -673,15 +673,15 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 				switch before_move_phase {
 				case l06.FIRST:
 					// 相手玉
-					pPos.PieceLocations[PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
 				case l06.SECOND:
-					pPos.PieceLocations[PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
-			for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+			for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -689,7 +689,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 				}
 			}
 		case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
-			for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+			for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -697,7 +697,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 				}
 			}
 		case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-			for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+			for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -845,14 +845,14 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		// 玉を動かした
 		switch pBrain.PPosSys.phase { // next_phase
 		case l06.FIRST:
-			pPos.PieceLocations[PCLOC_K1] = from
+			pPos.PieceLocations[l11.PCLOC_K1] = from
 		case l06.SECOND:
-			pPos.PieceLocations[PCLOC_K2] = from
+			pPos.PieceLocations[l11.PCLOC_K2] = from
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
-		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -860,7 +860,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 			}
 		}
 	case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
-		for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -868,7 +868,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 			}
 		}
 	case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -1023,15 +1023,15 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 		switch pBrain.PPosSys.phase { // next_phase
 		case l06.FIRST:
 			// 後手の玉
-			pPos.PieceLocations[PCLOC_K2] = to
+			pPos.PieceLocations[l11.PCLOC_K2] = to
 		case l06.SECOND:
 			// 先手の玉
-			pPos.PieceLocations[PCLOC_K1] = to
+			pPos.PieceLocations[l11.PCLOC_K1] = to
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
 	case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
-		for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1039,7 +1039,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			}
 		}
 	case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
-		for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1047,7 +1047,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			}
 		}
 	case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to

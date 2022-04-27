@@ -134,8 +134,8 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL1],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL2],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3])
-					my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
-					oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
+					my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K1]
+					oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
 					control_val = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[my_king_sq] +
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[oppo_king_sq]
 				case l06.SECOND:
@@ -145,8 +145,8 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL1],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL2],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3])
-					my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K2]
-					oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[PCLOC_K1]
+					my_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
+					oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K1]
 					control_val = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[my_king_sq] +
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[oppo_king_sq]
 				default:

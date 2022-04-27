@@ -460,7 +460,7 @@ func copyBoard(pPos0 *l15.Position, pPos1 *l15.Position) {
 	}
 
 	pPos1.Hands1 = pPos0.Hands1
-	for i := PCLOC_START; i < PCLOC_END; i += 1 {
+	for i := l11.PCLOC_START; i < l11.PCLOC_END; i += 1 {
 		pPos1.PieceLocations[i] = pPos0.PieceLocations[i]
 	}
 }
@@ -495,7 +495,7 @@ func diffBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, pP
 	}
 
 	// 位置
-	for i := PCLOC_START; i < PCLOC_END; i += 1 {
+	for i := l11.PCLOC_START; i < l11.PCLOC_END; i += 1 {
 		if pPos0.PieceLocations[i] == pPos1.PieceLocations[i] {
 			// 等しければゼロ
 			pPos2.PieceLocations[i] = 0
@@ -529,17 +529,17 @@ func errorBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, p
 	}
 
 	// 位置
-	if pPos2.PieceLocations[PCLOC_K1] != pPos3.PieceLocations[PCLOC_K1] {
+	if pPos2.PieceLocations[l11.PCLOC_K1] != pPos3.PieceLocations[l11.PCLOC_K1] {
 		errorNum += 1
 	}
-	if pPos2.PieceLocations[PCLOC_K2] != pPos3.PieceLocations[PCLOC_K2] {
+	if pPos2.PieceLocations[l11.PCLOC_K2] != pPos3.PieceLocations[l11.PCLOC_K2] {
 		errorNum += 1
 	}
 
 	// 位置（不安定注意）
 	rook2 := []int{}
 	rook3 := []int{}
-	for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+	for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 		rook2 = append(rook2, int(pPos2.PieceLocations[i]))
 		rook3 = append(rook3, int(pPos2.PieceLocations[i]))
 	}
@@ -554,7 +554,7 @@ func errorBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, p
 	// 位置（不安定注意）
 	bishop2 := []int{}
 	bishop3 := []int{}
-	for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+	for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 		bishop2 = append(bishop2, int(pPos2.PieceLocations[i]))
 		bishop3 = append(bishop3, int(pPos2.PieceLocations[i]))
 	}
@@ -569,7 +569,7 @@ func errorBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, p
 	// 位置（不安定注意）
 	lance2 := []int{}
 	lance3 := []int{}
-	for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+	for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 		lance2 = append(lance2, int(pPos2.PieceLocations[i]))
 		lance3 = append(lance3, int(pPos2.PieceLocations[i]))
 	}

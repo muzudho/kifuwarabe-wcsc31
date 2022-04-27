@@ -532,11 +532,11 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	// var opponentKingSq l04.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == l06.FIRST {
-		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
+		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K1)
 		hand_start = l11.HAND_IDX_START
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == l06.SECOND {
-		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
+		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K2)
 		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
 	} else {

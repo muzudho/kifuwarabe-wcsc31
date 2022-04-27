@@ -225,7 +225,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 // AddControlLance - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func (pControlBoardSys *ControlBoardSystem) AddControlLance(pPos *Position,
 	ph1_c ControlLayerT, ph2_c ControlLayerT, sign int8, excludeFrom l04.Square) {
-	for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
+	for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
@@ -239,7 +239,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlLance(pPos *Position,
 // AddControlBishop - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func (pControlBoardSys *ControlBoardSystem) AddControlBishop(pPos *Position,
 	ph1_c ControlLayerT, ph2_c ControlLayerT, sign int8, excludeFrom l04.Square) {
-	for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
+	for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 角落ちも考えて 空マスは除外
@@ -252,7 +252,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlBishop(pPos *Position,
 // AddControlRook - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func (pControlBoardSys *ControlBoardSystem) AddControlRook(pPos *Position,
 	ph1_c ControlLayerT, ph2_c ControlLayerT, sign int8, excludeFrom l04.Square) {
-	for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
+	for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 飛落ちも考えて 空マスは除外

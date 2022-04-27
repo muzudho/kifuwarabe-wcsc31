@@ -3,6 +3,7 @@ package take12
 import (
 	"fmt"
 
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -168,11 +169,11 @@ func SprintLocation2(pPos *Position) string {
 		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
 		// 持ち駒は３桁になるぜ（＾～＾）
 		fmt.Sprintf("|%3d|%3d|  |%3d|%3d|  |%3d|%3d|  |%3d|%3d|%3d|%3d|\n",
-			pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2],
-			pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2],
-			pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2],
-			pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2],
-			pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]) +
+			pPos.PieceLocations[l11.PCLOC_K1], pPos.PieceLocations[l11.PCLOC_K2],
+			pPos.PieceLocations[l11.PCLOC_R1], pPos.PieceLocations[l11.PCLOC_R2],
+			pPos.PieceLocations[l11.PCLOC_B1], pPos.PieceLocations[l11.PCLOC_B2],
+			pPos.PieceLocations[l11.PCLOC_L1], pPos.PieceLocations[l11.PCLOC_L2],
+			pPos.PieceLocations[l11.PCLOC_L3], pPos.PieceLocations[l11.PCLOC_L4]) +
 		//
 		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
 		//
