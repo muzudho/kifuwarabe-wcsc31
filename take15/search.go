@@ -98,7 +98,7 @@ func search2(pBrain *Brain, curDepth int) (l13.Move, Value) { //, search_type Se
 				pBrain.PPosSys.OffsetMovesIndex,
 				pBrain.PPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(pBrain.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			App.Out.Debug(SprintLocation2(pBrain.PPosSys.PPosition[POS_LAYER_MAIN]))
 			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, lenOfMoves, younger_sibling_move.ToCodeOfM()))
 		}
@@ -186,8 +186,8 @@ func search2(pBrain *Brain, curDepth int) (l13.Move, Value) { //, search_type Se
 			// 違いのあった局面（＾～＾）
 			App.Out.Debug(pBrain.PPosSys.SprintDiff(0, 1))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(pBrain.PPosSys.PPosition[0].SprintLocation())
-			App.Out.Debug(pPosCopy.SprintLocation())
+			App.Out.Debug(SprintLocation2(pBrain.PPosSys.PPosition[0]))
+			App.Out.Debug(SprintLocation2(pPosCopy))
 			panic(App.LogNotEcho.Fatal("Error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
 		}
 

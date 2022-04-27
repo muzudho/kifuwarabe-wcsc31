@@ -10,13 +10,14 @@ import (
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // TestControl
-func TestControl(pNerve *Nerve, pPos *Position) (bool, string) {
+func TestControl(pNerve *Nerve, pPos *l15.Position) (bool, string) {
 	pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY1].Clear()
 	pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2].Clear()
 
@@ -28,7 +29,7 @@ func TestControl(pNerve *Nerve, pPos *Position) (bool, string) {
 	sumCb1 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	copyCb2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCb2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
-	for sq := 0; sq < BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < l15.BOARD_SIZE; sq += 1 {
 		copyCb1.Board1[sq] = sumCb1.Board1[sq]
 		copyCb2.Board1[sq] = sumCb2.Board1[sq]
 	}
@@ -67,7 +68,7 @@ func checkControl(pNerve *Nerve, move_seq int, move_total int, move l13.Move) bo
 	copyCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	errorCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR2]
-	for sq := 0; sq < BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < l15.BOARD_SIZE; sq += 1 {
 		diff1 := copyCB1.Board1[sq] - sumCB1.Board1[sq]
 		errorCB1.Board1[sq] = diff1
 		if diff1 != 0 {
@@ -92,7 +93,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	sumList := [2]int{0, 0}
 
 	cb1 := pNerve.PCtrlBrdSys.PBoards[ph1_c]
-	for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+	for from := l04.Square(11); from < l15.BOARD_SIZE; from += 1 {
 		if l04.File(from) != 0 && l04.Rank(from) != 0 {
 
 			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
@@ -101,7 +102,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	}
 
 	cb2 := pNerve.PCtrlBrdSys.PBoards[ph2_c]
-	for from := l04.Square(11); from < BOARD_SIZE; from += 1 {
+	for from := l04.Square(11); from < l15.BOARD_SIZE; from += 1 {
 		if l04.File(from) != 0 && l04.Rank(from) != 0 {
 
 			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
@@ -115,7 +116,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 // ShuffleBoard - 盤上の駒、持ち駒をシャッフルします
 // ゲーム中にはできない動きをするので、利きの計算は無視します。
 // 最後に利きは再計算します
-func ShuffleBoard(pNerve *Nerve, pPos *Position) {
+func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 
 	// 駒の数を数えます
 	countList1 := CountAllPieces(pPos)
@@ -127,7 +128,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 		// 盤から駒台の方向
 		for rank := l04.Square(1); rank < 10; rank += 1 {
 			for file := l04.Square(9); file > 0; file -= 1 {
-				sq := SquareFrom(file, rank)
+				sq := l15.SquareFrom(file, rank)
 
 				// 10マスに1マスは駒台へ
 				change := l04.Square(rand.Intn(10))
@@ -223,7 +224,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 			if num > 0 {
 				sq := l04.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
-				if OnBoard(sq) && pPos.IsEmptySq(sq) {
+				if l15.OnBoard(sq) && pPos.IsEmptySq(sq) {
 					pPos.Board[sq] = l10.HandPieceArray[hand_index]
 					pPos.Hands1[hand_index] -= 1
 				}
@@ -243,7 +244,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 	for i := 0; i < 81*80; i += 1 {
 		sq1 := l04.Square(rand.Intn(100))
 		sq2 := l04.Square(rand.Intn(100))
-		if OnBoard(sq1) && OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
+		if l15.OnBoard(sq1) && l15.OnBoard(sq2) && !pPos.IsEmptySq(sq1) {
 			piece := pPos.Board[sq1]
 			// 位置スワップ
 			pPos.Board[sq1] = pPos.Board[sq2]
@@ -312,7 +313,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 			// 盤上
 			for rank := l04.Square(1); rank < 10; rank += 1 {
 				for file := l04.Square(9); file > 0; file -= 1 {
-					sq := SquareFrom(file, rank)
+					sq := l15.SquareFrom(file, rank)
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
 
@@ -397,14 +398,14 @@ func ShuffleBoard(pNerve *Nerve, pPos *Position) {
 }
 
 // CountAllPieces - 駒の数を確認するぜ（＾～＾）
-func CountAllPieces(pPos *Position) [8]int {
+func CountAllPieces(pPos *l15.Position) [8]int {
 
 	countList := [8]int{}
 
 	// 盤上
 	for rank := l04.Square(1); rank < 10; rank += 1 {
 		for file := l04.Square(9); file > 0; file -= 1 {
-			sq := SquareFrom(file, rank)
+			sq := l15.SquareFrom(file, rank)
 
 			piece := l11.What(pPos.Board[sq])
 			switch piece {
@@ -453,7 +454,7 @@ func CountErrorCountLists(countList1 [8]int, countList2 [8]int) int {
 }
 
 // copyBoard - 盤[b0] を 盤[b1] にコピーします
-func copyBoard(pPos0 *Position, pPos1 *Position) {
+func copyBoard(pPos0 *l15.Position, pPos1 *l15.Position) {
 	for sq := 0; sq < 100; sq += 1 {
 		pPos1.Board[sq] = pPos0.Board[sq]
 	}
@@ -465,7 +466,7 @@ func copyBoard(pPos0 *Position, pPos1 *Position) {
 }
 
 // copyBoard - 盤[0] を 盤[1] で異なるマスを 盤[2] 盤[3] にセットします
-func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Position) {
+func diffBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, pPos3 *l15.Position) {
 	// 盤上
 	for sq := 0; sq < 100; sq += 1 {
 		if pPos1.Board[sq] == pPos0.Board[sq] {
@@ -508,7 +509,7 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 }
 
 // ２つのボードの違いを数えるぜ（＾～＾）
-func errorBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Position) int {
+func errorBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, pPos3 *l15.Position) int {
 	diffBoard(pPos0, pPos1, pPos2, pPos3)
 
 	errorNum := 0

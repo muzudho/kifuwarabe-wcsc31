@@ -6,6 +6,7 @@ import (
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -104,9 +105,9 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) l13.Move {
 
 	nodesNum = 0
 
-	var alpha Value = -VALUE_INFINITE_1
-	var beta Value = VALUE_INFINITE_1
-	var bestValue Value = -VALUE_INFINITE_1
+	var alpha l15.Value = -VALUE_INFINITE_1
+	var beta l15.Value = VALUE_INFINITE_1
+	var bestValue l15.Value = -VALUE_INFINITE_1
 	var bestMove l13.Move = l13.RESIGN_MOVE // 指し手が無いとき投了
 
 	// Iterative Deepening
@@ -133,7 +134,7 @@ func IterativeDeepeningSearch(pNerve *Nerve, tokens []string) l13.Move {
 }
 
 // search - 探索部
-func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type SearchType) (Value, l13.Move) {
+func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_type SearchType) (l15.Value, l13.Move) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// TODO 葉ノード
@@ -178,7 +179,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 		from, _, _ := move.Destructure()
 
 		// デバッグに使うために、盤をコピーしておきます
-		pPosCopy := NewPosition()
+		pPosCopy := l15.NewPosition()
 		copyBoard(pNerve.PPosSys.PPosition[0], pPosCopy)
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
@@ -191,7 +192,7 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 			App.Out.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintLocation())
+			App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
 			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
 				from, i, lenOfMoves))
 			//  younger_sibling_move=%s
@@ -257,8 +258,8 @@ func search(pNerve *Nerve, alpha Value, beta Value, depth int, search_type Searc
 			// 違いのあった局面（＾～＾）
 			App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(pNerve.PPosSys.PPosition[0].SprintLocation())
-			App.Out.Debug(pPosCopy.SprintLocation())
+			App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[0]))
+			App.Out.Debug(SprintLocation2(pPosCopy))
 			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
 			// younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)

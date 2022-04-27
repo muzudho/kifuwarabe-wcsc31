@@ -210,7 +210,7 @@ MainLoop:
 			}
 		case "location":
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(pPos.SprintLocation())
+			App.Out.Debug(SprintLocation2(pPos))
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
 			App.Out.Debug(pPos.SprintSfen())
@@ -230,7 +230,7 @@ MainLoop:
 			for i := 0; i < 100; i += 1 {
 				App.Out.Debug(Sprint(pPos))
 				// あの駒、どこにいんの（＾～＾）？
-				// App.Out.Debug(pPos.SprintLocation())
+				// App.Out.Debug(SprintLocation2(pPos))
 
 				// moveList(pPos)
 				bestmove := Search(pPos)

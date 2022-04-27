@@ -8,6 +8,7 @@ import (
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
@@ -59,7 +60,7 @@ func (pNerve *Nerve) ClearBySearchEntry() {
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
-func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
+func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 	var len = len(command)
 	var i int
 	if strings.HasPrefix(command, "position startpos") {
@@ -136,7 +137,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 				for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -144,7 +145,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 				for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -152,7 +153,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 				for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l04.SQ_EMPTY {
-						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
+						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
 						break
 					}
 				}
@@ -337,7 +338,7 @@ func (pNerve *Nerve) ReadPosition(pPos *Position, command string) {
 			i += 1
 
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
-			var move, err = ParseMove(command, &i, pNerve.PPosSys.GetPhase())
+			var move, err = l15.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
 				fmt.Println(err)
 				fmt.Println(pPos.SprintBoardHeader(
@@ -453,7 +454,7 @@ func (pNerve *Nerve) IsCheckmate(phase l06.Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pNerve *Nerve) DoMove(pPos *Position, move l13.Move) {
+func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 	before_move_phase := pNerve.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
@@ -754,7 +755,7 @@ func (pNerve *Nerve) DoMove(pPos *Position, move l13.Move) {
 }
 
 // UndoMove - 棋譜を頼りに１手戻すぜ（＾～＾）
-func (pNerve *Nerve) UndoMove(pPos *Position) {
+func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 
 	// App.Log.Trace(pNerve.PPosSys.Sprint())
 
@@ -931,7 +932,7 @@ func (pNerve *Nerve) UndoMove(pPos *Position) {
 }
 
 // undoCapture - 取った駒を戻すぜ（＾～＾）
-func (pNerve *Nerve) undoCapture(pPos *Position) {
+func (pNerve *Nerve) undoCapture(pPos *l15.Position) {
 	// App.Log.Trace(pNerve.PPosSys.Sprint())
 
 	// 取った駒だぜ（＾～＾）

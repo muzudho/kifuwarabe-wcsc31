@@ -244,8 +244,8 @@ func (pPos *Position) SprintControl(phase l06.Phase, layer int) string {
 		"\n"
 }
 
-// SprintLocation - あの駒どこにいんの？を表示
-func (pPos *Position) SprintLocation() string {
+// SprintLocation2 - あの駒どこにいんの？を表示
+func SprintLocation2(pPos *Position) string {
 	king1, king2 := pPos.GetKingLocations()
 	return "\n" +
 		//

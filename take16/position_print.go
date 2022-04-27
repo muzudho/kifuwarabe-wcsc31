@@ -3,11 +3,12 @@ package take16
 import (
 	"fmt"
 
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) SprintBoardHeader(phase l06.Phase, startMovesNum int, offsetMovesIndex int) string {
+func SprintBoardHeader(pPos *l15.Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int) string {
 	var phase_str string
 	switch phase {
 	case l06.FIRST:
@@ -26,7 +27,7 @@ func (pPos *Position) SprintBoardHeader(phase l06.Phase, startMovesNum int, offs
 }
 
 // Print - 局面出力（＾ｑ＾）
-func (pPos *Position) SprintBoard() string {
+func SprintBoard(pPos *l15.Position) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
@@ -161,8 +162,8 @@ func (pPos *Position) SprintBoard() string {
 	return s1
 }
 
-// SprintLocation - あの駒どこにいんの？を表示
-func (pPos *Position) SprintLocation() string {
+// SprintLocation2 - あの駒どこにいんの？を表示
+func SprintLocation2(pPos *l15.Position) string {
 	return "\n" +
 		//
 		" K   k      R          B          L\n" +

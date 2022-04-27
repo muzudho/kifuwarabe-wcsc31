@@ -14,6 +14,7 @@ import (
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
@@ -219,7 +220,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = ParseMove(command, &i, pNerve.PPosSys.GetPhase())
+			var move, err = l15.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
 				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
@@ -335,7 +336,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(pNerve.PPosSys.PPosition[PosLayerT(b1)].SprintLocation())
+				App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[PosLayerT(b1)]))
 				ok = true
 			}
 
@@ -375,7 +376,7 @@ MainLoop:
 					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 					App.Out.Debug(pNerve.SprintBoardFooter())
 					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(pNerve.PPosSys.SprintLocation())
+					// App.Out.Debug(SprintLocation2(pNerve.PPosSys))
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
@@ -584,7 +585,7 @@ func moveList(pNerve *Nerve) {
 }
 
 // ShowAllPiecesCount - 駒の枚数表示
-func ShowAllPiecesCount(pPos *Position) {
+func ShowAllPiecesCount(pPos *l15.Position) {
 	countList := CountAllPieces(pPos)
 	App.Out.Debug("Count\n")
 	App.Out.Debug("-----\n")

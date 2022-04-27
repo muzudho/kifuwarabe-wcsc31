@@ -300,7 +300,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(pPosSys.PPosition[PosLayerT(b1)].SprintLocation())
+				App.Out.Debug(SprintLocation2(pPosSys.PPosition[PosLayerT(b1)]))
 				ok = true
 			}
 
@@ -339,7 +339,7 @@ MainLoop:
 						pPosSys.OffsetMovesIndex,
 						pPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(pPosSys.SprintLocation())
+					// App.Out.Debug(SprintLocation2(pPosSys))
 
 					// moveList(pPosSys)
 					bestmove := Search(pPosSys)

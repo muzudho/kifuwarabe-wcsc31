@@ -20,7 +20,7 @@ func (pNerve *Nerve) Dump() string {
 		buffer.WriteString("\n")
 
 		// PieceLocation
-		pPos.SprintLocation()
+		SprintLocation2(pPos)
 	}
 
 	// 利きボード全部

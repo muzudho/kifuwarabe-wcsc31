@@ -1,6 +1,7 @@
 package take16
 
 import (
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -29,7 +30,7 @@ const PHASE_ARRAY_SIZE = 2
 // PositionSystem - 局面にいろいろな機能を付けたもの
 type PositionSystem struct {
 	// 局面
-	PPosition [POS_LAYER_SIZE]*Position
+	PPosition [POS_LAYER_SIZE]*l15.Position
 
 	// 先手が1、後手が2（＾～＾）
 	phase l06.Phase
@@ -37,7 +38,7 @@ type PositionSystem struct {
 
 func NewPositionSystem() *PositionSystem {
 	var pPosSys = new(PositionSystem)
-	pPosSys.PPosition = [POS_LAYER_SIZE]*Position{NewPosition(), NewPosition(), NewPosition(), NewPosition()}
+	pPosSys.PPosition = [POS_LAYER_SIZE]*l15.Position{l15.NewPosition(), l15.NewPosition(), l15.NewPosition(), l15.NewPosition()}
 	pPosSys.ResetPosition()
 	return pPosSys
 }

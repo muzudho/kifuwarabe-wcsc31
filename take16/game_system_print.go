@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
@@ -184,7 +185,7 @@ func sprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 }
 
 // SprintSfen - SFEN文字列返せよ（＾～＾）投了図を返すぜ（＾～＾）棋譜の部分を捨てるぜ（＾～＾）
-func sprintSfenResignation(pPosSys *PositionSystem, pPos *Position, pRecord *DifferenceRecord) string {
+func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord *DifferenceRecord) string {
 	// 9x9=81 + 8slash = 89 文字 なんだが成り駒で増えるし めんどくさ（＾～＾）多めに取っとくか（＾～＾）
 	// 成り駒２文字なんで、byte型だとめんどくさ（＾～＾）
 	buf := make([]byte, 0, 200)
@@ -192,7 +193,7 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *Position, pRecord *Dif
 	spaces := 0
 	for rank := l04.Square(1); rank < 10; rank += 1 {
 		for file := l04.Square(9); file > 0; file -= 1 {
-			piece := pPos.Board[SquareFrom(file, rank)]
+			piece := pPos.Board[l15.SquareFrom(file, rank)]
 
 			if piece != l09.PIECE_EMPTY {
 				if spaces > 0 {
