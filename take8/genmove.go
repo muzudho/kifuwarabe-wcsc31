@@ -280,7 +280,7 @@ func GenMoveList(pPos *Position) []Move {
 	move_list := []Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
-	friendKingSq := pPos.KingLocations[pPos.Phase-1]
+	friendKingSq := pPos.PieceLocations[PCLOC_K1:PCLOC_K2][pPos.Phase-1]
 	opponent := FlipPhase(pPos.Phase)
 
 	if pPos.ControlBoards[opponent-1][friendKingSq] > 0 {

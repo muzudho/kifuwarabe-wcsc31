@@ -20,12 +20,11 @@ type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
 	Board [BOARD_SIZE]string
-	// 飛車の場所。長い利きを消すために必要（＾～＾）
-	RookLocations [2]l04.Square
-	// 角の場所。長い利きを消すために必要（＾～＾）
-	BishopLocations [2]l04.Square
-	// 香の場所。長い利きを消すために必要（＾～＾）
-	LanceLocations [4]l04.Square
+
+	// 玉と長い利きの駒の場所。長い利きを消すのに使う
+	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
+	PieceLocations [PCLOC_SIZE]l04.Square
+
 	// 利きテーブル [0]先手 [1]後手
 	// マスへの利き数が入っています
 	ControlBoards [2][BOARD_SIZE]int8
@@ -89,9 +88,20 @@ func (pPos *Position) ResetToStartpos() {
 		0, 1, 1, 1, 1, 0, 0, 0, 0, 0,
 		0, 0, 2, 2, 1, 0, 0, 0, 0, 0,
 	}}
-	pPos.RookLocations = [2]l04.Square{28, 82}
-	pPos.BishopLocations = [2]l04.Square{22, 88}
-	pPos.LanceLocations = [4]l04.Square{11, 19, 91, 99}
+
+	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{
+		51,
+		59,
+		28,
+		82,
+		22,
+		88,
+		11,
+		19,
+		91,
+		99,
+	}
 
 	// 持ち駒の数
 	pPos.Hands = []int{
@@ -626,21 +636,21 @@ func (pPos *Position) DoMove(move l04.Move) {
 	for _, moving_piece_type := range moving_piece_types {
 		switch moving_piece_type {
 		case PIECE_TYPE_R:
-			for i, sq := range pPos.RookLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == from {
-					pPos.RookLocations[i] = to
+					pPos.PieceLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_B:
-			for i, sq := range pPos.BishopLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == from {
-					pPos.BishopLocations[i] = to
+					pPos.PieceLocations[i] = to
 				}
 			}
 		case PIECE_TYPE_L:
-			for i, sq := range pPos.LanceLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == from {
-					pPos.LanceLocations[i] = to
+					pPos.PieceLocations[i] = to
 				}
 			}
 		}
@@ -744,21 +754,21 @@ func (pPos *Position) UndoMove() {
 	for _, moving_piece_type := range moving_piece_types {
 		switch moving_piece_type {
 		case PIECE_TYPE_R:
-			for i, sq := range pPos.RookLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == from {
-					pPos.RookLocations[i] = to
+					pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = to
 				}
 			}
 		case PIECE_TYPE_B:
-			for i, sq := range pPos.BishopLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == from {
-					pPos.BishopLocations[i] = to
+					pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = to
 				}
 			}
 		case PIECE_TYPE_L:
-			for i, sq := range pPos.LanceLocations {
+			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == from {
-					pPos.LanceLocations[i] = to
+					pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = to
 				}
 			}
 		}
@@ -770,13 +780,13 @@ func (pPos *Position) UndoMove() {
 
 // AddControlAllSlidingPiece - すべての長い利きの駒の利きを増減させます
 func (pPos *Position) AddControlAllSlidingPiece(sign int8) {
-	for _, from := range pPos.RookLocations {
+	for _, from := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 		pPos.AddControl(from, sign)
 	}
-	for _, from := range pPos.BishopLocations {
+	for _, from := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 		pPos.AddControl(from, sign)
 	}
-	for _, from := range pPos.LanceLocations {
+	for _, from := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 		pPos.AddControl(from, sign)
 	}
 }

@@ -1,4 +1,4 @@
-package take11
+package take9
 
 // 玉と長い利きの駒の場所
 // Piece location

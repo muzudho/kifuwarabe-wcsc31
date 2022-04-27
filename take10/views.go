@@ -444,13 +444,13 @@ func (pPos *Position) Dump() string {
 
 	buffer.WriteString("BishopLocations:")
 	for i := 0; i < 2; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPos.BishopLocations[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i]))
 	}
 	buffer.WriteString("\n")
 
 	buffer.WriteString("LanceLocations:")
 	for i := 0; i < 2; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPos.LanceLocations[i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i]))
 	}
 	buffer.WriteString("\n")
 

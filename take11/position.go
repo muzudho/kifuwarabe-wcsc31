@@ -11,7 +11,7 @@ type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
 	Board [l09.BOARD_SIZE]l09.Piece
-	// 駒の場所
+	// 玉と長い利きの駒の場所。長い利きを消すのに使う
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]l04.Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
@@ -35,7 +35,18 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+		l04.SQ_EMPTY,
+	}
 
 	// 持ち駒の数
 	pPos.Hands1 = [HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
