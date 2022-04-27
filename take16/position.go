@@ -208,7 +208,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(l13.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(l13.Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -218,10 +218,10 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(l13.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l13.Move), fmt.Errorf("fatal: unknown count='%c'", count)
 			}
 		default:
-			return *new(l13.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l13.Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
