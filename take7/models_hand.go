@@ -1,4 +1,4 @@
-package take7
+package take7 // not same take6
 
 import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 
@@ -19,6 +19,6 @@ const (
 	HAND_N2        = l04.Square(111)
 	HAND_L2        = l04.Square(112)
 	HAND_P2        = l04.Square(113)
-	HAND_ORIGIN    = l04.HAND_R1
-	HAND_TYPE_SIZE = l04.HAND_P1 - HAND_ORIGIN
+	HAND_ORIGIN    = HAND_R1
+	HAND_TYPE_SIZE = HAND_P1 - HAND_ORIGIN + 1
 )

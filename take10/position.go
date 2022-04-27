@@ -114,10 +114,6 @@ func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 	}
 }
 
-var HandPieceMap = [14]l09.Piece{
-	l09.PIECE_R1, l09.PIECE_B1, l09.PIECE_G1, l09.PIECE_S1, l09.PIECE_N1, l09.PIECE_L1, l09.PIECE_P1,
-	l09.PIECE_R2, l09.PIECE_B2, l09.PIECE_G2, l09.PIECE_S2, l09.PIECE_N2, l09.PIECE_L2, l09.PIECE_P2}
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）

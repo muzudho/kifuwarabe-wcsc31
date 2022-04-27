@@ -1,4 +1,4 @@
-package take10
+package take10 // not same take7
 
 const (
 	// 持ち駒を打つ 0～13 (Index)

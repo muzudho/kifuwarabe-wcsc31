@@ -1,4 +1,4 @@
-package take11
+package take11 // not same take10
 
 // Hand piece type (先後付きの持ち駒の種類)
 // 持ち駒を打つときに利用。 0～15

@@ -188,7 +188,7 @@ func ShuffleBoard(pPos *Position) {
 				sq := l04.Square(rand.Intn(100))
 				// うまく空マスなら移動成功
 				if OnBoard(sq) && pPos.IsEmptySq(sq) {
-					pPos.Board[sq] = HandPieceMap[hand_index]
+					pPos.Board[sq] = HandPieceArray[hand_index]
 					pPos.Hands[hand_index] -= 1
 				}
 			}

@@ -1,4 +1,4 @@
-package take8
+package take8 // same take7
 
 import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 

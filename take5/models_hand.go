@@ -1,6 +1,4 @@
-package take5
-
-import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+package take5 // same lesson03
 
 const (
 	// 持ち駒を打つ 100～113
@@ -19,5 +17,5 @@ const (
 	HAND_N2
 	HAND_L2
 	HAND_P2
-	HAND_ORIGIN = l04.HAND_R1
+	HAND_ORIGIN = HAND_R1
 )
