@@ -74,22 +74,6 @@ func NewPosition() *Position {
 	return ins
 }
 
-func (pPos *Position) GetKingLocation(index int) l04.Square {
-	return pPos.KingLocations[index]
-}
-
-func (pPos *Position) GetRookLocation(index int) l04.Square {
-	return pPos.RookLocations[index]
-}
-
-func (pPos *Position) GetBishopLocation(index int) l04.Square {
-	return pPos.BishopLocations[index]
-}
-
-func (pPos *Position) GetLanceLocation(index int) l04.Square {
-	return pPos.LanceLocations[index]
-}
-
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPos *Position) resetToZero() {
 	// 筋、段のラベルだけ入れとくぜ（＾～＾）

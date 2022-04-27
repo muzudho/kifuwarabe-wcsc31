@@ -12,6 +12,7 @@ import (
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 // App - アプリケーション変数の宣言
@@ -157,7 +158,7 @@ MainLoop:
 			}
 		case "location":
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(SprintLocation2(pPos))
+			App.Out.Debug(l08.SprintLocation2(pPos))
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
 			App.Out.Debug(pPos.SprintSfen())

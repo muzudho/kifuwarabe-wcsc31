@@ -120,7 +120,7 @@ type Position struct {
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
 	Board [l09.BOARD_SIZE]l09.Piece
 	// [0]先手 [1]後手
-	kingLocations [2]l04.Square
+	KingLocations [2]l04.Square
 	// 飛車の場所。長い利きを消すために必要（＾～＾）
 	RookLocations [2]l04.Square
 	// 角の場所。長い利きを消すために必要（＾～＾）
@@ -176,7 +176,7 @@ func (pPos *Position) GetPhase() l06.Phase {
 }
 
 func (pPos *Position) GetKingLocations() (l04.Square, l04.Square) {
-	return pPos.kingLocations[0], pPos.kingLocations[1]
+	return pPos.KingLocations[0], pPos.KingLocations[1]
 }
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
@@ -510,7 +510,7 @@ func (pPos *Position) resetToZero() {
 		},
 	}}
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.kingLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.KingLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
 	pPos.RookLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
 	pPos.BishopLocations = [2]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY}
 	pPos.LanceLocations = [4]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
@@ -545,7 +545,7 @@ func (pPos *Position) setToStartpos() {
 		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_R2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_B1, l09.PIECE_N1,
 		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
 	}
-	pPos.kingLocations = [2]l04.Square{59, 51}
+	pPos.KingLocations = [2]l04.Square{59, 51}
 	pPos.RookLocations = [2]l04.Square{28, 82}
 	pPos.BishopLocations = [2]l04.Square{22, 88}
 	pPos.LanceLocations = [4]l04.Square{11, 19, 91, 99}
@@ -616,9 +616,9 @@ func (pPos *Position) ReadPosition(command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.kingLocations[0] = l04.Square((file+1)*10 + rank)
+				pPos.KingLocations[0] = l04.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.kingLocations[1] = l04.Square((file+1)*10 + rank)
+				pPos.KingLocations[1] = l04.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
 				for i, sq := range pPos.RookLocations {
 					if sq == l04.SQ_EMPTY {
@@ -1131,9 +1131,9 @@ func (pPos *Position) DoMove(move Move) {
 		case PIECE_TYPE_K:
 			switch prev_phase {
 			case l06.FIRST:
-				pPos.kingLocations[0] = dst_sq_list[j]
+				pPos.KingLocations[0] = dst_sq_list[j]
 			case l06.SECOND:
-				pPos.kingLocations[1] = dst_sq_list[j]
+				pPos.KingLocations[1] = dst_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
 			}
@@ -1304,9 +1304,9 @@ func (pPos *Position) UndoMove() {
 		case PIECE_TYPE_K:
 			switch pPos.phase { // next_phase
 			case l06.FIRST:
-				pPos.kingLocations[0] = src_sq_list[j]
+				pPos.KingLocations[0] = src_sq_list[j]
 			case l06.SECOND:
-				pPos.kingLocations[1] = src_sq_list[j]
+				pPos.KingLocations[1] = src_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown pPos.phase=%d", pPos.phase))
 			}
