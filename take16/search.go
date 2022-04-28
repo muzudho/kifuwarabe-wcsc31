@@ -7,6 +7,7 @@ import (
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -192,7 +193,7 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 			App.Out.Debug(pNerve.SprintBoardFooter())
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
+			App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
 			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
 				from, i, lenOfMoves))
 			//  younger_sibling_move=%s
@@ -258,8 +259,8 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			// 違いのあった局面（＾～＾）
 			App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[0]))
-			App.Out.Debug(SprintLocation2(pPosCopy))
+			App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[0]))
+			App.Out.Debug(l08.SprintLocation(pPosCopy))
 			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
 			// younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)

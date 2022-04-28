@@ -16,6 +16,7 @@ import (
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 // App - アプリケーション変数の宣言
@@ -336,7 +337,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(SprintLocation2(pNerve.PPosSys.PPosition[PosLayerT(b1)]))
+				App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[PosLayerT(b1)]))
 				ok = true
 			}
 
@@ -376,7 +377,7 @@ MainLoop:
 					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
 					App.Out.Debug(pNerve.SprintBoardFooter())
 					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(SprintLocation2(pNerve.PPosSys))
+					// App.Out.Debug(SprintLocation(pNerve.PPosSys))
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})

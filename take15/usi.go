@@ -15,6 +15,7 @@ import (
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 // App - アプリケーション変数の宣言
@@ -300,7 +301,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(SprintLocation2(pBrain.PPosSys.PPosition[PosLayerT(b1)]))
+				App.Out.Debug(l08.SprintLocation(pBrain.PPosSys.PPosition[PosLayerT(b1)]))
 				ok = true
 			}
 
@@ -340,7 +341,7 @@ MainLoop:
 						pBrain.PPosSys.OffsetMovesIndex,
 						pBrain.PPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(SprintLocation2(pBrain.PPosSys))
+					// App.Out.Debug(SprintLocation(pBrain.PPosSys))
 
 					// moveList(pBrain.PPosSys)
 					bestmove := Search(pBrain)

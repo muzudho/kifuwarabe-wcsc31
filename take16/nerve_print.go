@@ -3,6 +3,8 @@ package take16
 import (
 	"bytes"
 	"fmt"
+
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
@@ -20,7 +22,7 @@ func (pNerve *Nerve) Dump() string {
 		buffer.WriteString("\n")
 
 		// PieceLocation
-		SprintLocation2(pPos)
+		l08.SprintLocation(pPos)
 	}
 
 	// 利きボード全部

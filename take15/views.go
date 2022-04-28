@@ -3,7 +3,6 @@ package take15
 import (
 	"fmt"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -158,24 +157,4 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
 	return s1 + string(moves_text) + "\n"
-}
-
-// SprintLocation2 - あの駒どこにいんの？を表示
-func SprintLocation2(pPos *Position) string {
-	return "\n" +
-		//
-		" K   k      R          B          L\n" +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		// 持ち駒は３桁になるぜ（＾～＾）
-		fmt.Sprintf("|%3d|%3d|  |%3d|%3d|  |%3d|%3d|  |%3d|%3d|%3d|%3d|\n",
-			pPos.PieceLocations[l11.PCLOC_K1], pPos.PieceLocations[l11.PCLOC_K2],
-			pPos.PieceLocations[l11.PCLOC_R1], pPos.PieceLocations[l11.PCLOC_R2],
-			pPos.PieceLocations[l11.PCLOC_B1], pPos.PieceLocations[l11.PCLOC_B2],
-			pPos.PieceLocations[l11.PCLOC_L1], pPos.PieceLocations[l11.PCLOC_L2],
-			pPos.PieceLocations[l11.PCLOC_L3], pPos.PieceLocations[l11.PCLOC_L4]) +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		//
-		"\n"
 }

@@ -10,8 +10,8 @@ type positionForLocation interface {
 	GetLocationOfLongPiece(int) l04.Square
 }
 
-// SprintLocation2 - あの駒どこにいんの？を表示
-func SprintLocation2(pPos positionForLocation) string {
+// SprintLocation - あの駒どこにいんの？を表示
+func SprintLocation(pPos positionForLocation) string {
 	return "\n" +
 		//
 		" K   k      R          B          L\n" +

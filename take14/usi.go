@@ -15,6 +15,7 @@ import (
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 // App - アプリケーション変数の宣言
@@ -298,7 +299,7 @@ MainLoop:
 				}
 
 				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(SprintLocation2(pPosSys.PPosition[PosLayerT(b1)]))
+				App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[PosLayerT(b1)]))
 				ok = true
 			}
 
@@ -337,7 +338,7 @@ MainLoop:
 						pPosSys.OffsetMovesIndex,
 						pPosSys.createMovesText()))
 					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(SprintLocation2(pPosSys))
+					// App.Out.Debug(SprintLocation(pPosSys))
 
 					// moveList(pPosSys)
 					bestmove := Search(pPosSys)

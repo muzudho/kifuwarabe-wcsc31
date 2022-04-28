@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
 const RESIGN_VALUE = -32768
@@ -83,7 +84,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 				pPosSys.OffsetMovesIndex,
 				pPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(SprintLocation2(pPosSys.PPosition[POS_LAYER_MAIN]))
+			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[POS_LAYER_MAIN]))
 			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, moveListLen, younger_sibling_move.ToCodeOfM()))
 		}
@@ -150,8 +151,8 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// 違いのあった局面（＾～＾）
 			App.Out.Debug(pPosSys.SprintDiff(0, 1))
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(SprintLocation2(pPosSys.PPosition[0]))
-			App.Out.Debug(SprintLocation2(pPosCopy))
+			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[0]))
+			App.Out.Debug(l08.SprintLocation(pPosCopy))
 			panic(fmt.Errorf("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
 		}
 

@@ -158,23 +158,3 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
 	return s1 + string(moves_text) + "\n"
 }
-
-// SprintLocation2 - あの駒どこにいんの？を表示
-func SprintLocation2(pPos *Position) string {
-	return "\n" +
-		//
-		" K   k      R          B          L\n" +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		// 持ち駒は３桁になるぜ（＾～＾）
-		fmt.Sprintf("|%3d|%3d|  |%3d|%3d|  |%3d|%3d|  |%3d|%3d|%3d|%3d|\n",
-			pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2],
-			pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2],
-			pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2],
-			pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2],
-			pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]) +
-		//
-		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
-		//
-		"\n"
-}

@@ -158,7 +158,7 @@ MainLoop:
 			}
 		case "location":
 			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(l08.SprintLocation2(pPos))
+			App.Out.Debug(l08.SprintLocation(pPos))
 		case "sfen":
 			// SFEN文字列返せよ（＾～＾）
 			App.Out.Debug(pPos.SprintSfen())
