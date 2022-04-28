@@ -1,6 +1,9 @@
 package take6
 
-import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+import (
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+)
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
 func GenMoveList(pPos *Position) []l04.Move {
@@ -15,7 +18,7 @@ func GenMoveList(pPos *Position) []l04.Move {
 				piece := pPos.Board[from]
 
 				switch piece {
-				case PIECE_K1, PIECE_K2: // 先手玉, 後手玉
+				case l03.PIECE_K1, l03.PIECE_K2: // 先手玉, 後手玉
 					if to := l04.Square(from + 9); to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左上
 						move_list = append(move_list, l04.NewMove(from, to, false))
 					}

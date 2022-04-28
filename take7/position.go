@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
@@ -522,34 +523,34 @@ func (pPos *Position) DoMove(move l04.Move) {
 	var piece string
 	switch from {
 	case l04.HAND_R1:
-		piece = PIECE_R1
+		piece = l03.PIECE_R1
 	case l04.HAND_B1:
-		piece = PIECE_B1
+		piece = l03.PIECE_B1
 	case l04.HAND_G1:
-		piece = PIECE_G1
+		piece = l03.PIECE_G1
 	case l04.HAND_S1:
-		piece = PIECE_S1
+		piece = l03.PIECE_S1
 	case l04.HAND_N1:
-		piece = PIECE_N1
+		piece = l03.PIECE_N1
 	case l04.HAND_L1:
-		piece = PIECE_L1
+		piece = l03.PIECE_L1
 	case l04.HAND_P1:
-		piece = PIECE_P1
+		piece = l03.PIECE_P1
 	case l04.HAND_R2:
-		piece = PIECE_R2
+		piece = l03.PIECE_R2
 	case l04.HAND_B2:
-		piece = PIECE_B2
+		piece = l03.PIECE_B2
 	case l04.HAND_G2:
-		piece = PIECE_G2
+		piece = l03.PIECE_G2
 	case l04.HAND_S2:
-		piece = PIECE_S2
+		piece = l03.PIECE_S2
 	case l04.HAND_N2:
-		piece = PIECE_N2
+		piece = l03.PIECE_N2
 	case l04.HAND_L2:
-		piece = PIECE_L2
+		piece = l03.PIECE_L2
 	case l04.HAND_P2:
 		hand = from
-		piece = PIECE_P2
+		piece = l03.PIECE_P2
 	default:
 		// Not hand
 		hand = l04.Square(0)
@@ -570,7 +571,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 
 		// 移動先に駒があれば、その駒の利きを除外します
 		captured := pPos.Board[to]
-		if captured != PIECE_EMPTY {
+		if captured != l03.PIECE_EMPTY {
 			pPos.AddControl(to, -1)
 			moving_piece_types[1] = What(captured)
 		}
@@ -581,43 +582,43 @@ func (pPos *Position) DoMove(move l04.Move) {
 		// 行き先の駒の配置
 		pPos.Board[to] = pPos.Board[from]
 		moving_piece_types[0] = What(pPos.Board[to])
-		pPos.Board[from] = PIECE_EMPTY
+		pPos.Board[from] = l03.PIECE_EMPTY
 		pPos.AddControl(to, 1)
 
 		hand := l04.Square(0)
 		switch captured {
-		case PIECE_EMPTY: // Ignored
-		case PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			// Lost l06.FIRST king
-		case PIECE_R1, PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			hand = l04.HAND_R2
-		case PIECE_B1, PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			hand = l04.HAND_B2
-		case PIECE_G1:
+		case l03.PIECE_G1:
 			hand = l04.HAND_G2
-		case PIECE_S1, PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			hand = l04.HAND_S2
-		case PIECE_N1, PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			hand = l04.HAND_N2
-		case PIECE_L1, PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			hand = l04.HAND_L2
-		case PIECE_P1, PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			hand = l04.HAND_P2
-		case PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			// Lost second king
-		case PIECE_R2, PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			hand = l04.HAND_R1
-		case PIECE_B2, PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			hand = l04.HAND_B1
-		case PIECE_G2:
+		case l03.PIECE_G2:
 			hand = l04.HAND_G1
-		case PIECE_S2, PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			hand = l04.HAND_S1
-		case PIECE_N2, PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			hand = l04.HAND_N1
-		case PIECE_L2, PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			hand = l04.HAND_L1
-		case PIECE_P2, PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			hand = l04.HAND_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
@@ -686,7 +687,7 @@ func (pPos *Position) UndoMove() {
 		hand := from
 		// 盤上から駒を除去します
 		moving_piece_types[0] = What(pPos.Board[to])
-		pPos.Board[to] = PIECE_EMPTY
+		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[hand-HAND_ORIGIN] += 1
@@ -702,38 +703,38 @@ func (pPos *Position) UndoMove() {
 		// あれば、取った駒は駒台から下ろします
 		cap := l04.Square(0)
 		switch captured {
-		case PIECE_EMPTY: // Ignored
-		case PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			// Lost l06.FIRST king
-		case PIECE_R1, PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap = l04.HAND_R2
-		case PIECE_B1, PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			cap = l04.HAND_B2
-		case PIECE_G1:
+		case l03.PIECE_G1:
 			cap = l04.HAND_G2
-		case PIECE_S1, PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			cap = l04.HAND_S2
-		case PIECE_N1, PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			cap = l04.HAND_N2
-		case PIECE_L1, PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			cap = l04.HAND_L2
-		case PIECE_P1, PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap = l04.HAND_P2
-		case PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			// Lost second king
-		case PIECE_R2, PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap = l04.HAND_R1
-		case PIECE_B2, PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			cap = l04.HAND_B1
-		case PIECE_G2:
+		case l03.PIECE_G2:
 			cap = l04.HAND_G1
-		case PIECE_S2, PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			cap = l04.HAND_S1
-		case PIECE_N2, PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			cap = l04.HAND_N1
-		case PIECE_L2, PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			cap = l04.HAND_L1
-		case PIECE_P2, PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			cap = l04.HAND_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
@@ -799,7 +800,7 @@ func (pPos *Position) AddControl(from l04.Square, sign int8) {
 	}
 
 	piece := pPos.Board[from]
-	if piece == PIECE_EMPTY {
+	if piece == l03.PIECE_EMPTY {
 		panic(fmt.Errorf("LogicalError: Empty square has no control"))
 	}
 
@@ -827,5 +828,5 @@ func (pPos *Position) Hetero(to l04.Square) bool {
 }
 
 func (pPos *Position) IsEmptySq(sq l04.Square) bool {
-	return pPos.Board[sq] == PIECE_EMPTY
+	return pPos.Board[sq] == l03.PIECE_EMPTY
 }
