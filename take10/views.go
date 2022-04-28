@@ -439,7 +439,8 @@ func (pPos *Position) Dump() string {
 	}
 	buffer.WriteString("\n")
 
-	king1, king2 := pPos.GetKingLocations()
+	king1 := pPos.PieceLocations[PCLOC_K1]
+	king2 := pPos.PieceLocations[PCLOC_K2]
 	buffer.WriteString(fmt.Sprintf("KingLocations:%d,%d,\n", king1, king2))
 
 	buffer.WriteString("BishopLocations:")

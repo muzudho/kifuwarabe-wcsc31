@@ -170,10 +170,6 @@ func (pPos *Position) GetPhase() l06.Phase {
 	return pPos.phase
 }
 
-func (pPos *Position) GetKingLocations() (l04.Square, l04.Square) {
-	return pPos.PieceLocations[PCLOC_K1:PCLOC_K2][0], pPos.PieceLocations[PCLOC_K1:PCLOC_K2][1]
-}
-
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPos *Position) resetToZero() {
 	// 筋、段のラベルだけ入れとくぜ（＾～＾）
