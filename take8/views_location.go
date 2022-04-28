@@ -7,10 +7,7 @@ import (
 )
 
 type positionForLocation interface {
-	GetKingLocation(int) l04.Square
-	GetRookLocation(int) l04.Square
-	GetBishopLocation(int) l04.Square
-	GetLanceLocation(int) l04.Square
+	GetLocationOfLongPiece(int) l04.Square
 }
 
 // SprintLocation2 - あの駒どこにいんの？を表示
@@ -22,16 +19,16 @@ func SprintLocation2(pPos positionForLocation) string {
 		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
 		// 持ち駒は３桁になるぜ（＾～＾）
 		fmt.Sprintf("|%3d|%3d|  |%3d|%3d|  |%3d|%3d|  |%3d|%3d|%3d|%3d|\n",
-			pPos.GetKingLocation(0),
-			pPos.GetKingLocation(1),
-			pPos.GetRookLocation(0),
-			pPos.GetRookLocation(1),
-			pPos.GetBishopLocation(0),
-			pPos.GetBishopLocation(1),
-			pPos.GetLanceLocation(0),
-			pPos.GetLanceLocation(1),
-			pPos.GetLanceLocation(2),
-			pPos.GetLanceLocation(3)) +
+			pPos.GetLocationOfLongPiece(PCLOC_K1),
+			pPos.GetLocationOfLongPiece(PCLOC_K2),
+			pPos.GetLocationOfLongPiece(PCLOC_R1),
+			pPos.GetLocationOfLongPiece(PCLOC_R2),
+			pPos.GetLocationOfLongPiece(PCLOC_B1),
+			pPos.GetLocationOfLongPiece(PCLOC_B2),
+			pPos.GetLocationOfLongPiece(PCLOC_L1),
+			pPos.GetLocationOfLongPiece(PCLOC_L2),
+			pPos.GetLocationOfLongPiece(PCLOC_L3),
+			pPos.GetLocationOfLongPiece(PCLOC_L4)) +
 		//
 		"+---+---+  +---+---+  +---+---+  +---+---+---+---+\n" +
 		//
