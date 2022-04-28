@@ -163,7 +163,7 @@ MainLoop:
 			App.Out.Debug(pPos.SprintSfen())
 		case "record":
 			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			App.Out.Debug(pPos.SprintRecord())
+			App.Out.Debug(SprintRecord(pPos))
 		case "movelist":
 			App.Out.Debug("MoveList\n")
 			App.Out.Debug("--------\n")

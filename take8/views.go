@@ -345,18 +345,3 @@ func (pPos *Position) SprintSfen() string {
 
 	return fmt.Sprintf("position sfen %s %s %s %d moves%s\n", buf, phaseStr, hands, movesNum, moves_text)
 }
-
-// SprintRecord - 棋譜表示（＾～＾）
-func (pPos *Position) SprintRecord() string {
-
-	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, MOVES_SIZE*9)
-	for i := 0; i < pPos.OffsetMovesIndex; i += 1 {
-		record_text = append(record_text, pPos.Moves[i].ToCodeOfM()...)
-		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPos.CapturedList[i]...)
-		record_text = append(record_text, '\n')
-	}
-
-	return fmt.Sprintf("record\n------\n%s", record_text)
-}
