@@ -2,6 +2,7 @@ package take15
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
@@ -550,22 +551,22 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pBrain.PPosSys.GetPhase()
 	var friendKingSq l04.Square
-	var hand_start l11.HandIdx
-	var hand_end l11.HandIdx
+	var hand_start l10.HandIdx
+	var hand_end l10.HandIdx
 	// var opponentKingSq l04.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K1)
-		hand_start = l11.HAND_IDX_START
+		hand_start = l10.HAND_IDX_START
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K2)
-		hand_start = l11.HAND_IDX_START + l11.HAND_TYPE_SIZE
+		hand_start = l10.HAND_IDX_START + l10.HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + l11.HAND_TYPE_SIZE
+	hand_end = hand_start + l10.HAND_TYPE_SIZE
 
 	if !OnBoard(friendKingSq) {
 		// 自玉が盤上にない場合は、指し手を返しません

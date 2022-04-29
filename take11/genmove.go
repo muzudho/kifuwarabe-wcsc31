@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
@@ -317,19 +318,19 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	friend := pPosSys.GetPhase()
 	opponent := FlipPhase(pPosSys.GetPhase())
 	var friendKingSq l04.Square
-	var hand_start HandIdx
-	var hand_end HandIdx
+	var hand_start l10.HandIdx
+	var hand_end l10.HandIdx
 	// var opponentKingSq l04.Square
 	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
-		hand_start = HAND_IDX_START
+		hand_start = l10.HAND_IDX_START
 	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
-		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
+		hand_start = l10.HAND_IDX_START + l10.HAND_TYPE_SIZE
 	} else {
 		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + HAND_TYPE_SIZE
+	hand_end = hand_start + l10.HAND_TYPE_SIZE
 
 	// 相手の利きテーブルの自玉のマスに利きがあるか
 	if pPosSys.ControlBoards[opponent-1][CONTROL_LAYER_SUM][friendKingSq] > 0 {

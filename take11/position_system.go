@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
@@ -568,7 +569,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index HandIdx = 999 //存在しない数
+			var hand_index l10.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:
@@ -591,7 +592,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case HAND_R1, HAND_R2:
+						case l10.HAND_R1, l10.HAND_R2:
 							for i := PCLOC_R1; i < PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -599,7 +600,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_B1, HAND_B2:
+						case l10.HAND_B1, l10.HAND_B2:
 							for i := PCLOC_B1; i < PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -607,7 +608,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 									break
 								}
 							}
-						case HAND_L1, HAND_L2:
+						case l10.HAND_L1, l10.HAND_L2:
 							for i := PCLOC_L1; i < PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -621,33 +622,33 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = HAND_R1
+						hand_index = l10.HAND_R1
 					case 'B':
-						hand_index = HAND_B1
+						hand_index = l10.HAND_B1
 					case 'G':
-						hand_index = HAND_G1
+						hand_index = l10.HAND_G1
 					case 'S':
-						hand_index = HAND_S1
+						hand_index = l10.HAND_S1
 					case 'N':
-						hand_index = HAND_N1
+						hand_index = l10.HAND_N1
 					case 'L':
-						hand_index = HAND_L1
+						hand_index = l10.HAND_L1
 					case 'P':
-						hand_index = HAND_P1
+						hand_index = l10.HAND_P1
 					case 'r':
-						hand_index = HAND_R2
+						hand_index = l10.HAND_R2
 					case 'b':
-						hand_index = HAND_B2
+						hand_index = l10.HAND_B2
 					case 'g':
-						hand_index = HAND_G2
+						hand_index = l10.HAND_G2
 					case 's':
-						hand_index = HAND_S2
+						hand_index = l10.HAND_S2
 					case 'n':
-						hand_index = HAND_N2
+						hand_index = l10.HAND_N2
 					case 'l':
-						hand_index = HAND_L2
+						hand_index = l10.HAND_L2
 					case 'p':
-						hand_index = HAND_P2
+						hand_index = l10.HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop
@@ -795,7 +796,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 		case l06.FIRST:
 			from = hand_sq
 		case l06.SECOND:
-			from = hand_sq + HAND_TYPE_SIZE_SQ
+			from = hand_sq + l10.HAND_TYPE_SIZE_SQ
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}

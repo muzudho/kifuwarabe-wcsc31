@@ -7,6 +7,7 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
@@ -194,7 +195,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index l11.HandIdx = 999 //存在しない数
+			var hand_index l10.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:
@@ -217,7 +218,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case l11.HAND_R1, l11.HAND_R2:
+						case l10.HAND_R1, l10.HAND_R2:
 							for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -225,7 +226,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 									break
 								}
 							}
-						case l11.HAND_B1, l11.HAND_B2:
+						case l10.HAND_B1, l10.HAND_B2:
 							for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -233,7 +234,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 									break
 								}
 							}
-						case l11.HAND_L1, l11.HAND_L2:
+						case l10.HAND_L1, l10.HAND_L2:
 							for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l04.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
@@ -247,33 +248,33 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = l11.HAND_R1
+						hand_index = l10.HAND_R1
 					case 'B':
-						hand_index = l11.HAND_B1
+						hand_index = l10.HAND_B1
 					case 'G':
-						hand_index = l11.HAND_G1
+						hand_index = l10.HAND_G1
 					case 'S':
-						hand_index = l11.HAND_S1
+						hand_index = l10.HAND_S1
 					case 'N':
-						hand_index = l11.HAND_N1
+						hand_index = l10.HAND_N1
 					case 'L':
-						hand_index = l11.HAND_L1
+						hand_index = l10.HAND_L1
 					case 'P':
-						hand_index = l11.HAND_P1
+						hand_index = l10.HAND_P1
 					case 'r':
-						hand_index = l11.HAND_R2
+						hand_index = l10.HAND_R2
 					case 'b':
-						hand_index = l11.HAND_B2
+						hand_index = l10.HAND_B2
 					case 'g':
-						hand_index = l11.HAND_G2
+						hand_index = l10.HAND_G2
 					case 's':
-						hand_index = l11.HAND_S2
+						hand_index = l10.HAND_S2
 					case 'n':
-						hand_index = l11.HAND_N2
+						hand_index = l10.HAND_N2
 					case 'l':
-						hand_index = l11.HAND_L2
+						hand_index = l10.HAND_L2
 					case 'p':
-						hand_index = l11.HAND_P2
+						hand_index = l10.HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop
