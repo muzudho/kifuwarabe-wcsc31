@@ -2,8 +2,8 @@ package lesson03
 
 import "fmt"
 
-// FromStringToPiece - 文字列からPieceを作成
-func FromStringToPiece(piece string) Piece {
+// FromCodeToPiece - 文字列からPieceを作成
+func FromCodeToPiece(piece string) Piece {
 	switch piece {
 	case "":
 		return PIECE_EMPTY
