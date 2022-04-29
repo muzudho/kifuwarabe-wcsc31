@@ -33,3 +33,7 @@ const (
 const (
 	HAND_TYPE_SIZE_SQ Square = Square(HAND_TYPE_SIZE)
 )
+
+func FromSqToHandIndex(sq Square) HandIdx {
+	return HandIdx(sq)
+}
