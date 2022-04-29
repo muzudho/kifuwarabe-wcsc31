@@ -1,8 +1,12 @@
 package take10 // not same take7
 
+import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+
+type HandIdx uint
+
 const (
 	// 持ち駒を打つ 0～13 (Index)
-	HAND_K1 = iota // 0: 先手玉
+	HAND_K1 HandIdx = iota // 0: 先手玉
 	HAND_R1
 	HAND_B1
 	HAND_G1
@@ -22,4 +26,8 @@ const (
 	HAND_IDX_END   = HAND_P2 - 1 // この数を含まない
 	HAND_TYPE_SIZE = HAND_K2
 	HAND_SIZE      = HAND_P2 + 1
+)
+
+const (
+	HAND_TYPE_SIZE_SQ l04.Square = l04.Square(HAND_TYPE_SIZE)
 )
