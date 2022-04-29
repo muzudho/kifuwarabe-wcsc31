@@ -5,13 +5,15 @@ type HandSq Square
 const (
 	// 持ち駒を打つ 100～113
 	// 先手飛打
-	HANDSQ_R1 HandSq = 100 + iota
+	HANDSQ_K1 HandSq = 100 + iota
+	HANDSQ_R1
 	HANDSQ_B1
 	HANDSQ_G1
 	HANDSQ_S1
 	HANDSQ_N1
 	HANDSQ_L1
 	HANDSQ_P1
+	HANDSQ_K2
 	HANDSQ_R2
 	HANDSQ_B2
 	HANDSQ_G2

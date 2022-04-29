@@ -67,6 +67,8 @@ func What(piece Piece) PieceType {
 func WhatHand(sq Square) PieceType {
 	var handSq = FromSqToHandSq(sq)
 	switch handSq {
+	case HANDSQ_K1, HANDSQ_K2:
+		return PIECE_TYPE_K
 	case HANDSQ_R1, HANDSQ_R2:
 		return PIECE_TYPE_R
 	case HANDSQ_B1, HANDSQ_B2:
