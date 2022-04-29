@@ -684,7 +684,7 @@ func (pPos *Position) ReadPosition(command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index l03.HandIdx = 999 //存在しない数
+			var handIndex l03.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:
@@ -693,7 +693,7 @@ func (pPos *Position) ReadPosition(command string) {
 
 				if unicode.IsLetter(rune(piece)) || piece == ' ' {
 
-					if hand_index == 999 {
+					if handIndex == 999 {
 						// ループの１週目は無視します
 
 					} else {
@@ -702,29 +702,29 @@ func (pPos *Position) ReadPosition(command string) {
 							number = 1
 						}
 
-						pPos.Hands[hand_index] = number
+						pPos.Hands[handIndex] = number
 						number = 0
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
-						switch hand_index {
+						switch handIndex {
 						case l03.HAND_R1, l03.HAND_R2:
 							for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
-									pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = l03.Square(hand_index) + l03.SQ_HAND_START
+									pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = l03.Square(handIndex) + l03.SQ_HAND_START
 									break
 								}
 							}
 						case l03.HAND_B1, l03.HAND_B2:
 							for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 								if sq == l03.SQ_EMPTY {
-									pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = l03.Square(hand_index) + l03.SQ_HAND_START
+									pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = l03.Square(handIndex) + l03.SQ_HAND_START
 									break
 								}
 							}
 						case l03.HAND_L1, l03.HAND_L2:
 							for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 								if sq == l03.SQ_EMPTY {
-									pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = l03.Square(hand_index) + l03.SQ_HAND_START
+									pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = l03.Square(handIndex) + l03.SQ_HAND_START
 									break
 								}
 							}
@@ -732,41 +732,23 @@ func (pPos *Position) ReadPosition(command string) {
 					}
 					i += 1
 
-					switch piece {
-					case 'R':
-						hand_index = l03.HAND_R1
-					case 'B':
-						hand_index = l03.HAND_B1
-					case 'G':
-						hand_index = l03.HAND_G1
-					case 'S':
-						hand_index = l03.HAND_S1
-					case 'N':
-						hand_index = l03.HAND_N1
-					case 'L':
-						hand_index = l03.HAND_L1
-					case 'P':
-						hand_index = l03.HAND_P1
-					case 'r':
-						hand_index = l03.HAND_R2
-					case 'b':
-						hand_index = l03.HAND_B2
-					case 'g':
-						hand_index = l03.HAND_G2
-					case 's':
-						hand_index = l03.HAND_S2
-					case 'n':
-						hand_index = l03.HAND_N2
-					case 'l':
-						hand_index = l03.HAND_L2
-					case 'p':
-						hand_index = l03.HAND_P2
-					case ' ':
+					var isBreak = false
+					var convertAlternativeValue = func(code byte) l03.HandIdx {
+						if code == ' ' {
+							isBreak = true
+							return l03.HAND_SIZE // この値は使いません
+						} else {
+							panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
+						}
+					}
+
+					handIndex = l03.FromCodeToHandIndex(byte(piece), &convertAlternativeValue)
+
+					if isBreak {
 						// ループを抜けます
 						break HandLoop
-					default:
-						panic(fmt.Errorf("fatal: unknown piece=%c", piece))
 					}
+
 				} else if unicode.IsNumber(rune(piece)) {
 					switch piece {
 					case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':

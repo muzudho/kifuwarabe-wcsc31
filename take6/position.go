@@ -158,41 +158,25 @@ func (pos *Position) ReadPosition(command string) {
 			for {
 				var handSq l03.HandSq
 				var piece = command[i]
-				switch piece {
-				case 'R':
-					handSq = l03.HANDSQ_R1
-				case 'B':
-					handSq = l03.HANDSQ_B1
-				case 'G':
-					handSq = l03.HANDSQ_G1
-				case 'S':
-					handSq = l03.HANDSQ_S1
-				case 'N':
-					handSq = l03.HANDSQ_N1
-				case 'L':
-					handSq = l03.HANDSQ_L1
-				case 'P':
-					handSq = l03.HANDSQ_P1
-				case 'r':
-					handSq = l03.HANDSQ_R2
-				case 'b':
-					handSq = l03.HANDSQ_B2
-				case 'g':
-					handSq = l03.HANDSQ_G2
-				case 's':
-					handSq = l03.HANDSQ_S2
-				case 'n':
-					handSq = l03.HANDSQ_N2
-				case 'l':
-					handSq = l03.HANDSQ_L2
-				case 'p':
-					handSq = l03.HANDSQ_P2
-				case ' ':
-					i += 1
-					break HandLoop
-				default:
-					panic(fmt.Errorf("fatal: unknown piece=%c", piece))
+
+				var isBreak = false
+				var convertAlternativeValue = func(code byte) l03.HandSq {
+					if code == ' ' {
+						i += 1
+						isBreak = true
+						return l03.HANDSQ_SIZE // この値は使いません
+					} else {
+						panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
+					}
 				}
+
+				handSq = l03.FromCodeToHandSq(byte(piece), &convertAlternativeValue)
+
+				if isBreak {
+					// ループを抜けます
+					break HandLoop
+				}
+				i += 1
 
 				var number = 0
 			NumberLoop:

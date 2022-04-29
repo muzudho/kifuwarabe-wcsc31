@@ -254,7 +254,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 						}
 					}
 
-					handIndex = FromCodeToHandIndex(byte(piece), &convertAlternativeValue)
+					handIndex = l03.FromCodeToHandIndex(byte(piece), &convertAlternativeValue)
 
 					if isBreak {
 						// ループを抜けます

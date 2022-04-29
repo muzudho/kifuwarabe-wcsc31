@@ -408,42 +408,25 @@ func (pPos *Position) ReadPosition(command string) {
 		} else {
 		HandLoop:
 			for {
-				var hand_index l03.Square
+				var handSq l03.HandSq
 				var piece = command[i]
-				switch piece {
-				case 'R':
-					hand_index = l03.HANDSQ_R1.ToSq()
-				case 'B':
-					hand_index = l03.HANDSQ_B1.ToSq()
-				case 'G':
-					hand_index = l03.HANDSQ_G1.ToSq()
-				case 'S':
-					hand_index = l03.HANDSQ_S1.ToSq()
-				case 'N':
-					hand_index = l03.HANDSQ_N1.ToSq()
-				case 'L':
-					hand_index = l03.HANDSQ_L1.ToSq()
-				case 'P':
-					hand_index = l03.HANDSQ_P1.ToSq()
-				case 'r':
-					hand_index = l03.HANDSQ_R2.ToSq()
-				case 'b':
-					hand_index = l03.HANDSQ_B2.ToSq()
-				case 'g':
-					hand_index = l03.HANDSQ_G2.ToSq()
-				case 's':
-					hand_index = l03.HANDSQ_S2.ToSq()
-				case 'n':
-					hand_index = l03.HANDSQ_N2.ToSq()
-				case 'l':
-					hand_index = l03.HANDSQ_L2.ToSq()
-				case 'p':
-					hand_index = l03.HANDSQ_P2.ToSq()
-				case ' ':
-					i += 1
+
+				var isBreak = false
+				var convertAlternativeValue = func(code byte) l03.HandSq {
+					if code == ' ' {
+						i += 1
+						isBreak = true
+						return l03.HANDSQ_SIZE // この値は使いません
+					} else {
+						panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
+					}
+				}
+
+				handSq = l03.FromCodeToHandSq(byte(piece), &convertAlternativeValue)
+
+				if isBreak {
+					// ループを抜けます
 					break HandLoop
-				default:
-					panic(fmt.Errorf("fatal: unknown piece=%c", piece))
 				}
 				i += 1
 
@@ -467,28 +450,28 @@ func (pPos *Position) ReadPosition(command string) {
 					}
 				}
 
-				pPos.Hands[hand_index-l03.HANDSQ_ORIGIN.ToSq()] = number
+				pPos.Hands[handSq.ToSq()-l03.HANDSQ_ORIGIN.ToSq()] = number
 
 				// 長い利きの駒は位置を覚えておくぜ（＾～＾）
-				switch hand_index {
-				case l03.HANDSQ_R1.ToSq(), l03.HANDSQ_R2.ToSq():
+				switch handSq {
+				case l03.HANDSQ_R1, l03.HANDSQ_R2:
 					for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 						if sq == l03.SQ_EMPTY {
-							pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = hand_index
+							pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = handSq.ToSq()
 							break
 						}
 					}
-				case l03.HANDSQ_B1.ToSq(), l03.HANDSQ_B2.ToSq():
+				case l03.HANDSQ_B1, l03.HANDSQ_B2:
 					for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 						if sq == l03.SQ_EMPTY {
-							pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = hand_index
+							pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = handSq.ToSq()
 							break
 						}
 					}
-				case l03.HANDSQ_L1.ToSq(), l03.HANDSQ_L2.ToSq():
+				case l03.HANDSQ_L1, l03.HANDSQ_L2:
 					for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 						if sq == l03.SQ_EMPTY {
-							pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = hand_index
+							pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = handSq.ToSq()
 							break
 						}
 					}
