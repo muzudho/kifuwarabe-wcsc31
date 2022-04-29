@@ -3,7 +3,7 @@ package take15
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
-	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -52,9 +52,9 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [l05.MOVES_SIZE]l13.Move
+	Moves [l04.MOVES_SIZE]l13.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [l05.MOVES_SIZE]l03.Piece
+	CapturedList [l04.MOVES_SIZE]l03.Piece
 }
 
 func NewPositionSystem() *PositionSystem {
@@ -85,7 +85,7 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [l05.MOVES_SIZE]l13.Move{}
+	pPosSys.Moves = [l04.MOVES_SIZE]l13.Move{}
 	// 取った駒のリスト
-	pPosSys.CapturedList = [l05.MOVES_SIZE]l03.Piece{}
+	pPosSys.CapturedList = [l04.MOVES_SIZE]l03.Piece{}
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -41,7 +41,7 @@ func (pNerve *Nerve) Dump() string {
 	buffer.WriteString(pNerve.SprintBoardFooter())
 
 	buffer.WriteString("CapturedList:")
-	for i := 0; i < l05.MOVES_SIZE; i += 1 {
+	for i := 0; i < l04.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pNerve.PRecord.CapturedList[i]))
 	}
 	buffer.WriteString("\n")

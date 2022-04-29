@@ -6,7 +6,7 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
+	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
@@ -48,13 +48,13 @@ func (pBrain *Brain) Dump() string {
 	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
 
 	buffer.WriteString("Moves:")
-	for i := 0; i < l05.MOVES_SIZE; i += 1 {
+	for i := 0; i < l04.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.Moves[i]))
 	}
 	buffer.WriteString("\n")
 
 	buffer.WriteString("CapturedList:")
-	for i := 0; i < l05.MOVES_SIZE; i += 1 {
+	for i := 0; i < l04.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.CapturedList[i]))
 	}
 	buffer.WriteString("\n")

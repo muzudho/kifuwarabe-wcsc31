@@ -24,9 +24,9 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]l04.Move
+	Moves [l04.MOVES_SIZE]l04.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]string
+	CapturedList [l04.MOVES_SIZE]string
 }
 
 func NewPosition() *Position {
@@ -60,9 +60,9 @@ func (pos *Position) ResetToStartpos() {
 	pos.StartMovesNum = 1
 	pos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pos.Moves = [MOVES_SIZE]l04.Move{}
+	pos.Moves = [l04.MOVES_SIZE]l04.Move{}
 	// 取った駒のリスト
-	pos.CapturedList = [MOVES_SIZE]string{}
+	pos.CapturedList = [l04.MOVES_SIZE]string{}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）

@@ -77,7 +77,7 @@ func SprintBoard(pos *Position) string {
 		//
 		"moves"
 
-	moves_list := make([]byte, 0, 512*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
+	moves_list := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for _, pMove := range pos.Moves {
 		moves_list = append(moves_list, ' ')
 		moves_list = append(moves_list, pMove.ToCodeOfM()...)
