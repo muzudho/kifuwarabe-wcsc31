@@ -60,25 +60,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case l07.HAND_R1.ToSq(), l07.HAND_R2.ToSq():
+	case l07.HANDSQ_R1.ToSq(), l07.HANDSQ_R2.ToSq():
 		str = append(str, 'R')
 		count = 1
-	case l07.HAND_B1.ToSq(), l07.HAND_B2.ToSq():
+	case l07.HANDSQ_B1.ToSq(), l07.HANDSQ_B2.ToSq():
 		str = append(str, 'B')
 		count = 1
-	case l07.HAND_G1.ToSq(), l07.HAND_G2.ToSq():
+	case l07.HANDSQ_G1.ToSq(), l07.HANDSQ_G2.ToSq():
 		str = append(str, 'G')
 		count = 1
-	case l07.HAND_S1.ToSq(), l07.HAND_S2.ToSq():
+	case l07.HANDSQ_S1.ToSq(), l07.HANDSQ_S2.ToSq():
 		str = append(str, 'S')
 		count = 1
-	case l07.HAND_N1.ToSq(), l07.HAND_N2.ToSq():
+	case l07.HANDSQ_N1.ToSq(), l07.HANDSQ_N2.ToSq():
 		str = append(str, 'N')
 		count = 1
-	case l07.HAND_L1.ToSq(), l07.HAND_L2.ToSq():
+	case l07.HANDSQ_L1.ToSq(), l07.HANDSQ_L2.ToSq():
 		str = append(str, 'L')
 		count = 1
-	case l07.HAND_P1.ToSq(), l07.HAND_P2.ToSq():
+	case l07.HANDSQ_P1.ToSq(), l07.HANDSQ_P2.ToSq():
 		str = append(str, 'P')
 		count = 1
 	default:

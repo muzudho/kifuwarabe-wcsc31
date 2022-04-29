@@ -201,19 +201,19 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 		var end_rank l04.Square
 
 		switch from {
-		case l07.HAND_R1.ToSq(), l07.HAND_B1.ToSq(), l07.HAND_G1.ToSq(), l07.HAND_S1.ToSq(), l07.HAND_R2.ToSq(), l07.HAND_B2.ToSq(), l07.HAND_G2.ToSq(), l07.HAND_S2.ToSq(): // 81マスに打てる
+		case l07.HANDSQ_R1.ToSq(), l07.HANDSQ_B1.ToSq(), l07.HANDSQ_G1.ToSq(), l07.HANDSQ_S1.ToSq(), l07.HANDSQ_R2.ToSq(), l07.HANDSQ_B2.ToSq(), l07.HANDSQ_G2.ToSq(), l07.HANDSQ_S2.ToSq(): // 81マスに打てる
 			start_rank = 1
 			end_rank = 10
-		case l07.HAND_N1.ToSq(): // 3～9段目に打てる
+		case l07.HANDSQ_N1.ToSq(): // 3～9段目に打てる
 			start_rank = 3
 			end_rank = 10
-		case l07.HAND_L1.ToSq(), l07.HAND_P1.ToSq(): // 2～9段目に打てる
+		case l07.HANDSQ_L1.ToSq(), l07.HANDSQ_P1.ToSq(): // 2～9段目に打てる
 			start_rank = 2
 			end_rank = 10
-		case l07.HAND_N2.ToSq(): // 1～7段目に打てる
+		case l07.HANDSQ_N2.ToSq(): // 1～7段目に打てる
 			start_rank = 1
 			end_rank = 8
-		case l07.HAND_L2.ToSq(), l07.HAND_P2.ToSq(): // 1～8段目に打てる
+		case l07.HANDSQ_L2.ToSq(), l07.HANDSQ_P2.ToSq(): // 1～8段目に打てる
 			start_rank = 1
 			end_rank = 9
 		default:
@@ -221,7 +221,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 		}
 
 		switch from {
-		case l07.HAND_P1.ToSq():
+		case l07.HANDSQ_P1.ToSq():
 			// TODO 打ち歩詰め禁止
 			for rank := l04.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := l04.Square(9); file > 0; file-- {
@@ -231,7 +231,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 					}
 				}
 			}
-		case l07.HAND_P2.ToSq():
+		case l07.HANDSQ_P2.ToSq():
 			// TODO 打ち歩詰め禁止
 			for rank := l04.Square(start_rank); rank < end_rank; rank += 1 {
 				for file := l04.Square(9); file > 0; file-- {
@@ -373,9 +373,9 @@ func GenMoveList(pPos *Position) []Move {
 
 		// 駒台もスキャンしよ（＾～＾）
 		phase_index := l04.Square(pPos.Phase - 1)
-		for hand := l04.Square(phase_index * l07.HAND_TYPE_SIZE.ToSq()); hand < (phase_index+1)*l07.HAND_TYPE_SIZE.ToSq(); hand += 1 {
+		for hand := l04.Square(phase_index * l07.HANDSQ_TYPE_SIZE.ToSq()); hand < (phase_index+1)*l07.HANDSQ_TYPE_SIZE.ToSq(); hand += 1 {
 			if pPos.Hands[hand] > 0 {
-				hand_sq := hand + l07.HAND_ORIGIN.ToSq()
+				hand_sq := hand + l07.HANDSQ_ORIGIN.ToSq()
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
