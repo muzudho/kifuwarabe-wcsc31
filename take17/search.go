@@ -182,7 +182,9 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			pPosCopy = subCopyBoard(pNerve)
 		}
 
-		from, to, _ := move.Destructure()
+		from, _, _ := move.Destructure()
+		// from, to, _ := move.Destructure()
+
 		if App.IsDebug {
 
 			// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
