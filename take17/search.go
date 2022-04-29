@@ -179,9 +179,12 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		// App.Out.Debug("move=%s\n", move.ToCode())
 		from, _, _ := move.Destructure()
 
-		// デバッグに使うために、盤をコピーしておきます
-		pPosCopy := l15.NewPosition()
-		copyBoard(pNerve.PPosSys.PPosition[0], pPosCopy)
+		var pPosCopy *l15.Position
+		if App.IsDebug {
+			// デバッグに使うために、盤をコピーしておきます
+			pPosCopy = l15.NewPosition()
+			copyBoard(pNerve.PPosSys.PPosition[0], pPosCopy)
+		}
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
@@ -254,22 +257,24 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 
-		// 盤と、コピー盤を比較します
-		diffBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
-		// 異なる箇所を数えます
-		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
-		if errorNum != 0 {
-			if App.IsDebug {
-				// 違いのあった局面（＾～＾）
-				App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
-				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[0]))
-				App.Out.Debug(l08.SprintLocation(pPosCopy))
-			}
+		if App.IsDebug {
+			// 盤と、コピー盤を比較します
+			diffBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
+			// 異なる箇所を数えます
+			errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
+			if errorNum != 0 {
+				if App.IsDebug {
+					// 違いのあった局面（＾～＾）
+					App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
+					// あの駒、どこにいんの（＾～＾）？
+					App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[0]))
+					App.Out.Debug(l08.SprintLocation(pPosCopy))
+				}
 
-			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
-			// younger_sibling_move=%s
-			//, ToMoveCode(younger_sibling_move)
+				panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
+				// younger_sibling_move=%s
+				//, ToMoveCode(younger_sibling_move)
+			}
 		}
 
 		// ベーター・カット
