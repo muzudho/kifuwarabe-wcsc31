@@ -5,6 +5,7 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // 先後のない駒種類
@@ -69,19 +70,19 @@ func What(piece string) PieceType {
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
 func WhatHand(hand l04.Square) PieceType {
 	switch hand {
-	case HAND_R1, HAND_R2:
+	case l07.HAND_R1.ToSq(), l07.HAND_R2.ToSq():
 		return PIECE_TYPE_R
-	case HAND_B1, HAND_B2:
+	case l07.HAND_B1.ToSq(), l07.HAND_B2.ToSq():
 		return PIECE_TYPE_B
-	case HAND_G1, HAND_G2:
+	case l07.HAND_G1.ToSq(), l07.HAND_G2.ToSq():
 		return PIECE_TYPE_G
-	case HAND_S1, HAND_S2:
+	case l07.HAND_S1.ToSq(), l07.HAND_S2.ToSq():
 		return PIECE_TYPE_S
-	case HAND_N1, HAND_N2:
+	case l07.HAND_N1.ToSq(), l07.HAND_N2.ToSq():
 		return PIECE_TYPE_N
-	case HAND_L1, HAND_L2:
+	case l07.HAND_L1.ToSq(), l07.HAND_L2.ToSq():
 		return PIECE_TYPE_L
-	case HAND_P1, HAND_P2:
+	case l07.HAND_P1.ToSq(), l07.HAND_P2.ToSq():
 		return PIECE_TYPE_P
 	default:
 		panic(fmt.Errorf("unknown hand=[%d]", hand))

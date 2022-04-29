@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // Move - 指し手
@@ -59,25 +60,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case HAND_R1, HAND_R2:
+	case l07.HAND_R1.ToSq(), l07.HAND_R2.ToSq():
 		str = append(str, 'R')
 		count = 1
-	case HAND_B1, HAND_B2:
+	case l07.HAND_B1.ToSq(), l07.HAND_B2.ToSq():
 		str = append(str, 'B')
 		count = 1
-	case HAND_G1, HAND_G2:
+	case l07.HAND_G1.ToSq(), l07.HAND_G2.ToSq():
 		str = append(str, 'G')
 		count = 1
-	case HAND_S1, HAND_S2:
+	case l07.HAND_S1.ToSq(), l07.HAND_S2.ToSq():
 		str = append(str, 'S')
 		count = 1
-	case HAND_N1, HAND_N2:
+	case l07.HAND_N1.ToSq(), l07.HAND_N2.ToSq():
 		str = append(str, 'N')
 		count = 1
-	case HAND_L1, HAND_L2:
+	case l07.HAND_L1.ToSq(), l07.HAND_L2.ToSq():
 		str = append(str, 'L')
 		count = 1
-	case HAND_P1, HAND_P2:
+	case l07.HAND_P1.ToSq(), l07.HAND_P2.ToSq():
 		str = append(str, 'P')
 		count = 1
 	default:
