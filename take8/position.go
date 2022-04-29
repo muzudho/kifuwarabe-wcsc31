@@ -12,9 +12,6 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-// 00～99
-const BOARD_SIZE = 100
-
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
@@ -37,16 +34,16 @@ func OnBoard(sq l03.Square) bool {
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]string
+	Board [l03.BOARD_SIZE]string
 	// 玉と長い利きの駒の場所。長い利きを消すのに使う
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]l03.Square
 	// 利きテーブル [0]先手 [1]後手
 	// マスへの利き数が入っています
-	ControlBoards [2][BOARD_SIZE]int8
+	ControlBoards [2][l03.BOARD_SIZE]int8
 	// マスへの利き数の差分が入っています。デバッグ目的で無駄に分けてるんだけどな（＾～＾）
 	// プレイヤー１つにつき、５レイヤーあるぜ（＾～＾）
-	ControlBoardsDiff [2][5][BOARD_SIZE]int8
+	ControlBoardsDiff [2][5][l03.BOARD_SIZE]int8
 
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
@@ -72,7 +69,7 @@ func NewPosition() *Position {
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPos *Position) resetToZero() {
 	// 筋、段のラベルだけ入れとくぜ（＾～＾）
-	pPos.Board = [BOARD_SIZE]string{
+	pPos.Board = [l03.BOARD_SIZE]string{
 		"", "a", "b", "c", "d", "e", "f", "g", "h", "i",
 		"1", "", "", "", "", "", "", "", "", "",
 		"2", "", "", "", "", "", "", "", "", "",
@@ -84,7 +81,7 @@ func (pPos *Position) resetToZero() {
 		"8", "", "", "", "", "", "", "", "", "",
 		"9", "", "", "", "", "", "", "", "", "",
 	}
-	pPos.ControlBoards = [2][BOARD_SIZE]int8{{
+	pPos.ControlBoards = [2][l03.BOARD_SIZE]int8{{
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -107,7 +104,7 @@ func (pPos *Position) resetToZero() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}}
-	pPos.ControlBoardsDiff = [2][5][BOARD_SIZE]int8{{
+	pPos.ControlBoardsDiff = [2][5][l03.BOARD_SIZE]int8{{
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -263,7 +260,7 @@ func (pPos *Position) resetToZero() {
 // setToStartpos - 初期局面にします。利きの計算はまだ行っていません。
 func (pPos *Position) setToStartpos() {
 	// 初期局面にします
-	pPos.Board = [BOARD_SIZE]string{
+	pPos.Board = [l03.BOARD_SIZE]string{
 		"", "a", "b", "c", "d", "e", "f", "g", "h", "i",
 		"1", "l", "", "p", "", "", "", "P", "", "L",
 		"2", "n", "b", "p", "", "", "", "P", "R", "N",

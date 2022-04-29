@@ -16,9 +16,6 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-// 00～99
-const BOARD_SIZE = 100
-
 // 盤レイヤー・インデックス型
 type PosLayerT int
 

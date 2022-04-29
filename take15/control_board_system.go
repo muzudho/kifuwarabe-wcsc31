@@ -122,7 +122,7 @@ func (pCtrlBrdSys *ControlBoardSystem) DiffControl(c1 ControlLayerT, c2 ControlL
 	cb3 := pCtrlBrdSys.PBoards[c3]
 	cb1 := pCtrlBrdSys.PBoards[c1]
 	cb2 := pCtrlBrdSys.PBoards[c2]
-	for from := l03.Square(11); from < BOARD_SIZE; from += 1 {
+	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
 			cb3.Board1[from] = cb1.Board1[from] - cb2.Board1[from]
@@ -138,7 +138,7 @@ func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
 	pCtrlBrdSys.PBoards[ph1_c1].Clear()
 	pCtrlBrdSys.PBoards[ph2_c1].Clear()
 
-	for from := l03.Square(11); from < BOARD_SIZE; from += 1 {
+	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
@@ -169,7 +169,7 @@ func (pCtrlBrdSys *ControlBoardSystem) MergeControlDiff(buildType BuildT) {
 		end2 = CONTROL_LAYER_DIFF2_END_RELEASE
 	}
 
-	for sq := l03.Square(11); sq < BOARD_SIZE; sq += 1 {
+	for sq := l03.Square(11); sq < l03.BOARD_SIZE; sq += 1 {
 		if l03.File(sq) != 0 && l03.Rank(sq) != 0 {
 			// c=0 を除く
 			for c1 := CONTROL_LAYER_DIFF1_START; c1 < end1; c1 += 1 {

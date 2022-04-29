@@ -13,14 +13,11 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-// 00～99
-const BOARD_SIZE = 100
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [BOARD_SIZE]string
+	Board [l03.BOARD_SIZE]string
 
 	// 玉と長い利きの駒の場所。長い利きを消すのに使う
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
@@ -28,7 +25,7 @@ type Position struct {
 
 	// 利きテーブル [0]先手 [1]後手
 	// マスへの利き数が入っています
-	ControlBoards [2][BOARD_SIZE]int8
+	ControlBoards [2][l03.BOARD_SIZE]int8
 
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
@@ -54,7 +51,7 @@ func NewPosition() *Position {
 // ResetToStartpos - 初期局面にします。
 func (pPos *Position) ResetToStartpos() {
 	// 初期局面にします
-	pPos.Board = [BOARD_SIZE]string{
+	pPos.Board = [l03.BOARD_SIZE]string{
 		"", "a", "b", "c", "d", "e", "f", "g", "h", "i",
 		"1", "l", "", "p", "", "", "", "P", "", "L",
 		"2", "n", "b", "p", "", "", "", "P", "R", "N",
@@ -66,7 +63,7 @@ func (pPos *Position) ResetToStartpos() {
 		"8", "n", "r", "p", "", "", "", "P", "B", "N",
 		"9", "l", "", "p", "", "", "", "P", "", "L",
 	}
-	pPos.ControlBoards = [2][BOARD_SIZE]int8{{
+	pPos.ControlBoards = [2][l03.BOARD_SIZE]int8{{
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 1, 2, 2, 1,
 		0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
@@ -430,7 +427,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 
 // Print - 利き数ボード出力（＾ｑ＾）
 func (pPos *Position) SprintControl(phase l06.Phase) string {
-	var board [BOARD_SIZE]int8
+	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	switch phase {
 	case l06.FIRST:

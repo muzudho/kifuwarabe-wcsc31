@@ -196,7 +196,7 @@ func (pPosSys *PositionSystem) createMovesText() string {
 // ----------
 // * `c` - 利き数ボードのレイヤー番号（＾～＾）
 func (pPosSys *PositionSystem) SprintControl(phase l06.Phase, c ControlLayerT) string {
-	var board [BOARD_SIZE]int8
+	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	var title string
 

@@ -107,7 +107,7 @@ func (pPos *Position) createMovesText() string {
 // ----------
 // * `flag` - 0: 利き数ボード, 1-5:利き数の差分ボードのレイヤー[0]～[4]
 func (pPos *Position) SprintControl(phase l06.Phase, flag int) string {
-	var board [BOARD_SIZE]int8
+	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	var title string
 

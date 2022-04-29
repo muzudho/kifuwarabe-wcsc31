@@ -2,7 +2,6 @@ package take16
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 )
 
 // ControlBoard - 利きボード
@@ -10,14 +9,14 @@ type ControlBoard struct {
 	// 表示用の名前
 	Title string
 	// マスへの利き数、または差分、さらには評価値が入っています
-	Board1 [l15.BOARD_SIZE]int16
+	Board1 [l03.BOARD_SIZE]int16
 }
 
 // NewControlBoard - 利きボード生成
 func NewControlBoard(title string) *ControlBoard {
 	c := new(ControlBoard)
 	c.Title = title
-	c.Board1 = [l15.BOARD_SIZE]int16{
+	c.Board1 = [l03.BOARD_SIZE]int16{
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

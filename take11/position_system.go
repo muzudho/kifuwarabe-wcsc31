@@ -14,9 +14,6 @@ import (
 // 電竜戦が一番長いだろ（＾～＾）
 const MOVES_SIZE = 512
 
-// 00～99
-const BOARD_SIZE = 100
-
 // 盤レイヤー・インデックス型
 type PosLayerT int
 
@@ -74,7 +71,7 @@ type PositionSystem struct {
 	// [10] テスト用
 	// [11] テスト用
 	// [12] テスト用(再計算)
-	ControlBoards [2][CONTROL_LAYER_ALL_SIZE][BOARD_SIZE]int8
+	ControlBoards [2][CONTROL_LAYER_ALL_SIZE][l03.BOARD_SIZE]int8
 
 	// 先手が1、後手が2（＾～＾）
 	phase l06.Phase
@@ -110,7 +107,7 @@ func (pPosSys *PositionSystem) GetPhase() l06.Phase {
 
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPosSys *PositionSystem) resetPosition() {
-	pPosSys.ControlBoards = [PHASE_ARRAY_SIZE][CONTROL_LAYER_ALL_SIZE][BOARD_SIZE]int8{{
+	pPosSys.ControlBoards = [PHASE_ARRAY_SIZE][CONTROL_LAYER_ALL_SIZE][l03.BOARD_SIZE]int8{{
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

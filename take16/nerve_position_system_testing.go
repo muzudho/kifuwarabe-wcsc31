@@ -29,7 +29,7 @@ func TestControl(pNerve *Nerve, pPos *l15.Position) (bool, string) {
 	sumCb1 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	copyCb2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCb2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
-	for sq := 0; sq < l15.BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < l03.BOARD_SIZE; sq += 1 {
 		copyCb1.Board1[sq] = sumCb1.Board1[sq]
 		copyCb2.Board1[sq] = sumCb2.Board1[sq]
 	}
@@ -68,7 +68,7 @@ func checkControl(pNerve *Nerve, move_seq int, move_total int, move l13.Move) bo
 	copyCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_COPY2]
 	sumCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	errorCB2 := pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_TEST_ERROR2]
-	for sq := 0; sq < l15.BOARD_SIZE; sq += 1 {
+	for sq := 0; sq < l03.BOARD_SIZE; sq += 1 {
 		diff1 := copyCB1.Board1[sq] - sumCB1.Board1[sq]
 		errorCB1.Board1[sq] = diff1
 		if diff1 != 0 {
@@ -93,7 +93,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	sumList := [2]int{0, 0}
 
 	cb1 := pNerve.PCtrlBrdSys.PBoards[ph1_c]
-	for from := l03.Square(11); from < l15.BOARD_SIZE; from += 1 {
+	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
 			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
@@ -102,7 +102,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	}
 
 	cb2 := pNerve.PCtrlBrdSys.PBoards[ph2_c]
-	for from := l03.Square(11); from < l15.BOARD_SIZE; from += 1 {
+	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
 			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))

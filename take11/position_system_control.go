@@ -143,7 +143,7 @@ func (pPosSys *PositionSystem) ClearControlLayer(c ControlLayerT) {
 
 // MergeControlDiff - 利きの差分を解消するぜ（＾～＾）
 func (pPosSys *PositionSystem) MergeControlDiff() {
-	for sq := l03.Square(11); sq < BOARD_SIZE; sq += 1 {
+	for sq := l03.Square(11); sq < l03.BOARD_SIZE; sq += 1 {
 		if l03.File(sq) != 0 && l03.Rank(sq) != 0 {
 			// c=0 を除く
 			for c := CONTROL_LAYER_DIFF_START; c < CONTROL_LAYER_DIFF_END; c += 1 {
@@ -159,7 +159,7 @@ func (pPosSys *PositionSystem) RecalculateControl(pPos *Position, c1 ControlLaye
 
 	pPosSys.ClearControlLayer(c1)
 
-	for from := l03.Square(11); from < BOARD_SIZE; from += 1 {
+	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
 			phase := Who(piece)
@@ -179,7 +179,7 @@ func (pPosSys *PositionSystem) DiffControl(c1 ControlLayerT, c2 ControlLayerT, c
 	pPosSys.ClearControlLayer(c3)
 
 	for phase := 0; phase < 2; phase += 1 {
-		for from := l03.Square(11); from < BOARD_SIZE; from += 1 {
+		for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 			if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
 				pPosSys.ControlBoards[phase][c3][from] = pPosSys.ControlBoards[phase][c1][from] - pPosSys.ControlBoards[phase][c2][from]

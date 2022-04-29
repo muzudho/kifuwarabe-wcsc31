@@ -18,7 +18,7 @@ func TestControl(pPos *Position) (bool, string) {
 
 	// 利きをコピー
 	for phase := 0; phase < 2; phase += 1 {
-		for sq := 0; sq < BOARD_SIZE; sq += 1 {
+		for sq := 0; sq < l03.BOARD_SIZE; sq += 1 {
 			pPos.ControlBoards[phase][CONTROL_LAYER_TEST_COPY][sq] = pPos.ControlBoards[phase][CONTROL_LAYER_SUM][sq]
 		}
 	}
@@ -52,7 +52,7 @@ func checkControl(pPos *Position, move_seq int, move_total int, move Move) bool 
 
 	// 誤差調べ
 	for phase := 0; phase < 2; phase += 1 {
-		for sq := 0; sq < BOARD_SIZE; sq += 1 {
+		for sq := 0; sq < l03.BOARD_SIZE; sq += 1 {
 			diff := pPos.ControlBoards[phase][CONTROL_LAYER_TEST_COPY][sq] - pPos.ControlBoards[phase][CONTROL_LAYER_SUM][sq]
 			pPos.ControlBoards[phase][CONTROL_LAYER_TEST_ERROR][sq] = diff
 			if diff != 0 {
@@ -70,7 +70,7 @@ func SumAbsControl(pPos *Position, layer1 int) [2]int {
 	sumList := [2]int{0, 0}
 
 	for phase := 0; phase < 2; phase += 1 {
-		for from := l03.Square(11); from < BOARD_SIZE; from += 1 {
+		for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 			if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
 				sumList[phase] += int(math.Abs(float64(pPos.ControlBoards[phase][layer1][from])))
