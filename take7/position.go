@@ -211,33 +211,33 @@ func (pPos *Position) ReadPosition(command string) {
 				var piece = command[i]
 				switch piece {
 				case 'R':
-					hand_index = l04.HAND_R1
+					hand_index = l04.HANDSQ_R1
 				case 'B':
-					hand_index = l04.HAND_B1
+					hand_index = l04.HANDSQ_B1
 				case 'G':
-					hand_index = l04.HAND_G1
+					hand_index = l04.HANDSQ_G1
 				case 'S':
-					hand_index = l04.HAND_S1
+					hand_index = l04.HANDSQ_S1
 				case 'N':
-					hand_index = l04.HAND_N1
+					hand_index = l04.HANDSQ_N1
 				case 'L':
-					hand_index = l04.HAND_L1
+					hand_index = l04.HANDSQ_L1
 				case 'P':
-					hand_index = l04.HAND_P1
+					hand_index = l04.HANDSQ_P1
 				case 'r':
-					hand_index = l04.HAND_R2
+					hand_index = l04.HANDSQ_R2
 				case 'b':
-					hand_index = l04.HAND_B2
+					hand_index = l04.HANDSQ_B2
 				case 'g':
-					hand_index = l04.HAND_G2
+					hand_index = l04.HANDSQ_G2
 				case 's':
-					hand_index = l04.HAND_S2
+					hand_index = l04.HANDSQ_S2
 				case 'n':
-					hand_index = l04.HAND_N2
+					hand_index = l04.HANDSQ_N2
 				case 'l':
-					hand_index = l04.HAND_L2
+					hand_index = l04.HANDSQ_L2
 				case 'p':
-					hand_index = l04.HAND_P2
+					hand_index = l04.HANDSQ_P2
 				case ' ':
 					i += 1
 					break HandLoop
@@ -333,7 +333,7 @@ func (pPos *Position) ReadPosition(command string) {
 // ParseMove
 func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 	var len = len(command)
-	var hand1 = l04.Square(0)
+	var handSq1 = l04.Square(0)
 
 	var from l04.Square
 	var to l04.Square
@@ -343,25 +343,25 @@ func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 	switch ch := command[*i]; ch {
 	case 'R':
 		*i += 1
-		hand1 = l04.HAND_R1
+		handSq1 = l04.HANDSQ_R1
 	case 'B':
 		*i += 1
-		hand1 = l04.HAND_B1
+		handSq1 = l04.HANDSQ_B1
 	case 'G':
 		*i += 1
-		hand1 = l04.HAND_G1
+		handSq1 = l04.HANDSQ_G1
 	case 'S':
 		*i += 1
-		hand1 = l04.HAND_S1
+		handSq1 = l04.HANDSQ_S1
 	case 'N':
 		*i += 1
-		hand1 = l04.HAND_N1
+		handSq1 = l04.HANDSQ_N1
 	case 'L':
 		*i += 1
-		hand1 = l04.HAND_L1
+		handSq1 = l04.HANDSQ_L1
 	case 'P':
 		*i += 1
-		hand1 = l04.HAND_P1
+		handSq1 = l04.HANDSQ_P1
 	default:
 		// Ignored
 	}
@@ -369,12 +369,12 @@ func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand1 != 0 {
+	if handSq1 != 0 {
 		switch phase {
 		case l06.FIRST:
-			from = hand1
+			from = handSq1
 		case l06.SECOND:
-			from = hand1 + HANDSQ_TYPE_SIZE.ToSq()
+			from = handSq1 + HANDSQ_TYPE_SIZE.ToSq()
 		default:
 			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
@@ -522,33 +522,33 @@ func (pPos *Position) DoMove(move l04.Move) {
 	hand := from
 	var piece string
 	switch from {
-	case l04.HAND_R1:
+	case l04.HANDSQ_R1:
 		piece = l03.PIECE_R1.ToCodeOfPc()
-	case l04.HAND_B1:
+	case l04.HANDSQ_B1:
 		piece = l03.PIECE_B1.ToCodeOfPc()
-	case l04.HAND_G1:
+	case l04.HANDSQ_G1:
 		piece = l03.PIECE_G1.ToCodeOfPc()
-	case l04.HAND_S1:
+	case l04.HANDSQ_S1:
 		piece = l03.PIECE_S1.ToCodeOfPc()
-	case l04.HAND_N1:
+	case l04.HANDSQ_N1:
 		piece = l03.PIECE_N1.ToCodeOfPc()
-	case l04.HAND_L1:
+	case l04.HANDSQ_L1:
 		piece = l03.PIECE_L1.ToCodeOfPc()
-	case l04.HAND_P1:
+	case l04.HANDSQ_P1:
 		piece = l03.PIECE_P1.ToCodeOfPc()
-	case l04.HAND_R2:
+	case l04.HANDSQ_R2:
 		piece = l03.PIECE_R2.ToCodeOfPc()
-	case l04.HAND_B2:
+	case l04.HANDSQ_B2:
 		piece = l03.PIECE_B2.ToCodeOfPc()
-	case l04.HAND_G2:
+	case l04.HANDSQ_G2:
 		piece = l03.PIECE_G2.ToCodeOfPc()
-	case l04.HAND_S2:
+	case l04.HANDSQ_S2:
 		piece = l03.PIECE_S2.ToCodeOfPc()
-	case l04.HAND_N2:
+	case l04.HANDSQ_N2:
 		piece = l03.PIECE_N2.ToCodeOfPc()
-	case l04.HAND_L2:
+	case l04.HANDSQ_L2:
 		piece = l03.PIECE_L2.ToCodeOfPc()
-	case l04.HAND_P2:
+	case l04.HANDSQ_P2:
 		hand = from
 		piece = l03.PIECE_P2.ToCodeOfPc()
 	default:
@@ -591,35 +591,35 @@ func (pPos *Position) DoMove(move l04.Move) {
 		case l03.PIECE_K1.ToCodeOfPc(): // Second player win
 			// Lost l06.FIRST king
 		case l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc():
-			hand = l04.HAND_R2
+			hand = l04.HANDSQ_R2
 		case l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc():
-			hand = l04.HAND_B2
+			hand = l04.HANDSQ_B2
 		case l03.PIECE_G1.ToCodeOfPc():
-			hand = l04.HAND_G2
+			hand = l04.HANDSQ_G2
 		case l03.PIECE_S1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc():
-			hand = l04.HAND_S2
+			hand = l04.HANDSQ_S2
 		case l03.PIECE_N1.ToCodeOfPc(), l03.PIECE_PN1.ToCodeOfPc():
-			hand = l04.HAND_N2
+			hand = l04.HANDSQ_N2
 		case l03.PIECE_L1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc():
-			hand = l04.HAND_L2
+			hand = l04.HANDSQ_L2
 		case l03.PIECE_P1.ToCodeOfPc(), l03.PIECE_PP1.ToCodeOfPc():
-			hand = l04.HAND_P2
+			hand = l04.HANDSQ_P2
 		case l03.PIECE_K2.ToCodeOfPc(): // l06.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
-			hand = l04.HAND_R1
+			hand = l04.HANDSQ_R1
 		case l03.PIECE_B2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc():
-			hand = l04.HAND_B1
+			hand = l04.HANDSQ_B1
 		case l03.PIECE_G2.ToCodeOfPc():
-			hand = l04.HAND_G1
+			hand = l04.HANDSQ_G1
 		case l03.PIECE_S2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc():
-			hand = l04.HAND_S1
+			hand = l04.HANDSQ_S1
 		case l03.PIECE_N2.ToCodeOfPc(), l03.PIECE_PN2.ToCodeOfPc():
-			hand = l04.HAND_N1
+			hand = l04.HANDSQ_N1
 		case l03.PIECE_L2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc():
-			hand = l04.HAND_L1
+			hand = l04.HANDSQ_L1
 		case l03.PIECE_P2.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc():
-			hand = l04.HAND_P1
+			hand = l04.HANDSQ_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
 		}
@@ -682,7 +682,7 @@ func (pPos *Position) UndoMove() {
 
 	// 打かどうかで分けます
 	switch from {
-	case l04.HAND_R1, l04.HAND_B1, l04.HAND_G1, l04.HAND_S1, l04.HAND_N1, l04.HAND_L1, l04.HAND_P1, l04.HAND_R2, l04.HAND_B2, l04.HAND_G2, l04.HAND_S2, l04.HAND_N2, l04.HAND_L2, l04.HAND_P2:
+	case l04.HANDSQ_R1, l04.HANDSQ_B1, l04.HANDSQ_G1, l04.HANDSQ_S1, l04.HANDSQ_N1, l04.HANDSQ_L1, l04.HANDSQ_P1, l04.HANDSQ_R2, l04.HANDSQ_B2, l04.HANDSQ_G2, l04.HANDSQ_S2, l04.HANDSQ_N2, l04.HANDSQ_L2, l04.HANDSQ_P2:
 		// 打なら
 		hand := from
 		// 盤上から駒を除去します
@@ -707,35 +707,35 @@ func (pPos *Position) UndoMove() {
 		case l03.PIECE_K1.ToCodeOfPc(): // Second player win
 			// Lost l06.FIRST king
 		case l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc():
-			cap = l04.HAND_R2
+			cap = l04.HANDSQ_R2
 		case l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc():
-			cap = l04.HAND_B2
+			cap = l04.HANDSQ_B2
 		case l03.PIECE_G1.ToCodeOfPc():
-			cap = l04.HAND_G2
+			cap = l04.HANDSQ_G2
 		case l03.PIECE_S1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc():
-			cap = l04.HAND_S2
+			cap = l04.HANDSQ_S2
 		case l03.PIECE_N1.ToCodeOfPc(), l03.PIECE_PN1.ToCodeOfPc():
-			cap = l04.HAND_N2
+			cap = l04.HANDSQ_N2
 		case l03.PIECE_L1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc():
-			cap = l04.HAND_L2
+			cap = l04.HANDSQ_L2
 		case l03.PIECE_P1.ToCodeOfPc(), l03.PIECE_PP1.ToCodeOfPc():
-			cap = l04.HAND_P2
+			cap = l04.HANDSQ_P2
 		case l03.PIECE_K2.ToCodeOfPc(): // l06.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
-			cap = l04.HAND_R1
+			cap = l04.HANDSQ_R1
 		case l03.PIECE_B2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc():
-			cap = l04.HAND_B1
+			cap = l04.HANDSQ_B1
 		case l03.PIECE_G2.ToCodeOfPc():
-			cap = l04.HAND_G1
+			cap = l04.HANDSQ_G1
 		case l03.PIECE_S2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc():
-			cap = l04.HAND_S1
+			cap = l04.HANDSQ_S1
 		case l03.PIECE_N2.ToCodeOfPc(), l03.PIECE_PN2.ToCodeOfPc():
-			cap = l04.HAND_N1
+			cap = l04.HANDSQ_N1
 		case l03.PIECE_L2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc():
-			cap = l04.HAND_L1
+			cap = l04.HANDSQ_L1
 		case l03.PIECE_P2.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc():
-			cap = l04.HAND_P1
+			cap = l04.HANDSQ_P1
 		default:
 			fmt.Printf("unknown captured=[%s]", captured)
 		}

@@ -48,25 +48,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case HAND_R1, HAND_R2:
+	case HANDSQ_R1, HANDSQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case HAND_B1, HAND_B2:
+	case HANDSQ_B1, HANDSQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case HAND_G1, HAND_G2:
+	case HANDSQ_G1, HANDSQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case HAND_S1, HAND_S2:
+	case HANDSQ_S1, HANDSQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case HAND_N1, HAND_N2:
+	case HANDSQ_N1, HANDSQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case HAND_L1, HAND_L2:
+	case HANDSQ_L1, HANDSQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case HAND_P1, HAND_P2:
+	case HANDSQ_P1, HANDSQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
