@@ -9,7 +9,6 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -130,10 +129,10 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pBrain.PPosSys.phase = l06.FIRST
+			pBrain.PPosSys.phase = l03.FIRST
 			i += 1
 		case 'w':
-			pBrain.PPosSys.phase = l06.SECOND
+			pBrain.PPosSys.phase = l03.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -320,7 +319,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 				// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 				piece := pPos.Board[sq]
 				ValidateThereArePieceIn(pPos, sq)
-				phase := Who(piece)
+				phase := l03.Who(piece)
 				// fmt.Printf("Debug: ph=%d\n", ph)
 				var pCB7 *ControlBoard
 				if pBrain.PPosSys.BuildType == BUILD_DEV {
@@ -352,9 +351,9 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 }
 
 // 長い利きの駒から王手を受けていないかチェック（＾～＾）
-func (pBrain *Brain) IsCheckmate(phase l06.Phase) bool {
+func (pBrain *Brain) IsCheckmate(phase l03.Phase) bool {
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		// 先手玉への王手を調べます
 		// 先手玉の位置を調べます
 		var k1 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K1]
@@ -374,7 +373,7 @@ func (pBrain *Brain) IsCheckmate(phase l06.Phase) bool {
 		if 0 < l2 {
 			return true
 		}
-	case l06.SECOND:
+	case l03.SECOND:
 		// 後手玉の王手を調べます
 		// 後手玉の位置を調べます
 		var k2 = pBrain.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
@@ -408,8 +407,8 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
 	// 動かしている駒と、取った駒だぜ（＾～＾）
-	mov_piece_type := l11.PIECE_TYPE_EMPTY
-	cap_piece_type := l11.PIECE_TYPE_EMPTY
+	mov_piece_type := l03.PIECE_TYPE_EMPTY
+	cap_piece_type := l03.PIECE_TYPE_EMPTY
 
 	// 移動元マス、移動先マス、成りの有無
 	from, to, pro := move.Destructure()
@@ -486,7 +485,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
-		mov_piece_type = l11.What(piece)
+		mov_piece_type = l03.What(piece)
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		ValidateThereArePieceIn(pPos, to)
@@ -507,16 +506,16 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
 		if captured != l03.PIECE_EMPTY {
-			pieceType := l11.What(captured)
+			pieceType := l03.What(captured)
 			switch pieceType {
-			case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR, l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB, l11.PIECE_TYPE_L:
+			case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR, l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB, l03.PIECE_TYPE_L:
 				// Ignored: 長い利きの駒は 既に除外しているので無視します
 			default:
 				piece := pPos.Board[to]
 
 				// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 				ValidateThereArePieceIn(pPos, to)
-				phase := Who(piece)
+				phase := l03.Who(piece)
 				var pCB *ControlBoard
 				if pBrain.PPosSys.BuildType == BUILD_DEV {
 					pCB = ControllBoardFromPhase(phase,
@@ -529,7 +528,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 				}
 				pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
 			}
-			cap_piece_type = l11.What(captured)
+			cap_piece_type = l03.What(captured)
 			cap_src_sq = to
 
 			// 駒得評価値。駒取って得したあと、相手の手番になるからひっくり返せだぜ（＾～＾）
@@ -540,7 +539,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece := pPos.Board[from]
 		ValidateThereArePieceIn(pPos, from)
-		phase := Who(piece)
+		phase := l03.Who(piece)
 		var pCB1 *ControlBoard
 		if pBrain.PPosSys.BuildType == BUILD_DEV {
 			pCB1 = ControllBoardFromPhase(phase,
@@ -561,14 +560,14 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 		} else {
 			pPos.Board[to] = pPos.Board[from]
 		}
-		mov_piece_type = l11.What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
 		pPos.Board[from] = l03.PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[to]
 		ValidateThereArePieceIn(pPos, to)
-		phase = Who(piece)
+		phase = l03.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB2 *ControlBoard
 		if pBrain.PPosSys.BuildType == BUILD_DEV {
@@ -600,7 +599,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 			cap_dst_sq = l03.SQ_L2
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_dst_sq = l03.SQ_P2
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			cap_dst_sq = l03.SQ_K1
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_dst_sq = l03.SQ_R1
@@ -635,17 +634,17 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 	pBrain.PPosSys.FlipPhase()
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
-	piece_type_list := []l11.PieceType{mov_piece_type, cap_piece_type}
+	piece_type_list := []l03.PieceType{mov_piece_type, cap_piece_type}
 	src_sq_list := []l03.Square{from, cap_src_sq}
 	dst_sq_list := []l03.Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
-		case l11.PIECE_TYPE_K:
+		case l03.PIECE_TYPE_K:
 			if j == 0 {
 				switch before_move_phase {
-				case l06.FIRST:
+				case l03.FIRST:
 					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
-				case l06.SECOND:
+				case l03.SECOND:
 					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
@@ -653,16 +652,16 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 			} else {
 				// 取った時
 				switch before_move_phase {
-				case l06.FIRST:
+				case l03.FIRST:
 					// 相手玉
 					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
-				case l06.SECOND:
+				case l03.SECOND:
 					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			}
-		case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 			for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
@@ -670,7 +669,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 					break
 				}
 			}
-		case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+		case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 			for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
@@ -678,7 +677,7 @@ func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
 					break
 				}
 			}
-		case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
+		case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 			for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
@@ -714,7 +713,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
 	// 動かしている駒と、取った駒だぜ（＾～＾）
-	mov_piece_type := l11.PIECE_TYPE_EMPTY
+	mov_piece_type := l03.PIECE_TYPE_EMPTY
 
 	// 先に 手目 を１つ戻すぜ（＾～＾）UndoMoveでフェーズもひっくり返すぜ（＾～＾）
 	pBrain.PPosSys.OffsetMovesIndex -= 1
@@ -748,12 +747,12 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		// 打なら
 		hand := from
 		// 行き先から駒を除去します
-		mov_piece_type = l11.What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece := pPos.Board[to]
 		ValidateThereArePieceIn(pPos, to)
-		phase := Who(piece)
+		phase := l03.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB3 *ControlBoard
 		if pBrain.PPosSys.BuildType == BUILD_DEV {
@@ -774,11 +773,11 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		// 打でないなら
 
 		// 行き先に進んでいた自駒の利きの除去
-		mov_piece_type = l11.What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 
 		piece := pPos.Board[to]
 		ValidateThereArePieceIn(pPos, to)
-		phase := Who(piece)
+		phase := l03.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB4 *ControlBoard
 		if pBrain.PPosSys.BuildType == BUILD_DEV {
@@ -805,7 +804,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[from]
 		ValidateThereArePieceIn(pPos, from)
-		phase = Who(piece)
+		phase = l03.Who(piece)
 		// fmt.Printf("Debug: ph=%d\n", ph)
 		var pCB5 *ControlBoard
 		if pBrain.PPosSys.BuildType == BUILD_DEV {
@@ -823,17 +822,17 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	switch mov_piece_type {
-	case l11.PIECE_TYPE_K:
+	case l03.PIECE_TYPE_K:
 		// 玉を動かした
 		switch pBrain.PPosSys.phase { // next_phase
-		case l06.FIRST:
+		case l03.FIRST:
 			pPos.PieceLocations[l11.PCLOC_K1] = from
-		case l06.SECOND:
+		case l03.SECOND:
 			pPos.PieceLocations[l11.PCLOC_K2] = from
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
-	case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
@@ -841,7 +840,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 				break
 			}
 		}
-	case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
@@ -849,7 +848,7 @@ func (pBrain *Brain) UndoMove(pPos *Position) {
 				break
 			}
 		}
-	case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
+	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
@@ -885,7 +884,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 	// App.Log.Trace(pBrain.PPosSys.Sprint())
 
 	// 取った駒だぜ（＾～＾）
-	cap_piece_type := l11.PIECE_TYPE_EMPTY
+	cap_piece_type := l03.PIECE_TYPE_EMPTY
 
 	// 手目もフェーズもすでに１つ戻っているとするぜ（＾～＾）
 	move := pBrain.PPosSys.Moves[pBrain.PPosSys.OffsetMovesIndex]
@@ -951,7 +950,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			hand_sq = l03.SQ_L2
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			hand_sq = l03.SQ_P2
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			hand_sq = l03.SQ_K1
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			hand_sq = l03.SQ_R1
@@ -977,7 +976,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 			pPos.Hands1[hand_sq-l03.SQ_HAND_START] -= 1
 
 			// 取っていた駒を行き先に戻します
-			cap_piece_type = l11.What(captured)
+			cap_piece_type = l03.What(captured)
 			pPos.Board[to] = captured
 
 			ValidateThereArePieceIn(pPos, to)
@@ -1000,19 +999,19 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
 	switch cap_piece_type {
-	case l11.PIECE_TYPE_K:
+	case l03.PIECE_TYPE_K:
 		// 玉を取っていた
 		switch pBrain.PPosSys.phase { // next_phase
-		case l06.FIRST:
+		case l03.FIRST:
 			// 後手の玉
 			pPos.PieceLocations[l11.PCLOC_K2] = to
-		case l06.SECOND:
+		case l03.SECOND:
 			// 先手の玉
 			pPos.PieceLocations[l11.PCLOC_K1] = to
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pBrain.PPosSys.phase=%d", pBrain.PPosSys.phase))
 		}
-	case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
@@ -1020,7 +1019,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 				break
 			}
 		}
-	case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
@@ -1028,7 +1027,7 @@ func (pBrain *Brain) undoCapture(pPos *Position) {
 				break
 			}
 		}
-	case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
+	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {

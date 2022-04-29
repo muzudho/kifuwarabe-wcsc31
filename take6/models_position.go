@@ -16,7 +16,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase Phase
+	Phase l03.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -54,7 +54,7 @@ func (pos *Position) ResetToStartpos() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}
 	// 先手の局面
-	pos.Phase = FIRST
+	pos.Phase = l03.FIRST
 	// 何手目か
 	pos.StartMovesNum = 1
 	pos.OffsetMovesIndex = 0
@@ -126,10 +126,10 @@ func (pos *Position) ReadPosition(command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pos.Phase = FIRST
+			pos.Phase = l03.FIRST
 			i += 1
 		case 'w':
-			pos.Phase = SECOND
+			pos.Phase = l03.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -260,7 +260,7 @@ func (pos *Position) ReadPosition(command string) {
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase Phase) (l04.Move, error) {
+func ParseMove(command string, i *int, phase l03.Phase) (l04.Move, error) {
 	var len = len(command)
 	var handSq = l03.HandSq(0)
 
@@ -300,9 +300,9 @@ func ParseMove(command string, i *int, phase Phase) (l04.Move, error) {
 
 	if handSq != 0 {
 		switch phase {
-		case FIRST:
+		case l03.FIRST:
 			from = handSq.ToSq()
-		case SECOND:
+		case l03.SECOND:
 			from = handSq.ToSq() + l03.HANDSQ_TYPE_SIZE_SQ
 		default:
 			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)

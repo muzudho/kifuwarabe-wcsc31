@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -98,7 +98,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		captured := pPosSys.CapturedList[pPosSys.OffsetMovesIndex-1]
 
 		// 玉を取るのは最善手
-		if l11.What(captured) == l11.PIECE_TYPE_K {
+		if l03.What(captured) == l03.PIECE_TYPE_K {
 			bestMove = move
 			bestVal = pPosSys.PPosition[POS_LAYER_MAIN].MaterialValue
 			cutting = CuttingKingCapture

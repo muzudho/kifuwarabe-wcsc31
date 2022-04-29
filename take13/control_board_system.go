@@ -5,7 +5,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // 利きテーブル・インデックス型
@@ -143,7 +142,7 @@ func (pCtrlBrdSys *ControlBoardSystem) RecalculateControl(
 	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			moveEndList := GenMoveEnd(pPos, from)
 
 			pCB := ControllBoardFromPhase(phase, pCtrlBrdSys.PBoards[ph1_c1], pCtrlBrdSys.PBoards[ph2_c1])
@@ -214,11 +213,11 @@ func AddControlLance(pPos *Position,
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
 			from != excludeFrom && // 除外マスは除外
-			l11.PIECE_TYPE_PL != l11.What(pPos.Board[from]) { // 杏は除外
+			l03.PIECE_TYPE_PL != l03.What(pPos.Board[from]) { // 杏は除外
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -236,7 +235,7 @@ func AddControlBishop(pPos *Position,
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -254,7 +253,7 @@ func AddControlRook(pPos *Position,
 
 			piece := pPos.Board[from]
 			ValidateThereArePieceIn(pPos, from)
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			pCB := ControllBoardFromPhase(phase, pPh1_CB, pPh2_CB)
 			pCB.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, from)), from, sign)
 		}
@@ -262,13 +261,13 @@ func AddControlRook(pPos *Position,
 }
 
 func ControllBoardFromPhase(
-	phase l06.Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
+	phase l03.Phase, pPh1_CB *ControlBoard, pPh2_CB *ControlBoard) *ControlBoard {
 
 	// fmt.Printf("Debug: phase=%d\n", phase)
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		return pPh1_CB
-	case l06.SECOND:
+	case l03.SECOND:
 		return pPh2_CB
 	default:
 		panic(fmt.Errorf("unknown phase=%d", phase))

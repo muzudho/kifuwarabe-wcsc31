@@ -13,7 +13,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase int
+	Phase Phase
 	// 何手目か（＾～＾）
 	MovesNum int
 	// 指し手のリスト（＾～＾）
@@ -246,7 +246,7 @@ MovesNumLoop:
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase int) (Move, error) {
+func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
 	var pMove = NewMove(0, 0, false)
 

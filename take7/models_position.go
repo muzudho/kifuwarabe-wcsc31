@@ -7,7 +7,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // Position - 局面
@@ -26,7 +25,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase l06.Phase
+	Phase l03.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -102,7 +101,7 @@ func (pPos *Position) ResetToStartpos() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}
 	// 先手の局面
-	pPos.Phase = l06.FIRST
+	pPos.Phase = l03.FIRST
 	// 何手目か
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
@@ -174,10 +173,10 @@ func (pPos *Position) ReadPosition(command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pPos.Phase = l06.FIRST
+			pPos.Phase = l03.FIRST
 			i += 1
 		case 'w':
-			pPos.Phase = l06.SECOND
+			pPos.Phase = l03.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -308,7 +307,7 @@ func (pPos *Position) ReadPosition(command string) {
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
+func ParseMove(command string, i *int, phase l03.Phase) (l04.Move, error) {
 	var len = len(command)
 	var handSq1 = l03.HandSq(0)
 
@@ -348,9 +347,9 @@ func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 
 	if handSq1 != 0 {
 		switch phase {
-		case l06.FIRST:
+		case l03.FIRST:
 			from = handSq1.ToSq()
-		case l06.SECOND:
+		case l03.SECOND:
 			from = handSq1.ToSq() + l03.HANDSQ_TYPE_SIZE_SQ
 		default:
 			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
@@ -422,14 +421,14 @@ func ParseMove(command string, i *int, phase l06.Phase) (l04.Move, error) {
 }
 
 // Print - 利き数ボード出力（＾ｑ＾）
-func (pPos *Position) SprintControl(phase l06.Phase) string {
+func (pPos *Position) SprintControl(phase l03.Phase) string {
 	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
 		board = pPos.ControlBoards[0]
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 		board = pPos.ControlBoards[1]
 	default:
@@ -493,7 +492,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 	from, to, _ := move.Destructure()
 
 	// [0]movingPieceType [1]capturedPieceType
-	moving_piece_types := []PieceType{PIECE_TYPE_EMPTY, PIECE_TYPE_EMPTY}
+	moving_piece_types := []l03.PieceType{l03.PIECE_TYPE_EMPTY, l03.PIECE_TYPE_EMPTY}
 
 	// まず、打かどうかで処理を分けます
 	hand := l03.FromSqToHandSq(from)
@@ -544,7 +543,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
 		pPos.AddControl(to, 1)
-		moving_piece_types[0] = What(piece)
+		moving_piece_types[0] = l03.What(piece)
 	} else {
 		// 打でないなら
 
@@ -552,7 +551,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 		captured := pPos.Board[to]
 		if captured != l03.PIECE_EMPTY {
 			pPos.AddControl(to, -1)
-			moving_piece_types[1] = What(captured)
+			moving_piece_types[1] = l03.What(captured)
 		}
 
 		// 元位置の駒を除去
@@ -560,7 +559,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 
 		// 行き先の駒の配置
 		pPos.Board[to] = pPos.Board[from]
-		moving_piece_types[0] = What(pPos.Board[to])
+		moving_piece_types[0] = l03.What(pPos.Board[to])
 		pPos.Board[from] = l03.PIECE_EMPTY
 		pPos.AddControl(to, 1)
 
@@ -568,7 +567,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 		switch captured {
 		case l03.PIECE_EMPTY: // Ignored
 		case l03.PIECE_K1: // Second player win
-			// Lost l06.FIRST king
+			// Lost l03.FIRST king
 		case l03.PIECE_R1, l03.PIECE_PR1:
 			hand = l03.HANDSQ_R2
 		case l03.PIECE_B1, l03.PIECE_PB1:
@@ -583,7 +582,7 @@ func (pPos *Position) DoMove(move l04.Move) {
 			hand = l03.HANDSQ_L2
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			hand = l03.HANDSQ_P2
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			hand = l03.HANDSQ_R1
@@ -615,19 +614,19 @@ func (pPos *Position) DoMove(move l04.Move) {
 	// 長い利きの駒が動いたときは、位置情報更新
 	for _, moving_piece_type := range moving_piece_types {
 		switch moving_piece_type {
-		case PIECE_TYPE_R:
+		case l03.PIECE_TYPE_R:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == from {
 					pPos.PieceLocations[i] = to
 				}
 			}
-		case PIECE_TYPE_B:
+		case l03.PIECE_TYPE_B:
 			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == from {
 					pPos.PieceLocations[i] = to
 				}
 			}
-		case PIECE_TYPE_L:
+		case l03.PIECE_TYPE_L:
 			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == from {
 					pPos.PieceLocations[i] = to
@@ -647,7 +646,7 @@ func (pPos *Position) UndoMove() {
 	}
 
 	// [0]movingPieceType [1]capturedPieceType
-	moving_piece_types := []PieceType{PIECE_TYPE_EMPTY, PIECE_TYPE_EMPTY}
+	moving_piece_types := []l03.PieceType{l03.PIECE_TYPE_EMPTY, l03.PIECE_TYPE_EMPTY}
 
 	// 作業前に、長い利きの駒の利きを -1 します
 	pPos.AddControlAllSlidingPiece(-1)
@@ -665,7 +664,7 @@ func (pPos *Position) UndoMove() {
 		// 打なら
 		hand := l03.FromSqToHandSq(from)
 		// 盤上から駒を除去します
-		moving_piece_types[0] = What(pPos.Board[to])
+		moving_piece_types[0] = l03.What(pPos.Board[to])
 		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
@@ -674,7 +673,7 @@ func (pPos *Position) UndoMove() {
 		// 打でないなら
 
 		// 行き先の駒の除去
-		moving_piece_types[0] = What(pPos.Board[to])
+		moving_piece_types[0] = l03.What(pPos.Board[to])
 		pPos.AddControl(to, -1)
 		// 移動元への駒の配置
 		pPos.Board[from] = pPos.Board[to]
@@ -684,7 +683,7 @@ func (pPos *Position) UndoMove() {
 		switch captured {
 		case l03.PIECE_EMPTY: // Ignored
 		case l03.PIECE_K1: // Second player win
-			// Lost l06.FIRST king
+			// Lost l03.FIRST king
 		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap = l03.HANDSQ_R2
 		case l03.PIECE_B1, l03.PIECE_PB1:
@@ -699,7 +698,7 @@ func (pPos *Position) UndoMove() {
 			cap = l03.HANDSQ_L2
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap = l03.HANDSQ_P2
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap = l03.HANDSQ_R1
@@ -723,7 +722,7 @@ func (pPos *Position) UndoMove() {
 			pPos.Hands[cap-l03.HANDSQ_ORIGIN] -= 1
 
 			// 取った駒を行き先に戻します
-			moving_piece_types[1] = What(captured)
+			moving_piece_types[1] = l03.What(captured)
 			pPos.Board[to] = captured
 			pPos.AddControl(from, 1)
 			pPos.AddControl(to, 1)
@@ -733,19 +732,19 @@ func (pPos *Position) UndoMove() {
 	// 長い利きの駒が動いたときは、位置情報更新
 	for _, moving_piece_type := range moving_piece_types {
 		switch moving_piece_type {
-		case PIECE_TYPE_R:
+		case l03.PIECE_TYPE_R:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == from {
 					pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = to
 				}
 			}
-		case PIECE_TYPE_B:
+		case l03.PIECE_TYPE_B:
 			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == from {
 					pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = to
 				}
 			}
-		case PIECE_TYPE_L:
+		case l03.PIECE_TYPE_L:
 			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == from {
 					pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = to
@@ -783,7 +782,7 @@ func (pPos *Position) AddControl(from l03.Square, sign int8) {
 		panic(fmt.Errorf("LogicalError: Empty square has no control"))
 	}
 
-	ph := int(Who(piece)) - 1
+	ph := int(l03.Who(piece)) - 1
 
 	moveEndList := GenMoveEnd(pPos, from)
 
@@ -796,14 +795,14 @@ func (pPos *Position) AddControl(from l03.Square, sign int8) {
 // Homo - 手番と移動元の駒を持つプレイヤーが等しければ真。移動先が空なら偽
 func (pPos *Position) Homo(to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return pPos.Phase == Who(pPos.Board[to])
+	return pPos.Phase == l03.Who(pPos.Board[to])
 }
 
 // Hetero - 手番と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
 func (pPos *Position) Hetero(to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return pPos.Phase != Who(pPos.Board[to])
+	return pPos.Phase != l03.Who(pPos.Board[to])
 }
 
 func (pPos *Position) IsEmptySq(sq l03.Square) bool {

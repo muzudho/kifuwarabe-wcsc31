@@ -104,7 +104,7 @@ func (pPos *Position) clearBoard() {
 // 持ち駒は指定してはいけません。
 func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) == Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) == l03.Who(pPos.Board[to])
 }
 
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
@@ -112,7 +112,7 @@ func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
 func (pPos *Position) Hetero(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) != Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) != l03.Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽

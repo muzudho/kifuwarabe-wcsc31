@@ -1,8 +1,8 @@
 package take16
 
 import (
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // 盤レイヤー・インデックス型
@@ -20,7 +20,7 @@ const (
 var oneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // FlipPhase - 先後を反転します
-func FlipPhase(phase l06.Phase) l06.Phase {
+func FlipPhase(phase l03.Phase) l03.Phase {
 	return phase%2 + 1
 }
 
@@ -33,7 +33,7 @@ type PositionSystem struct {
 	PPosition [POS_LAYER_SIZE]*l15.Position
 
 	// 先手が1、後手が2（＾～＾）
-	phase l06.Phase
+	phase l03.Phase
 }
 
 func NewPositionSystem() *PositionSystem {
@@ -46,7 +46,7 @@ func NewPositionSystem() *PositionSystem {
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPosSys *PositionSystem) ResetPosition() {
 	// 先手の局面
-	pPosSys.phase = l06.FIRST
+	pPosSys.phase = l03.FIRST
 }
 
 // FlipPhase - フェーズをひっくり返すぜ（＾～＾）
@@ -55,6 +55,6 @@ func (pPosSys *PositionSystem) FlipPhase() {
 }
 
 // GetPhase - フェーズ
-func (pPosSys *PositionSystem) GetPhase() l06.Phase {
+func (pPosSys *PositionSystem) GetPhase() l03.Phase {
 	return pPosSys.phase
 }

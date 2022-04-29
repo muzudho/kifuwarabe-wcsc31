@@ -5,7 +5,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // 利きテーブル・インデックス型
@@ -137,14 +136,14 @@ func (pControlBoardSys *ControlBoardSystem) RecalculateControl(
 	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			sq_list := GenMoveEnd(pPos, from)
 
 			var pCB *ControlBoard
 			switch phase {
-			case l06.FIRST:
+			case l03.FIRST:
 				pCB = pControlBoardSys.Boards[ph1_c1]
-			case l06.SECOND:
+			case l03.SECOND:
 				pCB = pControlBoardSys.Boards[ph2_c1]
 			default:
 				panic(fmt.Errorf("unknown phase=%d", phase))
@@ -199,16 +198,16 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
-	phase := Who(piece)
+	phase := l03.Who(piece)
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
 	sq_list := GenMoveEnd(pPos, from)
 
 	var pCB *ControlBoard
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		pCB = pControlBoardSys.Boards[ph1_c]
-	case l06.SECOND:
+	case l03.SECOND:
 		pCB = pControlBoardSys.Boards[ph2_c]
 	default:
 		panic(fmt.Errorf("unknown phase=%d", phase))
@@ -229,7 +228,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlLance(pPos *Position,
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
 			from != excludeFrom && // 除外マスは除外
-			l11.PIECE_TYPE_PL != l11.What(pPos.Board[from]) { // 杏は除外
+			l03.PIECE_TYPE_PL != l03.What(pPos.Board[from]) { // 杏は除外
 			pControlBoardSys.AddControlDiff(pPos, ph1_c, ph2_c, from, sign)
 		}
 	}

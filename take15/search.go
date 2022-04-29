@@ -3,7 +3,7 @@ package take15
 import (
 	"math/rand"
 
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
@@ -115,7 +115,7 @@ func search2(pBrain *Brain, curDepth int) (l13.Move, Value) { //, search_type Se
 		if pBrain.IsCheckmate(FlipPhase(pBrain.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
-		} else if l11.What(captured) == l11.PIECE_TYPE_K {
+		} else if l03.What(captured) == l03.PIECE_TYPE_K {
 			// 玉を取るのは最善手
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)

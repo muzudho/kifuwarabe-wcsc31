@@ -5,8 +5,8 @@ import (
 	"math"
 	"math/rand"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -99,7 +99,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		materialVal := EvalMaterial(captured)
 
 		// 玉を取るのは最善手
-		if l11.What(captured) == l11.PIECE_TYPE_K {
+		if l03.What(captured) == l03.PIECE_TYPE_K {
 			bestmove = move
 			// bestMoveList = nil
 			// bestMoveList = append(bestMoveList, move)
@@ -128,7 +128,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 				// 自玉と相手玉のどちらが有利な場所にいるか比較
 				var control_val int8
 				switch pPosSys.phase {
-				case l06.FIRST:
+				case l03.FIRST:
 					WaterColor(
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM1],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM2],
@@ -139,7 +139,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 					oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
 					control_val = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[my_king_sq] +
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[oppo_king_sq]
-				case l06.SECOND:
+				case l03.SECOND:
 					WaterColor(
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM2],
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM1],

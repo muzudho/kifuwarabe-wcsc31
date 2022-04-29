@@ -12,7 +12,6 @@ import (
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -174,8 +173,8 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				App.Out.Debug(pPosSys.SprintControl(l06.FIRST, 0))
-				App.Out.Debug(pPosSys.SprintControl(l06.SECOND, 0))
+				App.Out.Debug(pPosSys.SprintControl(l03.FIRST, 0))
+				App.Out.Debug(pPosSys.SprintControl(l03.SECOND, 0))
 				ok = true
 			} else if length == 2 && tokens[1] == "test" {
 				// 利きのテスト
@@ -184,8 +183,8 @@ MainLoop:
 				is_error, message := TestControl(pPosSys, pPosSys.PPosition[POS_LAYER_MAIN])
 				if is_error {
 					App.Out.Debug("ControlTest: error=%s\n", message)
-					App.Out.Debug(pPosSys.SprintControl(l06.FIRST, CONTROL_LAYER_TEST_ERROR))
-					App.Out.Debug(pPosSys.SprintControl(l06.SECOND, CONTROL_LAYER_TEST_ERROR))
+					App.Out.Debug(pPosSys.SprintControl(l03.FIRST, CONTROL_LAYER_TEST_ERROR))
+					App.Out.Debug(pPosSys.SprintControl(l03.SECOND, CONTROL_LAYER_TEST_ERROR))
 				}
 				ok = true
 			} else if length == 5 && tokens[1] == "diff" {
@@ -221,8 +220,8 @@ MainLoop:
 				if err != nil {
 					fmt.Printf("Error: %s", err)
 				} else if 0 <= c && c < CONTROL_LAYER_ALL_SIZE {
-					App.Out.Debug(pPosSys.SprintControl(l06.FIRST, ControlLayerT(c)))
-					App.Out.Debug(pPosSys.SprintControl(l06.SECOND, ControlLayerT(c)))
+					App.Out.Debug(pPosSys.SprintControl(l03.FIRST, ControlLayerT(c)))
+					App.Out.Debug(pPosSys.SprintControl(l03.SECOND, ControlLayerT(c)))
 					ok = true
 				}
 			} else if length == 3 && tokens[1] == "sumabs" {

@@ -3,15 +3,15 @@ package take9
 import (
 	"fmt"
 
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // Print - 局面出力（＾ｑ＾）
 func SprintBoard(pPos *Position) string {
 	var phase_str = "?"
-	if pPos.Phase == l06.FIRST {
+	if pPos.Phase == l03.FIRST {
 		phase_str = "First"
-	} else if pPos.Phase == l06.SECOND {
+	} else if pPos.Phase == l03.SECOND {
 		phase_str = "Second"
 	}
 

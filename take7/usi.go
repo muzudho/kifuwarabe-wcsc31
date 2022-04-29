@@ -10,7 +10,7 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // App - アプリケーション変数の宣言
@@ -129,8 +129,8 @@ MainLoop:
 			pPos.UndoMove()
 		case "control":
 			// 利きの表示（＾～＾）
-			App.Out.Debug(pPos.SprintControl(l06.FIRST))
-			App.Out.Debug(pPos.SprintControl(l06.SECOND))
+			App.Out.Debug(pPos.SprintControl(l03.FIRST))
+			App.Out.Debug(pPos.SprintControl(l03.SECOND))
 		}
 
 		App.LogNotEcho.FlushAllLogs()

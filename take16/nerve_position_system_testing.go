@@ -12,7 +12,6 @@ import (
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -96,7 +95,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
-			sumList[l06.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
+			sumList[l03.FIRST-1] += int(math.Abs(float64(cb1.Board1[from])))
 
 		}
 	}
@@ -105,7 +104,7 @@ func SumAbsControl(pNerve *Nerve, ph1_c ControlLayerT, ph2_c ControlLayerT) [2]i
 	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 {
 
-			sumList[l06.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
+			sumList[l03.SECOND-1] += int(math.Abs(float64(cb2.Board1[from])))
 
 		}
 	}
@@ -135,64 +134,64 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 				if change == 0 {
 					piece := pPos.Board[sq]
 					if piece != l03.PIECE_EMPTY {
-						phase := Who(piece)
-						pieceType := l11.What(piece)
+						phase := l03.Who(piece)
+						pieceType := l03.What(piece)
 
 						ok := false
 						switch phase {
-						case l06.FIRST:
+						case l03.FIRST:
 							switch pieceType {
-							case l11.PIECE_TYPE_K:
+							case l03.PIECE_TYPE_K:
 								pPos.Hands1[l03.HAND_K1] += 1
 								ok = true
-							case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+							case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 								pPos.Hands1[l03.HAND_R1] += 1
 								ok = true
-							case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+							case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 								pPos.Hands1[l03.HAND_B1] += 1
 								ok = true
-							case l11.PIECE_TYPE_G:
+							case l03.PIECE_TYPE_G:
 								pPos.Hands1[l03.HAND_G1] += 1
 								ok = true
-							case l11.PIECE_TYPE_S, l11.PIECE_TYPE_PS:
+							case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 								pPos.Hands1[l03.HAND_S1] += 1
 								ok = true
-							case l11.PIECE_TYPE_N, l11.PIECE_TYPE_PN:
+							case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 								pPos.Hands1[l03.HAND_N1] += 1
 								ok = true
-							case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL:
+							case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 								pPos.Hands1[l03.HAND_L1] += 1
 								ok = true
-							case l11.PIECE_TYPE_P, l11.PIECE_TYPE_PP:
+							case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 								pPos.Hands1[l03.HAND_P1] += 1
 								ok = true
 							default:
 								// Ignored
 							}
-						case l06.SECOND:
+						case l03.SECOND:
 							switch pieceType {
-							case l11.PIECE_TYPE_K:
+							case l03.PIECE_TYPE_K:
 								pPos.Hands1[l03.HAND_K2] += 1
 								ok = true
-							case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+							case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 								pPos.Hands1[l03.HAND_R2] += 1
 								ok = true
-							case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+							case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 								pPos.Hands1[l03.HAND_B2] += 1
 								ok = true
-							case l11.PIECE_TYPE_G:
+							case l03.PIECE_TYPE_G:
 								pPos.Hands1[l03.HAND_G2] += 1
 								ok = true
-							case l11.PIECE_TYPE_S, l11.PIECE_TYPE_PS:
+							case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 								pPos.Hands1[l03.HAND_S2] += 1
 								ok = true
-							case l11.PIECE_TYPE_N, l11.PIECE_TYPE_PN:
+							case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 								pPos.Hands1[l03.HAND_N2] += 1
 								ok = true
-							case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL:
+							case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 								pPos.Hands1[l03.HAND_L2] += 1
 								ok = true
-							case l11.PIECE_TYPE_P, l11.PIECE_TYPE_PP:
+							case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 								pPos.Hands1[l03.HAND_P2] += 1
 								ok = true
 							default:
@@ -260,19 +259,19 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 
 			// 駒の先後変更（玉除く）
 			piece = pPos.Board[sq2]
-			switch l11.What(piece) {
-			case l11.PIECE_TYPE_K, l11.PIECE_TYPE_EMPTY:
+			switch l03.What(piece) {
+			case l03.PIECE_TYPE_K, l03.PIECE_TYPE_EMPTY:
 				// Ignored
 			default:
-				phase := Who(piece)
-				pieceType := l11.What(piece)
+				phase := l03.Who(piece)
+				pieceType := l03.What(piece)
 
 				change := l03.Square(rand.Intn(10))
 				if change == 0 {
 					phase = FlipPhase(phase)
 				}
 
-				pPos.Board[sq2] = l11.PieceFromPhPt(phase, pieceType)
+				pPos.Board[sq2] = l03.PieceFromPhPt(phase, pieceType)
 			}
 		}
 
@@ -287,9 +286,9 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pNerve.PPosSys.phase = l06.FIRST
+		pNerve.PPosSys.phase = l03.FIRST
 	default:
-		pNerve.PPosSys.phase = l06.SECOND
+		pNerve.PPosSys.phase = l03.SECOND
 	}
 
 	// 手目は 1 に戻します
@@ -317,23 +316,23 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
 
-					piece := l11.What(pPos.Board[sq])
+					piece := l03.What(pPos.Board[sq])
 					switch piece {
-					case l11.PIECE_TYPE_K:
+					case l03.PIECE_TYPE_K:
 						countList[0] += 1
-					case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+					case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 						countList[1] += 1
-					case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+					case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 						countList[2] += 1
-					case l11.PIECE_TYPE_G:
+					case l03.PIECE_TYPE_G:
 						countList[3] += 1
-					case l11.PIECE_TYPE_S, l11.PIECE_TYPE_PS:
+					case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 						countList[4] += 1
-					case l11.PIECE_TYPE_N, l11.PIECE_TYPE_PN:
+					case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 						countList[5] += 1
-					case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL:
+					case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 						countList[6] += 1
-					case l11.PIECE_TYPE_P, l11.PIECE_TYPE_PP:
+					case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 						countList[7] += 1
 					default:
 						// Ignore
@@ -407,23 +406,23 @@ func CountAllPieces(pPos *l15.Position) [8]int {
 		for file := l03.Square(9); file > 0; file -= 1 {
 			sq := l15.SquareFrom(file, rank)
 
-			piece := l11.What(pPos.Board[sq])
+			piece := l03.What(pPos.Board[sq])
 			switch piece {
-			case l11.PIECE_TYPE_K:
+			case l03.PIECE_TYPE_K:
 				countList[0] += 1
-			case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR:
+			case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 				countList[1] += 1
-			case l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB:
+			case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 				countList[2] += 1
-			case l11.PIECE_TYPE_G:
+			case l03.PIECE_TYPE_G:
 				countList[3] += 1
-			case l11.PIECE_TYPE_S, l11.PIECE_TYPE_PS:
+			case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 				countList[4] += 1
-			case l11.PIECE_TYPE_N, l11.PIECE_TYPE_PN:
+			case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 				countList[5] += 1
-			case l11.PIECE_TYPE_L, l11.PIECE_TYPE_PL:
+			case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 				countList[6] += 1
-			case l11.PIECE_TYPE_P, l11.PIECE_TYPE_PP:
+			case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 				countList[7] += 1
 			default:
 				// Ignore

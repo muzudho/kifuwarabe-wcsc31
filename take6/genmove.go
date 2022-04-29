@@ -54,12 +54,12 @@ func GenMoveList(pPos *Position) []l04.Move {
 // Homo - 手番と移動元の駒を持つプレイヤーが等しければ真。移動先が空なら偽
 func (pPos *Position) Homo(to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return pPos.Phase == Who(pPos.Board[to])
+	return pPos.Phase == l03.Who(pPos.Board[to])
 }
 
 // Hetero - 手番と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
 func (pPos *Position) Hetero(to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return pPos.Phase != Who(pPos.Board[to])
+	return pPos.Phase != l03.Who(pPos.Board[to])
 }

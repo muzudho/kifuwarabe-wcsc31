@@ -7,7 +7,6 @@ import (
 	"math/rand"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -104,58 +103,58 @@ func ShuffleBoard(pPos *Position) {
 				if change == 0 {
 					piece := pPos.Board[sq]
 					if piece != l03.PIECE_EMPTY {
-						phase := Who(piece)
-						pieceType := What(piece)
+						phase := l03.Who(piece)
+						pieceType := l03.What(piece)
 
 						ok := false
 						switch phase {
-						case l06.FIRST:
+						case l03.FIRST:
 							switch pieceType {
-							case PIECE_TYPE_R, PIECE_TYPE_PR:
+							case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 								pPos.Hands[l03.HANDSQ_R1] += 1
 								ok = true
-							case PIECE_TYPE_B, PIECE_TYPE_PB:
+							case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 								pPos.Hands[l03.HANDSQ_B1] += 1
 								ok = true
-							case PIECE_TYPE_G:
+							case l03.PIECE_TYPE_G:
 								pPos.Hands[l03.HANDSQ_G1] += 1
 								ok = true
-							case PIECE_TYPE_S, PIECE_TYPE_PS:
+							case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 								pPos.Hands[l03.HANDSQ_S1] += 1
 								ok = true
-							case PIECE_TYPE_N, PIECE_TYPE_PN:
+							case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 								pPos.Hands[l03.HANDSQ_N1] += 1
 								ok = true
-							case PIECE_TYPE_L, PIECE_TYPE_PL:
+							case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 								pPos.Hands[l03.HANDSQ_L1] += 1
 								ok = true
-							case PIECE_TYPE_P, PIECE_TYPE_PP:
+							case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 								pPos.Hands[l03.HANDSQ_P1] += 1
 								ok = true
 							default:
 								// Ignored
 							}
-						case l06.SECOND:
+						case l03.SECOND:
 							switch pieceType {
-							case PIECE_TYPE_R, PIECE_TYPE_PR:
+							case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 								pPos.Hands[l03.HANDSQ_R2] += 1
 								ok = true
-							case PIECE_TYPE_B, PIECE_TYPE_PB:
+							case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 								pPos.Hands[l03.HANDSQ_B2] += 1
 								ok = true
-							case PIECE_TYPE_G:
+							case l03.PIECE_TYPE_G:
 								pPos.Hands[l03.HANDSQ_G2] += 1
 								ok = true
-							case PIECE_TYPE_S, PIECE_TYPE_PS:
+							case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 								pPos.Hands[l03.HANDSQ_S2] += 1
 								ok = true
-							case PIECE_TYPE_N, PIECE_TYPE_PN:
+							case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 								pPos.Hands[l03.HANDSQ_N2] += 1
 								ok = true
-							case PIECE_TYPE_L, PIECE_TYPE_PL:
+							case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 								pPos.Hands[l03.HANDSQ_L2] += 1
 								ok = true
-							case PIECE_TYPE_P, PIECE_TYPE_PP:
+							case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 								pPos.Hands[l03.HANDSQ_P2] += 1
 								ok = true
 							default:
@@ -223,19 +222,19 @@ func ShuffleBoard(pPos *Position) {
 
 			// 駒の先後変更（玉除く）
 			piece = pPos.Board[sq2]
-			switch What(piece) {
-			case PIECE_TYPE_K, PIECE_TYPE_EMPTY:
+			switch l03.What(piece) {
+			case l03.PIECE_TYPE_K, l03.PIECE_TYPE_EMPTY:
 				// Ignored
 			default:
-				phase := Who(piece)
-				pieceType := What(piece)
+				phase := l03.Who(piece)
+				pieceType := l03.What(piece)
 
 				change := l03.Square(rand.Intn(10))
 				if change == 0 {
 					phase = FlipPhase(phase)
 				}
 
-				pPos.Board[sq2] = PieceFromPhPt(phase, pieceType)
+				pPos.Board[sq2] = l03.PieceFromPhPt(phase, pieceType)
 			}
 		}
 
@@ -250,9 +249,9 @@ func ShuffleBoard(pPos *Position) {
 	// 手番のシャッフル
 	switch rand.Intn(2) {
 	case 0:
-		pPos.phase = l06.FIRST
+		pPos.phase = l03.FIRST
 	default:
-		pPos.phase = l06.SECOND
+		pPos.phase = l03.SECOND
 	}
 
 	// 手目は 1 に戻します
@@ -275,23 +274,23 @@ func ShuffleBoard(pPos *Position) {
 
 					fmt.Printf("%s,", pPos.Board[sq].ToCodeOfPc())
 
-					piece := What(pPos.Board[sq])
+					piece := l03.What(pPos.Board[sq])
 					switch piece {
-					case PIECE_TYPE_K:
+					case l03.PIECE_TYPE_K:
 						countList[0] += 1
-					case PIECE_TYPE_R, PIECE_TYPE_PR:
+					case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 						countList[1] += 1
-					case PIECE_TYPE_B, PIECE_TYPE_PB:
+					case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 						countList[2] += 1
-					case PIECE_TYPE_G:
+					case l03.PIECE_TYPE_G:
 						countList[3] += 1
-					case PIECE_TYPE_S, PIECE_TYPE_PS:
+					case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 						countList[4] += 1
-					case PIECE_TYPE_N, PIECE_TYPE_PN:
+					case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 						countList[5] += 1
-					case PIECE_TYPE_L, PIECE_TYPE_PL:
+					case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 						countList[6] += 1
-					case PIECE_TYPE_P, PIECE_TYPE_PP:
+					case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 						countList[7] += 1
 					default:
 						// Ignore
@@ -359,23 +358,23 @@ func CountAllPieces(pPos *Position) [8]int {
 		for file := l03.Square(9); file > 0; file -= 1 {
 			sq := SquareFrom(file, rank)
 
-			piece := What(pPos.Board[sq])
+			piece := l03.What(pPos.Board[sq])
 			switch piece {
-			case PIECE_TYPE_K:
+			case l03.PIECE_TYPE_K:
 				countList[0] += 1
-			case PIECE_TYPE_R, PIECE_TYPE_PR:
+			case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 				countList[1] += 1
-			case PIECE_TYPE_B, PIECE_TYPE_PB:
+			case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 				countList[2] += 1
-			case PIECE_TYPE_G:
+			case l03.PIECE_TYPE_G:
 				countList[3] += 1
-			case PIECE_TYPE_S, PIECE_TYPE_PS:
+			case l03.PIECE_TYPE_S, l03.PIECE_TYPE_PS:
 				countList[4] += 1
-			case PIECE_TYPE_N, PIECE_TYPE_PN:
+			case l03.PIECE_TYPE_N, l03.PIECE_TYPE_PN:
 				countList[5] += 1
-			case PIECE_TYPE_L, PIECE_TYPE_PL:
+			case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL:
 				countList[6] += 1
-			case PIECE_TYPE_P, PIECE_TYPE_PP:
+			case l03.PIECE_TYPE_P, l03.PIECE_TYPE_PP:
 				countList[7] += 1
 			default:
 				// Ignore

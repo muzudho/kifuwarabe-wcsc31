@@ -7,7 +7,6 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // 評価値
@@ -104,7 +103,7 @@ func (pPos *Position) ClearBoard() {
 // 持ち駒は指定してはいけません。
 func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) == Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) == l03.Who(pPos.Board[to])
 }
 
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
@@ -112,7 +111,7 @@ func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
 func (pPos *Position) Hetero(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) != Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) != l03.Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽
@@ -124,7 +123,7 @@ func (pPos *Position) IsEmptySq(sq l03.Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
+func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
 	var len = len(command)
 	var hand_sq = l03.SQ_EMPTY
 
@@ -158,9 +157,9 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	if hand_sq != l03.SQ_EMPTY {
 		*i += 1
 		switch phase {
-		case l06.FIRST:
+		case l03.FIRST:
 			from = hand_sq
-		case l06.SECOND:
+		case l03.SECOND:
 			from = hand_sq + l03.HAND_TYPE_SIZE_SQ
 		default:
 			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)

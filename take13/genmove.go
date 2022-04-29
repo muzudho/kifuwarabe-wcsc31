@@ -5,7 +5,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
@@ -530,11 +529,11 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	var hand_end l03.HandIdx
 	// var opponentKingSq l03.Square
 	var pOpponentSumCB *ControlBoard
-	if friend == l06.FIRST {
+	if friend == l03.FIRST {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K1)
 		hand_start = l03.HAND_IDX_START
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2]
-	} else if friend == l06.SECOND {
+	} else if friend == l03.SECOND {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K2)
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
@@ -562,9 +561,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
-					pieceType := l11.What(piece)
+					pieceType := l03.What(piece)
 
-					if pieceType == l11.PIECE_TYPE_K {
+					if pieceType == l03.PIECE_TYPE_K {
 						// 玉は自殺手を省きます
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
@@ -639,9 +638,9 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 					moveEndList := GenMoveEnd(pPos, from)
 
 					piece := pPos.Board[from]
-					pieceType := l11.What(piece)
+					pieceType := l03.What(piece)
 
-					if pieceType == l11.PIECE_TYPE_K {
+					if pieceType == l03.PIECE_TYPE_K {
 						// 玉は自殺手を省きます
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()

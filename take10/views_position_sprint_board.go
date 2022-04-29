@@ -3,16 +3,16 @@ package take10
 import (
 	"fmt"
 
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // Print - 局面出力（＾ｑ＾）
 func SprintBoard(pPos *Position) string {
 	var phase_str string
 	switch pPos.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"

@@ -3,20 +3,20 @@ package take13
 import (
 	"fmt"
 
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // Print - 局面出力（＾ｑ＾）
-func SprintBoard(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func SprintBoard(pPos *Position, phase l03.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
 
 	var phase_str string
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"

@@ -7,16 +7,15 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
 func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"
@@ -230,9 +229,9 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	// 手番
 	var phaseStr string
 	switch pPosSys.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phaseStr = "b"
-	case l06.SECOND:
+	case l03.SECOND:
 		phaseStr = "w"
 	default:
 		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))

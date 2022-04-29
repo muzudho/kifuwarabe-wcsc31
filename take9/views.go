@@ -6,7 +6,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // SprintControl - 利き数ボード出力（＾ｑ＾）
@@ -14,15 +13,15 @@ import (
 // Parameters
 // ----------
 // * `flag` - 0: 利き数ボード, 1-5:利き数の差分ボードのレイヤー[0]～[4]
-func (pPos *Position) SprintControl(phase l06.Phase, flag int) string {
+func (pPos *Position) SprintControl(phase l03.Phase, flag int) string {
 	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	var title string
 
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		return "\n"
@@ -138,9 +137,9 @@ func (pPos *Position) SprintSfen() string {
 	// 手番
 	var phaseStr string
 	switch pPos.Phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phaseStr = "b"
-	case l06.SECOND:
+	case l03.SECOND:
 		phaseStr = "w"
 	default:
 		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPos.Phase))

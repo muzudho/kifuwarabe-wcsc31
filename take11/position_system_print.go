@@ -6,16 +6,15 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
 func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 	var phase_str string
 	switch pPosSys.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		phase_str = "?"
@@ -186,15 +185,15 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 // Parameters
 // ----------
 // * `c` - 利き数ボードのレイヤー番号（＾～＾）
-func (pPosSys *PositionSystem) SprintControl(phase l06.Phase, c ControlLayerT) string {
+func (pPosSys *PositionSystem) SprintControl(phase l03.Phase, c ControlLayerT) string {
 	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	var title string
 
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		return "\n"
@@ -303,9 +302,9 @@ func (pPosSys *PositionSystem) SprintSfen(pPos *Position) string {
 	// 手番
 	var phaseStr string
 	switch pPosSys.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phaseStr = "b"
-	case l06.SECOND:
+	case l03.SECOND:
 		phaseStr = "w"
 	default:
 		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
@@ -477,7 +476,7 @@ func (pPosSys *PositionSystem) Dump() string {
 	for phase := 0; phase < 2; phase += 1 {
 		// 利きボード
 		for c := ControlLayerT(0); c < CONTROL_LAYER_ALL_SIZE; c += 1 {
-			buffer.WriteString(pPosSys.SprintControl(l06.Phase(phase+1), c))
+			buffer.WriteString(pPosSys.SprintControl(l03.Phase(phase+1), c))
 		}
 	}
 

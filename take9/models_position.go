@@ -7,14 +7,13 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 // FlipPhase - 先後を反転します
-func FlipPhase(phase l06.Phase) l06.Phase {
+func FlipPhase(phase l03.Phase) l03.Phase {
 	return phase%2 + 1
 }
 
@@ -46,7 +45,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase l06.Phase
+	Phase l03.Phase
 	// 開始局面の時点で何手目か（＾～＾）これは表示のための飾りのようなものだぜ（＾～＾）
 	StartMovesNum int
 	// 開始局面から数えて何手目か（＾～＾）0から始まるぜ（＾～＾）
@@ -245,7 +244,7 @@ func (pPos *Position) resetToZero() {
 		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	}
 	// 先手の局面
-	pPos.Phase = l06.FIRST
+	pPos.Phase = l03.FIRST
 	// 何手目か
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
@@ -379,10 +378,10 @@ func (pPos *Position) ReadPosition(command string) {
 		// 手番
 		switch command[i] {
 		case 'b':
-			pPos.Phase = l06.FIRST
+			pPos.Phase = l03.FIRST
 			i += 1
 		case 'w':
-			pPos.Phase = l06.SECOND
+			pPos.Phase = l03.SECOND
 			i += 1
 		default:
 			panic("fatal: unknown phase")
@@ -555,7 +554,7 @@ func (pPos *Position) ReadPosition(command string) {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
+func ParseMove(command string, i *int, phase l03.Phase) (Move, error) {
 	var len = len(command)
 	var hand1 = l03.Square(0)
 
@@ -595,9 +594,9 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 
 	if hand1 != 0 {
 		switch phase {
-		case l06.FIRST:
+		case l03.FIRST:
 			from = hand1
-		case l06.SECOND:
+		case l03.SECOND:
 			from = hand1 + l03.HANDSQ_TYPE_SIZE.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
@@ -672,8 +671,8 @@ func ParseMove(command string, i *int, phase l06.Phase) (Move, error) {
 func (pPos *Position) DoMove(move Move) {
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
 	// 動かしている駒と、取った駒だぜ（＾～＾）
-	mov_piece_type := PIECE_TYPE_EMPTY
-	cap_piece_type := PIECE_TYPE_EMPTY
+	mov_piece_type := l03.PIECE_TYPE_EMPTY
+	cap_piece_type := l03.PIECE_TYPE_EMPTY
 
 	from, to, pro := move.Destructure()
 
@@ -737,21 +736,21 @@ func (pPos *Position) DoMove(move Move) {
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
 		pPos.AddControlDiff(1, to, 1)
-		mov_piece_type = What(piece)
+		mov_piece_type = l03.What(piece)
 	} else {
 		// 打でないなら
 
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
 		if captured != l03.PIECE_EMPTY {
-			pieceType := What(captured)
+			pieceType := l03.What(captured)
 			switch pieceType {
-			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
+			case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR, l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB, l03.PIECE_TYPE_L:
 				// Ignored: 長い利きの駒は 既に除外しているので無視します
 			default:
 				pPos.AddControlDiff(1, to, -1)
 			}
-			cap_piece_type = What(captured)
+			cap_piece_type = l03.What(captured)
 			cap_src_sq = to
 		}
 
@@ -766,14 +765,14 @@ func (pPos *Position) DoMove(move Move) {
 			pPos.Board[to] = pPos.Board[from]
 		}
 		// 元位置の駒の削除pos
-		mov_piece_type = What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 		pPos.Board[from] = l03.PIECE_EMPTY
 		pPos.AddControlDiff(3, to, 1)
 
 		switch captured {
 		case l03.PIECE_EMPTY: // Ignored
 		case l03.PIECE_K1: // Second player win
-			// Lost l06.FIRST king
+			// Lost l03.FIRST king
 		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap_dst_sq = l03.HANDSQ_R2.ToSq()
 		case l03.PIECE_B1, l03.PIECE_PB1:
@@ -788,7 +787,7 @@ func (pPos *Position) DoMove(move Move) {
 			cap_dst_sq = l03.HANDSQ_L2.ToSq()
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_dst_sq = l03.HANDSQ_P2.ToSq()
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_dst_sq = l03.HANDSQ_R1.ToSq()
@@ -823,33 +822,33 @@ func (pPos *Position) DoMove(move Move) {
 	pPos.Phase = FlipPhase(pPos.Phase)
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
-	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
+	piece_type_list := []l03.PieceType{mov_piece_type, cap_piece_type}
 	src_sq_list := []l03.Square{from, cap_src_sq}
 	dst_sq_list := []l03.Square{to, cap_dst_sq}
 	for j, piece_type := range piece_type_list {
 		switch piece_type {
-		case PIECE_TYPE_K:
+		case l03.PIECE_TYPE_K:
 			switch prev_phase {
-			case l06.FIRST:
+			case l03.FIRST:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = dst_sq_list[j]
-			case l06.SECOND:
+			case l03.SECOND:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = dst_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
 			}
-		case PIECE_TYPE_R, PIECE_TYPE_PR:
+		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = dst_sq_list[j]
 				}
 			}
-		case PIECE_TYPE_B, PIECE_TYPE_PB:
+		case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = dst_sq_list[j]
 				}
 			}
-		case PIECE_TYPE_L, PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
+		case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = dst_sq_list[j]
@@ -875,8 +874,8 @@ func (pPos *Position) UndoMove() {
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
 	// 動かしている駒と、取った駒だぜ（＾～＾）
-	mov_piece_type := PIECE_TYPE_EMPTY
-	cap_piece_type := PIECE_TYPE_EMPTY
+	mov_piece_type := l03.PIECE_TYPE_EMPTY
+	cap_piece_type := l03.PIECE_TYPE_EMPTY
 
 	prev_phase := pPos.Phase
 	pPos.Phase = FlipPhase(pPos.Phase)
@@ -902,7 +901,7 @@ func (pPos *Position) UndoMove() {
 		// 打なら
 		hand := from
 		// 盤上から駒を除去します
-		mov_piece_type = What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
@@ -912,7 +911,7 @@ func (pPos *Position) UndoMove() {
 		// 打でないなら
 
 		// 行き先の駒の除去
-		mov_piece_type = What(pPos.Board[to])
+		mov_piece_type = l03.What(pPos.Board[to])
 		pPos.AddControlDiff(1, to, -1)
 
 		// 移動元への駒の配置
@@ -927,7 +926,7 @@ func (pPos *Position) UndoMove() {
 		switch captured {
 		case l03.PIECE_EMPTY: // Ignored
 		case l03.PIECE_K1: // Second player win
-			// Lost l06.FIRST king
+			// Lost l03.FIRST king
 		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap_src_sq = l03.HANDSQ_R2.ToSq()
 		case l03.PIECE_B1, l03.PIECE_PB1:
@@ -942,7 +941,7 @@ func (pPos *Position) UndoMove() {
 			cap_src_sq = l03.HANDSQ_L2.ToSq()
 		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_src_sq = l03.HANDSQ_P2.ToSq()
-		case l03.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l03.FIRST player win
 			// Lost second king
 		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_src_sq = l03.HANDSQ_R1.ToSq()
@@ -967,13 +966,13 @@ func (pPos *Position) UndoMove() {
 			pPos.Hands[cap_src_sq-l03.HANDSQ_ORIGIN.ToSq()] -= 1
 
 			// 取った駒を行き先に戻します
-			cap_piece_type = What(captured)
+			cap_piece_type = l03.What(captured)
 			pPos.Board[to] = captured
 			pPos.AddControlDiff(2, from, 1)
 
-			// pieceType := What(captured)
+			// pieceType := l03.What(captured)
 			// switch pieceType {
-			// case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
+			// case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR, l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB, l03.PIECE_TYPE_L:
 			// 	// Ignored: 長い利きの駒は あとで追加するので、ここでは無視します
 			// default:
 			// 取った駒は盤上になかったので、ここで利きを復元させます
@@ -986,33 +985,33 @@ func (pPos *Position) UndoMove() {
 	}
 
 	// 玉と、長い利きの駒が動いたときは、位置情報更新
-	piece_type_list := []PieceType{mov_piece_type, cap_piece_type}
+	piece_type_list := []l03.PieceType{mov_piece_type, cap_piece_type}
 	dst_sq_list := []l03.Square{to, cap_dst_sq}
 	src_sq_list := []l03.Square{from, cap_src_sq}
 	for j, moving_piece_type := range piece_type_list {
 		switch moving_piece_type {
-		case PIECE_TYPE_K:
+		case l03.PIECE_TYPE_K:
 			switch prev_phase {
-			case l06.FIRST:
+			case l03.FIRST:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = src_sq_list[j]
-			case l06.SECOND:
+			case l03.SECOND:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = src_sq_list[j]
 			default:
 				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
 			}
-		case PIECE_TYPE_R, PIECE_TYPE_PR:
+		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 				if sq == dst_sq_list[j] {
 					pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = src_sq_list[j]
 				}
 			}
-		case PIECE_TYPE_B, PIECE_TYPE_PB:
+		case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
 			for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 				if sq == dst_sq_list[j] {
 					pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = src_sq_list[j]
 				}
 			}
-		case PIECE_TYPE_L, PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
+		case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
 			for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 				if sq == dst_sq_list[j] {
 					pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = src_sq_list[j]
@@ -1040,7 +1039,7 @@ func (pPos *Position) AddControlDiffAllSlidingPiece(layer int, sign int8, exclud
 		}
 	}
 	for _, from := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
-		if OnBoard(from) && from != excludeFrom && PIECE_TYPE_PL != What(pPos.Board[from]) { // 杏は除外
+		if OnBoard(from) && from != excludeFrom && l03.PIECE_TYPE_PL != l03.What(pPos.Board[from]) { // 杏は除外
 			pPos.AddControlDiff(layer, from, sign)
 		}
 	}
@@ -1058,7 +1057,7 @@ func (pPos *Position) AddControlDiff(layer int, from l03.Square, sign int8) {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
-	ph := int(Who(piece)) - 1
+	ph := int(l03.Who(piece)) - 1
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
 	sq_list := GenMoveEnd(pPos, from)
@@ -1098,7 +1097,7 @@ func (pPos *Position) MergeControlDiff() {
 // 持ち駒は指定してはいけません。
 func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) == Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) == l03.Who(pPos.Board[to])
 }
 
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
@@ -1106,7 +1105,7 @@ func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
 func (pPos *Position) Hetero(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
-	return Who(pPos.Board[from]) != Who(pPos.Board[to])
+	return l03.Who(pPos.Board[from]) != l03.Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽

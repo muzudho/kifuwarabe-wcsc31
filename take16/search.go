@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
@@ -209,7 +208,7 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
 			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
 			// この手は見なかったことにするぜ（＾～＾）
-		} else if l11.What(captured) == l11.PIECE_TYPE_K {
+		} else if l03.What(captured) == l03.PIECE_TYPE_K {
 			// 玉を取るのは最善手
 			someBestMoves = nil
 			someBestMoves = append(someBestMoves, move)

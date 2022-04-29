@@ -1,13 +1,17 @@
 package take6
 
-import "fmt"
+import (
+	"fmt"
+
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+)
 
 // Print - 局面出力（＾ｑ＾）
 func SprintBoard(pos *Position) string {
 	var phase_str = "?"
-	if pos.Phase == FIRST {
+	if pos.Phase == l03.FIRST {
 		phase_str = "First"
-	} else if pos.Phase == SECOND {
+	} else if pos.Phase == l03.SECOND {
 		phase_str = "Second"
 	}
 

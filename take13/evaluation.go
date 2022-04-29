@@ -8,7 +8,7 @@ func EvalControlVal(pPosSys *PositionSystem) int16 {
 	// 何もしない方がマシかも（＾～＾）
 	/*
 		switch pPosSys.phase {
-		case l06.FIRST:
+		case l03.FIRST:
 			WaterColor(
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2],
@@ -19,7 +19,7 @@ func EvalControlVal(pPosSys *PositionSystem) int16 {
 			oppo_king_sq := pPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
 			control_val = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[my_king_sq] +
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_EVAL3].Board1[oppo_king_sq]
-		case l06.SECOND:
+		case l03.SECOND:
 			WaterColor(
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM2],
 				pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1],

@@ -89,7 +89,7 @@ func (pPos *Position) AddControlLance(layer int, sign int8, excludeFrom l03.Squa
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
 			from != excludeFrom && // 除外マスは除外
-			PIECE_TYPE_PL != What(pPos.Board[from]) { // 杏は除外
+			l03.PIECE_TYPE_PL != l03.What(pPos.Board[from]) { // 杏は除外
 			pPos.AddControlDiff(layer, from, sign)
 		}
 	}
@@ -107,7 +107,7 @@ func (pPos *Position) AddControlDiff(layer int, from l03.Square, sign int8) {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
-	ph := int(Who(piece)) - 1
+	ph := int(l03.Who(piece)) - 1
 	// fmt.Printf("Debug: ph=%d\n", ph)
 
 	sq_list := GenMoveEnd(pPos, from)
@@ -157,7 +157,7 @@ func (pPos *Position) RecalculateControl(layer1 int) {
 	for from := l03.Square(11); from < l03.BOARD_SIZE; from += 1 {
 		if l03.File(from) != 0 && l03.Rank(from) != 0 && !pPos.IsEmptySq(from) {
 			piece := pPos.Board[from]
-			phase := Who(piece)
+			phase := l03.Who(piece)
 			sq_list := GenMoveEnd(pPos, from)
 
 			for _, to := range sq_list {

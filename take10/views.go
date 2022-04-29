@@ -6,7 +6,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
 // SprintControl - 利き数ボード出力（＾ｑ＾）
@@ -14,15 +13,15 @@ import (
 // Parameters
 // ----------
 // * `layer` - 利き数ボードのレイヤー番号（＾～＾）
-func (pPos *Position) SprintControl(phase l06.Phase, layer int) string {
+func (pPos *Position) SprintControl(phase l03.Phase, layer int) string {
 	var board [l03.BOARD_SIZE]int8
 	var phase_str string
 	var title string
 
 	switch phase {
-	case l06.FIRST:
+	case l03.FIRST:
 		phase_str = "First"
-	case l06.SECOND:
+	case l03.SECOND:
 		phase_str = "Second"
 	default:
 		return "\n"
@@ -131,9 +130,9 @@ func (pPos *Position) SprintSfen() string {
 	// 手番
 	var phaseStr string
 	switch pPos.GetPhase() {
-	case l06.FIRST:
+	case l03.FIRST:
 		phaseStr = "b"
-	case l06.SECOND:
+	case l03.SECOND:
 		phaseStr = "w"
 	default:
 		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPos.GetPhase()))
@@ -297,7 +296,7 @@ func (pPos *Position) Dump() string {
 	for phase := 0; phase < 2; phase += 1 {
 		// 利きボード
 		for layer := 0; layer < CONTROL_LAYER_ALL_SIZE; layer += 1 {
-			buffer.WriteString(pPos.SprintControl(l06.Phase(phase+1), layer))
+			buffer.WriteString(pPos.SprintControl(l03.Phase(phase+1), layer))
 		}
 	}
 
