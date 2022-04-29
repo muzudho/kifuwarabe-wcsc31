@@ -12,7 +12,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// ２つ先のマスから斜めに長い利き
 	switch piece {
-	case l03.PIECE_B1, l03.PIECE_PB1, l03.PIECE_B2, l03.PIECE_PB2:
+	case l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_B2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc():
 		if l04.File(from) < 8 && l04.Rank(from) > 2 && pPos.IsEmptySq(from+9) { // 8～9筋にある駒でもなく、1～2段目でもなく、１つ左上が空マスなら
 			for to := from + 18; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to); to += 9 { // ２つ左上から
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -39,7 +39,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// ２つ先のマスから先手香車の長い利き
 	switch piece {
-	case l03.PIECE_L1, l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_R2, l03.PIECE_PR2:
+	case l03.PIECE_L1.ToCodeOfPc(), l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
 		if l04.Rank(from) > 2 && pPos.IsEmptySq(from-1) { // 1～2段目にある駒でもなく、１つ上が空マスなら
 			for to := from - 2; l04.Rank(to) != 0 && pPos.Hetero(to); to -= 1 { // 上
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -51,7 +51,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// ２つ先のマスから後手香車の長い利き
 	switch piece {
-	case l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_L2, l03.PIECE_R2, l03.PIECE_PR2:
+	case l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_L2.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
 		if l04.Rank(from) < 8 && pPos.IsEmptySq(from+1) { // 8～9段目にある駒でもなく、１つ下が空マスなら
 			for to := from + 2; l04.Rank(to) != 0 && pPos.Hetero(to); to += 1 { // 下
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -63,7 +63,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// ２つ横のマスから飛の長い利き
 	switch piece {
-	case l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_R2, l03.PIECE_PR2:
+	case l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
 		if l04.File(from) < 8 && pPos.IsEmptySq(from+10) { // 8～9筋にある駒でもなく、１つ左が空マスなら
 			for to := from + 20; l04.File(to) != 0 && pPos.Hetero(to); to += 10 { // 左
 				moveEndList = append(moveEndList, NewMoveEnd(to, false))
@@ -79,7 +79,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 	}
 
 	// 先手桂の動き
-	if piece == l03.PIECE_N1 {
+	if piece == l03.PIECE_N1.ToCodeOfPc() {
 		if to := from + 8; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左上桂馬飛び
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -89,7 +89,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 	}
 
 	// 後手桂の動き
-	if piece == l03.PIECE_N2 {
+	if piece == l03.PIECE_N2.ToCodeOfPc() {
 		if to := from + 12; l04.File(to) != 0 && to%10 != 0 && to%10 != 9 && pPos.Hetero(to) { // 左下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -100,9 +100,9 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// 先手歩の動き
 	switch piece {
-	case l03.PIECE_K1, l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_PB1, l03.PIECE_G1, l03.PIECE_S1, l03.PIECE_L1, l03.PIECE_P1, l03.PIECE_PS1,
-		l03.PIECE_PN1, l03.PIECE_PL1, l03.PIECE_PP1, l03.PIECE_K2, l03.PIECE_R2, l03.PIECE_PR2, l03.PIECE_PB2, l03.PIECE_G2, l03.PIECE_PS2,
-		l03.PIECE_PN2, l03.PIECE_PL2, l03.PIECE_PP2:
+	case l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_G1.ToCodeOfPc(), l03.PIECE_S1.ToCodeOfPc(), l03.PIECE_L1.ToCodeOfPc(), l03.PIECE_P1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc(),
+		l03.PIECE_PN1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc(), l03.PIECE_PP1.ToCodeOfPc(), l03.PIECE_K2.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc(), l03.PIECE_G2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc(),
+		l03.PIECE_PN2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc():
 		if to := from - 1; l04.Rank(to) != 0 && pPos.Hetero(to) { // 上
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -112,9 +112,9 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// 後手歩の動き
 	switch piece {
-	case l03.PIECE_K2, l03.PIECE_R2, l03.PIECE_PR2, l03.PIECE_PB2, l03.PIECE_G2, l03.PIECE_S2, l03.PIECE_L2, l03.PIECE_P2, l03.PIECE_PS2,
-		l03.PIECE_PN2, l03.PIECE_PL2, l03.PIECE_PP2, l03.PIECE_K1, l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_PB1, l03.PIECE_G1, l03.PIECE_PS1,
-		l03.PIECE_PN1, l03.PIECE_PL1, l03.PIECE_PP1:
+	case l03.PIECE_K2.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc(), l03.PIECE_G2.ToCodeOfPc(), l03.PIECE_S2.ToCodeOfPc(), l03.PIECE_L2.ToCodeOfPc(), l03.PIECE_P2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc(),
+		l03.PIECE_PN2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc(), l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_G1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc(),
+		l03.PIECE_PN1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc(), l03.PIECE_PP1.ToCodeOfPc():
 		if to := from + 1; l04.Rank(to) != 0 && pPos.Hetero(to) { // 下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -124,8 +124,8 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// 先手斜め前の動き
 	switch piece {
-	case l03.PIECE_K1, l03.PIECE_PR1, l03.PIECE_B1, l03.PIECE_PB1, l03.PIECE_G1, l03.PIECE_S1, l03.PIECE_PS1, l03.PIECE_PN1, l03.PIECE_PL1,
-		l03.PIECE_PP1, l03.PIECE_K2, l03.PIECE_PR2, l03.PIECE_B2, l03.PIECE_PB2, l03.PIECE_S2:
+	case l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_G1.ToCodeOfPc(), l03.PIECE_S1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc(), l03.PIECE_PN1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc(),
+		l03.PIECE_PP1.ToCodeOfPc(), l03.PIECE_K2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc(), l03.PIECE_B2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc(), l03.PIECE_S2.ToCodeOfPc():
 		if to := from + 9; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 左上
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -138,8 +138,8 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// 後手斜め前の動き
 	switch piece {
-	case l03.PIECE_K2, l03.PIECE_PR2, l03.PIECE_B2, l03.PIECE_PB2, l03.PIECE_G2, l03.PIECE_S2, l03.PIECE_PS2, l03.PIECE_PN2, l03.PIECE_PL2,
-		l03.PIECE_PP2, l03.PIECE_K1, l03.PIECE_PR1, l03.PIECE_B1, l03.PIECE_PB1, l03.PIECE_S1:
+	case l03.PIECE_K2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc(), l03.PIECE_B2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc(), l03.PIECE_G2.ToCodeOfPc(), l03.PIECE_S2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc(), l03.PIECE_PN2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc(),
+		l03.PIECE_PP2.ToCodeOfPc(), l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_S1.ToCodeOfPc():
 		if to := from + 11; l04.File(to) != 0 && l04.Rank(to) != 0 && pPos.Hetero(to) { // 左下
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}
@@ -152,8 +152,8 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 
 	// 横１マスの動き
 	switch piece {
-	case l03.PIECE_K1, l03.PIECE_R1, l03.PIECE_PR1, l03.PIECE_PB1, l03.PIECE_G1, l03.PIECE_PS1, l03.PIECE_PN1, l03.PIECE_PL1, l03.PIECE_PP1,
-		l03.PIECE_K2, l03.PIECE_R2, l03.PIECE_PR2, l03.PIECE_PB2, l03.PIECE_G2, l03.PIECE_PS2, l03.PIECE_PN2, l03.PIECE_PL2, l03.PIECE_PP2:
+	case l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_G1.ToCodeOfPc(), l03.PIECE_PS1.ToCodeOfPc(), l03.PIECE_PN1.ToCodeOfPc(), l03.PIECE_PL1.ToCodeOfPc(), l03.PIECE_PP1.ToCodeOfPc(),
+		l03.PIECE_K2.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc(), l03.PIECE_G2.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc(), l03.PIECE_PN2.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc():
 		if to := from + 10; l04.File(to) != 0 && pPos.Hetero(to) { // 左
 			moveEndList = append(moveEndList, NewMoveEnd(to, false))
 		}

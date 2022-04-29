@@ -407,108 +407,108 @@ func (pos *Position) DoMove(move Move) {
 	switch from {
 	case HAND_R1:
 		pos.Hands[HAND_R1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_R1
+		pos.Board[to] = l03.PIECE_R1.ToCodeOfPc()
 	case HAND_B1:
 		pos.Hands[HAND_B1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_B1
+		pos.Board[to] = l03.PIECE_B1.ToCodeOfPc()
 	case HAND_G1:
 		pos.Hands[HAND_G1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_G1
+		pos.Board[to] = l03.PIECE_G1.ToCodeOfPc()
 	case HAND_S1:
 		pos.Hands[HAND_S1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_S1
+		pos.Board[to] = l03.PIECE_S1.ToCodeOfPc()
 	case HAND_N1:
 		pos.Hands[HAND_N1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_N1
+		pos.Board[to] = l03.PIECE_N1.ToCodeOfPc()
 	case HAND_L1:
 		pos.Hands[HAND_L1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_L1
+		pos.Board[to] = l03.PIECE_L1.ToCodeOfPc()
 	case HAND_P1:
 		pos.Hands[HAND_P1-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_P1
+		pos.Board[to] = l03.PIECE_P1.ToCodeOfPc()
 	case HAND_R2:
 		pos.Hands[HAND_R2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_R2
+		pos.Board[to] = l03.PIECE_R2.ToCodeOfPc()
 	case HAND_B2:
 		pos.Hands[HAND_B2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_B2
+		pos.Board[to] = l03.PIECE_B2.ToCodeOfPc()
 	case HAND_G2:
 		pos.Hands[HAND_G2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_G2
+		pos.Board[to] = l03.PIECE_G2.ToCodeOfPc()
 	case HAND_S2:
 		pos.Hands[HAND_S2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_S2
+		pos.Board[to] = l03.PIECE_S2.ToCodeOfPc()
 	case HAND_N2:
 		pos.Hands[HAND_N2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_N2
+		pos.Board[to] = l03.PIECE_N2.ToCodeOfPc()
 	case HAND_L2:
 		pos.Hands[HAND_L2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_L2
+		pos.Board[to] = l03.PIECE_L2.ToCodeOfPc()
 	case HAND_P2:
 		pos.Hands[HAND_P2-HAND_ORIGIN] -= 1
-		pos.Board[to] = l03.PIECE_P2
+		pos.Board[to] = l03.PIECE_P2.ToCodeOfPc()
 	default:
 		// あれば、取った駒
 		captured := pos.Board[to]
 		pos.Board[to] = pos.Board[from]
-		pos.Board[from] = l03.PIECE_EMPTY
+		pos.Board[from] = l03.PIECE_EMPTY.ToCodeOfPc()
 		switch captured {
-		case l03.PIECE_EMPTY: // Ignored
-		case l03.PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY.ToCodeOfPc(): // Ignored
+		case l03.PIECE_K1.ToCodeOfPc(): // Second player win
 			// Lost first king
-		case l03.PIECE_R1:
+		case l03.PIECE_R1.ToCodeOfPc():
 			pos.Hands[HAND_R2-HAND_ORIGIN] += 1
-		case l03.PIECE_B1:
+		case l03.PIECE_B1.ToCodeOfPc():
 			pos.Hands[HAND_B2-HAND_ORIGIN] += 1
-		case l03.PIECE_G1:
+		case l03.PIECE_G1.ToCodeOfPc():
 			pos.Hands[HAND_G2-HAND_ORIGIN] += 1
-		case l03.PIECE_S1:
+		case l03.PIECE_S1.ToCodeOfPc():
 			pos.Hands[HAND_S2-HAND_ORIGIN] += 1
-		case l03.PIECE_N1:
+		case l03.PIECE_N1.ToCodeOfPc():
 			pos.Hands[HAND_N2-HAND_ORIGIN] += 1
-		case l03.PIECE_L1:
+		case l03.PIECE_L1.ToCodeOfPc():
 			pos.Hands[HAND_L2-HAND_ORIGIN] += 1
-		case l03.PIECE_P1:
+		case l03.PIECE_P1.ToCodeOfPc():
 			pos.Hands[HAND_P2-HAND_ORIGIN] += 1
-		case l03.PIECE_PR1:
+		case l03.PIECE_PR1.ToCodeOfPc():
 			pos.Hands[HAND_R2-HAND_ORIGIN] += 1
-		case l03.PIECE_PB1:
+		case l03.PIECE_PB1.ToCodeOfPc():
 			pos.Hands[HAND_B2-HAND_ORIGIN] += 1
-		case l03.PIECE_PS1:
+		case l03.PIECE_PS1.ToCodeOfPc():
 			pos.Hands[HAND_S2-HAND_ORIGIN] += 1
-		case l03.PIECE_PN1:
+		case l03.PIECE_PN1.ToCodeOfPc():
 			pos.Hands[HAND_N2-HAND_ORIGIN] += 1
-		case l03.PIECE_PL1:
+		case l03.PIECE_PL1.ToCodeOfPc():
 			pos.Hands[HAND_L2-HAND_ORIGIN] += 1
-		case l03.PIECE_PP1:
+		case l03.PIECE_PP1.ToCodeOfPc():
 			pos.Hands[HAND_P2-HAND_ORIGIN] += 1
-		case l03.PIECE_K2: // First player win
+		case l03.PIECE_K2.ToCodeOfPc(): // First player win
 			// Lost second king
-		case l03.PIECE_R2:
+		case l03.PIECE_R2.ToCodeOfPc():
 			pos.Hands[HAND_R1-HAND_ORIGIN] += 1
-		case l03.PIECE_B2:
+		case l03.PIECE_B2.ToCodeOfPc():
 			pos.Hands[HAND_B1-HAND_ORIGIN] += 1
-		case l03.PIECE_G2:
+		case l03.PIECE_G2.ToCodeOfPc():
 			pos.Hands[HAND_G1-HAND_ORIGIN] += 1
-		case l03.PIECE_S2:
+		case l03.PIECE_S2.ToCodeOfPc():
 			pos.Hands[HAND_S1-HAND_ORIGIN] += 1
-		case l03.PIECE_N2:
+		case l03.PIECE_N2.ToCodeOfPc():
 			pos.Hands[HAND_N1-HAND_ORIGIN] += 1
-		case l03.PIECE_L2:
+		case l03.PIECE_L2.ToCodeOfPc():
 			pos.Hands[HAND_L1-HAND_ORIGIN] += 1
-		case l03.PIECE_P2:
+		case l03.PIECE_P2.ToCodeOfPc():
 			pos.Hands[HAND_P1-HAND_ORIGIN] += 1
-		case l03.PIECE_PR2:
+		case l03.PIECE_PR2.ToCodeOfPc():
 			pos.Hands[HAND_R1-HAND_ORIGIN] += 1
-		case l03.PIECE_PB2:
+		case l03.PIECE_PB2.ToCodeOfPc():
 			pos.Hands[HAND_B1-HAND_ORIGIN] += 1
-		case l03.PIECE_PS2:
+		case l03.PIECE_PS2.ToCodeOfPc():
 			pos.Hands[HAND_S1-HAND_ORIGIN] += 1
-		case l03.PIECE_PN2:
+		case l03.PIECE_PN2.ToCodeOfPc():
 			pos.Hands[HAND_N1-HAND_ORIGIN] += 1
-		case l03.PIECE_PL2:
+		case l03.PIECE_PL2.ToCodeOfPc():
 			pos.Hands[HAND_L1-HAND_ORIGIN] += 1
-		case l03.PIECE_PP2:
+		case l03.PIECE_PP2.ToCodeOfPc():
 			pos.Hands[HAND_P1-HAND_ORIGIN] += 1
 		default:
 			fmt.Printf("Error: 知らん駒を取ったぜ（＾～＾） captured=[%s]", captured)

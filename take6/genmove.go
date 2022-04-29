@@ -18,7 +18,7 @@ func GenMoveList(pPos *Position) []l04.Move {
 				piece := pPos.Board[from]
 
 				switch piece {
-				case l03.PIECE_K1, l03.PIECE_K2: // 先手玉, 後手玉
+				case l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_K2.ToCodeOfPc(): // 先手玉, 後手玉
 					if to := l04.Square(from + 9); to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左上
 						move_list = append(move_list, l04.NewMove(from, to, false))
 					}
