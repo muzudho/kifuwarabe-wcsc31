@@ -28,40 +28,40 @@ const (
 )
 
 // What - 先後のない駒種類を返します。
-func What(piece string) PieceType {
+func What(piece l03.Piece) PieceType {
 	switch piece {
-	case l03.PIECE_EMPTY.ToCodeOfPc(): // 空きマス
+	case l03.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY
-	case l03.PIECE_K1.ToCodeOfPc(), l03.PIECE_K2.ToCodeOfPc():
+	case l03.PIECE_K1, l03.PIECE_K2:
 		return PIECE_TYPE_K
-	case l03.PIECE_R1.ToCodeOfPc(), l03.PIECE_R2.ToCodeOfPc():
+	case l03.PIECE_R1, l03.PIECE_R2:
 		return PIECE_TYPE_R
-	case l03.PIECE_B1.ToCodeOfPc(), l03.PIECE_B2.ToCodeOfPc():
+	case l03.PIECE_B1, l03.PIECE_B2:
 		return PIECE_TYPE_B
-	case l03.PIECE_G1.ToCodeOfPc(), l03.PIECE_G2.ToCodeOfPc():
+	case l03.PIECE_G1, l03.PIECE_G2:
 		return PIECE_TYPE_G
-	case l03.PIECE_S1.ToCodeOfPc(), l03.PIECE_S2.ToCodeOfPc():
+	case l03.PIECE_S1, l03.PIECE_S2:
 		return PIECE_TYPE_S
-	case l03.PIECE_N1.ToCodeOfPc(), l03.PIECE_N2.ToCodeOfPc():
+	case l03.PIECE_N1, l03.PIECE_N2:
 		return PIECE_TYPE_N
-	case l03.PIECE_L1.ToCodeOfPc(), l03.PIECE_L2.ToCodeOfPc():
+	case l03.PIECE_L1, l03.PIECE_L2:
 		return PIECE_TYPE_L
-	case l03.PIECE_P1.ToCodeOfPc(), l03.PIECE_P2.ToCodeOfPc():
+	case l03.PIECE_P1, l03.PIECE_P2:
 		return PIECE_TYPE_P
-	case l03.PIECE_PR1.ToCodeOfPc(), l03.PIECE_PR2.ToCodeOfPc():
+	case l03.PIECE_PR1, l03.PIECE_PR2:
 		return PIECE_TYPE_PR
-	case l03.PIECE_PB1.ToCodeOfPc(), l03.PIECE_PB2.ToCodeOfPc():
+	case l03.PIECE_PB1, l03.PIECE_PB2:
 		return PIECE_TYPE_PB
-	case l03.PIECE_PS1.ToCodeOfPc(), l03.PIECE_PS2.ToCodeOfPc():
+	case l03.PIECE_PS1, l03.PIECE_PS2:
 		return PIECE_TYPE_PS
-	case l03.PIECE_PN1.ToCodeOfPc(), l03.PIECE_PN2.ToCodeOfPc():
+	case l03.PIECE_PN1, l03.PIECE_PN2:
 		return PIECE_TYPE_PN
-	case l03.PIECE_PL1.ToCodeOfPc(), l03.PIECE_PL2.ToCodeOfPc():
+	case l03.PIECE_PL1, l03.PIECE_PL2:
 		return PIECE_TYPE_PL
-	case l03.PIECE_PP1.ToCodeOfPc(), l03.PIECE_PP2.ToCodeOfPc():
+	case l03.PIECE_PP1, l03.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
-		panic(fmt.Errorf("unknown piece=[%s]", piece))
+		panic(fmt.Errorf("unknown piece=[%s]", piece.ToCodeOfPc()))
 	}
 }
 

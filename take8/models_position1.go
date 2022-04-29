@@ -2,7 +2,10 @@ package take8
 
 import l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 
-// GetLongPiece - 長い利きの駒の場所を取得
-func (pPos *Position) GetLocationOfLongPiece(index int) l03.Square {
-	return pPos.PieceLocations[index]
+func (pPos *Position) GetPieceAtSq(sq l03.Square) l03.Piece {
+	return pPos.Board[sq]
+}
+
+func (pPos *Position) GetPieceAtIndex(idx int) l03.Piece {
+	return pPos.Board[idx]
 }

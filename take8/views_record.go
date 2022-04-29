@@ -1,10 +1,14 @@
 package take8
 
-import "fmt"
+import (
+	"fmt"
+
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+)
 
 type positionForRecord interface {
 	GetOffsetMoveIndex() int
-	GetNameOfCapturedPieceAtMovesIndex(movesIndex int) string
+	GetCapturedPieceAtMovesIndex(movesIndex int) l03.Piece
 	GetMoveAtMovesIndex(movesIndex int) Move
 }
 
@@ -17,7 +21,7 @@ func SprintRecord(pPos positionForRecord) string {
 	for i := 0; i < max; i += 1 {
 		record_text = append(record_text, pPos.GetMoveAtMovesIndex(i).ToCodeOfM()...)
 		record_text = append(record_text, ' ')
-		record_text = append(record_text, pPos.GetNameOfCapturedPieceAtMovesIndex(i)...)
+		record_text = append(record_text, []byte(pPos.GetCapturedPieceAtMovesIndex(i).ToCodeOfPc())...)
 		record_text = append(record_text, '\n')
 	}
 
