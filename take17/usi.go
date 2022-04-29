@@ -41,6 +41,7 @@ func MainLoop() {
 
 	// アプリケーション変数の生成
 	App = *new(l01.Lesson01App)
+	App.IsDebug = false
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -174,49 +175,60 @@ MainLoop:
 				}
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("gameover win\n")
-				App.Out.Debug("gameover lose\n")
-				App.Out.Debug("gameover draw\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("gameover win\n")
+					App.Out.Debug("gameover lose\n")
+					App.Out.Debug("gameover draw\n")
+				}
 			}
+
 		// 以下、きふわらべ独自拡張コマンド
 		case "pos":
 			// 局面表示
 			length := len(tokens)
 			ok := false
 			if length == 1 {
-				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-					pNerve.PPosSys.phase,
-					pNerve.PRecord.StartMovesNum,
-					pNerve.PRecord.OffsetMovesIndex))
-				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-				App.Out.Debug(pNerve.SprintBoardFooter())
-				ok = true
+				if App.IsDebug {
+					// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+						pNerve.PPosSys.phase,
+						pNerve.PRecord.StartMovesNum,
+						pNerve.PRecord.OffsetMovesIndex))
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+					App.Out.Debug(pNerve.SprintBoardFooter())
+				}
+
 				ok = true
 			} else if length == 2 {
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				} else {
-					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
-						pNerve.PPosSys.phase,
-						pNerve.PRecord.StartMovesNum,
-						pNerve.PRecord.OffsetMovesIndex))
-					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
-					App.Out.Debug(pNerve.SprintBoardFooter())
+					if App.IsDebug {
+						App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
+							pNerve.PPosSys.phase,
+							pNerve.PRecord.StartMovesNum,
+							pNerve.PRecord.OffsetMovesIndex))
+						App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
+						App.Out.Debug(pNerve.SprintBoardFooter())
+					}
 					ok = true
 				}
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("pos\n")
-				App.Out.Debug("pos {boardNumber}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("pos\n")
+					App.Out.Debug("pos {boardNumber}\n")
+				}
 			}
 		case "do":
 			// １手指すぜ（＾～＾）
@@ -224,12 +236,14 @@ MainLoop:
 			i := 3
 			var move, err = l15.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
-				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-					pNerve.PPosSys.phase,
-					pNerve.PRecord.StartMovesNum,
-					pNerve.PRecord.OffsetMovesIndex))
-				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-				App.Out.Debug(pNerve.SprintBoardFooter())
+				if App.IsDebug {
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+						pNerve.PPosSys.phase,
+						pNerve.PRecord.StartMovesNum,
+						pNerve.PRecord.OffsetMovesIndex))
+					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+					App.Out.Debug(pNerve.SprintBoardFooter())
+				}
 				panic(err)
 			}
 
@@ -243,18 +257,22 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 利きの表示（＾～＾）
-				App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM1))
-				App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM2))
+				if App.IsDebug {
+					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM1))
+					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_SUM2))
+				}
 				ok = true
 			} else if length == 2 && tokens[1] == "test" {
 				// 利きのテスト
 				// 現局面の利きを覚え、ムーブ、アンドゥを行って
 				// 元の利きに戻るか確認
 				is_error, message := TestControl(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
-				if is_error {
-					App.Out.Debug("ControlTest: error=%s\n", message)
-					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
-					App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
+				if App.IsDebug {
+					if is_error {
+						App.Out.Debug("ControlTest: error=%s\n", message)
+						App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR1))
+						App.Out.Debug(pNerve.PCtrlBrdSys.SprintControl(CONTROL_LAYER_TEST_ERROR2))
+					}
 				}
 				ok = true
 			} else if length == 5 && tokens[1] == "diff" {
@@ -314,18 +332,22 @@ MainLoop:
 				// 現局面の利きを覚え、ムーブ、アンドゥを行って
 				// 元の利きに戻るか確認
 				sumList := SumAbsControl(pNerve, ControlLayerT(c1), ControlLayerT(c2))
-				App.Out.Debug("ControlTest: SumAbs=%d,%d\n", sumList[0], sumList[1])
+				if App.IsDebug {
+					App.Out.Debug("ControlTest: SumAbs=%d,%d\n", sumList[0], sumList[1])
+				}
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("control\n")
-				App.Out.Debug("control layer {number}\n")
-				App.Out.Debug("control recalc {number} {number}\n")
-				App.Out.Debug("control diff {layer_number} {layer_number} {layer_number}\n")
-				App.Out.Debug("control sumabs {number} {number}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("control\n")
+					App.Out.Debug("control layer {number}\n")
+					App.Out.Debug("control recalc {number} {number}\n")
+					App.Out.Debug("control diff {layer_number} {layer_number} {layer_number}\n")
+					App.Out.Debug("control sumabs {number} {number}\n")
+				}
 			}
 		case "location":
 			length := len(tokens)
@@ -334,36 +356,52 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
-				// あの駒、どこにいんの（＾～＾）？
-				App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[PosLayerT(b1)]))
+				if App.IsDebug {
+					// あの駒、どこにいんの（＾～＾）？
+					App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[PosLayerT(b1)]))
+				}
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("location {boardLayerIndex}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("location {boardLayerIndex}\n")
+				}
 			}
 		case "sfen":
-			// SFEN文字列返せよ（＾～＾）
-			App.Out.Debug(sprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord))
+			if App.IsDebug {
+				// SFEN文字列返せよ（＾～＾）
+				App.Out.Debug(sprintSfenResignation(pNerve.PPosSys, pNerve.PPosSys.PPosition[POS_LAYER_MAIN], pNerve.PRecord))
+			}
 		case "record":
-			// 棋譜表示。取った駒を表示するためのもの（＾～＾）
-			App.Out.Debug(sprintRecord(pNerve.PRecord))
+			if App.IsDebug {
+				// 棋譜表示。取った駒を表示するためのもの（＾～＾）
+				App.Out.Debug(sprintRecord(pNerve.PRecord))
+			}
 		case "movelist":
-			// 指し手の一覧
-			moveList(pNerve)
+			if App.IsDebug {
+				// 指し手の一覧
+				moveList(pNerve)
+			}
 		case "dump":
-			// 変数を全部出力してくれだぜ（＾～＾）
-			App.Out.Debug("PositionSystem.Dump()\n")
-			App.Out.Debug("---------------\n%s", pNerve.Dump())
+			if App.IsDebug {
+				// 変数を全部出力してくれだぜ（＾～＾）
+				App.Out.Debug("PositionSystem.Dump()\n")
+				App.Out.Debug("---------------\n%s", pNerve.Dump())
+			}
 		case "playout":
 			// とにかく手を進めるぜ（＾～＾）
 			// 時間の計測は リリース・モードでやれだぜ（＾～＾）
-			App.Out.Debug("Playout start\n")
+			if App.IsDebug {
+				App.Out.Debug("Playout start\n")
+			}
 			start := time.Now()
 
 		PlayoutLoop:
@@ -371,14 +409,17 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < l04.MOVES_SIZE; i += 1 {
-					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-						pNerve.PPosSys.phase,
-						pNerve.PRecord.StartMovesNum,
-						pNerve.PRecord.OffsetMovesIndex))
-					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-					App.Out.Debug(pNerve.SprintBoardFooter())
-					// あの駒、どこにいんの（＾～＾）？
-					// App.Out.Debug(SprintLocation(pNerve.PPosSys))
+
+					if App.IsDebug {
+						App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+							pNerve.PPosSys.phase,
+							pNerve.PRecord.StartMovesNum,
+							pNerve.PRecord.OffsetMovesIndex))
+						App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+						App.Out.Debug(pNerve.SprintBoardFooter())
+						// あの駒、どこにいんの（＾～＾）？
+						// App.Out.Debug(SprintLocation(pNerve.PPosSys))
+					}
 
 					// moveList(pNerve.PPosSys)
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
@@ -400,7 +441,11 @@ MainLoop:
 			}
 
 			end := time.Now()
-			App.Out.Debug("Playout finished。%f seconds\n", (end.Sub(start)).Seconds())
+
+			if App.IsDebug {
+				App.Out.Debug("Playout finished。%f seconds\n", (end.Sub(start)).Seconds())
+			}
+
 		case "shuffle":
 			ShuffleBoard(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		case "count":
@@ -412,12 +457,16 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b2, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				copyBoard(pNerve.PPosSys.PPosition[b1], pNerve.PPosSys.PPosition[b2])
@@ -427,10 +476,12 @@ MainLoop:
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("board copy {boardLayerIndex} {boardLayerIndex}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("board copy {boardLayerIndex} {boardLayerIndex}\n")
+				}
 			}
 		case "posdiff":
 			length := len(tokens)
@@ -439,22 +490,28 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b2, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, PosLayerT(b1), PosLayerT(b2), pNerve.PRecord))
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("posdiff {boardIndex1} {boardIndex2}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("posdiff {boardIndex1} {boardIndex2}\n")
+				}
 			}
 		case "error":
 			// 2つのものを比較して、違いが何個あったか返すぜ（＾ｑ＾）
@@ -465,41 +522,57 @@ MainLoop:
 				// 盤番号
 				b0, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b1, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b2, err := strconv.Atoi(tokens[4])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						if App.IsDebug {
+							App.Out.Debug("Error: %s", err)
+						}
+					}
 				}
 
 				b3, err := strconv.Atoi(tokens[5])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				errorNum := errorBoard(pNerve.PPosSys.PPosition[b0], pNerve.PPosSys.PPosition[b1], pNerve.PPosSys.PPosition[b2], pNerve.PPosSys.PPosition[b3])
 				if errorNum == 0 {
-					App.Out.Debug("ok\n")
+					if App.IsDebug {
+						App.Out.Debug("ok\n")
+					}
 				} else {
-					App.Out.Debug("error=%d\n", errorNum)
+					if App.IsDebug {
+						App.Out.Debug("error=%d\n", errorNum)
+					}
 				}
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("error board {*1} {*2} {*3} {*4}\n")
-				App.Out.Debug("    *1 boardLayerIndex Compare 1\n")
-				App.Out.Debug("    *2 boardLayerIndex Compare 2\n")
-				App.Out.Debug("    *3 boardLayerIndex Temp\n")
-				App.Out.Debug("    *4 boardLayerIndex Temp\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("error board {*1} {*2} {*3} {*4}\n")
+					App.Out.Debug("    *1 boardLayerIndex Compare 1\n")
+					App.Out.Debug("    *2 boardLayerIndex Compare 2\n")
+					App.Out.Debug("    *3 boardLayerIndex Temp\n")
+					App.Out.Debug("    *4 boardLayerIndex Temp\n")
+				}
 			}
 		case "watercolor":
 			// 水彩絵の具でにじませたような、利きボード作り
@@ -510,27 +583,37 @@ MainLoop:
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b2, err := strconv.Atoi(tokens[2])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b3, err := strconv.Atoi(tokens[3])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b4, err := strconv.Atoi(tokens[4])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				b5, err := strconv.Atoi(tokens[5])
 				if err != nil {
-					App.Out.Debug("Error: %s", err)
+					if App.IsDebug {
+						App.Out.Debug("Error: %s", err)
+					}
 				}
 
 				WaterColor(
@@ -542,19 +625,23 @@ MainLoop:
 				ok = true
 			}
 
-			if !ok {
-				App.Out.Debug("Format\n")
-				App.Out.Debug("------\n")
-				App.Out.Debug("watercolor {control1} {control2} {control3} {control4} {control5}\n")
+			if App.IsDebug {
+				if !ok {
+					App.Out.Debug("Format\n")
+					App.Out.Debug("------\n")
+					App.Out.Debug("watercolor {control1} {control2} {control3} {control4} {control5}\n")
+				}
 			}
 		case "dev":
 			// 乱数のタネを0固定（＾～＾）
 			rand.Seed(0)
 		case "value":
-			// 現局面の評価値を表示（＾～＾）
-			App.Out.Debug("Value\n")
-			App.Out.Debug("-----\n")
-			App.Out.Debug("MaterialValue=%d\n", pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
+			if App.IsDebug {
+				// 現局面の評価値を表示（＾～＾）
+				App.Out.Debug("Value\n")
+				App.Out.Debug("-----\n")
+				App.Out.Debug("MaterialValue=%d\n", pNerve.PPosSys.PPosition[POS_LAYER_MAIN].MaterialValue)
+			}
 		case "":
 			// Ignored
 		default:
@@ -573,32 +660,40 @@ MainLoop:
 
 // moveList - 指し手リスト出力
 func moveList(pNerve *Nerve) {
-	App.Out.Debug("MoveList\n")
-	App.Out.Debug("--------\n")
+	if App.IsDebug {
+		App.Out.Debug("MoveList\n")
+		App.Out.Debug("--------\n")
+	}
 	move_list := GenMoveList(pNerve, pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 	for i, move := range move_list {
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		pNerve.DoMove(pPos, move)
-		App.Out.Debug("(%3d) %-5s . %11d value\n", i, move.ToCodeOfM(), pPos.MaterialValue)
+		if App.IsDebug {
+			App.Out.Debug("(%3d) %-5s . %11d value\n", i, move.ToCodeOfM(), pPos.MaterialValue)
+		}
 		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		// App.Out.Debug("(%3d) Undo  . %11d value\n", i, pPos.MaterialValue) // Debug
 	}
-	App.Out.Debug("* Except for those to be removed during the search\n")
+	if App.IsDebug {
+		App.Out.Debug("* Except for those to be removed during the search\n")
+	}
 }
 
 // ShowAllPiecesCount - 駒の枚数表示
 func ShowAllPiecesCount(pPos *l15.Position) {
 	countList := CountAllPieces(pPos)
-	App.Out.Debug("Count\n")
-	App.Out.Debug("-----\n")
-	App.Out.Debug("King  :%3d\n", countList[0])
-	App.Out.Debug("Rook  :%3d\n", countList[1])
-	App.Out.Debug("Bishop:%3d\n", countList[2])
-	App.Out.Debug("Gold  :%3d\n", countList[3])
-	App.Out.Debug("Silver:%3d\n", countList[4])
-	App.Out.Debug("Knight:%3d\n", countList[5])
-	App.Out.Debug("Lance :%3d\n", countList[6])
-	App.Out.Debug("Pawn  :%3d\n", countList[7])
-	App.Out.Debug("----------\n")
-	App.Out.Debug("Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+	if App.IsDebug {
+		App.Out.Debug("Count\n")
+		App.Out.Debug("-----\n")
+		App.Out.Debug("King  :%3d\n", countList[0])
+		App.Out.Debug("Rook  :%3d\n", countList[1])
+		App.Out.Debug("Bishop:%3d\n", countList[2])
+		App.Out.Debug("Gold  :%3d\n", countList[3])
+		App.Out.Debug("Silver:%3d\n", countList[4])
+		App.Out.Debug("Knight:%3d\n", countList[5])
+		App.Out.Debug("Lance :%3d\n", countList[6])
+		App.Out.Debug("Pawn  :%3d\n", countList[7])
+		App.Out.Debug("----------\n")
+		App.Out.Debug("Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+	}
 }

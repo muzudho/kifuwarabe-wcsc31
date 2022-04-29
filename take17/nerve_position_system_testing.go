@@ -297,12 +297,14 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 	pNerve.PRecord.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(pPos.SprintBoardHeader(
-		pNerve.PPosSys.phase,
-		pNerve.PRecord.StartMovesNum,
-		pNerve.PRecord.OffsetMovesIndex))
-	App.Out.Debug(pPos.SprintBoard())
-	App.Out.Debug(pNerve.SprintBoardFooter())
+	if App.IsDebug {
+		App.Out.Debug(pPos.SprintBoardHeader(
+			pNerve.PPosSys.phase,
+			pNerve.PRecord.StartMovesNum,
+			pNerve.PRecord.OffsetMovesIndex))
+		App.Out.Debug(pPos.SprintBoard())
+		App.Out.Debug(pNerve.SprintBoardFooter())
+	}
 
 	if false {
 		var countList [8]int
@@ -355,39 +357,47 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 			countList = CountAllPieces(pPos)
 		}
 
-		App.Out.Debug("#Count\n")
-		App.Out.Debug("#-----\n")
-		App.Out.Debug("#King  :%3d\n", countList[0])
-		App.Out.Debug("#Rook  :%3d\n", countList[1])
-		App.Out.Debug("#Bishop:%3d\n", countList[2])
-		App.Out.Debug("#Gold  :%3d\n", countList[3])
-		App.Out.Debug("#Silver:%3d\n", countList[4])
-		App.Out.Debug("#Knight:%3d\n", countList[5])
-		App.Out.Debug("#Lance :%3d\n", countList[6])
-		App.Out.Debug("#Pawn  :%3d\n", countList[7])
-		App.Out.Debug("#----------\n")
-		App.Out.Debug("#Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+		if App.IsDebug {
+			App.Out.Debug("#Count\n")
+			App.Out.Debug("#-----\n")
+			App.Out.Debug("#King  :%3d\n", countList[0])
+			App.Out.Debug("#Rook  :%3d\n", countList[1])
+			App.Out.Debug("#Bishop:%3d\n", countList[2])
+			App.Out.Debug("#Gold  :%3d\n", countList[3])
+			App.Out.Debug("#Silver:%3d\n", countList[4])
+			App.Out.Debug("#Knight:%3d\n", countList[5])
+			App.Out.Debug("#Lance :%3d\n", countList[6])
+			App.Out.Debug("#Pawn  :%3d\n", countList[7])
+			App.Out.Debug("#----------\n")
+			App.Out.Debug("#Total :%3d\n", countList[0]+countList[1]+countList[2]+countList[3]+countList[4]+countList[5]+countList[6]+countList[7])
+		}
 	} else {
 		ShowAllPiecesCount(pPos)
 	}
 
 	// position sfen 文字列を取得
 	command := sprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
-	App.Out.Debug("#command=%s", command)
+	if App.IsDebug {
+		App.Out.Debug("#command=%s", command)
+	}
 
 	// 利きの再計算もやってくれる
 	pNerve.ReadPosition(pPos, command)
 
-	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(pPos.SprintBoardHeader(
-		pNerve.PPosSys.phase,
-		pNerve.PRecord.StartMovesNum,
-		pNerve.PRecord.OffsetMovesIndex))
-	App.Out.Debug(pPos.SprintBoard())
-	App.Out.Debug(pNerve.SprintBoardFooter())
+	if App.IsDebug {
+		// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
+		App.Out.Debug(pPos.SprintBoardHeader(
+			pNerve.PPosSys.phase,
+			pNerve.PRecord.StartMovesNum,
+			pNerve.PRecord.OffsetMovesIndex))
+		App.Out.Debug(pPos.SprintBoard())
+		App.Out.Debug(pNerve.SprintBoardFooter())
+	}
 	ShowAllPiecesCount(pPos)
 	command2 := sprintSfenResignation(pNerve.PPosSys, pPos, pNerve.PRecord)
-	App.Out.Debug("#command2=%s", command2)
+	if App.IsDebug {
+		App.Out.Debug("#command2=%s", command2)
+	}
 
 	// 駒の数を数えます
 	countList2 := CountAllPieces(pPos)

@@ -32,6 +32,7 @@ func MainLoop() {
 
 	// アプリケーション変数の生成
 	App = *new(Lesson01App)
+	App.IsDebug = true
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")

@@ -185,15 +185,18 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 
 		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 		if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
-			// 強制終了した局面（＾～＾）
-			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-				pNerve.PPosSys.phase,
-				pNerve.PRecord.StartMovesNum,
-				pNerve.PRecord.OffsetMovesIndex))
-			App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-			App.Out.Debug(pNerve.SprintBoardFooter())
-			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
+			if App.IsDebug {
+				// 強制終了した局面（＾～＾）
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+					pNerve.PPosSys.phase,
+					pNerve.PRecord.StartMovesNum,
+					pNerve.PRecord.OffsetMovesIndex))
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				App.Out.Debug(pNerve.SprintBoardFooter())
+				// あの駒、どこにいんの（＾～＾）？
+				App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
+			}
+
 			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
 				from, i, lenOfMoves))
 			//  younger_sibling_move=%s
@@ -256,11 +259,14 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		// 異なる箇所を数えます
 		errorNum := errorBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 		if errorNum != 0 {
-			// 違いのあった局面（＾～＾）
-			App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
-			// あの駒、どこにいんの（＾～＾）？
-			App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[0]))
-			App.Out.Debug(l08.SprintLocation(pPosCopy))
+			if App.IsDebug {
+				// 違いのあった局面（＾～＾）
+				App.Out.Debug(sprintPositionDiff(pNerve.PPosSys, 0, 1, pNerve.PRecord))
+				// あの駒、どこにいんの（＾～＾）？
+				App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[0]))
+				App.Out.Debug(l08.SprintLocation(pPosCopy))
+			}
+
 			panic(App.LogNotEcho.Fatal("Error: count=%d move=%s", errorNum, move.ToCodeOfM()))
 			// younger_sibling_move=%s
 			//, ToMoveCode(younger_sibling_move)
