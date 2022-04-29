@@ -165,7 +165,7 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 	// 探索終了
 	var cutting = CuttingNone
 
-	// その手を指してみるぜ（＾～＾）
+	// すべての候補主について（＾～＾）
 	for i, move := range someMoves {
 		// TODO タイムアップ判定（＾～＾）
 		sec := pNerve.PStopwatchSearch.ElapsedSeconds()
@@ -176,26 +176,52 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		}
 
 		// App.Out.Debug("move=%s\n", move.ToCode())
-		from, _, _ := move.Destructure()
 
 		var pPosCopy *l15.Position
 		if App.IsDebug {
 			pPosCopy = subCopyBoard(pNerve)
 		}
 
-		// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
-		if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
-			if App.IsDebug {
-				subErrorBoard(pNerve)
-			}
+		from, to, _ := move.Destructure()
+		if App.IsDebug {
 
-			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
-				from, i, lenOfMoves))
-			//  younger_sibling_move=%s
-			//, ToMoveCode(younger_sibling_move)
+			// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
+			if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
+				subErrorBoard(pNerve)
+
+				panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d.",
+					from, i, lenOfMoves))
+				//  younger_sibling_move=%s
+				//, ToMoveCode(younger_sibling_move)
+			}
 		}
 
-		pNerve.DoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN], move)
+		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
+		/* TODO ★
+		{
+			// 動く駒は？
+			var movedPiece = pPos.GetPieceAtSq(from)
+			var movedPieceType = What(movedPiece)
+			switch movedPieceType{
+			case PIECE_TYPE_S:
+
+			}
+
+			// 移動先の１マス先の段
+			var southRank = l03.Rank(to) + 1
+			if 1 <= southRank {
+				// 移動先から１マス下の座標
+				var southSq = l03.FromFileRankToSq(to, southRank)
+
+				// その座標の駒は？
+				var southPiece = pPos.GetPieceAtSq(southSq)
+
+			}
+		}
+		*/
+
+		// その手を指してみるぜ（＾～＾）
+		pNerve.DoMove(pPos, move)
 		nodesNum += 1
 
 		// 取った駒は棋譜の１手前に記録されています

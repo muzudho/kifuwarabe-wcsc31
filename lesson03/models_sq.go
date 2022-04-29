@@ -34,3 +34,7 @@ func File(sq Square) Square {
 func Rank(sq Square) Square {
 	return sq % 10
 }
+
+func FromFileRankToSq(file Square, rank Square) Square {
+	return Square(file*10 + rank)
+}
