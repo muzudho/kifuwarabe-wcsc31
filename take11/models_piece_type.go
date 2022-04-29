@@ -2,7 +2,6 @@ package take11 // same take12
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -66,21 +65,21 @@ func What(piece l03.Piece) PieceType {
 }
 
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
-func WhatHand(hand l04.Square) PieceType {
+func WhatHand(hand l03.Square) PieceType {
 	switch hand {
-	case l04.SQ_R1, l04.SQ_R2:
+	case l03.SQ_R1, l03.SQ_R2:
 		return PIECE_TYPE_R
-	case l04.SQ_B1, l04.SQ_B2:
+	case l03.SQ_B1, l03.SQ_B2:
 		return PIECE_TYPE_B
-	case l04.SQ_G1, l04.SQ_G2:
+	case l03.SQ_G1, l03.SQ_G2:
 		return PIECE_TYPE_G
-	case l04.SQ_S1, l04.SQ_S2:
+	case l03.SQ_S1, l03.SQ_S2:
 		return PIECE_TYPE_S
-	case l04.SQ_N1, l04.SQ_N2:
+	case l03.SQ_N1, l03.SQ_N2:
 		return PIECE_TYPE_N
-	case l04.SQ_L1, l04.SQ_L2:
+	case l03.SQ_L1, l03.SQ_L2:
 		return PIECE_TYPE_L
-	case l04.SQ_P1, l04.SQ_P2:
+	case l03.SQ_P1, l03.SQ_P2:
 		return PIECE_TYPE_P
 	default:
 		panic(App.LogNotEcho.Fatal("unknown hand=[%d]", hand))

@@ -133,37 +133,37 @@ BoardLoop:
 	} else {
 	HandLoop:
 		for {
-			var hand_index int
+			var handSq HandSq
 			var piece = command[i]
 			switch piece {
 			case 'R':
-				hand_index = HANDSQ_R1
+				handSq = HANDSQ_R1
 			case 'B':
-				hand_index = HANDSQ_B1
+				handSq = HANDSQ_B1
 			case 'G':
-				hand_index = HANDSQ_G1
+				handSq = HANDSQ_G1
 			case 'S':
-				hand_index = HANDSQ_S1
+				handSq = HANDSQ_S1
 			case 'N':
-				hand_index = HANDSQ_N1
+				handSq = HANDSQ_N1
 			case 'L':
-				hand_index = HANDSQ_L1
+				handSq = HANDSQ_L1
 			case 'P':
-				hand_index = HANDSQ_P1
+				handSq = HANDSQ_P1
 			case 'r':
-				hand_index = HANDSQ_R2
+				handSq = HANDSQ_R2
 			case 'b':
-				hand_index = HANDSQ_B2
+				handSq = HANDSQ_B2
 			case 'g':
-				hand_index = HANDSQ_G2
+				handSq = HANDSQ_G2
 			case 's':
-				hand_index = HANDSQ_S2
+				handSq = HANDSQ_S2
 			case 'n':
-				hand_index = HANDSQ_N2
+				handSq = HANDSQ_N2
 			case 'l':
-				hand_index = HANDSQ_L2
+				handSq = HANDSQ_L2
 			case 'p':
-				hand_index = HANDSQ_P2
+				handSq = HANDSQ_P2
 			case ' ':
 				i += 1
 				break HandLoop
@@ -191,7 +191,7 @@ BoardLoop:
 				}
 			}
 
-			pos.Hands[hand_index] = number
+			pos.Hands[handSq-HANDSQ_ORIGIN] = number
 		}
 	}
 
@@ -260,9 +260,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_R1
+			pMove.Squares[0] = HANDSQ_R1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_R2
+			pMove.Squares[0] = HANDSQ_R2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -270,9 +270,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_B1
+			pMove.Squares[0] = HANDSQ_B1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_B2
+			pMove.Squares[0] = HANDSQ_B2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -280,9 +280,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_G1
+			pMove.Squares[0] = HANDSQ_G1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_G2
+			pMove.Squares[0] = HANDSQ_G2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -290,9 +290,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_S1
+			pMove.Squares[0] = HANDSQ_S1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_S2
+			pMove.Squares[0] = HANDSQ_S2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -300,9 +300,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_N1
+			pMove.Squares[0] = HANDSQ_N1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_N2
+			pMove.Squares[0] = HANDSQ_N2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -310,9 +310,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_L1
+			pMove.Squares[0] = HANDSQ_L1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_L2
+			pMove.Squares[0] = HANDSQ_L2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -320,9 +320,9 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		*i += 1
 		switch phase {
 		case FIRST:
-			pMove.Squares[0] = HANDSQ_P1
+			pMove.Squares[0] = HANDSQ_P1.ToSq()
 		case SECOND:
-			pMove.Squares[0] = HANDSQ_P2
+			pMove.Squares[0] = HANDSQ_P2.ToSq()
 		default:
 			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
@@ -391,7 +391,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 
 // DoMove - 一手指すぜ（＾～＾）
 func (pos *Position) DoMove(move Move) {
-	switch move.Squares[0] {
+	switch FromSqToHandSq(move.Squares[0]) {
 	case HANDSQ_R1:
 		pos.Hands[HANDSQ_R1-HANDSQ_ORIGIN] -= 1
 		pos.Board[move.Squares[1]] = PIECE_R1.ToCodeOfPc()

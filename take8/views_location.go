@@ -3,11 +3,11 @@ package take8
 import (
 	"fmt"
 
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 type positionForLocation interface {
-	GetLocationOfLongPiece(int) l04.Square
+	GetLocationOfLongPiece(int) l03.Square
 }
 
 // SprintLocation - あの駒どこにいんの？を表示

@@ -8,7 +8,6 @@ import (
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -25,7 +24,7 @@ type Position struct {
 	Board [BOARD_SIZE]l03.Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
-	PieceLocations [l11.PCLOC_SIZE]l04.Square
+	PieceLocations [l11.PCLOC_SIZE]l03.Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
 	Hands1 [l10.HAND_SIZE]int
 
@@ -50,7 +49,7 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l10.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -73,13 +72,13 @@ func (pPos *Position) SetToStartpos() {
 		l03.PIECE_EMPTY, l03.PIECE_N2, l03.PIECE_R2, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_B1, l03.PIECE_N1,
 		l03.PIECE_EMPTY, l03.PIECE_L2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_L1,
 	}
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l04.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
+	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l10.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 }
 
-func (pPos *Position) GetPieceLocation(index int) l04.Square {
+func (pPos *Position) GetPieceLocation(index int) l03.Square {
 	return pPos.PieceLocations[index]
 }
 
@@ -99,7 +98,7 @@ func (pPos *Position) ClearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l10.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -107,7 +106,7 @@ func (pPos *Position) ClearBoard() {
 
 // Homo - 移動元と移動先の駒を持つプレイヤーが等しければ真。移動先が空なら偽
 // 持ち駒は指定してはいけません。
-func (pPos *Position) Homo(from l04.Square, to l04.Square) bool {
+func (pPos *Position) Homo(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) == Who(pPos.Board[to])
 }
@@ -115,13 +114,13 @@ func (pPos *Position) Homo(from l04.Square, to l04.Square) bool {
 // Hetero - 移動元と移動先の駒を持つプレイヤーが異なれば真。移動先が空マスでも真
 // 持ち駒は指定してはいけません。
 // Homo の逆だぜ（＾～＾）片方ありゃいいんだけど（＾～＾）
-func (pPos *Position) Hetero(from l04.Square, to l04.Square) bool {
+func (pPos *Position) Hetero(from l03.Square, to l03.Square) bool {
 	// fmt.Printf("Debug: from=%d to=%d\n", from, to)
 	return Who(pPos.Board[from]) != Who(pPos.Board[to])
 }
 
 // IsEmptySq - 空きマスなら真。持ち駒は偽
-func (pPos *Position) IsEmptySq(sq l04.Square) bool {
+func (pPos *Position) IsEmptySq(sq l03.Square) bool {
 	if sq > 99 {
 		return false
 	}
@@ -131,28 +130,28 @@ func (pPos *Position) IsEmptySq(sq l04.Square) bool {
 // ParseMove - 指し手コマンドを解析
 func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	var len = len(command)
-	var hand_sq = l04.SQ_EMPTY
+	var hand_sq = l03.SQ_EMPTY
 
-	var from l04.Square
-	var to l04.Square
+	var from l03.Square
+	var to l03.Square
 	var pro = false
 
 	// file
 	switch ch := command[*i]; ch {
 	case 'R':
-		hand_sq = l04.SQ_R1
+		hand_sq = l03.SQ_R1
 	case 'B':
-		hand_sq = l04.SQ_B1
+		hand_sq = l03.SQ_B1
 	case 'G':
-		hand_sq = l04.SQ_G1
+		hand_sq = l03.SQ_G1
 	case 'S':
-		hand_sq = l04.SQ_S1
+		hand_sq = l03.SQ_S1
 	case 'N':
-		hand_sq = l04.SQ_N1
+		hand_sq = l03.SQ_N1
 	case 'L':
-		hand_sq = l04.SQ_L1
+		hand_sq = l03.SQ_L1
 	case 'P':
-		hand_sq = l04.SQ_P1
+		hand_sq = l03.SQ_P1
 	default:
 		// Ignored
 	}
@@ -160,7 +159,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if hand_sq != l04.SQ_EMPTY {
+	if hand_sq != l03.SQ_EMPTY {
 		*i += 1
 		switch phase {
 		case l06.FIRST:
@@ -213,7 +212,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 			}
 			*i += 1
 
-			sq := l04.Square(file*10 + rank)
+			sq := l03.Square(file*10 + rank)
 			if count == 0 {
 				from = sq
 			} else if count == 1 {
@@ -237,16 +236,16 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 }
 
 // From - 筋と段からマス番号を作成します
-func SquareFrom(file l04.Square, rank l04.Square) l04.Square {
-	return l04.Square(file*10 + rank)
+func SquareFrom(file l03.Square, rank l03.Square) l03.Square {
+	return l03.Square(file*10 + rank)
 }
 
 // OnHands - 持ち駒なら真
-func OnHands(sq l04.Square) bool {
-	return l04.SQ_HAND_START <= sq && sq < l04.SQ_HAND_END
+func OnHands(sq l03.Square) bool {
+	return l03.SQ_HAND_START <= sq && sq < l03.SQ_HAND_END
 }
 
 // OnBoard - 盤上なら真
-func OnBoard(sq l04.Square) bool {
-	return 10 < sq && sq < 100 && l04.File(sq) != 0 && l04.Rank(sq) != 0
+func OnBoard(sq l03.Square) bool {
+	return 10 < sq && sq < 100 && l03.File(sq) != 0 && l03.Rank(sq) != 0
 }

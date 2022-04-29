@@ -4,7 +4,6 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // setToStartpos - 初期局面にします。利きの計算はまだ行っていません。
@@ -22,7 +21,7 @@ func (pPos *Position) setToStartpos() {
 		l03.PIECE_EMPTY, l03.PIECE_N2, l03.PIECE_R2, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_B1, l03.PIECE_N1,
 		l03.PIECE_EMPTY, l03.PIECE_L2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_L1,
 	}
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l04.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
+	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l10.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -44,7 +43,7 @@ func (pPos *Position) clearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l04.Square{l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY, l04.SQ_EMPTY}
+	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l10.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}

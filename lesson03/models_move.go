@@ -23,7 +23,7 @@ func (move *Move) ToCodeOfM() string {
 
 	from, _, pro := move.Destructure()
 
-	switch from {
+	switch FromSqToHandSq(from) {
 	case HANDSQ_R1, HANDSQ_R2:
 		str = append(str, 'R')
 		count = 1

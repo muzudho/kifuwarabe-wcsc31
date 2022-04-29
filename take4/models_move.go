@@ -1,6 +1,10 @@
 package take4 // not same lesson03
 
-import "fmt"
+import (
+	"fmt"
+
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+)
 
 // Move - 指し手
 //
@@ -16,7 +20,7 @@ type Move uint32
 const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マスを指定してください
-func NewMove(from Square, to Square, promotion bool) Move {
+func NewMove(from l03.Square, to l03.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// ReplaceSource - 移動元マス
@@ -47,26 +51,26 @@ func (move Move) ToCodeOfM() string {
 	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)
-	switch from {
-	case HANDSQ_R1, HANDSQ_R2:
+	switch l03.FromSqToHandSq(from) {
+	case l03.HANDSQ_R1, l03.HANDSQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case HANDSQ_B1, HANDSQ_B2:
+	case l03.HANDSQ_B1, l03.HANDSQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case HANDSQ_G1, HANDSQ_G2:
+	case l03.HANDSQ_G1, l03.HANDSQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case HANDSQ_S1, HANDSQ_S2:
+	case l03.HANDSQ_S1, l03.HANDSQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case HANDSQ_N1, HANDSQ_N2:
+	case l03.HANDSQ_N1, l03.HANDSQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case HANDSQ_L1, HANDSQ_L2:
+	case l03.HANDSQ_L1, l03.HANDSQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case HANDSQ_P1, HANDSQ_P2:
+	case l03.HANDSQ_P1, l03.HANDSQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -78,7 +82,7 @@ func (move Move) ToCodeOfM() string {
 	}
 
 	for count < 2 {
-		var sq Square // マス番号
+		var sq l03.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -106,9 +110,9 @@ func (move Move) ToCodeOfM() string {
 }
 
 // Destructure - 移動元マス、移動先マス、成りの有無
-func (move Move) Destructure() (Square, Square, bool) {
-	var from = Square(uint32(move) & 0x000000ff)
-	var to = Square((uint32(move) >> 8) & 0x000000ff)
+func (move Move) Destructure() (l03.Square, l03.Square, bool) {
+	var from = l03.Square(uint32(move) & 0x000000ff)
+	var to = l03.Square((uint32(move) >> 8) & 0x000000ff)
 	var pro = (uint32(move)>>9)&0x00000001 == 1
 	return from, to, pro
 }

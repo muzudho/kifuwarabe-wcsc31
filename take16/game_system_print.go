@@ -7,7 +7,6 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -30,13 +29,13 @@ func sprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 
 	// 0段目、0筋目に駒置いてたらそれも表示（＾～＾）
 	for file := 9; file > -1; file -= 1 {
-		if !pPosSys.PPosition[b1].IsEmptySq(l04.Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(l04.Square(file*10)) {
+		if !pPosSys.PPosition[b1].IsEmptySq(l03.Square(file*10)) || !pPosSys.PPosition[b2].IsEmptySq(l03.Square(file*10)) {
 			zeroRanks[10-file] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[file*10].ToCodeOfPc(), pPosSys.PPosition[b2].Board[file*10].ToCodeOfPc())
 		}
 	}
 
 	// 0筋目
-	for rank := l04.Square(1); rank < 10; rank += 1 {
+	for rank := l03.Square(1); rank < 10; rank += 1 {
 		if !pPosSys.PPosition[b1].IsEmptySq(rank) || !pPosSys.PPosition[b2].IsEmptySq(rank) {
 			zeroFiles[rank-1] = fmt.Sprintf("%2s%2s", pPosSys.PPosition[b1].Board[rank].ToCodeOfPc(), pPosSys.PPosition[b2].Board[rank].ToCodeOfPc())
 		}
@@ -191,8 +190,8 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 	buf := make([]byte, 0, 200)
 
 	spaces := 0
-	for rank := l04.Square(1); rank < 10; rank += 1 {
-		for file := l04.Square(9); file > 0; file -= 1 {
+	for rank := l03.Square(1); rank < 10; rank += 1 {
+		for file := l03.Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[l15.SquareFrom(file, rank)]
 
 			if piece != l03.PIECE_EMPTY {

@@ -3,7 +3,7 @@ package take10
 import (
 	"fmt"
 
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // Move - 指し手
@@ -20,7 +20,7 @@ type Move uint16
 const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マスを指定してください
-func NewMove(from l04.Square, to l04.Square, promotion bool) Move {
+func NewMove(from l03.Square, to l03.Square, promotion bool) Move {
 	move := RESIGN_MOVE
 
 	// ReplaceSource - 移動元マス
@@ -59,25 +59,25 @@ func (move Move) ToCodeOfM() string {
 
 	// 移動元マス(Source square)
 	switch from {
-	case l04.SQ_R1, l04.SQ_R2:
+	case l03.SQ_R1, l03.SQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case l04.SQ_B1, l04.SQ_B2:
+	case l03.SQ_B1, l03.SQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case l04.SQ_G1, l04.SQ_G2:
+	case l03.SQ_G1, l03.SQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case l04.SQ_S1, l04.SQ_S2:
+	case l03.SQ_S1, l03.SQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case l04.SQ_N1, l04.SQ_N2:
+	case l03.SQ_N1, l03.SQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case l04.SQ_L1, l04.SQ_L2:
+	case l03.SQ_L1, l03.SQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case l04.SQ_P1, l04.SQ_P2:
+	case l03.SQ_P1, l03.SQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -90,7 +90,7 @@ func (move Move) ToCodeOfM() string {
 	}
 
 	for count < 2 {
-		var sq l04.Square // マス番号
+		var sq l03.Square // マス番号
 		if count == 0 {
 			// 移動元
 			sq = from
@@ -131,9 +131,9 @@ func (move Move) ToCodeOfM() string {
 // 成
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
-func (move Move) Destructure() (l04.Square, l04.Square, bool) {
-	var from = l04.Square(uint16(move) & 0x007f)
-	var to = l04.Square((uint16(move) & 0x3f80) >> 7)
+func (move Move) Destructure() (l03.Square, l03.Square, bool) {
+	var from = l03.Square(uint16(move) & 0x007f)
+	var to = l03.Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

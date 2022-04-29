@@ -13,8 +13,8 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -344,7 +344,7 @@ MainLoop:
 					bestmove := Search(pPosSys)
 					App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-					if bestmove == l13.Move(l04.SQ_EMPTY) {
+					if bestmove == l13.Move(l03.SQ_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}
