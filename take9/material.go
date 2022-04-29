@@ -2,8 +2,6 @@
 package take9
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
@@ -29,6 +27,6 @@ func EvalMaterial(piece l03.Piece) int16 {
 	case l03.PIECE_P1, l03.PIECE_PP1, l03.PIECE_P2, l03.PIECE_PP2: // 歩、と
 		return 100
 	default:
-		panic(fmt.Errorf("unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
 	}
 }

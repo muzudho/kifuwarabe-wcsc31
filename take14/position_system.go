@@ -325,11 +325,11 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						number *= 10
 						number += num
 					default:
-						panic(fmt.Errorf("fatal: Unknown number character=%c", piece))
+						panic(App.LogNotEcho.Fatal("fatal: Unknown number character=%c", piece))
 					}
 
 				} else {
-					panic(fmt.Errorf("fatal: unknown piece=%c", piece))
+					panic(App.LogNotEcho.Fatal("fatal: unknown piece=%c", piece))
 				}
 			}
 		}
@@ -795,7 +795,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l13.Move) {
 				case l03.SECOND:
 					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
+					panic(App.LogNotEcho.Fatal("unknown before_move_phase=%d", before_move_phase))
 				}
 			} else {
 				// 取った時
@@ -806,7 +806,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l13.Move) {
 				case l03.SECOND:
 					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
 				default:
-					panic(fmt.Errorf("unknown before_move_phase=%d", before_move_phase))
+					panic(App.LogNotEcho.Fatal("unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
@@ -978,7 +978,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		case l03.SECOND:
 			pPos.PieceLocations[l11.PCLOC_K2] = from
 		default:
-			panic(fmt.Errorf("unknown p_pos_sys.phase=%d", pPosSys.phase))
+			panic(App.LogNotEcho.Fatal("unknown p_pos_sys.phase=%d", pPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
@@ -1152,7 +1152,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			// 先手の玉
 			pPos.PieceLocations[l11.PCLOC_K1] = to
 		default:
-			panic(fmt.Errorf("unknown p_pos_sys.phase=%d", pPosSys.phase))
+			panic(App.LogNotEcho.Fatal("unknown p_pos_sys.phase=%d", pPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {

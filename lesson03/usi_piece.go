@@ -1,7 +1,5 @@
 package lesson03
 
-import "fmt"
-
 // FromCodeToPiece - 文字列からPieceを作成
 func FromCodeToPiece(piece string) Piece {
 	switch piece {
@@ -64,6 +62,6 @@ func FromCodeToPiece(piece string) Piece {
 	case "+p":
 		return PIECE_PP2
 	default:
-		panic(fmt.Errorf("unknown piece=[%s]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%s]", piece))
 	}
 }

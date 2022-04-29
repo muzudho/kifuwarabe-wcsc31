@@ -1,8 +1,6 @@
 package take14
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
@@ -71,7 +69,7 @@ func FromOpponent(phase l03.Phase, from l03.Square) bool {
 	case l03.SECOND:
 		return l03.Rank(from) > 6
 	default:
-		panic(fmt.Errorf("unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 }
 
@@ -86,7 +84,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 		var genmv_list []int
 
 		if from == l03.SQ_EMPTY {
-			panic(fmt.Errorf("GenMoveEnd has empty square"))
+			panic(App.LogNotEcho.Fatal("GenMoveEnd has empty square"))
 		} else if OnHands(from) {
 			// 打なら
 			switch from {
@@ -119,7 +117,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 			case l03.SQ_P2:
 				genmv_list = genmv_dp2
 			default:
-				panic(fmt.Errorf("unknown hand from=%d", from))
+				panic(App.LogNotEcho.Fatal("unknown hand from=%d", from))
 			}
 
 			// 打てる列（インデックスと列は等しい）。二歩チェックで使う
@@ -193,7 +191,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 				// 	}
 				// 	genmv_list = append(genmv_list, 35)
 				default:
-					panic(fmt.Errorf("Unknown step=%d", step))
+					panic(App.LogNotEcho.Fatal("Unknown step=%d", step))
 				}
 			}
 
@@ -204,7 +202,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 
 			switch piece {
 			case l03.PIECE_EMPTY:
-				panic(fmt.Errorf("Piece empty"))
+				panic(App.LogNotEcho.Fatal("Piece empty"))
 			case l03.PIECE_K1:
 				genmv_list = genmv_k1
 			case l03.PIECE_R1:
@@ -278,7 +276,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 			case l03.PIECE_PP2:
 				genmv_list = genmv_pp2
 			default:
-				panic(fmt.Errorf("unknown piece=%d", piece))
+				panic(App.LogNotEcho.Fatal("unknown piece=%d", piece))
 			}
 
 			for _, step := range genmv_list {
@@ -348,7 +346,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 						makeSide(from, promote, moveEndList)
 					}
 				default:
-					panic(fmt.Errorf("Unknown step=%d", step))
+					panic(App.LogNotEcho.Fatal("Unknown step=%d", step))
 				}
 			}
 		}
@@ -906,7 +904,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []l13.Move {
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.PBoards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(fmt.Errorf("unknown phase=%d", friend))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))
 	}
 	hand_end = hand_start + l03.HAND_TYPE_SIZE
 

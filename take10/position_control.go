@@ -2,8 +2,6 @@
 package take10
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
@@ -56,7 +54,7 @@ func GetControlLayerName(layer int) string {
 	case CONTROL_LAYER_TEST_RECALCULATION:
 		return "TestRecalc"
 	default:
-		panic(fmt.Errorf("unknown layer=%d", layer))
+		panic(App.LogNotEcho.Fatal("unknown layer=%d", layer))
 	}
 }
 
@@ -104,7 +102,7 @@ func (pPos *Position) AddControlDiff(layer int, from l03.Square, sign int8) {
 
 	piece := pPos.Board[from]
 	if piece == l03.PIECE_EMPTY {
-		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
+		panic(App.LogNotEcho.Fatal("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
 	ph := int(l03.Who(piece)) - 1

@@ -181,10 +181,10 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			pPosCopy = subCopyBoard(pNerve)
 		}
 
-		from, _, _ := move.Destructure()
 		// from, to, _ := move.Destructure()
 
 		if App.IsDebug {
+			from, _, _ := move.Destructure()
 
 			// DoMove と UndoMove を繰り返していると、ずれてくる（＾～＾）
 			if pNerve.PPosSys.PPosition[POS_LAYER_MAIN].IsEmptySq(from) {
@@ -197,29 +197,80 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			}
 		}
 
+		var isSkip = false // 悪形はスキップします
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
 		/* TODO ★
 		{
+			from, to, _ := move.Destructure()
+			// 自分の先後は？
+			var friend = pNerve.PPosSys.GetPhase()
+
 			// 動く駒は？
 			var movedPiece = pPos.GetPieceAtSq(from)
 			var movedPieceType = l03.What(movedPiece)
-			switch movedPieceType{
-			case l03.PIECE_TYPE_S:
+			switch movedPieceType {
+			case l03.PIECE_TYPE_G:
+				// 動かした駒が金なら
+
+				// 自分から見て手前を南としたときの、移動先の１マス南の段
+				var relative int
+
+				switch friend {
+				case l03.FIRST:
+					relative = 1
+				case l03.SECOND:
+					relative = -1
+				default:
+					panic(App.Log.Fatal(fmt.Sprintf("friend=[%d]", friend)))
+				}
+
+				var newFile = l03.File(to)
+				var newRank = l03.Square(int(l03.Rank(to)) + relative)
+				if App.IsDebug {
+					App.Out.Print("# newFile=%d newRank=%d\n", newFile, newRank)
+				}
+
+				if 1 <= newRank && newRank < 10 {
+					// 盤内
+					// そのマスの座標
+					var southSq = l03.FromFileRankToSq(newFile, newRank)
+					if App.IsDebug {
+						App.Out.Print("# southSq=%d\n", southSq)
+					}
+
+					// その座標の駒は？
+					var southPiece = pPos.GetPieceAtSq(southSq)
+
+					// その駒の先後は？
+					var friendPhase = l03.Who(southPiece)
+
+					if friend == friendPhase {
+						// その駒の種類は？
+						var friendPieceType = l03.What(southPiece)
+						switch friendPieceType {
+						case l03.PIECE_TYPE_S:
+							// 悪形
+							// +--+
+							// |金|
+							// +--+
+							// |銀|
+							// +--+
+							// 自金の１つ南に自銀がある形
+
+							isSkip = true // 悪形はスキップします
+						}
+					}
+
+				}
 
 			}
 
-			// 移動先の１マス先の段
-			var southRank = l03.Rank(to) + 1
-			if 1 <= southRank {
-				// 移動先から１マス下の座標
-				var southSq = l03.FromFileRankToSq(to, southRank)
-
-				// その座標の駒は？
-				var southPiece = pPos.GetPieceAtSq(southSq)
-
-			}
 		}
-		*/
+		// */
+
+		if isSkip {
+			continue
+		}
 
 		// その手を指してみるぜ（＾～＾）
 		pNerve.DoMove(pPos, move)

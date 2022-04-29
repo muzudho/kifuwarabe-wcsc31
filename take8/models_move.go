@@ -1,8 +1,6 @@
 package take8 // not same take7
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
@@ -97,7 +95,7 @@ func (move Move) ToCodeOfM() string {
 			// 移動先
 			sq = to
 		} else {
-			panic(fmt.Errorf("LogicError: count=%d", count))
+			panic(App.LogNotEcho.Fatal("LogicError: count=%d", count))
 		}
 		// 正常時は必ず２桁（＾～＾）
 		file := byte(sq / 10)

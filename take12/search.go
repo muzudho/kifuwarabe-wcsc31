@@ -1,7 +1,6 @@
 package take12
 
 import (
-	"fmt"
 	"math"
 	"math/rand"
 
@@ -87,7 +86,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 				pPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[POS_LAYER_MAIN]))
-			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
+			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, move_length, younger_sibling_move.ToCodeOfM()))
 		}
 
@@ -151,7 +150,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 					control_val = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[my_king_sq] +
 						pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_EVAL3].Board[oppo_king_sq]
 				default:
-					panic(fmt.Errorf("unknown phase=%d", pPosSys.phase))
+					panic(App.LogNotEcho.Fatal("unknown phase=%d", pPosSys.phase))
 				}
 
 				// 利き評価が強すぎると 指し手がバラけないので、乱数を使って 確率的にします。
@@ -188,7 +187,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[0]))
 			App.Out.Debug(l08.SprintLocation(pPosCopy))
-			panic(fmt.Errorf("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
+			panic(App.LogNotEcho.Fatal("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
 		}
 
 		younger_sibling_move = move

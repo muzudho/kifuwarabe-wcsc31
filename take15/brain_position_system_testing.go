@@ -270,7 +270,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 					phase = FlipPhase(phase)
 				}
 
-				pPos.Board[sq2] = l03.PieceFromPhPt(phase, pieceType)
+				pPos.Board[sq2] = l03.FromPhaseAndPieceTypeToPiece(phase, pieceType)
 			}
 		}
 

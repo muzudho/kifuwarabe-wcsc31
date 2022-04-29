@@ -207,7 +207,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 				case 1:
 					buf = append(buf, pieceString[0])
 				default:
-					panic(fmt.Errorf("LogicError: length=%d", length))
+					panic(App.LogNotEcho.Fatal("LogicError: length=%d", length))
 				}
 			} else {
 				// Space
@@ -234,7 +234,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 	case l03.SECOND:
 		phaseStr = "w"
 	default:
-		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
+		panic(App.LogNotEcho.Fatal("LogicalError: Unknows phase=[%d]", pPosSys.GetPhase()))
 	}
 
 	// 持ち駒

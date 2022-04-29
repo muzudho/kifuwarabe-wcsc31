@@ -136,7 +136,7 @@ func (pPos *Position) SprintSfen() string {
 	case l03.SECOND:
 		phaseStr = "w"
 	default:
-		panic(fmt.Errorf("LogicalError: Unknows phase=[%d]", pPos.Phase))
+		panic(App.LogNotEcho.Fatal("LogicalError: Unknows phase=[%d]", pPos.Phase))
 	}
 
 	// 持ち駒

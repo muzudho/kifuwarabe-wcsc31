@@ -197,7 +197,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 								// Ignored
 							}
 						default:
-							panic(fmt.Errorf("unknown phase=%d", phase))
+							panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 						}
 
 						if ok {
@@ -213,7 +213,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 		countList2 := CountAllPieces(pPos)
 		countError := CountErrorCountLists(countList1, countList2)
 		if countError != 0 {
-			panic(fmt.Errorf("shuffle: (1) countError=%d", countError))
+			panic(App.LogNotEcho.Fatal("shuffle: (1) countError=%d", countError))
 		}
 
 		// 駒台から盤の方向
@@ -233,7 +233,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 		countList2 = CountAllPieces(pPos)
 		countError = CountErrorCountLists(countList1, countList2)
 		if countError != 0 {
-			panic(fmt.Errorf("shuffle: (2) countError=%d", countError))
+			panic(App.LogNotEcho.Fatal("shuffle: (2) countError=%d", countError))
 		}
 	}
 
@@ -270,7 +270,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 					phase = FlipPhase(phase)
 				}
 
-				pPos.Board[sq2] = l03.PieceFromPhPt(phase, pieceType)
+				pPos.Board[sq2] = l03.FromPhaseAndPieceTypeToPiece(phase, pieceType)
 			}
 		}
 
@@ -278,7 +278,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 		countList2 := CountAllPieces(pPos)
 		countError := CountErrorCountLists(countList1, countList2)
 		if countError != 0 {
-			panic(fmt.Errorf("shuffle: (3) countError=%d", countError))
+			panic(App.LogNotEcho.Fatal("shuffle: (3) countError=%d", countError))
 		}
 	}
 
@@ -391,7 +391,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 	countList2 := CountAllPieces(pPos)
 	countError := CountErrorCountLists(countList1, countList2)
 	if countError != 0 {
-		panic(fmt.Errorf("shuffle: (4) countError=%d", countError))
+		panic(App.LogNotEcho.Fatal("shuffle: (4) countError=%d", countError))
 	}
 }
 

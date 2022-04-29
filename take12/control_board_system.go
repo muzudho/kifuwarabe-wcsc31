@@ -1,8 +1,6 @@
 package take12
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
@@ -146,7 +144,7 @@ func (pControlBoardSys *ControlBoardSystem) RecalculateControl(
 			case l03.SECOND:
 				pCB = pControlBoardSys.Boards[ph2_c1]
 			default:
-				panic(fmt.Errorf("unknown phase=%d", phase))
+				panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 			}
 
 			for _, to := range sq_list {
@@ -195,7 +193,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 
 	piece := pPos.Board[from]
 	if piece == l03.PIECE_EMPTY {
-		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
+		panic(App.LogNotEcho.Fatal("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
 	phase := l03.Who(piece)
@@ -210,7 +208,7 @@ func (pControlBoardSys *ControlBoardSystem) AddControlDiff(pPos *Position,
 	case l03.SECOND:
 		pCB = pControlBoardSys.Boards[ph2_c]
 	default:
-		panic(fmt.Errorf("unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 
 	for _, to := range sq_list {

@@ -1,8 +1,6 @@
 package take12
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
@@ -10,7 +8,7 @@ import (
 // マス番号が正常値でなければ強制終了させます
 func ValidateSq(sq l03.Square) {
 	if !OnBoard(sq) && !OnHands(sq) {
-		panic(fmt.Errorf("TestSq: sq=%d", sq))
+		panic(App.LogNotEcho.Fatal("TestSq: sq=%d", sq))
 	}
 }
 
@@ -19,7 +17,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
 	if from == l03.SQ_EMPTY {
-		panic(fmt.Errorf("GenMoveEnd has empty square"))
+		panic(App.LogNotEcho.Fatal("GenMoveEnd has empty square"))
 	} else if OnHands(from) {
 		// どこに打てるか
 		var start_rank l03.Square
@@ -42,7 +40,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(fmt.Errorf("unknown hand from=%d", from))
+			panic(App.LogNotEcho.Fatal("unknown hand from=%d", from))
 		}
 
 		switch from {
@@ -328,7 +326,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM1]
 	} else {
-		panic(fmt.Errorf("unknown phase=%d", friend))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))
 	}
 	hand_end = hand_start + l03.HAND_TYPE_SIZE
 

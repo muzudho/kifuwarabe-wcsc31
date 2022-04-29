@@ -41,7 +41,7 @@ func MainLoop() {
 
 	// アプリケーション変数の生成
 	App = *new(l01.Lesson01App)
-	App.IsDebug = false
+	App.IsDebug = true
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -113,7 +113,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			App.Out.Print("id name %sB39\n", config.Profile.Name)
+			App.Out.Print("id name %sB40\n", config.Profile.Name)
 			App.Out.Print("id author %s\n", config.Profile.Author)
 			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード

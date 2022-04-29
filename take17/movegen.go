@@ -547,7 +547,7 @@ func GenMoveList(pNerve *Nerve, pPos *l15.Position) []l13.Move {
 	move_list := []l13.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
-	friend := pNerve.PPosSys.GetPhase()
+	var friend = pNerve.PPosSys.GetPhase()
 	var friendKingSq l03.Square
 	var hand_start l03.HandIdx
 	var hand_end l03.HandIdx

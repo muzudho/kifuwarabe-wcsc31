@@ -1,7 +1,5 @@
 package lesson03
 
-import "fmt"
-
 // 先後付きの駒
 type Piece uint8
 
@@ -100,6 +98,6 @@ func (pc Piece) ToCodeOfPc() string {
 	case PIECE_PP2:
 		return "+p"
 	default:
-		panic(fmt.Errorf("unknown piece=%d", pc))
+		panic(App.LogNotEcho.Fatal("unknown piece=%d", pc))
 	}
 }

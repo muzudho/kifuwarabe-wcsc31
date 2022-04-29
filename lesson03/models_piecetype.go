@@ -1,0 +1,22 @@
+package lesson03
+
+// 先後のない駒種類
+type PieceType byte
+
+const (
+	PIECE_TYPE_EMPTY PieceType = 0 + iota // 空マス
+	PIECE_TYPE_K
+	PIECE_TYPE_R
+	PIECE_TYPE_B
+	PIECE_TYPE_G
+	PIECE_TYPE_S
+	PIECE_TYPE_N
+	PIECE_TYPE_L
+	PIECE_TYPE_P
+	PIECE_TYPE_PR
+	PIECE_TYPE_PB
+	PIECE_TYPE_PS
+	PIECE_TYPE_PN
+	PIECE_TYPE_PL
+	PIECE_TYPE_PP
+)

@@ -239,12 +239,12 @@ MovesNumLoop:
 					i += 1
 					move = append(move, ch2)
 				default:
-					panic(fmt.Errorf("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2))
+					panic(App.LogNotEcho.Fatal("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2))
 				}
 
 			default:
 				fmt.Println(Sprint(pos))
-				panic(fmt.Errorf("fatal: なんか分かんないmove（＾～＾） ch='%c' move=%s", ch, string(move)))
+				panic(App.LogNotEcho.Fatal("fatal: なんか分かんないmove（＾～＾） ch='%c' move=%s", ch, string(move)))
 			}
 
 			count += 1

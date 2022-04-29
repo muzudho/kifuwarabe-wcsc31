@@ -779,7 +779,7 @@ func (pPos *Position) AddControl(from l03.Square, sign int8) {
 
 	piece := pPos.Board[from]
 	if piece == l03.PIECE_EMPTY {
-		panic(fmt.Errorf("LogicalError: Empty square has no control"))
+		panic(App.LogNotEcho.Fatal("LogicalError: Empty square has no control"))
 	}
 
 	ph := int(l03.Who(piece)) - 1

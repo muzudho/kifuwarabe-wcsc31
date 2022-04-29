@@ -1,7 +1,6 @@
 package take13
 
 import (
-	"fmt"
 	"math/rand"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
@@ -85,7 +84,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 				pPosSys.createMovesText()))
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[POS_LAYER_MAIN]))
-			panic(fmt.Errorf("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
+			panic(App.LogNotEcho.Fatal("Move.Source(%d) has empty square. i=%d/%d. younger_sibling_move=%s",
 				from, i, moveListLen, younger_sibling_move.ToCodeOfM()))
 		}
 
@@ -153,7 +152,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 			// あの駒、どこにいんの（＾～＾）？
 			App.Out.Debug(l08.SprintLocation(pPosSys.PPosition[0]))
 			App.Out.Debug(l08.SprintLocation(pPosCopy))
-			panic(fmt.Errorf("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
+			panic(App.LogNotEcho.Fatal("error: count=%d younger_sibling_move=%s move=%s", errorNum, younger_sibling_move.ToCodeOfM(), move.ToCodeOfM()))
 		}
 
 		younger_sibling_move = move

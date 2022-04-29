@@ -1,8 +1,6 @@
 package take8
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
@@ -11,7 +9,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 	moveEndList := []MoveEnd{}
 
 	if from == l03.SQ_EMPTY {
-		panic(fmt.Errorf("GenMoveEnd has empty square"))
+		panic(App.LogNotEcho.Fatal("GenMoveEnd has empty square"))
 	} else if OnBoard(from) {
 		// 盤上の駒の利き
 		piece := pPos.Board[from]
@@ -215,7 +213,7 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 			start_rank = 1
 			end_rank = 9
 		default:
-			panic(fmt.Errorf("unknown hand from=%d", from))
+			panic(App.LogNotEcho.Fatal("unknown hand from=%d", from))
 		}
 
 		switch l03.FromSqToHandSq(from) {

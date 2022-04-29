@@ -834,7 +834,7 @@ func (pPos *Position) DoMove(move Move) {
 			case l03.SECOND:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = dst_sq_list[j]
 			default:
-				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
+				panic(App.LogNotEcho.Fatal("unknown prev_phase=%d", prev_phase))
 			}
 		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
@@ -997,7 +997,7 @@ func (pPos *Position) UndoMove() {
 			case l03.SECOND:
 				pPos.PieceLocations[PCLOC_K1:PCLOC_K2][prev_phase-1] = src_sq_list[j]
 			default:
-				panic(fmt.Errorf("unknown prev_phase=%d", prev_phase))
+				panic(App.LogNotEcho.Fatal("unknown prev_phase=%d", prev_phase))
 			}
 		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
 			for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
@@ -1054,7 +1054,7 @@ func (pPos *Position) AddControlDiff(layer int, from l03.Square, sign int8) {
 
 	piece := pPos.Board[from]
 	if piece == l03.PIECE_EMPTY {
-		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
+		panic(App.LogNotEcho.Fatal("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
 	ph := int(l03.Who(piece)) - 1

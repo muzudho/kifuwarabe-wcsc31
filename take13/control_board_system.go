@@ -1,8 +1,6 @@
 package take13
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
@@ -270,7 +268,7 @@ func ControllBoardFromPhase(
 	case l03.SECOND:
 		return pPh2_CB
 	default:
-		panic(fmt.Errorf("unknown phase=%d", phase))
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", phase))
 	}
 }
 

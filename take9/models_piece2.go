@@ -1,8 +1,6 @@
 package take9
 
 import (
-	"fmt"
-
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
@@ -37,7 +35,7 @@ func Promote(piece l03.Piece) l03.Piece {
 	case l03.PIECE_P2:
 		return l03.PIECE_PP2
 	default:
-		panic(fmt.Errorf("unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
 	}
 }
 
@@ -72,6 +70,6 @@ func Demote(piece l03.Piece) l03.Piece {
 	case l03.PIECE_PP2:
 		return l03.PIECE_P2
 	default:
-		panic(fmt.Errorf("unknown piece=[%d]", piece))
+		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
 	}
 }
