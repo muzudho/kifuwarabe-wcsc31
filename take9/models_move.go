@@ -58,7 +58,7 @@ func (move Move) ToCodeOfM() string {
 	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)
-	switch from {
+	switch Hand(from) {
 	case HAND_R1, HAND_R2:
 		str = append(str, 'R')
 		count = 1

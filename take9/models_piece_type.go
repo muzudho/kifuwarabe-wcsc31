@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // 先後のない駒種類
@@ -67,7 +66,7 @@ func What(piece l03.Piece) PieceType {
 }
 
 // WhatHand - 持ち駒のマス番号から、先後なしの駒種類を返します
-func WhatHand(hand l04.Square) PieceType {
+func WhatHand(hand Hand) PieceType {
 	switch hand {
 	case HAND_R1, HAND_R2:
 		return PIECE_TYPE_R
