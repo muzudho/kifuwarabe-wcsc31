@@ -1,6 +1,7 @@
 package take17
 
 import (
+	"fmt"
 	"math/rand"
 	"strconv"
 
@@ -199,66 +200,83 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 
 		var isSkip = false // 悪形はスキップします
 		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
-		/* TODO ★
+		//* TODO ★
 		{
 			from, to, _ := move.Destructure()
 			// 自分の先後は？
-			var friend = pNerve.PPosSys.GetPhase()
+			var turn = pNerve.PPosSys.GetPhase()
 
-			// 動く駒は？
-			var movedPiece = pPos.GetPieceAtSq(from)
-			var movedPieceType = l03.What(movedPiece)
-			switch movedPieceType {
-			case l03.PIECE_TYPE_G:
-				// 動かした駒が金なら
-
-				// 自分から見て手前を南としたときの、移動先の１マス南の段
-				var relative int
-
-				switch friend {
-				case l03.FIRST:
-					relative = 1
-				case l03.SECOND:
-					relative = -1
-				default:
-					panic(App.Log.Fatal(fmt.Sprintf("friend=[%d]", friend)))
-				}
-
-				var newFile = l03.File(to)
-				var newRank = l03.Square(int(l03.Rank(to)) + relative)
-				if App.IsDebug {
-					App.Out.Print("# newFile=%d newRank=%d\n", newFile, newRank)
-				}
-
-				if 1 <= newRank && newRank < 10 {
-					// 盤内
-					// そのマスの座標
-					var southSq = l03.FromFileRankToSq(newFile, newRank)
+			// 打のケースがあることに注意
+			if 11 <= from && from < 100 {
+				// 動く駒は？
+				var movedPiece = pPos.GetPieceAtSq(from)
+				var movedPieceType = l03.What(movedPiece)
+				switch movedPieceType {
+				case l03.PIECE_TYPE_G:
+					// 動かした駒が金なら
 					if App.IsDebug {
-						App.Out.Print("# southSq=%d\n", southSq)
+						App.Out.Print("# movePiece=%s\n", movedPiece.ToCodeOfPc())
 					}
 
-					// その座標の駒は？
-					var southPiece = pPos.GetPieceAtSq(southSq)
+					// 自分から見て手前を南としたときの、移動先の１マス南の段
+					var relative int
 
-					// その駒の先後は？
-					var friendPhase = l03.Who(southPiece)
+					switch turn {
+					case l03.FIRST:
+						relative = 1
+					case l03.SECOND:
+						relative = -1
+					default:
+						panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
+					}
 
-					if friend == friendPhase {
-						// その駒の種類は？
-						var friendPieceType = l03.What(southPiece)
-						switch friendPieceType {
-						case l03.PIECE_TYPE_S:
-							// 悪形
-							// +--+
-							// |金|
-							// +--+
-							// |銀|
-							// +--+
-							// 自金の１つ南に自銀がある形
+					var newFile = l03.File(to)
+					var newRank = l03.Square(int(l03.Rank(to)) + relative)
 
-							isSkip = true // 悪形はスキップします
+					if 1 <= newRank && newRank < 10 {
+						// 盤内
+						// if App.IsDebug {
+						// 	App.Out.Print("# newFile=%d newRank=%d\n", newFile, newRank)
+						// }
+						// 移動先マスの南の座標
+						var southSq = l03.FromFileRankToSq(newFile, newRank)
+						// その座標の駒は？
+						var southPiece = pPos.GetPieceAtSq(southSq)
+						// if App.IsDebug {
+						// 	App.Out.Print("# southSq=%d southPiece=%s\n", southSq, southPiece.ToCodeOfPc())
+						// }
+
+						// その駒の先後は？
+						var friendPhase = l03.Who(southPiece)
+						if turn == friendPhase {
+							// if App.IsDebug {
+							// 	App.Out.Print("# turn=%s friendPhase=%s\n", turn.ToCodeOfPh(), friendPhase.ToCodeOfPh())
+							// }
+
+							// その駒の種類は？
+							var friendPieceType = l03.What(southPiece)
+							// if App.IsDebug {
+							// 	App.Out.Print("# friendPieceType=%s\n", friendPieceType.ToCodeOfPt())
+							// }
+
+							switch friendPieceType {
+							case l03.PIECE_TYPE_S:
+								// 悪形
+								// +--+
+								// |金|
+								// +--+
+								// |銀|
+								// +--+
+								// 自金の１つ南に自銀がある形
+
+								isSkip = true // 悪形はスキップします
+								if App.IsDebug {
+									App.Out.Print("# Avoid Pattern 1: movedPiece=%s from=%d to=%d\n", movedPiece.ToCodeOfPc(), from, to)
+								}
+
+							}
 						}
+
 					}
 
 				}
@@ -269,60 +287,61 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		// */
 
 		if isSkip {
-			continue
-		}
-
-		// その手を指してみるぜ（＾～＾）
-		pNerve.DoMove(pPos, move)
-		nodesNum += 1
-
-		// 取った駒は棋譜の１手前に記録されています
-		captured := pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex-1]
-
-		if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
-			// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
-			// この手は見なかったことにするぜ（＾～＾）
-		} else if l03.What(captured) == l03.PIECE_TYPE_K {
-			// 玉を取るのは最善手
-			someBestMoves = nil
-			someBestMoves = append(someBestMoves, move)
-			cutting = CuttingKingCapture
-			alpha = VALUE_INFINITE_1
-		} else if search_type == SEARCH_CAPTURE && captured == l03.PIECE_EMPTY {
-			// 駒の取り合いを探索中に、駒を取らなかったら
-			// この手は見なかったことにするぜ（＾～＾）
+			// pass
 		} else {
-			// 駒を取っている場合は、探索を延長します
-			// TODO  if captured != PIECE_EMPTY
-			var search_type2 SearchType
-			if captured != l03.PIECE_EMPTY {
-				search_type2 = SEARCH_CAPTURE
-			} else {
-				search_type2 = search_type
-			}
 
-			// 再帰
-			nodeValue, _ := search(pNerve, -beta, -alpha, depth-1, search_type2)
-			var edgeValue = -nodeValue
-			// 再帰直後（＾～＾）
-			// App.Out.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
+			// その手を指してみるぜ（＾～＾）
+			pNerve.DoMove(pPos, move)
+			nodesNum += 1
 
-			// 説明変数：何か１つは指し手を選んでおかないと、投了してしまうから、最初の１手は候補に入れておけだぜ（＾～＾）
-			var isAnyOneMove = len(someBestMoves) == 0
-			// 説明変数：アルファー・アップデートしないが、同着なら配列の要素として追加
-			var isSameAlpha = alpha == edgeValue
+			// 取った駒は棋譜の１手前に記録されています
+			captured := pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex-1]
 
-			if isAnyOneMove || isSameAlpha {
-				someBestMoves = append(someBestMoves, move)
-			} else if alpha < edgeValue {
-				// アルファー・アップデート
+			if pNerve.IsCheckmate(FlipPhase(pNerve.PPosSys.phase)) {
+				// ここで指した方の玉に王手がかかるようなら、被空き王手（＾～＾）
+				// この手は見なかったことにするぜ（＾～＾）
+			} else if l03.What(captured) == l03.PIECE_TYPE_K {
+				// 玉を取るのは最善手
 				someBestMoves = nil
 				someBestMoves = append(someBestMoves, move)
-				alpha = edgeValue
-			}
-		}
+				cutting = CuttingKingCapture
+				alpha = VALUE_INFINITE_1
+			} else if search_type == SEARCH_CAPTURE && captured == l03.PIECE_EMPTY {
+				// 駒の取り合いを探索中に、駒を取らなかったら
+				// この手は見なかったことにするぜ（＾～＾）
+			} else {
+				// 駒を取っている場合は、探索を延長します
+				// TODO  if captured != PIECE_EMPTY
+				var search_type2 SearchType
+				if captured != l03.PIECE_EMPTY {
+					search_type2 = SEARCH_CAPTURE
+				} else {
+					search_type2 = search_type
+				}
 
-		pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
+				// 再帰
+				nodeValue, _ := search(pNerve, -beta, -alpha, depth-1, search_type2)
+				var edgeValue = -nodeValue
+				// 再帰直後（＾～＾）
+				// App.Out.Debug(pNerve.PPosSys.Sprint(POS_LAYER_MAIN))
+
+				// 説明変数：何か１つは指し手を選んでおかないと、投了してしまうから、最初の１手は候補に入れておけだぜ（＾～＾）
+				var isAnyOneMove = len(someBestMoves) == 0
+				// 説明変数：アルファー・アップデートしないが、同着なら配列の要素として追加
+				var isSameAlpha = alpha == edgeValue
+
+				if isAnyOneMove || isSameAlpha {
+					someBestMoves = append(someBestMoves, move)
+				} else if alpha < edgeValue {
+					// アルファー・アップデート
+					someBestMoves = nil
+					someBestMoves = append(someBestMoves, move)
+					alpha = edgeValue
+				}
+			}
+
+			pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
+		}
 
 		if App.IsDebug {
 			subErrorBoardAfterUndoMove(pNerve, pPosCopy, move)

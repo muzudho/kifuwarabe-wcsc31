@@ -11,3 +11,17 @@ const (
 	// 後手
 	SECOND
 )
+
+// ToCodeOfPh - 文字列
+func (ph Phase) ToCodeOfPh() string {
+	switch ph {
+	case ZEROTH:
+		return "Z"
+	case FIRST:
+		return "F"
+	case SECOND:
+		return "S"
+	default:
+		panic(App.LogNotEcho.Fatal("unknown phase=%d", ph))
+	}
+}

@@ -2,6 +2,7 @@ package take15
 
 import l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 
+// GetPieceAtSq - 盤上の駒を取得
 func (pPos *Position) GetPieceAtSq(sq l03.Square) l03.Piece {
 	return pPos.Board[sq]
 }

@@ -86,3 +86,9 @@ go get -u github.com/go-delve/delve/cmd/dlv
 
 [Design](./doc/design.md)  
 [Test](./doc/test.md)  
+
+# Debug
+
+```
+position startpos moves 5i5h 5a5b 7i7h 8b9b 6i7i 2c2d 1g1f 6c6d 2h1h 5b5a 3i2h 9c9d 4i3i 9b3b 2i1g 4a4b 9g9f 6a5b 1f1e 4c4d 1g2e 2d2e 5h4i
+```
