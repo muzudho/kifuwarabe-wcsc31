@@ -8,9 +8,8 @@ import (
 
 // Position - 局面
 type Position struct {
-	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board []string
+	Board []Piece
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
@@ -19,14 +18,6 @@ type Position struct {
 	MovesNum int
 	// 指し手のリスト（＾～＾）
 	Moves []Move
-}
-
-func (pPos *Position) GetPieceAtSq(sq Square) Piece {
-	return FromCodeToPiece(pPos.Board[sq])
-}
-
-func (pPos *Position) GetPieceAtIndex(idx int) Piece {
-	return FromCodeToPiece(pPos.Board[idx])
 }
 
 func NewPosition() *Position {
@@ -38,17 +29,17 @@ func NewPosition() *Position {
 // ResetToStartpos - 初期局面にします。
 func (pos *Position) ResetToStartpos() {
 	// 初期局面にします
-	pos.Board = []string{
-		"", "a", "b", "c", "d", "e", "f", "g", "h", "i",
-		"1", "l", "", "p", "", "", "", "P", "", "L",
-		"2", "n", "b", "p", "", "", "", "P", "R", "N",
-		"3", "s", "", "p", "", "", "", "P", "", "S",
-		"4", "g", "", "p", "", "", "", "P", "", "G",
-		"5", "k", "", "p", "", "", "", "P", "", "K",
-		"6", "g", "", "p", "", "", "", "P", "", "G",
-		"7", "s", "", "p", "", "", "", "P", "", "S",
-		"8", "n", "r", "p", "", "", "", "P", "B", "N",
-		"9", "l", "", "p", "", "", "", "P", "", "L",
+	pos.Board = []Piece{
+		PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY,
+		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
+		PIECE_EMPTY, PIECE_N2, PIECE_B2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_R1, PIECE_N1,
+		PIECE_EMPTY, PIECE_S2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_S1,
+		PIECE_EMPTY, PIECE_G2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_G1,
+		PIECE_EMPTY, PIECE_K2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_K1,
+		PIECE_EMPTY, PIECE_G2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_G1,
+		PIECE_EMPTY, PIECE_S2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_S1,
+		PIECE_EMPTY, PIECE_N2, PIECE_R2, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_B1, PIECE_N1,
+		PIECE_EMPTY, PIECE_L2, PIECE_EMPTY, PIECE_P2, PIECE_EMPTY, PIECE_EMPTY, PIECE_EMPTY, PIECE_P1, PIECE_EMPTY, PIECE_L1,
 	}
 	// 持ち駒の数
 	pos.Hands = []int{
@@ -82,13 +73,13 @@ BoardLoop:
 	for {
 		switch pc := command[i]; pc {
 		case 'K', 'R', 'B', 'G', 'S', 'N', 'L', 'P', 'k', 'r', 'b', 'g', 's', 'n', 'l', 'p':
-			pos.Board[file*10+rank] = FromCodeToPiece(string(pc)).ToCodeOfPc()
+			pos.Board[file*10+rank] = FromCodeToPiece(string(pc))
 			file -= 1
 			i += 1
 		case '1', '2', '3', '4', '5', '6', '7', '8', '9':
 			var spaces, _ = strconv.Atoi(string(pc))
 			for sp := 0; sp < spaces; sp += 1 {
-				pos.Board[file*10+rank] = FromCodeToPiece("").ToCodeOfPc()
+				pos.Board[file*10+rank] = FromCodeToPiece("")
 				file -= 1
 			}
 			i += 1
@@ -96,7 +87,7 @@ BoardLoop:
 			i += 1
 			switch pc2 := command[i]; pc2 {
 			case 'R', 'B', 'S', 'N', 'L', 'P', 'r', 'b', 's', 'n', 'l', 'p':
-				pos.Board[file*10+rank] = FromCodeToPiece("+" + string(pc2)).ToCodeOfPc()
+				pos.Board[file*10+rank] = FromCodeToPiece("+" + string(pc2))
 				file -= 1
 				i += 1
 			default:
@@ -402,53 +393,53 @@ func (pos *Position) DoMove(move Move) {
 	switch FromSqToHandSq(move.Squares[0]) {
 	case HANDSQ_R1:
 		pos.Hands[HANDSQ_R1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_R1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_R1
 	case HANDSQ_B1:
 		pos.Hands[HANDSQ_B1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_B1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_B1
 	case HANDSQ_G1:
 		pos.Hands[HANDSQ_G1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_G1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_G1
 	case HANDSQ_S1:
 		pos.Hands[HANDSQ_S1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_S1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_S1
 	case HANDSQ_N1:
 		pos.Hands[HANDSQ_N1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_N1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_N1
 	case HANDSQ_L1:
 		pos.Hands[HANDSQ_L1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_L1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_L1
 	case HANDSQ_P1:
 		pos.Hands[HANDSQ_P1-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_P1.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_P1
 	case HANDSQ_R2:
 		pos.Hands[HANDSQ_R2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_R2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_R2
 	case HANDSQ_B2:
 		pos.Hands[HANDSQ_B2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_B2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_B2
 	case HANDSQ_G2:
 		pos.Hands[HANDSQ_G2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_G2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_G2
 	case HANDSQ_S2:
 		pos.Hands[HANDSQ_S2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_S2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_S2
 	case HANDSQ_N2:
 		pos.Hands[HANDSQ_N2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_N2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_N2
 	case HANDSQ_L2:
 		pos.Hands[HANDSQ_L2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_L2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_L2
 	case HANDSQ_P2:
 		pos.Hands[HANDSQ_P2-HANDSQ_ORIGIN] -= 1
-		pos.Board[move.Squares[1]] = PIECE_P2.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = PIECE_P2
 	default:
 		// あれば、取った駒
 		captured := pos.GetPieceAtSq(move.Squares[1])
 		var piece2 = pos.GetPieceAtSq(move.Squares[0])
 
-		pos.Board[move.Squares[1]] = piece2.ToCodeOfPc()
-		pos.Board[move.Squares[0]] = PIECE_EMPTY.ToCodeOfPc()
+		pos.Board[move.Squares[1]] = piece2
+		pos.Board[move.Squares[0]] = PIECE_EMPTY
 		switch captured {
 		case PIECE_EMPTY: // Ignored
 		case PIECE_K1: // Second player win
@@ -508,7 +499,7 @@ func (pos *Position) DoMove(move Move) {
 		case PIECE_PP2:
 			pos.Hands[HANDSQ_P1-HANDSQ_ORIGIN] += 1
 		default:
-			fmt.Printf("Error: 知らん駒を取ったぜ（＾～＾） captured=[%s]", captured)
+			fmt.Printf("Error: 知らん駒を取ったぜ（＾～＾） captured=[%s]", captured.ToCodeOfPc())
 		}
 	}
 }
