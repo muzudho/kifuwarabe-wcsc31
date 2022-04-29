@@ -15,6 +15,7 @@ import (
 	"github.com/muzudho/kifuwarabe-wcsc31/take14"
 	"github.com/muzudho/kifuwarabe-wcsc31/take15"
 	"github.com/muzudho/kifuwarabe-wcsc31/take16"
+	"github.com/muzudho/kifuwarabe-wcsc31/take17"
 	"github.com/muzudho/kifuwarabe-wcsc31/take4"
 	"github.com/muzudho/kifuwarabe-wcsc31/take5"
 	"github.com/muzudho/kifuwarabe-wcsc31/take6"
@@ -80,9 +81,13 @@ func main() {
 		rand.Seed(time.Now().UnixNano())
 		take15.MainLoop()
 	case "lesson16":
-	default:
-		// 最終版
+		// 2021年最終版
 		rand.Seed(time.Now().UnixNano())
 		take16.MainLoop()
+	case "lesson17":
+	default:
+		// 2022年版
+		rand.Seed(time.Now().UnixNano())
+		take17.MainLoop()
 	}
 }

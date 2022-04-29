@@ -2,10 +2,11 @@
 [Profile]
 
 # エンジン名 Kifuwarabe WCSC31
-Name = 'KifuwaragoW31'
+# エンジン名 Kifuwarabe WCSC32
+Name = 'KifuwaragoW32'
 
 # エンジン著者名
-Author = 'Satoshi TAKAHASHI'
+Author = 'Takahashi Satoshi'
 
 # `Engine` - 思考エンジンが任意に利用する区画
 [Engine]
