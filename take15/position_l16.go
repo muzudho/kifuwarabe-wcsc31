@@ -165,7 +165,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 		case l06.FIRST:
 			from = hand_sq
 		case l06.SECOND:
-			from = hand_sq + l11.HAND_TYPE_SIZE
+			from = hand_sq + l11.HAND_TYPE_SIZE_SQ
 		default:
 			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}

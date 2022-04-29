@@ -550,8 +550,8 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pBrain.PPosSys.GetPhase()
 	var friendKingSq l04.Square
-	var hand_start int
-	var hand_end int
+	var hand_start l11.HandIdx
+	var hand_end l11.HandIdx
 	// var opponentKingSq l04.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == l06.FIRST {

@@ -161,7 +161,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index int = 999 //存在しない数
+			var hand_index l11.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:

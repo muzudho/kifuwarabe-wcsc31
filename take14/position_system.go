@@ -253,7 +253,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index int = 999 //存在しない数
+			var hand_index l11.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:
@@ -500,7 +500,7 @@ func ParseMove(command string, i *int, phase l06.Phase) (l13.Move, error) {
 		case l06.FIRST:
 			from = hand_sq
 		case l06.SECOND:
-			from = hand_sq + l11.HAND_TYPE_SIZE
+			from = hand_sq + l11.HAND_TYPE_SIZE_SQ
 		default:
 			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}

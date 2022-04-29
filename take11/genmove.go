@@ -317,8 +317,8 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	friend := pPosSys.GetPhase()
 	opponent := FlipPhase(pPosSys.GetPhase())
 	var friendKingSq l04.Square
-	var hand_start int
-	var hand_end int
+	var hand_start HandIdx
+	var hand_end HandIdx
 	// var opponentKingSq l04.Square
 	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
