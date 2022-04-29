@@ -5,9 +5,12 @@ import l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 type HandIdx uint
 
 // Hand piece type (先後付きの持ち駒の種類)
-// 持ち駒を打つときに利用。 0～15
+//
+// * 0～15
+// * 持ち駒を打つときに利用
+// * 駒台に玉も置ける
 const (
-	HAND_K1 HandIdx = 0 + iota // 先手玉
+	HAND_K1 HandIdx = iota // 0: 先手玉
 	HAND_R1
 	HAND_B1
 	HAND_G1
