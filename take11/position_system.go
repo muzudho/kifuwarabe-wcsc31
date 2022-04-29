@@ -7,12 +7,10 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
-
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
 
 // 盤レイヤー・インデックス型
 type PosLayerT int
@@ -81,9 +79,9 @@ type PositionSystem struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [l05.MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]l03.Piece
+	CapturedList [l05.MOVES_SIZE]l03.Piece
 }
 
 func NewPositionSystem() *PositionSystem {
@@ -429,9 +427,9 @@ func (pPosSys *PositionSystem) resetPosition() {
 	pPosSys.StartMovesNum = 1
 	pPosSys.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPosSys.Moves = [MOVES_SIZE]Move{}
+	pPosSys.Moves = [l05.MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pPosSys.CapturedList = [MOVES_SIZE]l03.Piece{}
+	pPosSys.CapturedList = [l05.MOVES_SIZE]l03.Piece{}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）

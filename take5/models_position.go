@@ -9,9 +9,6 @@ import (
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
-
 // Position - 局面
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）

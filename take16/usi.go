@@ -16,6 +16,7 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -369,7 +370,7 @@ MainLoop:
 			// 棋譜を書き直してさらに多く続けるぜ（＾～＾）
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
-				for i := 0; i < MOVES_SIZE; i += 1 {
+				for i := 0; i < l05.MOVES_SIZE; i += 1 {
 					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 						pNerve.PPosSys.phase,
 						pNerve.PRecord.StartMovesNum,

@@ -3,10 +3,8 @@ package take16
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 )
-
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
 
 // 差分での連続局面記録。つまり、ふつうの棋譜（＾～＾）
 type DifferenceRecord struct {
@@ -16,9 +14,9 @@ type DifferenceRecord struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]l13.Move
+	Moves [l05.MOVES_SIZE]l13.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]l03.Piece
+	CapturedList [l05.MOVES_SIZE]l03.Piece
 }
 
 func NewDifferenceRecord() *DifferenceRecord {
@@ -33,7 +31,7 @@ func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	pRecord.StartMovesNum = 1
 	pRecord.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pRecord.Moves = [MOVES_SIZE]l13.Move{}
+	pRecord.Moves = [l05.MOVES_SIZE]l13.Move{}
 	// 取った駒のリスト
-	pRecord.CapturedList = [MOVES_SIZE]l03.Piece{}
+	pRecord.CapturedList = [l05.MOVES_SIZE]l03.Piece{}
 }

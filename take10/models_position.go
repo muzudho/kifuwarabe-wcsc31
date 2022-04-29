@@ -7,12 +7,10 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
-
-// 電竜戦が一番長いだろ（＾～＾）
-const MOVES_SIZE = 512
 
 // position sfen の盤のスペース数に使われますN
 var OneDigitNumbers = [10]byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
@@ -146,9 +144,9 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [MOVES_SIZE]Move
+	Moves [l05.MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]l03.Piece
+	CapturedList [l05.MOVES_SIZE]l03.Piece
 }
 
 func NewPosition() *Position {
@@ -522,9 +520,9 @@ func (pPos *Position) resetToZero() {
 	pPos.StartMovesNum = 1
 	pPos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pPos.Moves = [MOVES_SIZE]Move{}
+	pPos.Moves = [l05.MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pPos.CapturedList = [MOVES_SIZE]l03.Piece{}
+	pPos.CapturedList = [l05.MOVES_SIZE]l03.Piece{}
 }
 
 // setToStartpos - 初期局面にします。利きの計算はまだ行っていません。

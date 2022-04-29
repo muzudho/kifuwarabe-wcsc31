@@ -6,6 +6,7 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -373,7 +374,7 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 func sprintRecord(pRecord *DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, MOVES_SIZE*9)
+	record_text := make([]byte, 0, l05.MOVES_SIZE*9)
 	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, pRecord.Moves[i].ToCodeOfM()...)
 		record_text = append(record_text, ' ')

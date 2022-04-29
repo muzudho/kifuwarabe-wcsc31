@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
 
@@ -372,7 +373,7 @@ func (pPosSys *PositionSystem) SprintSfenResignation(pPos *Position) string {
 func (pPosSys *PositionSystem) SprintRecord() string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, MOVES_SIZE*9)
+	record_text := make([]byte, 0, l05.MOVES_SIZE*9)
 	for i := 0; i < pPosSys.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, pPosSys.Moves[i].ToCodeOfM()...)
 		record_text = append(record_text, ' ')

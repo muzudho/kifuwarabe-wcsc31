@@ -12,6 +12,7 @@ import (
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -296,7 +297,7 @@ MainLoop:
 			// 棋譜を書き直してさらに多く続けるぜ（＾～＾）
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
-				for i := 0; i < MOVES_SIZE; i += 1 {
+				for i := 0; i < l05.MOVES_SIZE; i += 1 {
 					App.Out.Debug(SprintBoard(
 						pPosSys.PPosition[POS_LAYER_MAIN],
 						pPosSys.phase,

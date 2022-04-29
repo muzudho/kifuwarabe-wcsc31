@@ -77,11 +77,7 @@ func SprintBoard(pos *Position) string {
 		//
 		"moves"
 
-	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
-	for i := 0; i < pos.OffsetMovesIndex; i += 1 {
-		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pos.Moves[i].ToCodeOfM()...)
-	}
+	var moves_text = pos.createMovesText()
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"

@@ -1,4 +1,4 @@
-package take7
+package take6
 
 import l05 "github.com/muzudho/kifuwarabe-wcsc31/take5"
 
