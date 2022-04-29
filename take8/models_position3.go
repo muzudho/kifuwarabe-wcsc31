@@ -2,14 +2,7 @@ package take8
 
 import l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 
-func (pPos *Position) GetOffsetMoveIndex() int {
-	return pPos.OffsetMovesIndex
-}
-
-func (pPos *Position) GetCapturedPieceAtMovesIndex(movesIndex int) l03.Piece {
-	return pPos.CapturedList[movesIndex]
-}
-
-func (pPos *Position) GetMoveAtMovesIndex(movesIndex int) Move {
-	return pPos.Moves[movesIndex]
+// GetLongPiece - 長い利きの駒の場所を取得
+func (pPos *Position) GetLocationOfLongPiece(index int) l03.Square {
+	return pPos.PieceLocations[index]
 }
