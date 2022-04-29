@@ -3,7 +3,7 @@ package take6
 import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pos *Position) string {
+func SprintBoard(pos *Position) string {
 	var phase_str = "?"
 	if pos.Phase == FIRST {
 		phase_str = "First"

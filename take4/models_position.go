@@ -219,7 +219,7 @@ MovesNumLoop:
 		// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 		var move, err = ParseMove(command, &i, pos.Phase)
 		if err != nil {
-			fmt.Println(Sprint(pos))
+			fmt.Println(SprintBoard(pos))
 			panic(err)
 		}
 		pos.Moves = append(pos.Moves, move)

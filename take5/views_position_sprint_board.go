@@ -1,9 +1,9 @@
-package take4
+package take5
 
 import "fmt"
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pos *Position) string {
+func SprintBoard(pos *Position) string {
 	var phase_str = "First"
 	if pos.Phase == 2 {
 		phase_str = "Second"
@@ -11,7 +11,7 @@ func Sprint(pos *Position) string {
 
 	var s1 = "\n" +
 		//
-		fmt.Sprintf("[%d moves / %s / ? repeats]\n", pos.MovesNum, phase_str) +
+		fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pos.StartMovesNum, (pos.StartMovesNum+pos.OffsetMovesIndex), phase_str) +
 		//
 		"\n" +
 		//
@@ -77,13 +77,13 @@ func Sprint(pos *Position) string {
 		//
 		"moves"
 
-	moves_list := make([]byte, 0, 512*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
-	for _, pMove := range pos.Moves {
-		moves_list = append(moves_list, ' ')
-		moves_list = append(moves_list, pMove.ToCodeOfM()...)
+	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
+	for i := 0; i < pos.OffsetMovesIndex; i += 1 {
+		moves_text = append(moves_text, ' ')
+		moves_text = append(moves_text, pos.Moves[i].ToCodeOfM()...)
 	}
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
-	// return s1 + *(*string)(unsafe.Pointer(&moves_list)) + "\n"
-	return s1 + string(moves_list) + "\n"
+	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
+	return s1 + string(moves_text) + "\n"
 }

@@ -115,14 +115,14 @@ MainLoop:
 		// 以下、きふわらべ独自拡張コマンド
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			App.Out.Debug(Sprint(pPos))
+			App.Out.Debug(SprintBoard(pPos))
 		case "do":
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
 			var move, err = ParseMove(command, &i, pPos.GetPhase())
 			if err != nil {
-				fmt.Println(Sprint(pPos))
+				fmt.Println(SprintBoard(pPos))
 				panic(err)
 			}
 
@@ -229,7 +229,7 @@ MainLoop:
 			App.Out.Debug("Playout start\n")
 
 			for i := 0; i < 100; i += 1 {
-				App.Out.Debug(Sprint(pPos))
+				App.Out.Debug(SprintBoard(pPos))
 				// あの駒、どこにいんの（＾～＾）？
 				// App.Out.Debug(SprintLocation(pPos))
 

@@ -1,4 +1,4 @@
-package take13
+package take10
 
 import (
 	"fmt"
@@ -7,13 +7,9 @@ import (
 )
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
-	// pPosSys.StartMovesNum
-	// pPosSys.OffsetMovesIndex
-	// 	moves_text := pPosSys.createMovesText()
-
+func SprintBoard(pPos *Position) string {
 	var phase_str string
-	switch phase {
+	switch pPos.GetPhase() {
 	case l06.FIRST:
 		phase_str = "First"
 	case l06.SECOND:
@@ -88,16 +84,16 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 
 	var s1 = "\n" +
 		//
-		fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str) +
+		fmt.Sprintf("[%d -> %d moves / %s / ? repeats]\n", pPos.StartMovesNum, (pPos.StartMovesNum+pPos.OffsetMovesIndex), phase_str) +
 		//
 		"\n" +
 		//
-		"  k  r  b  g  s  n  l  p\n" +
-		"+--+--+--+--+--+--+--+--+\n" +
+		"  r  b  g  s  n  l  p\n" +
+		"+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2d|%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", pPos.Hands1[8], pPos.Hands1[9], pPos.Hands1[10], pPos.Hands1[11], pPos.Hands1[12], pPos.Hands1[13], pPos.Hands1[14], pPos.Hands1[15]) +
+		fmt.Sprintf("|%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", pPos.Hands[7], pPos.Hands[8], pPos.Hands[9], pPos.Hands[10], pPos.Hands[11], pPos.Hands[12], pPos.Hands[13]) +
 		//
-		"+--+--+--+--+--+--+--+--+\n" +
+		"+--+--+--+--+--+--+--+\n" +
 		//
 		"\n" +
 		//
@@ -143,16 +139,18 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 		//
 		"\n" +
 		//
-		"     K  R  B  G  S  N  L  P\n" +
-		"   +--+--+--+--+--+--+--+--+\n" +
+		"        R  B  G  S  N  L  P\n" +
+		"      +--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("   |%2d|%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", pPos.Hands1[0], pPos.Hands1[1], pPos.Hands1[2], pPos.Hands1[3], pPos.Hands1[4], pPos.Hands1[5], pPos.Hands1[6], pPos.Hands1[7]) +
+		fmt.Sprintf("      |%2d|%2d|%2d|%2d|%2d|%2d|%2d|\n", pPos.Hands[0], pPos.Hands[1], pPos.Hands[2], pPos.Hands[3], pPos.Hands[4], pPos.Hands[5], pPos.Hands[6]) +
 		//
-		"   +--+--+--+--+--+--+--+--+\n" +
+		"      +--+--+--+--+--+--+--+\n" +
 		//
 		"\n" +
 		//
 		"moves"
+
+	moves_text := pPos.createMovesText()
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"

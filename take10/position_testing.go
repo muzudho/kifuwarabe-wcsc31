@@ -260,7 +260,7 @@ func ShuffleBoard(pPos *Position) {
 	pPos.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(Sprint(pPos))
+	App.Out.Debug(SprintBoard(pPos))
 
 	if false {
 		var countList [8]int
@@ -336,7 +336,7 @@ func ShuffleBoard(pPos *Position) {
 	pPos.ReadPosition(command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(Sprint(pPos))
+	App.Out.Debug(SprintBoard(pPos))
 	ShowAllPiecesCount(pPos)
 	command2 := pPos.SprintSfen()
 	App.Out.Debug("#command2=%s", command2)

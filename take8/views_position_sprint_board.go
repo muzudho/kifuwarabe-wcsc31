@@ -1,4 +1,4 @@
-package take7
+package take8
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pPos *Position) string {
+func SprintBoard(pPos *Position) string {
 	var phase_str = "?"
 	if pPos.Phase == l06.FIRST {
 		phase_str = "First"
@@ -83,11 +83,7 @@ func Sprint(pPos *Position) string {
 		//
 		"moves"
 
-	moves_text := make([]byte, 0, MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
-	for i := 0; i < pPos.OffsetMovesIndex; i += 1 {
-		moves_text = append(moves_text, ' ')
-		moves_text = append(moves_text, pPos.Moves[i].ToCodeOfM()...)
-	}
+	moves_text := pPos.createMovesText()
 
 	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
 	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"

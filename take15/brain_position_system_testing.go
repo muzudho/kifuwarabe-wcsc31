@@ -296,7 +296,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	pBrain.PPosSys.OffsetMovesIndex = 0
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(Sprint(
+	App.Out.Debug(SprintBoard(
 		pPos,
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,
@@ -378,7 +378,7 @@ func ShuffleBoard(pBrain *Brain, pPos *Position) {
 	pBrain.ReadPosition(pPos, command)
 
 	// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-	App.Out.Debug(Sprint(
+	App.Out.Debug(SprintBoard(
 		pPos,
 		pBrain.PPosSys.phase,
 		pBrain.PPosSys.StartMovesNum,

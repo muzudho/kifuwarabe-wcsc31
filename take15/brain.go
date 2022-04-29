@@ -290,7 +290,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			var move, err = ParseMove(command, &i, pBrain.PPosSys.GetPhase())
 			if err != nil {
 				fmt.Println(err)
-				fmt.Println(Sprint(
+				fmt.Println(SprintBoard(
 					pPos,
 					pBrain.PPosSys.phase,
 					pBrain.PPosSys.StartMovesNum,

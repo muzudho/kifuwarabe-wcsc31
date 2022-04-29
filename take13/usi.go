@@ -151,7 +151,7 @@ MainLoop:
 			ok := false
 			if length == 1 {
 				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-				App.Out.Debug(Sprint(
+				App.Out.Debug(SprintBoard(
 					pPosSys.PPosition[POS_LAYER_MAIN],
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
@@ -165,7 +165,7 @@ MainLoop:
 				if err != nil {
 					App.Out.Debug("Error: %s", err)
 				} else {
-					App.Out.Debug(Sprint(
+					App.Out.Debug(SprintBoard(
 						pPosSys.PPosition[b1],
 						pPosSys.phase,
 						pPosSys.StartMovesNum,
@@ -187,7 +187,7 @@ MainLoop:
 			i := 3
 			var move, err = ParseMove(command, &i, pPosSys.GetPhase())
 			if err != nil {
-				App.Out.Debug(Sprint(
+				App.Out.Debug(SprintBoard(
 					pPosSys.PPosition[POS_LAYER_MAIN],
 					pPosSys.phase,
 					pPosSys.StartMovesNum,
@@ -333,7 +333,7 @@ MainLoop:
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
 				for i := 0; i < MOVES_SIZE; i += 1 {
-					App.Out.Debug(Sprint(
+					App.Out.Debug(SprintBoard(
 						pPosSys.PPosition[POS_LAYER_MAIN],
 						pPosSys.phase,
 						pPosSys.StartMovesNum,

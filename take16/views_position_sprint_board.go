@@ -1,26 +1,16 @@
-package take15
+package take16
 
 import (
 	"fmt"
 
-	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
+	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 )
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func SprintBoard(pPos *l15.Position) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()
-
-	var phase_str string
-	switch phase {
-	case l06.FIRST:
-		phase_str = "First"
-	case l06.SECOND:
-		phase_str = "Second"
-	default:
-		phase_str = "?"
-	}
 
 	// 0段目
 	zeroRanks := [10]string{"  9", "  8", "  7", "  6", "  5", "  4", "  3", "  2", "  1", "   "}
@@ -88,10 +78,6 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 
 	var s1 = "\n" +
 		//
-		fmt.Sprintf("[%d -> %d moves / %s / ? repeats / %d value]\n", startMovesNum, (startMovesNum+offsetMovesIndex), phase_str, pPos.MaterialValue) +
-		//
-		"\n" +
-		//
 		"  k  r  b  g  s  n  l  p\n" +
 		"+--+--+--+--+--+--+--+--+\n" +
 		//
@@ -150,11 +136,8 @@ func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex
 		//
 		"   +--+--+--+--+--+--+--+--+\n" +
 		//
-		"\n" +
+		"\n"
 		//
-		"moves"
 
-	// unsafe使うと速いみたいなんだが、読みにくくなるしな（＾～＾）
-	//return s1 + *(*string)(unsafe.Pointer(&moves_text)) + "\n"
-	return s1 + string(moves_text) + "\n"
+	return s1
 }

@@ -244,7 +244,7 @@ func (pos *Position) ReadPosition(command string) {
 		var move, err = ParseMove(command, &i, pos.Phase)
 		if err != nil {
 			fmt.Println(err)
-			fmt.Println(Sprint(pos))
+			fmt.Println(SprintBoard(pos))
 			panic(err)
 		}
 		pos.Moves[pos.OffsetMovesIndex] = move

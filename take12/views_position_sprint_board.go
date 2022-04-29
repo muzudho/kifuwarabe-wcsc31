@@ -1,4 +1,4 @@
-package take11
+package take12
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 )
 
 // Print - 局面出力（＾ｑ＾）
-func Sprint(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
+func SprintBoard(pPos *Position, phase l06.Phase, startMovesNum int, offsetMovesIndex int, moves_text string) string {
 	// pPosSys.StartMovesNum
 	// pPosSys.OffsetMovesIndex
 	// 	moves_text := pPosSys.createMovesText()

@@ -109,14 +109,14 @@ MainLoop:
 			break MainLoop
 		case "pos":
 			// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-			App.Out.Debug(Sprint(pos))
+			App.Out.Debug(SprintBoard(pos))
 		case "do":
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
 			var move, err = ParseMove(command, &i, pos.Phase)
 			if err != nil {
-				fmt.Println(Sprint(pos))
+				fmt.Println(SprintBoard(pos))
 				panic(err)
 			}
 
