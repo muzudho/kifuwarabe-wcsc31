@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 )
 
@@ -34,7 +34,7 @@ func (pBrain *Brain) Dump() string {
 	for b := PosLayerT(0); b < 2; b += 1 {
 		buffer.WriteString(fmt.Sprintf("Position[%d]:", b))
 		buffer.WriteString("Hands:")
-		for i := l10.HAND_IDX_START; i < l10.HAND_IDX_END; i += 1 {
+		for i := l03.HAND_IDX_START; i < l03.HAND_IDX_END; i += 1 {
 			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[b].Hands1[i]))
 		}
 		buffer.WriteString("\n")

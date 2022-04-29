@@ -684,7 +684,7 @@ func (pPos *Position) ReadPosition(command string) {
 			// P10 なら歩10枚。数が2桁になるのは歩だけ（＾～＾）
 			// {アルファベット１文字}{数字1～2文字} になっている
 			// アルファベットまたは半角スペースを見つけた時点で、以前の取り込み分が確定する
-			var hand_index HandIdx = 999 //存在しない数
+			var hand_index l03.HandIdx = 999 //存在しない数
 			var number = 0
 
 		HandLoop:
@@ -707,21 +707,21 @@ func (pPos *Position) ReadPosition(command string) {
 
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch hand_index {
-						case HAND_R1, HAND_R2:
+						case l03.HAND_R1, l03.HAND_R2:
 							for i, sq := range pPos.PieceLocations[PCLOC_R1:PCLOC_R2] {
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[PCLOC_R1:PCLOC_R2][i] = l03.Square(hand_index) + l03.SQ_HAND_START
 									break
 								}
 							}
-						case HAND_B1, HAND_B2:
+						case l03.HAND_B1, l03.HAND_B2:
 							for i, sq := range pPos.PieceLocations[PCLOC_B1:PCLOC_B2] {
 								if sq == l03.SQ_EMPTY {
 									pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i] = l03.Square(hand_index) + l03.SQ_HAND_START
 									break
 								}
 							}
-						case HAND_L1, HAND_L2:
+						case l03.HAND_L1, l03.HAND_L2:
 							for i, sq := range pPos.PieceLocations[PCLOC_L1:PCLOC_L4] {
 								if sq == l03.SQ_EMPTY {
 									pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i] = l03.Square(hand_index) + l03.SQ_HAND_START
@@ -734,33 +734,33 @@ func (pPos *Position) ReadPosition(command string) {
 
 					switch piece {
 					case 'R':
-						hand_index = HAND_R1
+						hand_index = l03.HAND_R1
 					case 'B':
-						hand_index = HAND_B1
+						hand_index = l03.HAND_B1
 					case 'G':
-						hand_index = HAND_G1
+						hand_index = l03.HAND_G1
 					case 'S':
-						hand_index = HAND_S1
+						hand_index = l03.HAND_S1
 					case 'N':
-						hand_index = HAND_N1
+						hand_index = l03.HAND_N1
 					case 'L':
-						hand_index = HAND_L1
+						hand_index = l03.HAND_L1
 					case 'P':
-						hand_index = HAND_P1
+						hand_index = l03.HAND_P1
 					case 'r':
-						hand_index = HAND_R2
+						hand_index = l03.HAND_R2
 					case 'b':
-						hand_index = HAND_B2
+						hand_index = l03.HAND_B2
 					case 'g':
-						hand_index = HAND_G2
+						hand_index = l03.HAND_G2
 					case 's':
-						hand_index = HAND_S2
+						hand_index = l03.HAND_S2
 					case 'n':
-						hand_index = HAND_N2
+						hand_index = l03.HAND_N2
 					case 'l':
-						hand_index = HAND_L2
+						hand_index = l03.HAND_L2
 					case 'p':
-						hand_index = HAND_P2
+						hand_index = l03.HAND_P2
 					case ' ':
 						// ループを抜けます
 						break HandLoop

@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
@@ -50,7 +49,7 @@ func sprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 
 	// bytes.Bufferは、速くはないけど使いやすいぜ（＾～＾）
 	var buf bytes.Buffer
-	for i := l10.HAND_TYPE_SIZE; i < l10.HAND_IDX_END; i++ {
+	for i := l03.HAND_TYPE_SIZE; i < l03.HAND_IDX_END; i++ {
 		buf.WriteString(fmt.Sprintf("|%2d%2d", pPosSys.PPosition[b1].Hands1[i], pPosSys.PPosition[b2].Hands1[i]))
 	}
 	buf.WriteString("|\n")
@@ -162,7 +161,7 @@ func sprintPositionDiff(pPosSys *PositionSystem, b1 PosLayerT, b2 PosLayerT, pRe
 
 	buf.Reset()
 	buf.WriteString(" ")
-	for i := l10.HAND_IDX_START; i < l10.HAND_TYPE_SIZE; i++ {
+	for i := l03.HAND_IDX_START; i < l03.HAND_TYPE_SIZE; i++ {
 		buf.WriteString(fmt.Sprintf("|%2d%2d", pPosSys.PPosition[b1].Hands1[i], pPosSys.PPosition[b2].Hands1[i]))
 	}
 	buf.WriteString("|\n")
@@ -243,56 +242,56 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 	hands := ""
 
 	// 玉は出力できません
-	// num := pPos.Hands1[l10.HAND_K1]
+	// num := pPos.Hands1[l03.HAND_K1]
 	// if num == 1 {
 	// 	hands += "K"
 	// } else if num > 1 {
 	// 	hands += fmt.Sprintf("K%d", num)
 	// }
 
-	num := pPos.Hands1[l10.HAND_R1]
+	num := pPos.Hands1[l03.HAND_R1]
 	if num == 1 {
 		hands += "R"
 	} else if num > 1 {
 		hands += fmt.Sprintf("R%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_B1]
+	num = pPos.Hands1[l03.HAND_B1]
 	if num == 1 {
 		hands += "B"
 	} else if num > 1 {
 		hands += fmt.Sprintf("B%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_G1]
+	num = pPos.Hands1[l03.HAND_G1]
 	if num == 1 {
 		hands += "G"
 	} else if num > 1 {
 		hands += fmt.Sprintf("G%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_S1]
+	num = pPos.Hands1[l03.HAND_S1]
 	if num == 1 {
 		hands += "S"
 	} else if num > 1 {
 		hands += fmt.Sprintf("S%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_N1]
+	num = pPos.Hands1[l03.HAND_N1]
 	if num == 1 {
 		hands += "N"
 	} else if num > 1 {
 		hands += fmt.Sprintf("N%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_L1]
+	num = pPos.Hands1[l03.HAND_L1]
 	if num == 1 {
 		hands += "L"
 	} else if num > 1 {
 		hands += fmt.Sprintf("L%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_P1]
+	num = pPos.Hands1[l03.HAND_P1]
 	if num == 1 {
 		hands += "P"
 	} else if num > 1 {
@@ -300,56 +299,56 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 	}
 
 	// 玉は出力できません
-	// num := pPos.Hands1[l10.HAND_K2]
+	// num := pPos.Hands1[l03.HAND_K2]
 	// if num == 1 {
 	// 	hands += "k"
 	// } else if num > 1 {
 	// 	hands += fmt.Sprintf("k%d", num)
 	// }
 
-	num = pPos.Hands1[l10.HAND_R2]
+	num = pPos.Hands1[l03.HAND_R2]
 	if num == 1 {
 		hands += "r"
 	} else if num > 1 {
 		hands += fmt.Sprintf("r%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_B2]
+	num = pPos.Hands1[l03.HAND_B2]
 	if num == 1 {
 		hands += "b"
 	} else if num > 1 {
 		hands += fmt.Sprintf("b%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_G2]
+	num = pPos.Hands1[l03.HAND_G2]
 	if num == 1 {
 		hands += "g"
 	} else if num > 1 {
 		hands += fmt.Sprintf("g%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_S2]
+	num = pPos.Hands1[l03.HAND_S2]
 	if num == 1 {
 		hands += "s"
 	} else if num > 1 {
 		hands += fmt.Sprintf("s%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_N2]
+	num = pPos.Hands1[l03.HAND_N2]
 	if num == 1 {
 		hands += "n"
 	} else if num > 1 {
 		hands += fmt.Sprintf("n%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_L2]
+	num = pPos.Hands1[l03.HAND_L2]
 	if num == 1 {
 		hands += "l"
 	} else if num > 1 {
 		hands += fmt.Sprintf("l%d", num)
 	}
 
-	num = pPos.Hands1[l10.HAND_P2]
+	num = pPos.Hands1[l03.HAND_P2]
 	if num == 1 {
 		hands += "p"
 	} else if num > 1 {

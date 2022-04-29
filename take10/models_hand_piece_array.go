@@ -3,7 +3,7 @@ package take10
 import l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 
 // Convert hand index to piece
-var HandPieceArray = [HAND_SIZE]l03.Piece{
+var HandPieceArray = [l03.HAND_SIZE]l03.Piece{
 	l03.PIECE_K1,
 	l03.PIECE_R1,
 	l03.PIECE_B1,

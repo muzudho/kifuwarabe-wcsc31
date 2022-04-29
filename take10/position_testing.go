@@ -182,7 +182,7 @@ func ShuffleBoard(pPos *Position) {
 		}
 
 		// 駒台から盤の方向
-		for hand_index := HAND_IDX_START; hand_index < HAND_IDX_END; hand_index += 1 {
+		for hand_index := l03.HAND_IDX_START; hand_index < l03.HAND_IDX_END; hand_index += 1 {
 			num := pPos.Hands[hand_index]
 			if num > 0 {
 				sq := l03.Square(rand.Intn(100))

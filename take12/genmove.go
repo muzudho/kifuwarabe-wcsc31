@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 )
@@ -317,22 +316,22 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pPosSys.GetPhase()
 	var friendKingSq l03.Square
-	var hand_start l10.HandIdx
-	var hand_end l10.HandIdx
+	var hand_start l03.HandIdx
+	var hand_end l03.HandIdx
 	// var opponentKingSq l03.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == l06.FIRST {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K1)
-		hand_start = l10.HAND_IDX_START
+		hand_start = l03.HAND_IDX_START
 		pOpponentSumCB = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM2]
 	} else if friend == l06.SECOND {
 		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K2)
-		hand_start = l10.HAND_IDX_START + l10.HAND_TYPE_SIZE
+		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pPosSys.PControlBoardSystem.Boards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + l10.HAND_TYPE_SIZE
+	hand_end = hand_start + l03.HAND_TYPE_SIZE
 
 	// 相手の利きテーブルの自玉のマスに利きがあるか
 	if pOpponentSumCB.Board[friendKingSq] > 0 {

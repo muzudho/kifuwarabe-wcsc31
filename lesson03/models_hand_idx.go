@@ -1,6 +1,4 @@
-package take10 // not same take7
-
-import l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+package lesson03
 
 type HandIdx uint
 
@@ -33,5 +31,5 @@ const (
 )
 
 const (
-	HAND_TYPE_SIZE_SQ l03.Square = l03.Square(HAND_TYPE_SIZE)
+	HAND_TYPE_SIZE_SQ Square = Square(HAND_TYPE_SIZE)
 )

@@ -284,19 +284,19 @@ func GenMoveList(pPos *Position) []Move {
 	friend := pPos.GetPhase()
 	opponent := FlipPhase(pPos.GetPhase())
 	var friendKingSq l03.Square
-	var hand_start HandIdx
-	var hand_end HandIdx
+	var hand_start l03.HandIdx
+	var hand_end l03.HandIdx
 	// var opponentKingSq l03.Square
 	if friend == l06.FIRST {
 		friendKingSq = pPos.PieceLocations[PCLOC_K1]
-		hand_start = HAND_IDX_START
+		hand_start = l03.HAND_IDX_START
 	} else if friend == l06.SECOND {
 		friendKingSq = pPos.PieceLocations[PCLOC_K2]
-		hand_start = HAND_IDX_START + HAND_TYPE_SIZE
+		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 	} else {
 		panic(fmt.Errorf("unknown phase=%d", friend))
 	}
-	hand_end = hand_start + HAND_TYPE_SIZE
+	hand_end = hand_start + l03.HAND_TYPE_SIZE
 
 	// 相手の利きテーブルの自玉のマスに利きがあるか
 	if pPos.ControlBoards[opponent-1][CONTROL_LAYER_SUM][friendKingSq] > 0 {
