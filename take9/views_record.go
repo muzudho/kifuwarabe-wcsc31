@@ -1,10 +1,14 @@
 package take9
 
-import "fmt"
+import (
+	"fmt"
+
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+)
 
 type positionForRecord interface {
 	GetOffsetMoveIndex() int
-	GetCapturedPieceAtMovesIndex(movesIndex int) Piece
+	GetCapturedPieceAtMovesIndex(movesIndex int) l03.Piece
 	GetMoveAtMovesIndex(movesIndex int) Move
 }
 

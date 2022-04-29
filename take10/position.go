@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
@@ -41,71 +42,71 @@ func OnBoard(sq l04.Square) bool {
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l03.Piece {
 	switch phase {
 	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l09.PIECE_K1
+			return l03.PIECE_K1
 		case PIECE_TYPE_R:
-			return l09.PIECE_R1
+			return l03.PIECE_R1
 		case PIECE_TYPE_B:
-			return l09.PIECE_B1
+			return l03.PIECE_B1
 		case PIECE_TYPE_G:
-			return l09.PIECE_G1
+			return l03.PIECE_G1
 		case PIECE_TYPE_S:
-			return l09.PIECE_S1
+			return l03.PIECE_S1
 		case PIECE_TYPE_N:
-			return l09.PIECE_N1
+			return l03.PIECE_N1
 		case PIECE_TYPE_L:
-			return l09.PIECE_L1
+			return l03.PIECE_L1
 		case PIECE_TYPE_P:
-			return l09.PIECE_P1
+			return l03.PIECE_P1
 		case PIECE_TYPE_PR:
-			return l09.PIECE_PR1
+			return l03.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return l09.PIECE_PB1
+			return l03.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return l09.PIECE_PS1
+			return l03.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return l09.PIECE_PN1
+			return l03.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return l09.PIECE_PL1
+			return l03.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return l09.PIECE_PP1
+			return l03.PIECE_PP1
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
 	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l09.PIECE_K2
+			return l03.PIECE_K2
 		case PIECE_TYPE_R:
-			return l09.PIECE_R2
+			return l03.PIECE_R2
 		case PIECE_TYPE_B:
-			return l09.PIECE_B2
+			return l03.PIECE_B2
 		case PIECE_TYPE_G:
-			return l09.PIECE_G2
+			return l03.PIECE_G2
 		case PIECE_TYPE_S:
-			return l09.PIECE_S2
+			return l03.PIECE_S2
 		case PIECE_TYPE_N:
-			return l09.PIECE_N2
+			return l03.PIECE_N2
 		case PIECE_TYPE_L:
-			return l09.PIECE_L2
+			return l03.PIECE_L2
 		case PIECE_TYPE_P:
-			return l09.PIECE_P2
+			return l03.PIECE_P2
 		case PIECE_TYPE_PR:
-			return l09.PIECE_PR2
+			return l03.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return l09.PIECE_PB2
+			return l03.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return l09.PIECE_PS2
+			return l03.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return l09.PIECE_PN2
+			return l03.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return l09.PIECE_PL2
+			return l03.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return l09.PIECE_PP2
+			return l03.PIECE_PP2
 		default:
 			panic(fmt.Errorf("unknown piece type=%d", pieceType))
 		}
@@ -118,7 +119,7 @@ func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
 type Position struct {
 	// Go言語で列挙型めんどくさいんで文字列で（＾～＾）
 	// [19] は １九、 [91] は ９一（＾～＾）反時計回りに９０°回転した将棋盤の状態で入ってるぜ（＾～＾）想像しろだぜ（＾～＾）
-	Board [l09.BOARD_SIZE]l09.Piece
+	Board [l09.BOARD_SIZE]l03.Piece
 	// 玉と長い利きの駒の場所。長い利きを消すのに使う
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
 	PieceLocations [PCLOC_SIZE]l04.Square
@@ -151,7 +152,7 @@ type Position struct {
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
 	Moves [MOVES_SIZE]Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [MOVES_SIZE]l09.Piece
+	CapturedList [MOVES_SIZE]l03.Piece
 }
 
 func NewPosition() *Position {
@@ -173,17 +174,17 @@ func (pPos *Position) GetPhase() l06.Phase {
 // ResetToStartpos - 駒を置いていな状態でリセットします
 func (pPos *Position) resetToZero() {
 	// 筋、段のラベルだけ入れとくぜ（＾～＾）
-	pPos.Board = [BOARD_SIZE]l09.Piece{
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
+	pPos.Board = [BOARD_SIZE]l03.Piece{
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
 	}
 	pPos.ControlBoards = [2][CONTROL_LAYER_ALL_SIZE][BOARD_SIZE]int8{{
 		{
@@ -527,23 +528,23 @@ func (pPos *Position) resetToZero() {
 	// 指し手のリスト
 	pPos.Moves = [MOVES_SIZE]Move{}
 	// 取った駒のリスト
-	pPos.CapturedList = [MOVES_SIZE]l09.Piece{}
+	pPos.CapturedList = [MOVES_SIZE]l03.Piece{}
 }
 
 // setToStartpos - 初期局面にします。利きの計算はまだ行っていません。
 func (pPos *Position) setToStartpos() {
 	// 初期局面にします
-	pPos.Board = [BOARD_SIZE]l09.Piece{
-		l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY,
-		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
-		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_B2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_R1, l09.PIECE_N1,
-		l09.PIECE_EMPTY, l09.PIECE_S2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_S1,
-		l09.PIECE_EMPTY, l09.PIECE_G2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_G1,
-		l09.PIECE_EMPTY, l09.PIECE_K2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_K1,
-		l09.PIECE_EMPTY, l09.PIECE_G2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_G1,
-		l09.PIECE_EMPTY, l09.PIECE_S2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_S1,
-		l09.PIECE_EMPTY, l09.PIECE_N2, l09.PIECE_R2, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_B1, l09.PIECE_N1,
-		l09.PIECE_EMPTY, l09.PIECE_L2, l09.PIECE_EMPTY, l09.PIECE_P2, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_EMPTY, l09.PIECE_P1, l09.PIECE_EMPTY, l09.PIECE_L1,
+	pPos.Board = [BOARD_SIZE]l03.Piece{
+		l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY,
+		l03.PIECE_EMPTY, l03.PIECE_L2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_L1,
+		l03.PIECE_EMPTY, l03.PIECE_N2, l03.PIECE_B2, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_R1, l03.PIECE_N1,
+		l03.PIECE_EMPTY, l03.PIECE_S2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_S1,
+		l03.PIECE_EMPTY, l03.PIECE_G2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_G1,
+		l03.PIECE_EMPTY, l03.PIECE_K2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_K1,
+		l03.PIECE_EMPTY, l03.PIECE_G2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_G1,
+		l03.PIECE_EMPTY, l03.PIECE_S2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_S1,
+		l03.PIECE_EMPTY, l03.PIECE_N2, l03.PIECE_R2, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_B1, l03.PIECE_N1,
+		l03.PIECE_EMPTY, l03.PIECE_L2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_L1,
 	}
 	pPos.PieceLocations = [PCLOC_SIZE]l04.Square{
 		l04.Square(59),
@@ -592,7 +593,7 @@ func (pPos *Position) ReadPosition(command string) {
 			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
 				var spaces, _ = strconv.Atoi(string(pc))
 				for sp := 0; sp < spaces; sp += 1 {
-					pPos.Board[file*10+rank] = l09.PIECE_EMPTY
+					pPos.Board[file*10+rank] = l03.PIECE_EMPTY
 					file -= 1
 				}
 				i += 1
@@ -1000,36 +1001,36 @@ func (pPos *Position) DoMove(move Move) {
 
 	// まず、打かどうかで処理を分けます
 	sq_hand := from
-	var piece l09.Piece
+	var piece l03.Piece
 	switch from {
 	case l04.SQ_R1:
-		piece = l09.PIECE_R1
+		piece = l03.PIECE_R1
 	case l04.SQ_B1:
-		piece = l09.PIECE_B1
+		piece = l03.PIECE_B1
 	case l04.SQ_G1:
-		piece = l09.PIECE_G1
+		piece = l03.PIECE_G1
 	case l04.SQ_S1:
-		piece = l09.PIECE_S1
+		piece = l03.PIECE_S1
 	case l04.SQ_N1:
-		piece = l09.PIECE_N1
+		piece = l03.PIECE_N1
 	case l04.SQ_L1:
-		piece = l09.PIECE_L1
+		piece = l03.PIECE_L1
 	case l04.SQ_P1:
-		piece = l09.PIECE_P1
+		piece = l03.PIECE_P1
 	case l04.SQ_R2:
-		piece = l09.PIECE_R2
+		piece = l03.PIECE_R2
 	case l04.SQ_B2:
-		piece = l09.PIECE_B2
+		piece = l03.PIECE_B2
 	case l04.SQ_G2:
-		piece = l09.PIECE_G2
+		piece = l03.PIECE_G2
 	case l04.SQ_S2:
-		piece = l09.PIECE_S2
+		piece = l03.PIECE_S2
 	case l04.SQ_N2:
-		piece = l09.PIECE_N2
+		piece = l03.PIECE_N2
 	case l04.SQ_L2:
-		piece = l09.PIECE_L2
+		piece = l03.PIECE_L2
 	case l04.SQ_P2:
-		piece = l09.PIECE_P2
+		piece = l03.PIECE_P2
 	default:
 		// Not hand
 		sq_hand = l04.SQ_EMPTY
@@ -1050,7 +1051,7 @@ func (pPos *Position) DoMove(move Move) {
 
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
-		if captured != l09.PIECE_EMPTY {
+		if captured != l03.PIECE_EMPTY {
 			pieceType := What(captured)
 			switch pieceType {
 			case PIECE_TYPE_R, PIECE_TYPE_PR, PIECE_TYPE_B, PIECE_TYPE_PB, PIECE_TYPE_L:
@@ -1074,42 +1075,42 @@ func (pPos *Position) DoMove(move Move) {
 		}
 		mov_piece_type = What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[from] = l09.PIECE_EMPTY
+		pPos.Board[from] = l03.PIECE_EMPTY
 		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, 1)
 
 		switch captured {
-		case l09.PIECE_EMPTY: // Ignored
-		case l09.PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			// Lost l06.FIRST king
-		case l09.PIECE_R1, l09.PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap_dst_sq = l04.SQ_R2
-		case l09.PIECE_B1, l09.PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			cap_dst_sq = l04.SQ_B2
-		case l09.PIECE_G1:
+		case l03.PIECE_G1:
 			cap_dst_sq = l04.SQ_G2
-		case l09.PIECE_S1, l09.PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			cap_dst_sq = l04.SQ_S2
-		case l09.PIECE_N1, l09.PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			cap_dst_sq = l04.SQ_N2
-		case l09.PIECE_L1, l09.PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			cap_dst_sq = l04.SQ_L2
-		case l09.PIECE_P1, l09.PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_dst_sq = l04.SQ_P2
-		case l09.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			// Lost second king
-		case l09.PIECE_R2, l09.PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_dst_sq = l04.SQ_R1
-		case l09.PIECE_B2, l09.PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			cap_dst_sq = l04.SQ_B1
-		case l09.PIECE_G2:
+		case l03.PIECE_G2:
 			cap_dst_sq = l04.SQ_G1
-		case l09.PIECE_S2, l09.PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			cap_dst_sq = l04.SQ_S1
-		case l09.PIECE_N2, l09.PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			cap_dst_sq = l04.SQ_N1
-		case l09.PIECE_L2, l09.PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			cap_dst_sq = l04.SQ_L1
-		case l09.PIECE_P2, l09.PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			cap_dst_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -1120,7 +1121,7 @@ func (pPos *Position) DoMove(move Move) {
 			pPos.Hands[cap_dst_sq-l04.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pPos.CapturedList[pPos.OffsetMovesIndex] = l09.PIECE_EMPTY
+			pPos.CapturedList[pPos.OffsetMovesIndex] = l03.PIECE_EMPTY
 		}
 	}
 
@@ -1219,7 +1220,7 @@ func (pPos *Position) UndoMove() {
 		// 行き先から駒を除去します
 		mov_piece_type = What(pPos.Board[to])
 		pPos.AddControlDiff(CONTROL_LAYER_DIFF_PUT, to, -1)
-		pPos.Board[to] = l09.PIECE_EMPTY
+		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands[hand-l04.SQ_HAND_START] += 1
@@ -1241,38 +1242,38 @@ func (pPos *Position) UndoMove() {
 
 		// あれば、取った駒は駒台から下ろします
 		switch captured {
-		case l09.PIECE_EMPTY: // Ignored
-		case l09.PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			// Lost l06.FIRST king
-		case l09.PIECE_R1, l09.PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap_src_sq = l04.SQ_R2
-		case l09.PIECE_B1, l09.PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			cap_src_sq = l04.SQ_B2
-		case l09.PIECE_G1:
+		case l03.PIECE_G1:
 			cap_src_sq = l04.SQ_G2
-		case l09.PIECE_S1, l09.PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			cap_src_sq = l04.SQ_S2
-		case l09.PIECE_N1, l09.PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			cap_src_sq = l04.SQ_N2
-		case l09.PIECE_L1, l09.PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			cap_src_sq = l04.SQ_L2
-		case l09.PIECE_P1, l09.PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_src_sq = l04.SQ_P2
-		case l09.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			// Lost second king
-		case l09.PIECE_R2, l09.PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_src_sq = l04.SQ_R1
-		case l09.PIECE_B2, l09.PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			cap_src_sq = l04.SQ_B1
-		case l09.PIECE_G2:
+		case l03.PIECE_G2:
 			cap_src_sq = l04.SQ_G1
-		case l09.PIECE_S2, l09.PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			cap_src_sq = l04.SQ_S1
-		case l09.PIECE_N2, l09.PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			cap_src_sq = l04.SQ_N1
-		case l09.PIECE_L2, l09.PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			cap_src_sq = l04.SQ_L1
-		case l09.PIECE_P2, l09.PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			cap_src_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -1296,7 +1297,7 @@ func (pPos *Position) UndoMove() {
 			pPos.AddControlDiff(CONTROL_LAYER_DIFF_CAPTURED, to, 1)
 			// }
 		} else {
-			pPos.Board[to] = l09.PIECE_EMPTY
+			pPos.Board[to] = l03.PIECE_EMPTY
 		}
 
 		// 元の場所に戻した自駒の利きを復元します
@@ -1368,5 +1369,5 @@ func (pPos *Position) IsEmptySq(sq l04.Square) bool {
 	if sq > 99 {
 		return false
 	}
-	return pPos.Board[sq] == l09.PIECE_EMPTY
+	return pPos.Board[sq] == l03.PIECE_EMPTY
 }

@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"fmt"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
-	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -195,7 +195,7 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 		for file := l04.Square(9); file > 0; file -= 1 {
 			piece := pPos.Board[l15.SquareFrom(file, rank)]
 
-			if piece != l09.PIECE_EMPTY {
+			if piece != l03.PIECE_EMPTY {
 				if spaces > 0 {
 					buf = append(buf, oneDigitNumbers[spaces])
 					spaces = 0

@@ -1,6 +1,7 @@
 package take15
 
 import (
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -18,7 +19,7 @@ type DifferenceRecord struct {
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
 	Moves [l09.MOVES_SIZE]l13.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [l09.MOVES_SIZE]l09.Piece
+	CapturedList [l09.MOVES_SIZE]l03.Piece
 }
 
 func NewDifferenceRecord() *DifferenceRecord {
@@ -35,5 +36,5 @@ func (pRecord *DifferenceRecord) ResetDifferenceRecord() {
 	// 指し手のリスト
 	pRecord.Moves = [l09.MOVES_SIZE]l13.Move{}
 	// 取った駒のリスト
-	pRecord.CapturedList = [l09.MOVES_SIZE]l09.Piece{}
+	pRecord.CapturedList = [l09.MOVES_SIZE]l03.Piece{}
 }

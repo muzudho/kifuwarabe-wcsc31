@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
@@ -98,7 +99,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 			case '1', '2', '3', '4', '5', '6', '7', '8', '9':
 				var spaces, _ = strconv.Atoi(string(pc))
 				for sp := 0; sp < spaces; sp += 1 {
-					pPos.Board[file*10+rank] = l09.PIECE_EMPTY
+					pPos.Board[file*10+rank] = l03.PIECE_EMPTY
 					file -= 1
 				}
 				i += 1
@@ -490,40 +491,40 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 
 	// まず、打かどうかで処理を分けます
 	sq_hand := from
-	var piece l09.Piece
+	var piece l03.Piece
 	switch from {
 	case l04.SQ_K1:
-		piece = l09.PIECE_K1
+		piece = l03.PIECE_K1
 	case l04.SQ_R1:
-		piece = l09.PIECE_R1
+		piece = l03.PIECE_R1
 	case l04.SQ_B1:
-		piece = l09.PIECE_B1
+		piece = l03.PIECE_B1
 	case l04.SQ_G1:
-		piece = l09.PIECE_G1
+		piece = l03.PIECE_G1
 	case l04.SQ_S1:
-		piece = l09.PIECE_S1
+		piece = l03.PIECE_S1
 	case l04.SQ_N1:
-		piece = l09.PIECE_N1
+		piece = l03.PIECE_N1
 	case l04.SQ_L1:
-		piece = l09.PIECE_L1
+		piece = l03.PIECE_L1
 	case l04.SQ_P1:
-		piece = l09.PIECE_P1
+		piece = l03.PIECE_P1
 	case l04.SQ_K2:
-		piece = l09.PIECE_K2
+		piece = l03.PIECE_K2
 	case l04.SQ_R2:
-		piece = l09.PIECE_R2
+		piece = l03.PIECE_R2
 	case l04.SQ_B2:
-		piece = l09.PIECE_B2
+		piece = l03.PIECE_B2
 	case l04.SQ_G2:
-		piece = l09.PIECE_G2
+		piece = l03.PIECE_G2
 	case l04.SQ_S2:
-		piece = l09.PIECE_S2
+		piece = l03.PIECE_S2
 	case l04.SQ_N2:
-		piece = l09.PIECE_N2
+		piece = l03.PIECE_N2
 	case l04.SQ_L2:
-		piece = l09.PIECE_L2
+		piece = l03.PIECE_L2
 	case l04.SQ_P2:
-		piece = l09.PIECE_P2
+		piece = l03.PIECE_P2
 	default:
 		// Not hand
 		sq_hand = l04.SQ_EMPTY
@@ -557,7 +558,7 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 
 		// 移動先に駒があれば、その駒の利きを除外します。
 		captured := pPos.Board[to]
-		if captured != l09.PIECE_EMPTY {
+		if captured != l03.PIECE_EMPTY {
 			pieceType := l11.What(captured)
 			switch pieceType {
 			case l11.PIECE_TYPE_R, l11.PIECE_TYPE_PR, l11.PIECE_TYPE_B, l11.PIECE_TYPE_PB, l11.PIECE_TYPE_L:
@@ -614,7 +615,7 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 		}
 		mov_piece_type = l11.What(pPos.Board[to])
 		// 元位置の駒を削除してから、移動先の駒の利きを追加
-		pPos.Board[from] = l09.PIECE_EMPTY
+		pPos.Board[from] = l03.PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[to]
@@ -634,38 +635,38 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 		pCB2.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, 1)
 
 		switch captured {
-		case l09.PIECE_EMPTY: // Ignored
-		case l09.PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			cap_dst_sq = l04.SQ_K2
-		case l09.PIECE_R1, l09.PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			cap_dst_sq = l04.SQ_R2
-		case l09.PIECE_B1, l09.PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			cap_dst_sq = l04.SQ_B2
-		case l09.PIECE_G1:
+		case l03.PIECE_G1:
 			cap_dst_sq = l04.SQ_G2
-		case l09.PIECE_S1, l09.PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			cap_dst_sq = l04.SQ_S2
-		case l09.PIECE_N1, l09.PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			cap_dst_sq = l04.SQ_N2
-		case l09.PIECE_L1, l09.PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			cap_dst_sq = l04.SQ_L2
-		case l09.PIECE_P1, l09.PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			cap_dst_sq = l04.SQ_P2
-		case l09.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			cap_dst_sq = l04.SQ_K1
-		case l09.PIECE_R2, l09.PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			cap_dst_sq = l04.SQ_R1
-		case l09.PIECE_B2, l09.PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			cap_dst_sq = l04.SQ_B1
-		case l09.PIECE_G2:
+		case l03.PIECE_G2:
 			cap_dst_sq = l04.SQ_G1
-		case l09.PIECE_S2, l09.PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			cap_dst_sq = l04.SQ_S1
-		case l09.PIECE_N2, l09.PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			cap_dst_sq = l04.SQ_N1
-		case l09.PIECE_L2, l09.PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			cap_dst_sq = l04.SQ_L1
-		case l09.PIECE_P2, l09.PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			cap_dst_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)
@@ -676,7 +677,7 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
 			pPos.Hands1[cap_dst_sq-l04.SQ_HAND_START] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
-			pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex] = l09.PIECE_EMPTY
+			pNerve.PRecord.CapturedList[pNerve.PRecord.OffsetMovesIndex] = l03.PIECE_EMPTY
 		}
 	}
 
@@ -817,7 +818,7 @@ func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 				pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2])
 		}
 		pCB3.AddControl(MoveEndListToControlList(GenMoveEnd(pPos, to)), to, -1)
-		pPos.Board[to] = l09.PIECE_EMPTY
+		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
 		pPos.Hands1[hand-l04.SQ_HAND_START] += 1
@@ -851,7 +852,7 @@ func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 			pPos.Board[from] = pPos.Board[to]
 		}
 
-		pPos.Board[to] = l09.PIECE_EMPTY
+		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 開発中は、利き計算を差分で行うぜ（＾～＾）実戦中は、差分は取らずに 利きテーブル本体を直接編集するぜ（＾～＾）
 		piece = pPos.Board[from]
@@ -985,38 +986,38 @@ func (pNerve *Nerve) undoCapture(pPos *l15.Position) {
 
 		// 取った相手の駒があれば、自分の駒台から下ろします
 		switch captured {
-		case l09.PIECE_EMPTY: // Ignored
-		case l09.PIECE_K1: // Second player win
+		case l03.PIECE_EMPTY: // Ignored
+		case l03.PIECE_K1: // Second player win
 			hand_sq = l04.SQ_K2
-		case l09.PIECE_R1, l09.PIECE_PR1:
+		case l03.PIECE_R1, l03.PIECE_PR1:
 			hand_sq = l04.SQ_R2
-		case l09.PIECE_B1, l09.PIECE_PB1:
+		case l03.PIECE_B1, l03.PIECE_PB1:
 			hand_sq = l04.SQ_B2
-		case l09.PIECE_G1:
+		case l03.PIECE_G1:
 			hand_sq = l04.SQ_G2
-		case l09.PIECE_S1, l09.PIECE_PS1:
+		case l03.PIECE_S1, l03.PIECE_PS1:
 			hand_sq = l04.SQ_S2
-		case l09.PIECE_N1, l09.PIECE_PN1:
+		case l03.PIECE_N1, l03.PIECE_PN1:
 			hand_sq = l04.SQ_N2
-		case l09.PIECE_L1, l09.PIECE_PL1:
+		case l03.PIECE_L1, l03.PIECE_PL1:
 			hand_sq = l04.SQ_L2
-		case l09.PIECE_P1, l09.PIECE_PP1:
+		case l03.PIECE_P1, l03.PIECE_PP1:
 			hand_sq = l04.SQ_P2
-		case l09.PIECE_K2: // l06.FIRST player win
+		case l03.PIECE_K2: // l06.FIRST player win
 			hand_sq = l04.SQ_K1
-		case l09.PIECE_R2, l09.PIECE_PR2:
+		case l03.PIECE_R2, l03.PIECE_PR2:
 			hand_sq = l04.SQ_R1
-		case l09.PIECE_B2, l09.PIECE_PB2:
+		case l03.PIECE_B2, l03.PIECE_PB2:
 			hand_sq = l04.SQ_B1
-		case l09.PIECE_G2:
+		case l03.PIECE_G2:
 			hand_sq = l04.SQ_G1
-		case l09.PIECE_S2, l09.PIECE_PS2:
+		case l03.PIECE_S2, l03.PIECE_PS2:
 			hand_sq = l04.SQ_S1
-		case l09.PIECE_N2, l09.PIECE_PN2:
+		case l03.PIECE_N2, l03.PIECE_PN2:
 			hand_sq = l04.SQ_N1
-		case l09.PIECE_L2, l09.PIECE_PL2:
+		case l03.PIECE_L2, l03.PIECE_PL2:
 			hand_sq = l04.SQ_L1
-		case l09.PIECE_P2, l09.PIECE_PP2:
+		case l03.PIECE_P2, l03.PIECE_PP2:
 			hand_sq = l04.SQ_P1
 		default:
 			fmt.Printf("unknown captured=[%d]", captured)

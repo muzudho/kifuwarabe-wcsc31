@@ -3,11 +3,11 @@ package take14
 import (
 	"fmt"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
-	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // 条件
@@ -205,19 +205,19 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 			phase := Who(piece)
 
 			switch piece {
-			case l09.PIECE_EMPTY:
+			case l03.PIECE_EMPTY:
 				panic(fmt.Errorf("Piece empty"))
-			case l09.PIECE_K1:
+			case l03.PIECE_K1:
 				genmv_list = genmv_k1
-			case l09.PIECE_R1:
+			case l03.PIECE_R1:
 				genmv_list = genmv_r1
-			case l09.PIECE_B1:
+			case l03.PIECE_B1:
 				genmv_list = genmv_b1
-			case l09.PIECE_G1:
+			case l03.PIECE_G1:
 				genmv_list = genmv_g1
-			case l09.PIECE_S1:
+			case l03.PIECE_S1:
 				genmv_list = genmv_s1
-			case l09.PIECE_N1:
+			case l03.PIECE_N1:
 				// 先手桂
 				if FromOpponent(phase, from) {
 					var promote = l04.File(from) < 6                         // 移動元または移動先が敵陣なら成れる
@@ -227,33 +227,33 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 					var promote = l04.File(from) < 6                // 移動元または移動先が敵陣なら成れる
 					makeFrontKnight(from, promote, moveEndList) // 先手桂の利き
 				}
-			case l09.PIECE_L1:
+			case l03.PIECE_L1:
 				genmv_list = genmv_l1
-			case l09.PIECE_P1:
+			case l03.PIECE_P1:
 				genmv_list = genmv_p1
-			case l09.PIECE_PR1:
+			case l03.PIECE_PR1:
 				genmv_list = genmv_pr1
-			case l09.PIECE_PB1:
+			case l03.PIECE_PB1:
 				genmv_list = genmv_pb1
-			case l09.PIECE_PS1:
+			case l03.PIECE_PS1:
 				genmv_list = genmv_ps1
-			case l09.PIECE_PN1:
+			case l03.PIECE_PN1:
 				genmv_list = genmv_pn1
-			case l09.PIECE_PL1:
+			case l03.PIECE_PL1:
 				genmv_list = genmv_pl1
-			case l09.PIECE_PP1:
+			case l03.PIECE_PP1:
 				genmv_list = genmv_pp1
-			case l09.PIECE_K2:
+			case l03.PIECE_K2:
 				genmv_list = genmv_k2
-			case l09.PIECE_R2:
+			case l03.PIECE_R2:
 				genmv_list = genmv_r2
-			case l09.PIECE_B2:
+			case l03.PIECE_B2:
 				genmv_list = genmv_b2
-			case l09.PIECE_G2:
+			case l03.PIECE_G2:
 				genmv_list = genmv_g2
-			case l09.PIECE_S2:
+			case l03.PIECE_S2:
 				genmv_list = genmv_s2
-			case l09.PIECE_N2:
+			case l03.PIECE_N2:
 				// 後手桂
 				if l04.Rank(from) != 7 { // 移動元が7段目でない
 					var promote = l04.File(from) > 4               // 移動元または移動先が敵陣なら成れる
@@ -263,21 +263,21 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 					var promote = l04.File(from) < 6                        // 移動元または移動先が敵陣なら成れる
 					makeBackKnightPromotion(from, promote, moveEndList) // 先手桂の利き
 				}
-			case l09.PIECE_L2:
+			case l03.PIECE_L2:
 				genmv_list = genmv_l2
-			case l09.PIECE_P2:
+			case l03.PIECE_P2:
 				genmv_list = genmv_p2
-			case l09.PIECE_PR2:
+			case l03.PIECE_PR2:
 				genmv_list = genmv_pr2
-			case l09.PIECE_PB2:
+			case l03.PIECE_PB2:
 				genmv_list = genmv_pb2
-			case l09.PIECE_PS2:
+			case l03.PIECE_PS2:
 				genmv_list = genmv_ps2
-			case l09.PIECE_PN2:
+			case l03.PIECE_PN2:
 				genmv_list = genmv_pn2
-			case l09.PIECE_PL2:
+			case l03.PIECE_PL2:
 				genmv_list = genmv_pl2
-			case l09.PIECE_PP2:
+			case l03.PIECE_PP2:
 				genmv_list = genmv_pp2
 			default:
 				panic(fmt.Errorf("unknown piece=%d", piece))
@@ -868,7 +868,7 @@ func makeDrop(pPos *Position, droppableFiles [10]bool, rank l04.Square, moveEndL
 // NifuFirst - 先手で二歩になるか筋調べ
 func NifuFirst(pPos *Position, file l04.Square) bool {
 	for rank := l04.Square(2); rank < 10; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == l09.PIECE_P1 {
+		if pPos.Board[SquareFrom(file, rank)] == l03.PIECE_P1 {
 			return true
 		}
 	}
@@ -879,7 +879,7 @@ func NifuFirst(pPos *Position, file l04.Square) bool {
 // NifuSecond - 後手で二歩になるか筋調べ
 func NifuSecond(pPos *Position, file l04.Square) bool {
 	for rank := l04.Square(1); rank < 9; rank += 1 {
-		if pPos.Board[SquareFrom(file, rank)] == l09.PIECE_P2 {
+		if pPos.Board[SquareFrom(file, rank)] == l03.PIECE_P2 {
 			return true
 		}
 	}

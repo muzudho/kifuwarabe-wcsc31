@@ -1,9 +1,9 @@
 package take11 // same take12
 
 import (
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
-	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 // 先後のない駒種類
@@ -28,37 +28,37 @@ const (
 )
 
 // What - 先後のない駒種類を返します。
-func What(piece l09.Piece) PieceType {
+func What(piece l03.Piece) PieceType {
 	switch piece {
-	case l09.PIECE_EMPTY: // 空きマス
+	case l03.PIECE_EMPTY: // 空きマス
 		return PIECE_TYPE_EMPTY
-	case l09.PIECE_K1, l09.PIECE_K2:
+	case l03.PIECE_K1, l03.PIECE_K2:
 		return PIECE_TYPE_K
-	case l09.PIECE_R1, l09.PIECE_R2:
+	case l03.PIECE_R1, l03.PIECE_R2:
 		return PIECE_TYPE_R
-	case l09.PIECE_B1, l09.PIECE_B2:
+	case l03.PIECE_B1, l03.PIECE_B2:
 		return PIECE_TYPE_B
-	case l09.PIECE_G1, l09.PIECE_G2:
+	case l03.PIECE_G1, l03.PIECE_G2:
 		return PIECE_TYPE_G
-	case l09.PIECE_S1, l09.PIECE_S2:
+	case l03.PIECE_S1, l03.PIECE_S2:
 		return PIECE_TYPE_S
-	case l09.PIECE_N1, l09.PIECE_N2:
+	case l03.PIECE_N1, l03.PIECE_N2:
 		return PIECE_TYPE_N
-	case l09.PIECE_L1, l09.PIECE_L2:
+	case l03.PIECE_L1, l03.PIECE_L2:
 		return PIECE_TYPE_L
-	case l09.PIECE_P1, l09.PIECE_P2:
+	case l03.PIECE_P1, l03.PIECE_P2:
 		return PIECE_TYPE_P
-	case l09.PIECE_PR1, l09.PIECE_PR2:
+	case l03.PIECE_PR1, l03.PIECE_PR2:
 		return PIECE_TYPE_PR
-	case l09.PIECE_PB1, l09.PIECE_PB2:
+	case l03.PIECE_PB1, l03.PIECE_PB2:
 		return PIECE_TYPE_PB
-	case l09.PIECE_PS1, l09.PIECE_PS2:
+	case l03.PIECE_PS1, l03.PIECE_PS2:
 		return PIECE_TYPE_PS
-	case l09.PIECE_PN1, l09.PIECE_PN2:
+	case l03.PIECE_PN1, l03.PIECE_PN2:
 		return PIECE_TYPE_PN
-	case l09.PIECE_PL1, l09.PIECE_PL2:
+	case l03.PIECE_PL1, l03.PIECE_PL2:
 		return PIECE_TYPE_PL
-	case l09.PIECE_PP1, l09.PIECE_PP2:
+	case l03.PIECE_PP1, l03.PIECE_PP2:
 		return PIECE_TYPE_PP
 	default:
 		panic(App.LogNotEcho.Fatal("unknown piece=[%d]", piece))
@@ -88,71 +88,71 @@ func WhatHand(hand l04.Square) PieceType {
 }
 
 // PieceFromPhPt - 駒作成。空マスは作れません
-func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l09.Piece {
+func PieceFromPhPt(phase l06.Phase, pieceType PieceType) l03.Piece {
 	switch phase {
 	case l06.FIRST:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l09.PIECE_K1
+			return l03.PIECE_K1
 		case PIECE_TYPE_R:
-			return l09.PIECE_R1
+			return l03.PIECE_R1
 		case PIECE_TYPE_B:
-			return l09.PIECE_B1
+			return l03.PIECE_B1
 		case PIECE_TYPE_G:
-			return l09.PIECE_G1
+			return l03.PIECE_G1
 		case PIECE_TYPE_S:
-			return l09.PIECE_S1
+			return l03.PIECE_S1
 		case PIECE_TYPE_N:
-			return l09.PIECE_N1
+			return l03.PIECE_N1
 		case PIECE_TYPE_L:
-			return l09.PIECE_L1
+			return l03.PIECE_L1
 		case PIECE_TYPE_P:
-			return l09.PIECE_P1
+			return l03.PIECE_P1
 		case PIECE_TYPE_PR:
-			return l09.PIECE_PR1
+			return l03.PIECE_PR1
 		case PIECE_TYPE_PB:
-			return l09.PIECE_PB1
+			return l03.PIECE_PB1
 		case PIECE_TYPE_PS:
-			return l09.PIECE_PS1
+			return l03.PIECE_PS1
 		case PIECE_TYPE_PN:
-			return l09.PIECE_PN1
+			return l03.PIECE_PN1
 		case PIECE_TYPE_PL:
-			return l09.PIECE_PL1
+			return l03.PIECE_PL1
 		case PIECE_TYPE_PP:
-			return l09.PIECE_PP1
+			return l03.PIECE_PP1
 		default:
 			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}
 	case l06.SECOND:
 		switch pieceType {
 		case PIECE_TYPE_K:
-			return l09.PIECE_K2
+			return l03.PIECE_K2
 		case PIECE_TYPE_R:
-			return l09.PIECE_R2
+			return l03.PIECE_R2
 		case PIECE_TYPE_B:
-			return l09.PIECE_B2
+			return l03.PIECE_B2
 		case PIECE_TYPE_G:
-			return l09.PIECE_G2
+			return l03.PIECE_G2
 		case PIECE_TYPE_S:
-			return l09.PIECE_S2
+			return l03.PIECE_S2
 		case PIECE_TYPE_N:
-			return l09.PIECE_N2
+			return l03.PIECE_N2
 		case PIECE_TYPE_L:
-			return l09.PIECE_L2
+			return l03.PIECE_L2
 		case PIECE_TYPE_P:
-			return l09.PIECE_P2
+			return l03.PIECE_P2
 		case PIECE_TYPE_PR:
-			return l09.PIECE_PR2
+			return l03.PIECE_PR2
 		case PIECE_TYPE_PB:
-			return l09.PIECE_PB2
+			return l03.PIECE_PB2
 		case PIECE_TYPE_PS:
-			return l09.PIECE_PS2
+			return l03.PIECE_PS2
 		case PIECE_TYPE_PN:
-			return l09.PIECE_PN2
+			return l03.PIECE_PN2
 		case PIECE_TYPE_PL:
-			return l09.PIECE_PL2
+			return l03.PIECE_PL2
 		case PIECE_TYPE_PP:
-			return l09.PIECE_PP2
+			return l03.PIECE_PP2
 		default:
 			panic(App.LogNotEcho.Fatal("unknown piece type=%d", pieceType))
 		}

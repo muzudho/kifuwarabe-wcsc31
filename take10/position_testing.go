@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
@@ -103,7 +104,7 @@ func ShuffleBoard(pPos *Position) {
 				change := l04.Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != l09.PIECE_EMPTY {
+					if piece != l03.PIECE_EMPTY {
 						phase := Who(piece)
 						pieceType := What(piece)
 
@@ -166,7 +167,7 @@ func ShuffleBoard(pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = l09.PIECE_EMPTY
+							pPos.Board[sq] = l03.PIECE_EMPTY
 						}
 					}
 

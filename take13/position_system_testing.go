@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"sort"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
@@ -132,7 +133,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 				change := l04.Square(rand.Intn(10))
 				if change == 0 {
 					piece := pPos.Board[sq]
-					if piece != l09.PIECE_EMPTY {
+					if piece != l03.PIECE_EMPTY {
 						phase := Who(piece)
 						pieceType := l11.What(piece)
 
@@ -201,7 +202,7 @@ func ShuffleBoard(pPosSys *PositionSystem, pPos *Position) {
 						}
 
 						if ok {
-							pPos.Board[sq] = l09.PIECE_EMPTY
+							pPos.Board[sq] = l03.PIECE_EMPTY
 						}
 					}
 
@@ -469,8 +470,8 @@ func diffBoard(pPos0 *Position, pPos1 *Position, pPos2 *Position, pPos3 *Positio
 	for sq := 0; sq < 100; sq += 1 {
 		if pPos1.Board[sq] == pPos0.Board[sq] {
 			// 等しければ空マス
-			pPos2.Board[sq] = l09.PIECE_EMPTY
-			pPos3.Board[sq] = l09.PIECE_EMPTY
+			pPos2.Board[sq] = l03.PIECE_EMPTY
+			pPos3.Board[sq] = l03.PIECE_EMPTY
 
 		} else {
 			// 異なったら

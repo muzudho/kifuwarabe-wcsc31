@@ -4,8 +4,8 @@ package take10
 import (
 	"fmt"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
-	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
 const (
@@ -104,7 +104,7 @@ func (pPos *Position) AddControlDiff(layer int, from l04.Square, sign int8) {
 	}
 
 	piece := pPos.Board[from]
-	if piece == l09.PIECE_EMPTY {
+	if piece == l03.PIECE_EMPTY {
 		panic(fmt.Errorf("LogicalError: Piece from empty square. It has no control. from=%d", from))
 	}
 
