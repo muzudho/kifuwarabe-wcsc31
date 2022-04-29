@@ -199,7 +199,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 		var start_rank l04.Square
 		var end_rank l04.Square
 
-		switch Hand(from) {
+		switch from {
 		case HAND_R1, HAND_B1, HAND_G1, HAND_S1, HAND_R2, HAND_B2, HAND_G2, HAND_S2: // 81マスに打てる
 			start_rank = 1
 			end_rank = 10
@@ -219,7 +219,7 @@ func GenMoveEnd(pPos *Position, from l04.Square) []MoveEnd {
 			panic(fmt.Errorf("unknown hand from=%d", from))
 		}
 
-		switch Hand(from) {
+		switch from {
 		case HAND_P1:
 			// TODO 打ち歩詰め禁止
 			for rank := l04.Square(start_rank); rank < end_rank; rank += 1 {
@@ -372,9 +372,9 @@ func GenMoveList(pPos *Position) []Move {
 
 		// 駒台もスキャンしよ（＾～＾）
 		phase_index := l04.Square(pPos.Phase - 1)
-		for hand := Hand(phase_index) * HAND_TYPE_SIZE; hand < (Hand(phase_index)+1)*HAND_TYPE_SIZE; hand += 1 {
+		for hand := l04.Square(phase_index * HAND_TYPE_SIZE); hand < (phase_index+1)*HAND_TYPE_SIZE; hand += 1 {
 			if pPos.Hands[hand] > 0 {
-				hand_sq := l04.Square(hand + HAND_ORIGIN)
+				hand_sq := hand + HAND_ORIGIN
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {
