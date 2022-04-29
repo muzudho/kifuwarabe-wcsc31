@@ -30,43 +30,43 @@ func Sprint(pPos *Position) string {
 		//
 		"\n" +
 		//
-		fmt.Sprintf(" %2s %2s %2s %2s %2s %2s %2s %2s %2s %2s\n", pPos.Board[90], pPos.Board[80], pPos.Board[70], pPos.Board[60], pPos.Board[50], pPos.Board[40], pPos.Board[30], pPos.Board[20], pPos.Board[10], pPos.Board[0]) +
+		fmt.Sprintf(" %2s %2s %2s %2s %2s %2s %2s %2s %2s %2s\n", pPos.GetPieceAtIndex(90).ToCodeOfPc(), pPos.GetPieceAtIndex(80).ToCodeOfPc(), pPos.GetPieceAtIndex(70).ToCodeOfPc(), pPos.GetPieceAtIndex(60).ToCodeOfPc(), pPos.GetPieceAtIndex(50).ToCodeOfPc(), pPos.GetPieceAtIndex(40).ToCodeOfPc(), pPos.GetPieceAtIndex(30).ToCodeOfPc(), pPos.GetPieceAtIndex(20).ToCodeOfPc(), pPos.GetPieceAtIndex(10).ToCodeOfPc(), pPos.GetPieceAtIndex(0).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[91], pPos.Board[81], pPos.Board[71], pPos.Board[61], pPos.Board[51], pPos.Board[41], pPos.Board[31], pPos.Board[21], pPos.Board[11], pPos.Board[1]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(91).ToCodeOfPc(), pPos.GetPieceAtIndex(81).ToCodeOfPc(), pPos.GetPieceAtIndex(71).ToCodeOfPc(), pPos.GetPieceAtIndex(61).ToCodeOfPc(), pPos.GetPieceAtIndex(51).ToCodeOfPc(), pPos.GetPieceAtIndex(41).ToCodeOfPc(), pPos.GetPieceAtIndex(31).ToCodeOfPc(), pPos.GetPieceAtIndex(21).ToCodeOfPc(), pPos.GetPieceAtIndex(11).ToCodeOfPc(), pPos.GetPieceAtIndex(1).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[92], pPos.Board[82], pPos.Board[72], pPos.Board[62], pPos.Board[52], pPos.Board[42], pPos.Board[32], pPos.Board[22], pPos.Board[12], pPos.Board[2]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(92).ToCodeOfPc(), pPos.GetPieceAtIndex(82).ToCodeOfPc(), pPos.GetPieceAtIndex(72).ToCodeOfPc(), pPos.GetPieceAtIndex(62).ToCodeOfPc(), pPos.GetPieceAtIndex(52).ToCodeOfPc(), pPos.GetPieceAtIndex(42).ToCodeOfPc(), pPos.GetPieceAtIndex(32).ToCodeOfPc(), pPos.GetPieceAtIndex(22).ToCodeOfPc(), pPos.GetPieceAtIndex(12).ToCodeOfPc(), pPos.GetPieceAtIndex(2).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[93], pPos.Board[83], pPos.Board[73], pPos.Board[63], pPos.Board[53], pPos.Board[43], pPos.Board[33], pPos.Board[23], pPos.Board[13], pPos.Board[3]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(93).ToCodeOfPc(), pPos.GetPieceAtIndex(83).ToCodeOfPc(), pPos.GetPieceAtIndex(73).ToCodeOfPc(), pPos.GetPieceAtIndex(63).ToCodeOfPc(), pPos.GetPieceAtIndex(53).ToCodeOfPc(), pPos.GetPieceAtIndex(43).ToCodeOfPc(), pPos.GetPieceAtIndex(33).ToCodeOfPc(), pPos.GetPieceAtIndex(23).ToCodeOfPc(), pPos.GetPieceAtIndex(13).ToCodeOfPc(), pPos.GetPieceAtIndex(3).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[94], pPos.Board[84], pPos.Board[74], pPos.Board[64], pPos.Board[54], pPos.Board[44], pPos.Board[34], pPos.Board[24], pPos.Board[14], pPos.Board[4]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(94).ToCodeOfPc(), pPos.GetPieceAtIndex(84).ToCodeOfPc(), pPos.GetPieceAtIndex(74).ToCodeOfPc(), pPos.GetPieceAtIndex(64).ToCodeOfPc(), pPos.GetPieceAtIndex(54).ToCodeOfPc(), pPos.GetPieceAtIndex(44).ToCodeOfPc(), pPos.GetPieceAtIndex(34).ToCodeOfPc(), pPos.GetPieceAtIndex(24).ToCodeOfPc(), pPos.GetPieceAtIndex(14).ToCodeOfPc(), pPos.GetPieceAtIndex(4).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[95], pPos.Board[85], pPos.Board[75], pPos.Board[65], pPos.Board[55], pPos.Board[45], pPos.Board[35], pPos.Board[25], pPos.Board[15], pPos.Board[5]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(95).ToCodeOfPc(), pPos.GetPieceAtIndex(85).ToCodeOfPc(), pPos.GetPieceAtIndex(75).ToCodeOfPc(), pPos.GetPieceAtIndex(65).ToCodeOfPc(), pPos.GetPieceAtIndex(55).ToCodeOfPc(), pPos.GetPieceAtIndex(45).ToCodeOfPc(), pPos.GetPieceAtIndex(35).ToCodeOfPc(), pPos.GetPieceAtIndex(25).ToCodeOfPc(), pPos.GetPieceAtIndex(15).ToCodeOfPc(), pPos.GetPieceAtIndex(5).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[96], pPos.Board[86], pPos.Board[76], pPos.Board[66], pPos.Board[56], pPos.Board[46], pPos.Board[36], pPos.Board[26], pPos.Board[16], pPos.Board[6]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(96).ToCodeOfPc(), pPos.GetPieceAtIndex(86).ToCodeOfPc(), pPos.GetPieceAtIndex(76).ToCodeOfPc(), pPos.GetPieceAtIndex(66).ToCodeOfPc(), pPos.GetPieceAtIndex(56).ToCodeOfPc(), pPos.GetPieceAtIndex(46).ToCodeOfPc(), pPos.GetPieceAtIndex(36).ToCodeOfPc(), pPos.GetPieceAtIndex(26).ToCodeOfPc(), pPos.GetPieceAtIndex(16).ToCodeOfPc(), pPos.GetPieceAtIndex(6).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[97], pPos.Board[87], pPos.Board[77], pPos.Board[67], pPos.Board[57], pPos.Board[47], pPos.Board[37], pPos.Board[27], pPos.Board[17], pPos.Board[7]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(97).ToCodeOfPc(), pPos.GetPieceAtIndex(87).ToCodeOfPc(), pPos.GetPieceAtIndex(77).ToCodeOfPc(), pPos.GetPieceAtIndex(67).ToCodeOfPc(), pPos.GetPieceAtIndex(57).ToCodeOfPc(), pPos.GetPieceAtIndex(47).ToCodeOfPc(), pPos.GetPieceAtIndex(37).ToCodeOfPc(), pPos.GetPieceAtIndex(27).ToCodeOfPc(), pPos.GetPieceAtIndex(17).ToCodeOfPc(), pPos.GetPieceAtIndex(7).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[98], pPos.Board[88], pPos.Board[78], pPos.Board[68], pPos.Board[58], pPos.Board[48], pPos.Board[38], pPos.Board[28], pPos.Board[18], pPos.Board[8]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(98).ToCodeOfPc(), pPos.GetPieceAtIndex(88).ToCodeOfPc(), pPos.GetPieceAtIndex(78).ToCodeOfPc(), pPos.GetPieceAtIndex(68).ToCodeOfPc(), pPos.GetPieceAtIndex(58).ToCodeOfPc(), pPos.GetPieceAtIndex(48).ToCodeOfPc(), pPos.GetPieceAtIndex(38).ToCodeOfPc(), pPos.GetPieceAtIndex(28).ToCodeOfPc(), pPos.GetPieceAtIndex(18).ToCodeOfPc(), pPos.GetPieceAtIndex(8).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
-		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.Board[99], pPos.Board[89], pPos.Board[79], pPos.Board[69], pPos.Board[59], pPos.Board[49], pPos.Board[39], pPos.Board[29], pPos.Board[19], pPos.Board[9]) +
+		fmt.Sprintf("|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s|%2s\n", pPos.GetPieceAtIndex(99).ToCodeOfPc(), pPos.GetPieceAtIndex(89).ToCodeOfPc(), pPos.GetPieceAtIndex(79).ToCodeOfPc(), pPos.GetPieceAtIndex(69).ToCodeOfPc(), pPos.GetPieceAtIndex(59).ToCodeOfPc(), pPos.GetPieceAtIndex(49).ToCodeOfPc(), pPos.GetPieceAtIndex(39).ToCodeOfPc(), pPos.GetPieceAtIndex(29).ToCodeOfPc(), pPos.GetPieceAtIndex(19).ToCodeOfPc(), pPos.GetPieceAtIndex(9).ToCodeOfPc()) +
 		//
 		"+--+--+--+--+--+--+--+--+--+\n" +
 		//
