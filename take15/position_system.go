@@ -2,6 +2,7 @@ package take15
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l06 "github.com/muzudho/kifuwarabe-wcsc31/take6"
@@ -42,7 +43,7 @@ type PositionSystem struct {
 	// 開発モードフラグ。デフォルト値：真。 'usi' コマンドで解除
 	BuildType BuildT
 	// 局面
-	PPosition [POS_LAYER_SIZE]*Position
+	PPosition [l11.POS_LAYER_SIZE]*Position
 
 	// 先手が1、後手が2（＾～＾）
 	phase l06.Phase
