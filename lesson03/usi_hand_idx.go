@@ -3,6 +3,8 @@ package lesson03
 func FromCodeToHandIndex(code byte, convertAlternativeValue *func(code byte) HandIdx) HandIdx {
 
 	switch code {
+	case 'K':
+		return HAND_K1
 	case 'R':
 		return HAND_R1
 	case 'B':
@@ -17,6 +19,8 @@ func FromCodeToHandIndex(code byte, convertAlternativeValue *func(code byte) Han
 		return HAND_L1
 	case 'P':
 		return HAND_P1
+	case 'k':
+		return HAND_K2
 	case 'r':
 		return HAND_R2
 	case 'b':
