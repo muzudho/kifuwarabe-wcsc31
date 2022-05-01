@@ -39,8 +39,12 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 			isBadForm = isBadFormOfGold(pPos, turn, from, to)
 		case l03.PIECE_TYPE_S: // 銀
 			isBadForm = isBadFormOfSilver(pPos, turn, from, to)
+		case l03.PIECE_TYPE_N: // 桂
+			isBadForm = isBadFormOfKnight(pPos, turn, to, promotion)
 		case l03.PIECE_TYPE_L: // 香
 			isBadForm = isBadFormOfLance(pPos, turn, to, promotion)
+		case l03.PIECE_TYPE_P: // 歩
+			isBadForm = isBadFormOfPawn(pPos, turn, to, promotion)
 		}
 
 		if isBadForm {
@@ -352,6 +356,32 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, from l03.Square, to l
 	return true
 }
 
+// isBadFormOfLance - 動かした駒が桂なら
+func isBadFormOfKnight(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
+	if promotion {
+		return false
+	}
+
+	var rank2 int8
+	switch turn {
+	case l03.FIRST:
+		rank2 = 2
+	case l03.SECOND:
+		rank2 = 8
+	default:
+		panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
+	}
+
+	var newRank = l03.Rank(to)
+
+	if newRank == rank2 {
+		// 2段目で成らない桂は省く
+		return true
+	}
+
+	return false
+}
+
 // isBadFormOfLance - 動かした駒が香なら
 func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
 	if promotion {
@@ -375,6 +405,35 @@ func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promoti
 
 	if newRank == rank1 || newRank == rank2 {
 		// 1段目、2段目で成らない香は省く
+		return true
+	}
+
+	return false
+}
+
+// isBadFormOfPawn - 動かした駒が歩なら
+func isBadFormOfPawn(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
+	if promotion {
+		return false
+	}
+
+	var minRank int8
+	var overRank int8
+	switch turn {
+	case l03.FIRST:
+		minRank = 1
+		overRank = 4
+	case l03.SECOND:
+		minRank = 7
+		overRank = 10
+	default:
+		panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
+	}
+
+	var newRank = l03.Rank(to)
+
+	if minRank <= newRank && newRank < overRank {
+		// 敵陣で成らない歩は省く
 		return true
 	}
 
