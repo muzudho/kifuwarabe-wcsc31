@@ -1,4 +1,4 @@
-package take12 // not same take13
+package take12 // same take14
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
@@ -17,12 +17,18 @@ type Move uint16
 // 0 は 投了ということにするぜ（＾～＾）
 const RESIGN_MOVE = Move(0)
 
-// NewMove2 - 初期値として 移動元マス、移動先マスを指定してください
-// TODO 成、不成も欲しいぜ（＾～＾）
-func NewMove2(from l03.Square, to l03.Square) Move {
+// NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
+func NewMove(from l03.Square, to l03.Square, promotion bool) Move {
 	move := RESIGN_MOVE
+
+	// Replace source square bits
 	move = move.ReplaceSource(from)
-	return move.ReplaceDestination(to)
+
+	// Replace destination square bits
+	move = move.ReplaceDestination(to)
+
+	// Replace promotion bit
+	return move.ReplacePromotion(promotion)
 }
 
 // ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
@@ -36,6 +42,7 @@ func (move Move) ToCodeOfM() string {
 	str := make([]byte, 0, 5)
 	count := 0
 
+	// 移動元マス、移動先マス、成りの有無
 	from, to, pro := move.Destructure()
 
 	// 移動元マス(Source square)
@@ -99,21 +106,21 @@ func (move Move) ToCodeOfM() string {
 	return string(str)
 }
 
-// ReplaceSource - 移動元マス
+// ReplaceSource - Replace 7 source square bits
 // 1111 1111 1000 0000 (Clear) 0xff80
 // .pdd dddd dsss ssss
 func (move Move) ReplaceSource(sq l03.Square) Move {
 	return Move(uint16(move)&0xff80 | uint16(sq))
 }
 
-// ReplaceDestination - 移動先マス
+// ReplaceDestination - Replace 7 destination square bits
 // 1100 0000 0111 1111 (Clear) 0xc07f
 // .pdd dddd dsss ssss
 func (move Move) ReplaceDestination(sq l03.Square) Move {
 	return Move(uint16(move)&0xc07f | (uint16(sq) << 7))
 }
 
-// ReplacePromotion - 成
+// ReplacePromotion - Replace 1 promotion bit
 // 0100 0000 0000 0000 (Stand) 0x4000
 // 1011 1111 1111 1111 (Clear) 0xbfff
 // .pdd dddd dsss ssss

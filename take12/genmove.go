@@ -355,7 +355,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove2(from, to)
+								move := NewMove(from, to, false)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board[to] == 0 {
@@ -371,7 +371,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, _ := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := NewMove2(from, to)
+								move := NewMove(from, to, false)
 								pPosSys.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board[friendKingSq] == 0 {
@@ -396,7 +396,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to, _ := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := NewMove2(hand_sq, to)
+						move := NewMove(hand_sq, to, false)
 						pPosSys.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board[friendKingSq] == 0 {
@@ -430,14 +430,14 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 						for _, moveEnd := range moveEndList {
 							to, _ := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, NewMove2(from, to))
+								move_list = append(move_list, NewMove(from, to, false))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
 							to, _ := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, NewMove2(from, to))
+								move_list = append(move_list, NewMove(from, to, false))
 							}
 						}
 					}
@@ -454,7 +454,7 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []Move {
 				for _, moveEnd := range moveEndList {
 					to, _ := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, NewMove2(hand_sq, to))
+						move_list = append(move_list, NewMove(hand_sq, to, false))
 					}
 				}
 			}
