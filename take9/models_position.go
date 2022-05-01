@@ -447,7 +447,7 @@ func (pPos *Position) ReadPosition(command string) {
 					}
 				}
 
-				pPos.Hands[handSq.ToSq()-l03.HANDSQ_ORIGIN.ToSq()] = number
+				pPos.Hands[handSq.ToSq()-l03.HANDSQ_BEGIN.ToSq()] = number
 
 				// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 				switch handSq {
@@ -618,7 +618,7 @@ func (pPos *Position) DoMove(move l03.Move) {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands[hand-l03.HANDSQ_ORIGIN.ToSq()] -= 1
+		pPos.Hands[hand-l03.HANDSQ_BEGIN.ToSq()] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -696,7 +696,7 @@ func (pPos *Position) DoMove(move l03.Move) {
 
 		if cap_dst_sq != l03.SQ_EMPTY {
 			pPos.CapturedList[pPos.OffsetMovesIndex] = captured
-			pPos.Hands[cap_dst_sq-l03.HANDSQ_ORIGIN.ToSq()] += 1
+			pPos.Hands[cap_dst_sq-l03.HANDSQ_BEGIN.ToSq()] += 1
 		} else {
 			// 取った駒は無かった（＾～＾）
 			pPos.CapturedList[pPos.OffsetMovesIndex] = l03.PIECE_EMPTY
@@ -792,7 +792,7 @@ func (pPos *Position) UndoMove() {
 		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands[hand-l03.HANDSQ_ORIGIN.ToSq()] += 1
+		pPos.Hands[hand-l03.HANDSQ_BEGIN.ToSq()] += 1
 		cap_dst_sq = 0
 	default:
 		// 打でないなら
@@ -850,7 +850,7 @@ func (pPos *Position) UndoMove() {
 
 		if cap_src_sq != l03.SQ_EMPTY {
 			cap_dst_sq = cap_src_sq
-			pPos.Hands[cap_src_sq-l03.HANDSQ_ORIGIN.ToSq()] -= 1
+			pPos.Hands[cap_src_sq-l03.HANDSQ_BEGIN.ToSq()] -= 1
 
 			// 取った駒を行き先に戻します
 			cap_piece_type = l03.What(captured)

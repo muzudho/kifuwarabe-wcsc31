@@ -424,7 +424,7 @@ func (pPos *Position) DoMove(move l03.Move) {
 		// 打なら
 
 		// 持ち駒の数を減らします
-		pPos.Hands[hand-l03.HANDSQ_ORIGIN] -= 1
+		pPos.Hands[hand-l03.HANDSQ_BEGIN] -= 1
 
 		// 行き先に駒を置きます
 		pPos.Board[to] = piece
@@ -489,7 +489,7 @@ func (pPos *Position) DoMove(move l03.Move) {
 		}
 
 		if hand != 0 {
-			pPos.Hands[hand-l03.HANDSQ_ORIGIN] += 1
+			pPos.Hands[hand-l03.HANDSQ_BEGIN] += 1
 		}
 	}
 
@@ -554,7 +554,7 @@ func (pPos *Position) UndoMove() {
 		pPos.Board[to] = l03.PIECE_EMPTY
 
 		// 駒台に駒を戻します
-		pPos.Hands[hand-l03.HANDSQ_ORIGIN] += 1
+		pPos.Hands[hand-l03.HANDSQ_BEGIN] += 1
 	default:
 		// 打でないなら
 
@@ -605,7 +605,7 @@ func (pPos *Position) UndoMove() {
 		}
 
 		if cap != 0 {
-			pPos.Hands[cap-l03.HANDSQ_ORIGIN] -= 1
+			pPos.Hands[cap-l03.HANDSQ_BEGIN] -= 1
 
 			// 取った駒を行き先に戻します
 			moving_piece_types[1] = l03.What(captured)

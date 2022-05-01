@@ -15,7 +15,7 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 	// 打のケースがあることに注意
 	if 11 <= from && from < 100 {
 		// 動く駒は？
-		var movedPiece = pPos.GetPieceAtSq(from)
+		var movedPiece = pPos.GetPieceOnBoardAtSq(from)
 		var movedPieceType = l03.What(movedPiece)
 		if App.IsDebug {
 			App.Out.Print("# movePiece=%s\n", movedPiece.ToCodeOfPc())
@@ -41,6 +41,22 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 			return true
 		}
 
+	} else {
+		var fromHandSq = l03.FromSqToHandSq(from)
+		if l03.HANDSQ_BEGIN <= fromHandSq && fromHandSq < l03.HANDSQ_END {
+			// 打
+			var droppedPieceType = l03.WhatHandSq(fromHandSq)
+
+			var isBadForm = false
+			switch droppedPieceType { // 動かした駒が
+			case l03.PIECE_TYPE_P: // 歩
+				isBadForm = isBadFormOfDroppedPawn(pPos, turn, to, promotion)
+			}
+
+			if isBadForm {
+				return true
+			}
+		}
 	}
 
 	return false
@@ -52,7 +68,7 @@ func isBadFormOfKing(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03
 	{
 		var squares = GetSqOfOpponentKnightFrom(turn, to)
 		for _, sq := range squares {
-			var piece = pPos.GetPieceAtSq(sq)
+			var piece = pPos.GetPieceOnBoardAtSq(sq)
 			var piecetype = l03.What(piece)
 			var turn2 = l03.Who(piece)
 			if piecetype == l03.PIECE_TYPE_N && turn2 != turn {
@@ -133,7 +149,7 @@ func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03
 	// 駒を取る動きは、悪形とはしません
 	{
 		// 移動先に駒はあるか？
-		var captured = pPos.GetPieceAtSq(to)
+		var captured = pPos.GetPieceOnBoardAtSq(to)
 		if captured != l03.PIECE_EMPTY {
 			// 自駒は取らないので、相手の駒を取った
 			return false
@@ -146,7 +162,7 @@ func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03
 	if southSq != l03.SQ_EMPTY {
 		// 盤内
 		// その座標の駒は？
-		var southPiece = pPos.GetPieceAtSq(southSq)
+		var southPiece = pPos.GetPieceOnBoardAtSq(southSq)
 		// if App.IsDebug {
 		// 	App.Out.Print("# southSq=%d southPiece=%s\n", southSq, southPiece.ToCodeOfPc())
 		// }
@@ -230,7 +246,7 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, from l03.Square, to l
 	// 駒を取る動きは、悪形とはしません
 	{
 		// 移動先に駒はあるか？
-		var captured = pPos.GetPieceAtSq(to)
+		var captured = pPos.GetPieceOnBoardAtSq(to)
 		if captured != l03.PIECE_EMPTY {
 			// 自駒は取らないので、相手の駒を取った
 			return false
@@ -248,7 +264,7 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, from l03.Square, to l
 
 		// 盤内
 		// その座標の駒は？
-		var southPiece = pPos.GetPieceAtSq(xxstSouthSq)
+		var southPiece = pPos.GetPieceOnBoardAtSq(xxstSouthSq)
 
 		// その駒の先後は？
 		var friendPhase = l03.Who(southPiece)
@@ -344,6 +360,30 @@ func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promoti
 
 	if newRank == rank1 || newRank == rank2 {
 		// 1段目、2段目で成らない香は省く
+		return true
+	}
+
+	return false
+}
+
+// isBadFormOfDroppedPawn - 打った駒が歩なら
+func isBadFormOfDroppedPawn(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
+	// 打ち歩詰め判定が大変なので、玉頭を歩で叩くのは悪形とする
+
+	var northSq = GetSqNorthOf(turn, to)
+
+	if northSq == l03.SQ_EMPTY {
+		return false
+	}
+
+	var northPiece = pPos.GetPieceOnBoardAtSq(northSq)
+
+	if l03.What(northPiece) == l03.PIECE_TYPE_P && l03.Who(northPiece) != turn {
+		// +---+
+		// |歩v|
+		// +---+
+		// |玉 |
+		// +---+
 		return true
 	}
 

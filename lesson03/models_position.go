@@ -190,7 +190,7 @@ BoardLoop:
 				}
 			}
 
-			pos.Hands[handSq-HANDSQ_ORIGIN] = number
+			pos.Hands[handSq-HANDSQ_BEGIN] = number
 		}
 	}
 
@@ -250,46 +250,46 @@ func (pos *Position) DoMove(move Move) {
 	from, to, _ := move.Destructure()
 	switch FromSqToHandSq(from) {
 	case HANDSQ_R1:
-		pos.Hands[HANDSQ_R1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_R1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_R1
 	case HANDSQ_B1:
-		pos.Hands[HANDSQ_B1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_B1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_B1
 	case HANDSQ_G1:
-		pos.Hands[HANDSQ_G1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_G1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_G1
 	case HANDSQ_S1:
-		pos.Hands[HANDSQ_S1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_S1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_S1
 	case HANDSQ_N1:
-		pos.Hands[HANDSQ_N1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_N1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_N1
 	case HANDSQ_L1:
-		pos.Hands[HANDSQ_L1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_L1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_L1
 	case HANDSQ_P1:
-		pos.Hands[HANDSQ_P1-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_P1-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_P1
 	case HANDSQ_R2:
-		pos.Hands[HANDSQ_R2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_R2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_R2
 	case HANDSQ_B2:
-		pos.Hands[HANDSQ_B2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_B2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_B2
 	case HANDSQ_G2:
-		pos.Hands[HANDSQ_G2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_G2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_G2
 	case HANDSQ_S2:
-		pos.Hands[HANDSQ_S2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_S2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_S2
 	case HANDSQ_N2:
-		pos.Hands[HANDSQ_N2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_N2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_N2
 	case HANDSQ_L2:
-		pos.Hands[HANDSQ_L2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_L2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_L2
 	case HANDSQ_P2:
-		pos.Hands[HANDSQ_P2-HANDSQ_ORIGIN] -= 1
+		pos.Hands[HANDSQ_P2-HANDSQ_BEGIN] -= 1
 		pos.Board[to] = PIECE_P2
 	default:
 		// あれば、取った駒
@@ -301,59 +301,59 @@ func (pos *Position) DoMove(move Move) {
 		case PIECE_K1: // Second player win
 			// Lost first king
 		case PIECE_R1:
-			pos.Hands[HANDSQ_R2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_R2-HANDSQ_BEGIN] += 1
 		case PIECE_B1:
-			pos.Hands[HANDSQ_B2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_B2-HANDSQ_BEGIN] += 1
 		case PIECE_G1:
-			pos.Hands[HANDSQ_G2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_G2-HANDSQ_BEGIN] += 1
 		case PIECE_S1:
-			pos.Hands[HANDSQ_S2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_S2-HANDSQ_BEGIN] += 1
 		case PIECE_N1:
-			pos.Hands[HANDSQ_N2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_N2-HANDSQ_BEGIN] += 1
 		case PIECE_L1:
-			pos.Hands[HANDSQ_L2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_L2-HANDSQ_BEGIN] += 1
 		case PIECE_P1:
-			pos.Hands[HANDSQ_P2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_P2-HANDSQ_BEGIN] += 1
 		case PIECE_PR1:
-			pos.Hands[HANDSQ_R2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_R2-HANDSQ_BEGIN] += 1
 		case PIECE_PB1:
-			pos.Hands[HANDSQ_B2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_B2-HANDSQ_BEGIN] += 1
 		case PIECE_PS1:
-			pos.Hands[HANDSQ_S2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_S2-HANDSQ_BEGIN] += 1
 		case PIECE_PN1:
-			pos.Hands[HANDSQ_N2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_N2-HANDSQ_BEGIN] += 1
 		case PIECE_PL1:
-			pos.Hands[HANDSQ_L2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_L2-HANDSQ_BEGIN] += 1
 		case PIECE_PP1:
-			pos.Hands[HANDSQ_P2-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_P2-HANDSQ_BEGIN] += 1
 		case PIECE_K2: // First player win
 			// Lost second king
 		case PIECE_R2:
-			pos.Hands[HANDSQ_R1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_R1-HANDSQ_BEGIN] += 1
 		case PIECE_B2:
-			pos.Hands[HANDSQ_B1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_B1-HANDSQ_BEGIN] += 1
 		case PIECE_G2:
-			pos.Hands[HANDSQ_G1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_G1-HANDSQ_BEGIN] += 1
 		case PIECE_S2:
-			pos.Hands[HANDSQ_S1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_S1-HANDSQ_BEGIN] += 1
 		case PIECE_N2:
-			pos.Hands[HANDSQ_N1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_N1-HANDSQ_BEGIN] += 1
 		case PIECE_L2:
-			pos.Hands[HANDSQ_L1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_L1-HANDSQ_BEGIN] += 1
 		case PIECE_P2:
-			pos.Hands[HANDSQ_P1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_P1-HANDSQ_BEGIN] += 1
 		case PIECE_PR2:
-			pos.Hands[HANDSQ_R1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_R1-HANDSQ_BEGIN] += 1
 		case PIECE_PB2:
-			pos.Hands[HANDSQ_B1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_B1-HANDSQ_BEGIN] += 1
 		case PIECE_PS2:
-			pos.Hands[HANDSQ_S1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_S1-HANDSQ_BEGIN] += 1
 		case PIECE_PN2:
-			pos.Hands[HANDSQ_N1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_N1-HANDSQ_BEGIN] += 1
 		case PIECE_PL2:
-			pos.Hands[HANDSQ_L1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_L1-HANDSQ_BEGIN] += 1
 		case PIECE_PP2:
-			pos.Hands[HANDSQ_P1-HANDSQ_ORIGIN] += 1
+			pos.Hands[HANDSQ_P1-HANDSQ_BEGIN] += 1
 		default:
 			fmt.Printf("Error: 知らん駒を取ったぜ（＾～＾） captured=[%s]", captured.ToCodeOfPc())
 		}

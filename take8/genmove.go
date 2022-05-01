@@ -372,7 +372,7 @@ func GenMoveList(pPos *Position) []l03.Move {
 		phase_index := l03.Square(pPos.Phase - 1)
 		for hand := l03.Square(phase_index * l03.HANDSQ_TYPE_SIZE.ToSq()); hand < (phase_index+1)*l03.HANDSQ_TYPE_SIZE.ToSq(); hand += 1 {
 			if pPos.Hands[hand] > 0 {
-				hand_sq := hand + l03.HANDSQ_ORIGIN.ToSq()
+				hand_sq := hand + l03.HANDSQ_BEGIN.ToSq()
 				moveEndList := GenMoveEnd(pPos, hand_sq)
 
 				for _, moveEnd := range moveEndList {

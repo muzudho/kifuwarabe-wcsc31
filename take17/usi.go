@@ -112,7 +112,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			App.Out.Print("id name %sB52\n", config.Profile.Name)
+			App.Out.Print("id name %sB58\n", config.Profile.Name)
 			App.Out.Print("id author %s\n", config.Profile.Author)
 			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
@@ -190,45 +190,45 @@ MainLoop:
 			length := len(tokens)
 			ok := false
 			if length == 1 {
-				if App.IsDebug {
-					// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
-					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
-						pNerve.PPosSys.phase,
-						pNerve.PRecord.StartMovesNum,
-						pNerve.PRecord.OffsetMovesIndex))
-					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
-					App.Out.Debug(pNerve.SprintBoardFooter())
-				}
+				//if App.IsDebug {
+				// 局面表示しないと、データが合ってんのか分からないからな（＾～＾）
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
+					pNerve.PPosSys.phase,
+					pNerve.PRecord.StartMovesNum,
+					pNerve.PRecord.OffsetMovesIndex))
+				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoard())
+				App.Out.Debug(pNerve.SprintBoardFooter())
+				//}
 
 				ok = true
 			} else if length == 2 {
 				// 盤番号
 				b1, err := strconv.Atoi(tokens[1])
 				if err != nil {
-					if App.IsDebug {
-						App.Out.Debug("Error: %s", err)
-					}
+					//if App.IsDebug {
+					App.Out.Debug("Error: %s", err)
+					//}
 				} else {
-					if App.IsDebug {
-						App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
-							pNerve.PPosSys.phase,
-							pNerve.PRecord.StartMovesNum,
-							pNerve.PRecord.OffsetMovesIndex))
-						App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
-						App.Out.Debug(pNerve.SprintBoardFooter())
-					}
+					//if App.IsDebug {
+					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoardHeader(
+						pNerve.PPosSys.phase,
+						pNerve.PRecord.StartMovesNum,
+						pNerve.PRecord.OffsetMovesIndex))
+					App.Out.Debug(pNerve.PPosSys.PPosition[b1].SprintBoard())
+					App.Out.Debug(pNerve.SprintBoardFooter())
+					//}
 					ok = true
 				}
 			}
 
-			if App.IsDebug {
-				if !ok {
-					App.Out.Debug("Format\n")
-					App.Out.Debug("------\n")
-					App.Out.Debug("pos\n")
-					App.Out.Debug("pos {boardNumber}\n")
-				}
+			//if App.IsDebug {
+			if !ok {
+				App.Out.Debug("Format\n")
+				App.Out.Debug("------\n")
+				App.Out.Debug("pos\n")
+				App.Out.Debug("pos {boardNumber}\n")
 			}
+			//}
 		case "do":
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）

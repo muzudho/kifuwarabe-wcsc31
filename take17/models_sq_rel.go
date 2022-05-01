@@ -6,6 +6,30 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
+// GetSqNorthOf - 自分から見て手前を南としたときの、１つ北のマス。無ければ空マス
+func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
+	var latitude int
+
+	switch turn {
+	case l03.FIRST:
+		latitude = -1
+	case l03.SECOND:
+		latitude = 1
+	default:
+		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
+	}
+
+	var newRank = l03.Square(int(l03.Rank(src)) + latitude)
+
+	if 1 <= newRank && newRank < 10 {
+		// 盤内
+		var newFile = l03.File(src)
+		return l03.FromFileRankToSq(newFile, newRank)
+	}
+
+	return l03.SQ_EMPTY
+}
+
 // GetSqSouthOf - 自分から見て手前を南としたときの、１つ南のマス。無ければ空マス
 func GetSqSouthOf(turn l03.Phase, src l03.Square) l03.Square {
 	var latitude int

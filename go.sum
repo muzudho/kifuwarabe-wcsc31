@@ -2,3 +2,5 @@ github.com/muzudho/go-logger v0.0.0-20210303161105-701feda94d31 h1:0j3qMONok/aRm
 github.com/muzudho/go-logger v0.0.0-20210303161105-701feda94d31/go.mod h1:+wyNvpn09fMB0AnZMZIlIl6kZA34ypAKUPkEmo7LCrE=
 github.com/pelletier/go-toml v1.9.3 h1:zeC5b1GviRUyKYd6OJPvBU/mcVDVoL1OhT17FCt5dSQ=
 github.com/pelletier/go-toml v1.9.3/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
+github.com/pelletier/go-toml v1.9.5 h1:4yBQzkHv+7BHq2PQUZF3Mx0IYxG7LsP222s7Agd3ve8=
+github.com/pelletier/go-toml v1.9.5/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
