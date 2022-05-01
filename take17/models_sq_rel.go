@@ -8,7 +8,7 @@ import (
 
 // GetSqNorthOf - 自分から見て手前を南としたときの、１つ北のマス。無ければ空マス
 func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
-	var latitude int
+	var latitude int8
 
 	switch turn {
 	case l03.FIRST:
@@ -19,7 +19,7 @@ func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
 		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
 	}
 
-	var newRank = l03.Square(int(l03.Rank(src)) + latitude)
+	var newRank = l03.Rank(src) + latitude
 
 	if 1 <= newRank && newRank < 10 {
 		// 盤内
@@ -32,7 +32,7 @@ func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
 
 // GetSqSouthOf - 自分から見て手前を南としたときの、１つ南のマス。無ければ空マス
 func GetSqSouthOf(turn l03.Phase, src l03.Square) l03.Square {
-	var latitude int
+	var latitude int8
 
 	switch turn {
 	case l03.FIRST:
@@ -43,7 +43,7 @@ func GetSqSouthOf(turn l03.Phase, src l03.Square) l03.Square {
 		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
 	}
 
-	var newRank = l03.Square(int(l03.Rank(src)) + latitude)
+	var newRank = l03.Rank(src) + latitude
 
 	if 1 <= newRank && newRank < 10 {
 		// 盤内
@@ -61,9 +61,9 @@ func GetSqSouthOf(turn l03.Phase, src l03.Square) l03.Square {
 
 // GetSqWestSouthAndEastSouthOf - 自分から見て手前を南としたときの、１つ南西と南東のマス。無ければ空マス
 func GetSqWestSouthAndEastSouthOf(turn l03.Phase, src l03.Square) [2]l03.Square {
-	var latitude int
-	var longitude1 int
-	var longitude2 int
+	var latitude int8
+	var longitude1 int8
+	var longitude2 int8
 
 	switch turn {
 	case l03.FIRST:
@@ -78,7 +78,7 @@ func GetSqWestSouthAndEastSouthOf(turn l03.Phase, src l03.Square) [2]l03.Square 
 		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
 	}
 
-	var newRank = l03.Square(int(l03.Rank(src)) + latitude)
+	var newRank = l03.Rank(src) + latitude
 	var newFile1 = l03.File(src + l03.Square(longitude1))
 	var newFile2 = l03.File(src + l03.Square(longitude2))
 
@@ -111,26 +111,26 @@ func GetSqWestSouthAndEastSouthOf(turn l03.Phase, src l03.Square) [2]l03.Square 
 
 // GetSqOfOpponentKnightFrom - 自分から見て手前を南としたときの、指定の升に利いている相手の桂馬の位置
 func GetSqOfOpponentKnightFrom(turn l03.Phase, src l03.Square) [2]l03.Square {
-	var latitude int
-	var longitude1 int
-	var longitude2 int
+	var latitude int8
+	var longitude1 int8
+	var longitude2 int8
 
 	switch turn {
 	case l03.FIRST:
-		latitude = 2
+		latitude = -2
 		longitude1 = 1
 		longitude2 = -1
 	case l03.SECOND:
-		latitude = -2
+		latitude = 2
 		longitude1 = -1
 		longitude2 = 1
 	default:
 		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
 	}
 
-	var newRank = l03.Square(int(l03.Rank(src)) + latitude)
-	var newFile1 = l03.File(src + l03.Square(longitude1))
-	var newFile2 = l03.File(src + l03.Square(longitude2))
+	var newRank = l03.Rank(src) + latitude
+	var newFile1 = l03.File(src) + longitude1
+	var newFile2 = l03.File(src) + longitude2
 
 	if 1 <= newRank && newRank < 10 {
 		// 盤内

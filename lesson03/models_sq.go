@@ -1,7 +1,7 @@
 package lesson03
 
 // マス番号 00～99,100～113
-type Square uint32
+type Square int8
 
 const (
 	SQ_EMPTY Square = 0          // マス番号を指定しないことを意味するマス番号
@@ -26,15 +26,15 @@ const (
 )
 
 // File - マス番号から筋（列）を取り出します
-func File(sq Square) Square {
-	return sq / 10 % 10
+func File(sq Square) int8 {
+	return int8(sq / 10 % 10)
 }
 
 // Rank - マス番号から段（行）を取り出します
-func Rank(sq Square) Square {
-	return sq % 10
+func Rank(sq Square) int8 {
+	return int8(sq % 10)
 }
 
-func FromFileRankToSq(file Square, rank Square) Square {
+func FromFileRankToSq(file int8, rank int8) Square {
 	return Square(file*10 + rank)
 }

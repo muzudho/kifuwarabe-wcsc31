@@ -88,8 +88,8 @@ func isBadFormOfRook(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03
 
 	// 敵陣で成らないのは悪形
 	{
-		var minRank l03.Square
-		var overRank l03.Square
+		var minRank int8
+		var overRank int8
 
 		switch turn {
 		case l03.FIRST:
@@ -120,8 +120,8 @@ func isBadFormOfBishop(pPos *l15.Position, turn l03.Phase, from l03.Square, to l
 
 	// 敵陣で成らないのは悪形
 	{
-		var minRank l03.Square
-		var overRank l03.Square
+		var minRank int8
+		var overRank int8
 
 		switch turn {
 		case l03.FIRST:
@@ -343,15 +343,15 @@ func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promoti
 		return false
 	}
 
-	var rank1 l03.Square
-	var rank2 l03.Square
+	var rank1 int8
+	var rank2 int8
 	switch turn {
 	case l03.FIRST:
-		rank1 = l03.Square(1)
-		rank2 = l03.Square(2)
+		rank1 = 1
+		rank2 = 2
 	case l03.SECOND:
-		rank1 = l03.Square(9)
-		rank2 = l03.Square(8)
+		rank1 = 9
+		rank2 = 8
 	default:
 		panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
 	}
