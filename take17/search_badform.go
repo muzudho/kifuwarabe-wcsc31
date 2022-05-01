@@ -50,7 +50,7 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 			var isBadForm = false
 			switch droppedPieceType { // 動かした駒が
 			case l03.PIECE_TYPE_P: // 歩
-				isBadForm = isBadFormOfDroppedPawn(pPos, turn, to, promotion)
+				isBadForm = isBadFormOfDroppedPawn(pPos, turn, to)
 			}
 
 			if isBadForm {
@@ -367,7 +367,7 @@ func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promoti
 }
 
 // isBadFormOfDroppedPawn - 打った駒が歩なら
-func isBadFormOfDroppedPawn(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
+func isBadFormOfDroppedPawn(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 	// 打ち歩詰め判定が大変なので、玉頭を歩で叩くのは悪形とする
 
 	var northSq = GetSqNorthOf(turn, to)
@@ -378,11 +378,11 @@ func isBadFormOfDroppedPawn(pPos *l15.Position, turn l03.Phase, to l03.Square, p
 
 	var northPiece = pPos.GetPieceOnBoardAtSq(northSq)
 
-	if l03.What(northPiece) == l03.PIECE_TYPE_P && l03.Who(northPiece) != turn {
+	if l03.What(northPiece) == l03.PIECE_TYPE_K && l03.Who(northPiece) != turn {
 		// +---+
-		// |歩v|
+		// |玉v|
 		// +---+
-		// |玉 |
+		// |歩 |
 		// +---+
 		return true
 	}
