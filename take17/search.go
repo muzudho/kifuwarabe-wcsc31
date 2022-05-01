@@ -1,7 +1,6 @@
 package take17
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 
@@ -218,27 +217,10 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 					}
 
 					// 自分から見て手前を南としたときの、移動先の１マス南の段
-					var relative int
+					var southSq = GetSqSouthOf(turn, to)
 
-					switch turn {
-					case l03.FIRST:
-						relative = 1
-					case l03.SECOND:
-						relative = -1
-					default:
-						panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
-					}
-
-					var newFile = l03.File(to)
-					var newRank = l03.Square(int(l03.Rank(to)) + relative)
-
-					if 1 <= newRank && newRank < 10 {
+					if southSq != l03.SQ_EMPTY {
 						// 盤内
-						// if App.IsDebug {
-						// 	App.Out.Print("# newFile=%d newRank=%d\n", newFile, newRank)
-						// }
-						// 移動先マスの南の座標
-						var southSq = l03.FromFileRankToSq(newFile, newRank)
 						// その座標の駒は？
 						var southPiece = pPos.GetPieceAtSq(southSq)
 						// if App.IsDebug {
