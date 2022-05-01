@@ -10,7 +10,6 @@ import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l10 "github.com/muzudho/kifuwarabe-wcsc31/take10"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -55,7 +54,7 @@ func TestControl(pBrain *Brain, pPos *Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pBrain *Brain, move_seq int, move_total int, move l13.Move) bool {
+func checkControl(pBrain *Brain, move_seq int, move_total int, move l03.Move) bool {
 
 	is_error := false
 

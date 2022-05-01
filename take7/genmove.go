@@ -2,7 +2,6 @@ package take7
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
@@ -168,9 +167,9 @@ func GenMoveEnd(pPos *Position, from l03.Square) []MoveEnd {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pPos *Position) []l04.Move {
+func GenMoveList(pPos *Position) []l03.Move {
 
-	move_list := []l04.Move{}
+	move_list := []l03.Move{}
 
 	// 盤面スキャンしたくないけど、駒の位置インデックスを作ってないから 仕方ない（＾～＾）
 	for rank := 1; rank < 10; rank += 1 {
@@ -181,7 +180,7 @@ func GenMoveList(pPos *Position) []l04.Move {
 
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
-					move_list = append(move_list, l04.NewMove(from, to, pro))
+					move_list = append(move_list, l03.NewMove(from, to, pro))
 				}
 			}
 		}

@@ -3,6 +3,7 @@ package take11
 import (
 	"math/rand"
 
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -13,7 +14,7 @@ var nodesNum int
 var depthEnd int = 1
 
 // Search - 探索部
-func Search(pPosSys *PositionSystem) Move {
+func Search(pPosSys *PositionSystem) l03.Move {
 
 	nodesNum = 0
 	curDepth := 0
@@ -30,7 +31,7 @@ func Search(pPosSys *PositionSystem) Move {
 }
 
 // search2 - 探索部
-func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
+func search2(pPosSys *PositionSystem, curDepth int) (l03.Move, int16) {
 	//fmt.Printf("Search2: depth=%d/%d nodesNum=%d\n", curDepth, depthEnd, nodesNum)
 
 	// 指し手生成
@@ -40,17 +41,17 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 	//fmt.Printf("%d/%d move_length=%d\n", curDepth, depthEnd, move_length)
 
 	if move_length == 0 {
-		return RESIGN_MOVE, RESIGN_VALUE
+		return l03.RESIGN_MOVE, RESIGN_VALUE
 	}
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var bestMoveList []Move
+	var bestMoveList []l03.Move
 	// 最初に最低値を入れておけば、更新されるだろ（＾～＾）
 	var bestVal int16 = RESIGN_VALUE
 
 	// 相手の評価値
 	var opponentWorstVal int16 = MAX_VALUE
-	var younger_sibling_move = RESIGN_MOVE
+	var younger_sibling_move = l03.RESIGN_MOVE
 
 	// その手を指してみるぜ（＾～＾）
 	for i, move := range move_list {
@@ -137,7 +138,7 @@ func search2(pPosSys *PositionSystem, curDepth int) (Move, int16) {
 		bestVal = -opponentWorstVal
 	}
 
-	var bestmove = RESIGN_MOVE
+	var bestmove = l03.RESIGN_MOVE
 	bestmove_length := len(bestMoveList)
 	//fmt.Printf("%d/%d bestmove_length=%d\n", curDepth, depthEnd, bestmove_length)
 	if bestmove_length > 0 {

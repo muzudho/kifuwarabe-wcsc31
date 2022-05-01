@@ -19,7 +19,7 @@ type Position struct {
 	// 何手目か（＾～＾）
 	MovesNum int
 	// 指し手のリスト（＾～＾）
-	Moves []Move
+	Moves []l03.Move
 }
 
 func NewPosition() *Position {
@@ -52,7 +52,7 @@ func (pos *Position) ResetToStartpos() {
 	// 何手目か
 	pos.MovesNum = 1
 	// 指し手のリスト
-	pos.Moves = []Move{}
+	pos.Moves = []l03.Move{}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
@@ -225,14 +225,14 @@ MovesNumLoop:
 		pos.Moves = append(pos.Moves, move)
 	}
 
-	// 読込んだ Move を全て実行します
+	// 読込んだ l03.Move を全て実行します
 	for _, move := range pos.Moves {
 		pos.DoMove(move)
 	}
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase int) (Move, error) {
+func ParseMove(command string, i *int, phase int) (l03.Move, error) {
 	var len = len(command)
 
 	var from l03.Square
@@ -252,7 +252,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_R2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'B':
 		*i += 1
@@ -262,7 +262,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_B2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'G':
 		*i += 1
@@ -272,7 +272,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_G2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'S':
 		*i += 1
@@ -282,7 +282,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_S2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'N':
 		*i += 1
@@ -292,7 +292,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_N2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'L':
 		*i += 1
@@ -302,7 +302,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_L2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	case 'P':
 		*i += 1
@@ -312,7 +312,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_P2)
 		default:
-			return *new(Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: 分からんフェーズ（＾～＾） phase=%d", phase)
 		}
 	default:
 		// Ignored
@@ -320,7 +320,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 
 	if count == 1 {
 		if command[*i] != '+' {
-			return *new(Move), fmt.Errorf("fatal: +じゃなかった（＾～＾）")
+			return *new(l03.Move), fmt.Errorf("fatal: +じゃなかった（＾～＾）")
 		}
 		*i += 1
 	}
@@ -357,7 +357,7 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(Move), fmt.Errorf("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2)
+				return *new(l03.Move), fmt.Errorf("fatal: なんか分かんないfileかrank（＾～＾） ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -367,10 +367,10 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(Move), fmt.Errorf("fatal: なんか分かんないcount（＾～＾） count='%c'", count)
+				return *new(l03.Move), fmt.Errorf("fatal: なんか分かんないcount（＾～＾） count='%c'", count)
 			}
 		default:
-			return *new(Move), fmt.Errorf("fatal: なんか分かんないmove（＾～＾） ch='%c' i='%d'", ch, *i)
+			return *new(l03.Move), fmt.Errorf("fatal: なんか分かんないmove（＾～＾） ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -381,11 +381,11 @@ func ParseMove(command string, i *int, phase int) (Move, error) {
 		pro = true
 	}
 
-	return NewMove(from, to, pro), nil
+	return l03.NewMove(from, to, pro), nil
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pos *Position) DoMove(move Move) {
+func (pos *Position) DoMove(move l03.Move) {
 	from, to, _ := move.Destructure()
 	switch l03.FromSqToHandSq(from) {
 	case l03.HANDSQ_R1:

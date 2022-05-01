@@ -1,9 +1,13 @@
 package take10
 
-import "math/rand"
+import (
+	"math/rand"
+
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+)
 
 // Search - 探索部
-func Search(pPos *Position) Move {
+func Search(pPos *Position) l03.Move {
 
 	// 指し手生成
 	// 探索中に削除される指し手も入ってるかも
@@ -11,13 +15,13 @@ func Search(pPos *Position) Move {
 	size := len(move_list)
 
 	if size == 0 {
-		return RESIGN_MOVE
+		return l03.RESIGN_MOVE
 	}
 
 	nodesNum := 0
 
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
-	var bestMoveList []Move
+	var bestMoveList []l03.Move
 	// 最初に最低値を入れておけば、更新されるだろ（＾～＾）
 	var bestVal int16 = -32768
 

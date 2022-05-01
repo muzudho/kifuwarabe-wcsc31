@@ -2,13 +2,12 @@ package take6
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pPos *Position) []l04.Move {
+func GenMoveList(pPos *Position) []l03.Move {
 
-	move_list := []l04.Move{}
+	move_list := []l03.Move{}
 
 	// 盤面スキャンしたくないけど、駒の位置インデックスを作ってないから 仕方ない（＾～＾）
 	for rank := 1; rank < 10; rank += 1 {
@@ -20,28 +19,28 @@ func GenMoveList(pPos *Position) []l04.Move {
 				switch piece {
 				case l03.PIECE_K1, l03.PIECE_K2: // 先手玉, 後手玉
 					if to := l03.Square(from + 9); to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左上
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from - 1; to%10 != 0 && pPos.Hetero(to) { // 上
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from - 11; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 右上
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from + 10; to/10%10 != 0 && pPos.Hetero(to) { // 左
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from - 10; to/10%10 != 0 && pPos.Hetero(to) { // 右
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from + 11; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 左下
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from + 1; to%10 != 0 && pPos.Hetero(to) { // 下
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 					if to := from - 9; to/10%10 != 0 && to%10 != 0 && pPos.Hetero(to) { // 右下
-						move_list = append(move_list, l04.NewMove(from, to, false))
+						move_list = append(move_list, l03.NewMove(from, to, false))
 					}
 				}
 			}

@@ -14,7 +14,6 @@ import (
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
@@ -113,7 +112,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			App.Out.Print("id name %sB41\n", config.Profile.Name)
+			App.Out.Print("id name %sB42\n", config.Profile.Name)
 			App.Out.Print("id author %s\n", config.Profile.Author)
 			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
@@ -425,7 +424,7 @@ MainLoop:
 					bestmove := IterativeDeepeningSearch(pNerve, []string{"go"})
 					App.Out.Print("bestmove %s\n", bestmove.ToCodeOfM())
 
-					if bestmove == l13.Move(l03.SQ_EMPTY) {
+					if bestmove == l03.Move(l03.SQ_EMPTY) {
 						// 投了
 						break PlayoutLoop
 					}

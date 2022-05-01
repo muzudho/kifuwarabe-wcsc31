@@ -3,7 +3,6 @@ package take15
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 )
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
@@ -541,9 +540,9 @@ func NifuSecond(pPos *Position, file l03.Square) bool {
 }
 
 // GenMoveList - 現局面の指し手のリスト。合法手とは限らないし、全ての合法手を含むとも限らないぜ（＾～＾）
-func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
+func GenMoveList(pBrain *Brain, pPos *Position) []l03.Move {
 
-	move_list := []l13.Move{}
+	move_list := []l03.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
 	friend := pBrain.PPosSys.GetPhase()
@@ -593,7 +592,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 							// 敵の長い駒の利きは、玉が逃げても伸びてくる方向があるので、
 							// いったん玉を動かしてから 再チェックするぜ（＾～＾）
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := l13.NewMove(from, to, pro)
+								move := l03.NewMove(from, to, pro)
 								pBrain.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[to] == 0 {
@@ -609,7 +608,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move := l13.NewMove(from, to, pro)
+								move := l03.NewMove(from, to, pro)
 								pBrain.DoMove(pPos, move)
 
 								if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -634,7 +633,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move := l13.NewMove(hand_sq, to, pro)
+						move := l03.NewMove(hand_sq, to, pro)
 						pBrain.DoMove(pPos, move)
 
 						if pOpponentSumCB.Board1[friendKingSq] == 0 {
@@ -668,14 +667,14 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) && pOpponentSumCB.Board1[to] == 0 { // 自駒の上、敵の利きには移動できません
-								move_list = append(move_list, l13.NewMove(from, to, pro))
+								move_list = append(move_list, l03.NewMove(from, to, pro))
 							}
 						}
 					} else {
 						for _, moveEnd := range moveEndList {
 							to, pro := moveEnd.Destructure()
 							if pPos.Hetero(from, to) { // 自駒の上には移動できません
-								move_list = append(move_list, l13.NewMove(from, to, pro))
+								move_list = append(move_list, l03.NewMove(from, to, pro))
 							}
 						}
 					}
@@ -692,7 +691,7 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l13.Move {
 				for _, moveEnd := range moveEndList {
 					to, pro := moveEnd.Destructure()
 					if pPos.IsEmptySq(to) { // 駒の上には打てません
-						move_list = append(move_list, l13.NewMove(hand_sq, to, pro))
+						move_list = append(move_list, l03.NewMove(hand_sq, to, pro))
 					}
 				}
 			}

@@ -10,7 +10,7 @@ import (
 type positionForRecord interface {
 	GetOffsetMoveIndex() int
 	GetCapturedPieceAtMovesIndex(movesIndex int) l03.Piece
-	GetMoveAtMovesIndex(movesIndex int) Move
+	GetMoveAtMovesIndex(movesIndex int) l03.Move
 }
 
 // SprintRecord - 棋譜表示（＾～＾）

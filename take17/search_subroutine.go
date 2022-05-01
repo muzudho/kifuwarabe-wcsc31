@@ -1,7 +1,7 @@
 package take17
 
 import (
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
@@ -26,7 +26,7 @@ func subErrorBoard(pNerve *Nerve) {
 	App.Out.Debug(l08.SprintLocation(pNerve.PPosSys.PPosition[POS_LAYER_MAIN]))
 }
 
-func subErrorBoardAfterUndoMove(pNerve *Nerve, pPosCopy *l15.Position, move l13.Move) {
+func subErrorBoardAfterUndoMove(pNerve *Nerve, pPosCopy *l15.Position, move l03.Move) {
 	// 盤と、コピー盤を比較します
 	diffBoard(pNerve.PPosSys.PPosition[0], pPosCopy, pNerve.PPosSys.PPosition[2], pNerve.PPosSys.PPosition[3])
 	// 異なる箇所を数えます

@@ -45,7 +45,7 @@ func TestControl(pPos *Position) (bool, string) {
 }
 
 // Check - 元に戻っていればOK（＾～＾）
-func checkControl(pPos *Position, move_seq int, move_total int, move Move) bool {
+func checkControl(pPos *Position, move_seq int, move_total int, move l03.Move) bool {
 
 	is_error := false
 

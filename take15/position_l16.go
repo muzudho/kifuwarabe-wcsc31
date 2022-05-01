@@ -6,7 +6,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 )
 
 // 評価値
@@ -123,7 +122,7 @@ func (pPos *Position) IsEmptySq(sq l03.Square) bool {
 }
 
 // ParseMove - 指し手コマンドを解析
-func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
+func ParseMove(command string, i *int, phase l03.Phase) (l03.Move, error) {
 	var len = len(command)
 	var hand_sq = l03.SQ_EMPTY
 
@@ -162,11 +161,11 @@ func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
 		case l03.SECOND:
 			from = hand_sq + l03.HAND_TYPE_SIZE_SQ
 		default:
-			return *new(l13.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
 		if command[*i] != '*' {
-			return *new(l13.Move), fmt.Errorf("fatal: not *")
+			return *new(l03.Move), fmt.Errorf("fatal: not *")
 		}
 		*i += 1
 		count = 1
@@ -203,7 +202,7 @@ func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(l13.Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
+				return *new(l03.Move), fmt.Errorf("fatal: unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -213,10 +212,10 @@ func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(l13.Move), fmt.Errorf("fatal: unknown count='%c'", count)
+				return *new(l03.Move), fmt.Errorf("fatal: unknown count='%c'", count)
 			}
 		default:
-			return *new(l13.Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -227,7 +226,7 @@ func ParseMove(command string, i *int, phase l03.Phase) (l13.Move, error) {
 		pro = true
 	}
 
-	return l13.NewMove(from, to, pro), nil
+	return l03.NewMove(from, to, pro), nil
 }
 
 // From - 筋と段からマス番号を作成します

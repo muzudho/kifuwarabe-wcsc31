@@ -8,7 +8,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -340,7 +339,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 		pBrain.PCtrlBrdSys.MergeControlDiff(pBrain.PPosSys.BuildType)
 	}
 
-	// 読込んだ l13.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l03.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pBrain.PPosSys.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pBrain.PPosSys.OffsetMovesIndex = 0
@@ -402,7 +401,7 @@ func (pBrain *Brain) IsCheckmate(phase l03.Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pBrain *Brain) DoMove(pPos *Position, move l13.Move) {
+func (pBrain *Brain) DoMove(pPos *Position, move l03.Move) {
 	before_move_phase := pBrain.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）

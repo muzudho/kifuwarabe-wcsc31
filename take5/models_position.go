@@ -24,7 +24,7 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [l04.MOVES_SIZE]l04.Move
+	Moves [l04.MOVES_SIZE]l03.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
 	CapturedList [l04.MOVES_SIZE]string
 }
@@ -60,7 +60,7 @@ func (pos *Position) ResetToStartpos() {
 	pos.StartMovesNum = 1
 	pos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pos.Moves = [l04.MOVES_SIZE]l04.Move{}
+	pos.Moves = [l04.MOVES_SIZE]l03.Move{}
 	// 取った駒のリスト
 	pos.CapturedList = [l04.MOVES_SIZE]string{}
 }
@@ -236,7 +236,7 @@ MovesNumLoop:
 		pos.OffsetMovesIndex += 1
 	}
 
-	// 読込んだ l04.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l03.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pos.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pos.OffsetMovesIndex = 0
@@ -246,7 +246,7 @@ MovesNumLoop:
 }
 
 // ParseMove
-func ParseMove(command string, i *int, phase int) (l04.Move, error) {
+func ParseMove(command string, i *int, phase int) (l03.Move, error) {
 	var len = len(command)
 
 	var from l03.Square
@@ -267,7 +267,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_R2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'B':
 		*i += 1
@@ -278,7 +278,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_B2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'G':
 		*i += 1
@@ -289,7 +289,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_G2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'S':
 		*i += 1
@@ -300,7 +300,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_S2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'N':
 		*i += 1
@@ -311,7 +311,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_N2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'L':
 		*i += 1
@@ -322,7 +322,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_L2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	case 'P':
 		*i += 1
@@ -333,7 +333,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		case SECOND:
 			from = l03.Square(l03.HANDSQ_P2)
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
+			return *new(l03.Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 	default:
 		// Ignored
@@ -341,7 +341,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 
 	if count == 1 {
 		if command[*i] != '*' {
-			return *new(l04.Move), fmt.Errorf("fatal: no *")
+			return *new(l03.Move), fmt.Errorf("fatal: no *")
 		}
 		*i += 1
 	}
@@ -378,7 +378,7 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 			case 'i':
 				rank = 9
 			default:
-				return *new(l04.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
+				return *new(l03.Move), fmt.Errorf("fatal: Unknown file or rank. ch2='%c'", ch2)
 			}
 			*i += 1
 
@@ -388,10 +388,10 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 			} else if count == 1 {
 				to = sq
 			} else {
-				return *new(l04.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
+				return *new(l03.Move), fmt.Errorf("fatal: Unknown count='%c'", count)
 			}
 		default:
-			return *new(l04.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
+			return *new(l03.Move), fmt.Errorf("fatal: Unknown move. ch='%c' i='%d'", ch, *i)
 		}
 
 		count += 1
@@ -402,11 +402,11 @@ func ParseMove(command string, i *int, phase int) (l04.Move, error) {
 		pro = true
 	}
 
-	return l04.NewMove(from, to, pro), nil
+	return l03.NewMove(from, to, pro), nil
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pos *Position) DoMove(move l04.Move) {
+func (pos *Position) DoMove(move l03.Move) {
 	from, to, _ := move.Destructure()
 	switch l03.FromSqToHandSq(from) {
 	case l03.HANDSQ_R1:

@@ -1,48 +1,67 @@
 package lesson03
 
 // Move - 指し手
-type Move struct {
-	// [0]移動元 [1]移動先
-	// 持ち駒は仕方ないから 100～113 を使おうぜ（＾～＾）
-	Squares []Square
-	// 成
-	Promotion bool
-}
+//
+// 15bit で表せるはず（＾～＾）
+// .pdd dddd dsss ssss
+//
+// 1～7bit: 移動元(0～127)
+// 8～14bit: 移動先(0～127)
+// 15bit: 成(0～1)
+type Move uint16
 
-func NewMove(from Square, to Square, promotion bool) *Move {
-	move := new(Move)
-	move.Squares = []Square{from, to}
-	move.Promotion = promotion
-	return move
+// 0 は 投了ということにするぜ（＾～＾）
+const RESIGN_MOVE = Move(0)
+
+// NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
+func NewMove(from Square, to Square, promotion bool) Move {
+	move := RESIGN_MOVE
+
+	// Replace source square bits
+	move = move.ReplaceSource(from)
+
+	// Replace destination square bits
+	move = move.ReplaceDestination(to)
+
+	// Replace promotion bit
+	return move.ReplacePromotion(promotion)
 }
 
 // ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
-func (move *Move) ToCodeOfM() string {
+func (move Move) ToCodeOfM() string {
+
+	// 投了（＾～＾）
+	if uint32(move) == 0 {
+		return "resign"
+	}
+
 	str := make([]byte, 0, 5)
 	count := 0
 
-	from, _, pro := move.Destructure()
+	// 移動元マス、移動先マス、成りの有無
+	from, to, pro := move.Destructure()
 
-	switch FromSqToHandSq(from) {
-	case HANDSQ_R1, HANDSQ_R2:
+	// 移動元マス(Source square)
+	switch from {
+	case SQ_R1, SQ_R2:
 		str = append(str, 'R')
 		count = 1
-	case HANDSQ_B1, HANDSQ_B2:
+	case SQ_B1, SQ_B2:
 		str = append(str, 'B')
 		count = 1
-	case HANDSQ_G1, HANDSQ_G2:
+	case SQ_G1, SQ_G2:
 		str = append(str, 'G')
 		count = 1
-	case HANDSQ_S1, HANDSQ_S2:
+	case SQ_S1, SQ_S2:
 		str = append(str, 'S')
 		count = 1
-	case HANDSQ_N1, HANDSQ_N2:
+	case SQ_N1, SQ_N2:
 		str = append(str, 'N')
 		count = 1
-	case HANDSQ_L1, HANDSQ_L2:
+	case SQ_L1, SQ_L2:
 		str = append(str, 'L')
 		count = 1
-	case HANDSQ_P1, HANDSQ_P2:
+	case SQ_P1, SQ_P2:
 		str = append(str, 'P')
 		count = 1
 	default:
@@ -50,18 +69,29 @@ func (move *Move) ToCodeOfM() string {
 	}
 
 	if count == 1 {
-		str = append(str, '+')
+		// 打
+		str = append(str, '*')
 	}
 
 	for count < 2 {
+		var sq Square // マス番号
+		if count == 0 {
+			// 移動元
+			sq = from
+		} else if count == 1 {
+			// 移動先
+			sq = to
+		} else {
+			panic(App.LogNotEcho.Fatal("LogicError: count=%d", count))
+		}
 		// 正常時は必ず２桁（＾～＾）
-		file := byte(move.Squares[count] / 10)
-		rank := byte(move.Squares[count] % 10)
+		file := byte(sq / 10)
+		rank := byte(sq % 10)
 		// ASCII Code
 		// '0'=48, '9'=57, 'a'=97, 'i'=105
 		str = append(str, file+48)
 		str = append(str, rank+96)
-		// fmt.Printf("Debug: file=%d rank=%d\n", file, rank)
+		// fmt.Printf("Debug: move=%d sq=%d count=%d file=%d rank=%d\n", uint32(move), sq, count, file, rank)
 		count += 1
 	}
 
@@ -72,10 +102,48 @@ func (move *Move) ToCodeOfM() string {
 	return string(str)
 }
 
+// ReplaceSource - Replace 7 source square bits
+// 1111 1111 1000 0000 (Clear) 0xff80
+// .pdd dddd dsss ssss
+func (move Move) ReplaceSource(sq Square) Move {
+	return Move(uint16(move)&0xff80 | uint16(sq))
+}
+
+// ReplaceDestination - Replace 7 destination square bits
+// 1100 0000 0111 1111 (Clear) 0xc07f
+// .pdd dddd dsss ssss
+func (move Move) ReplaceDestination(sq Square) Move {
+	return Move(uint16(move)&0xc07f | (uint16(sq) << 7))
+}
+
+// ReplacePromotion - Replace 1 promotion bit
+// 0100 0000 0000 0000 (Stand) 0x4000
+// 1011 1111 1111 1111 (Clear) 0xbfff
+// .pdd dddd dsss ssss
+func (move Move) ReplacePromotion(promotion bool) Move {
+	if promotion {
+		return Move(uint16(move) | 0x4000)
+	}
+
+	return Move(uint16(move) & 0xbfff)
+}
+
 // Destructure - 移動元マス、移動先マス、成りの有無
+//
+// 移動元マス
+// 0000 0000 0111 1111 (Mask) 0x007f
+// .pdd dddd dsss ssss
+//
+// 移動先マス
+// 0011 1111 1000 0000 (Mask) 0x3f80
+// .pdd dddd dsss ssss
+//
+// 成
+// 0100 0000 0000 0000 (Mask) 0x4000
+// .pdd dddd dsss ssss
 func (move Move) Destructure() (Square, Square, bool) {
-	var from = move.Squares[0]
-	var to = move.Squares[1]
-	var pro = move.Promotion
+	var from = Square(uint16(move) & 0x007f)
+	var to = Square((uint16(move) & 0x3f80) >> 7)
+	var pro = uint16(move)&0x4000 != 0
 	return from, to, pro
 }

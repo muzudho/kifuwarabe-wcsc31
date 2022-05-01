@@ -8,7 +8,6 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
-	l13 "github.com/muzudho/kifuwarabe-wcsc31/take13"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
@@ -373,7 +372,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 		pNerve.PCtrlBrdSys.MergeControlDiff(pNerve.BuildType)
 	}
 
-	// 読込んだ l13.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
+	// 読込んだ l03.Move を、上書きする感じで、もう一回 全て実行（＾～＾）
 	moves_size := pNerve.PRecord.OffsetMovesIndex
 	// 一旦 0 リセットするぜ（＾～＾）
 	pNerve.PRecord.OffsetMovesIndex = 0
@@ -435,7 +434,7 @@ func (pNerve *Nerve) IsCheckmate(phase l03.Phase) bool {
 }
 
 // DoMove - 一手指すぜ（＾～＾）
-func (pNerve *Nerve) DoMove(pPos *l15.Position, move l13.Move) {
+func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
 	before_move_phase := pNerve.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）

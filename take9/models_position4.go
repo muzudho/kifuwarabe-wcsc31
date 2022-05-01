@@ -10,6 +10,6 @@ func (pPos *Position) GetCapturedPieceAtMovesIndex(movesIndex int) l03.Piece {
 	return pPos.CapturedList[movesIndex]
 }
 
-func (pPos *Position) GetMoveAtMovesIndex(movesIndex int) Move {
+func (pPos *Position) GetMoveAtMovesIndex(movesIndex int) l03.Move {
 	return pPos.Moves[movesIndex]
 }
