@@ -3,6 +3,7 @@ package take17
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // IsBadForm - 悪形なら真
@@ -23,9 +24,9 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 		var isBadForm = false
 		switch movedPieceType { // 動かした駒が
 		case l03.PIECE_TYPE_G: // 金
-			isBadForm = isBadFormOfGold(pPos, turn, to)
+			isBadForm = isBadFormOfGold(pPos, turn, from, to)
 		case l03.PIECE_TYPE_S: // 銀
-			isBadForm = isBadFormOfSilver(pPos, turn, to)
+			isBadForm = isBadFormOfSilver(pPos, turn, from, to)
 		case l03.PIECE_TYPE_L: // 香
 			isBadForm = isBadFormOfLance(pPos, turn, to, promotion)
 		}
@@ -40,7 +41,7 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 }
 
 // isBadFormOfGold - 動かした駒が金なら
-func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
+func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square) bool {
 	// 駒を取る動きは、悪形とはしません
 	{
 		// 移動先に駒はあるか？
@@ -94,21 +95,50 @@ func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 		}
 	}
 
-	/*TODO
-	// 玉に近い金が、玉から離れる動きは悪形とします
-	var kingSq l03.Square
-	if turn == l03.FIRST {
-		kingSq = pPos.PieceLocations[l15.PCLOC_K1]
-	} else {
-		kingSq = pPos.PieceLocations[l15.PCLOC_K2]
+	// 自玉に近い自金が、玉から離れる動きは悪形とします
+	{
+		var myKingSq l03.Square
+		var yourKingSq l03.Square
+		if turn == l03.FIRST {
+			myKingSq = pPos.PieceLocations[l07.PCLOC_K1]
+			yourKingSq = pPos.PieceLocations[l07.PCLOC_K2]
+		} else {
+			myKingSq = pPos.PieceLocations[l07.PCLOC_K2]
+			yourKingSq = pPos.PieceLocations[l07.PCLOC_K1]
+		}
+
+		// 敵玉の近くにある自金を　敵玉に近づけるのは悪形ではありません
+		{
+			var manhaYkF = GetManhattanDistance(yourKingSq, from)
+			if manhaYkF < 4 {
+				var manhaYkT = GetManhattanDistance(yourKingSq, to)
+				if manhaYkT <= manhaYkF {
+					return false
+				}
+			}
+		}
+
+		// 自玉に近い自金が、玉から離れる動きは悪形とします
+		{
+			// 動かした駒とのマンハッタン距離
+			var manhaMkF = GetManhattanDistance(myKingSq, from)
+			if manhaMkF < 4 {
+
+				// もともと近くにあった駒
+				var manhaMkT = GetManhattanDistance(myKingSq, to)
+				if manhaMkF < manhaMkT {
+					// 遠ざかる動きは悪形
+					return true
+				}
+			}
+		}
 	}
-	*/
 
 	return false
 }
 
 // isBadFormOfSilver - 動かした駒が銀なら
-func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
+func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square) bool {
 	// 駒を取る動きは、悪形とはしません
 	{
 		// 移動先に駒はあるか？
@@ -158,6 +188,45 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 			return false
 		}
 
+	}
+
+	// 自玉に近い自銀が、玉から離れる動きは悪形とします
+	{
+		var myKingSq l03.Square
+		var yourKingSq l03.Square
+		if turn == l03.FIRST {
+			myKingSq = pPos.PieceLocations[l07.PCLOC_K1]
+			yourKingSq = pPos.PieceLocations[l07.PCLOC_K2]
+		} else {
+			myKingSq = pPos.PieceLocations[l07.PCLOC_K2]
+			yourKingSq = pPos.PieceLocations[l07.PCLOC_K1]
+		}
+
+		// 敵玉の近くにある自駒を　敵玉に近づけるのは悪形ではありません
+		{
+			var manhaYkF = GetManhattanDistance(yourKingSq, from)
+			if manhaYkF < 4 {
+				var manhaYkT = GetManhattanDistance(yourKingSq, to)
+				if manhaYkT <= manhaYkF {
+					return false
+				}
+			}
+		}
+
+		// 自玉に近い自駒が、玉から離れる動きは悪形とします
+		{
+			// 動かした駒とのマンハッタン距離
+			var manhaMkF = GetManhattanDistance(myKingSq, from)
+			if manhaMkF < 4 {
+
+				// もともと近くにあった駒
+				var manhaMkT = GetManhattanDistance(myKingSq, to)
+				if manhaMkF < manhaMkT {
+					// 遠ざかる動きは悪形
+					return true
+				}
+			}
+		}
 	}
 
 	return true
