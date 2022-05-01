@@ -25,6 +25,10 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 		switch movedPieceType { // 動かした駒が
 		case l03.PIECE_TYPE_K: // 玉
 			isBadForm = isBadFormOfKing(pPos, turn, from, to)
+		case l03.PIECE_TYPE_R: // 飛
+			isBadForm = isBadFormOfRook(pPos, turn, from, to, promotion)
+		case l03.PIECE_TYPE_B: // 角
+			isBadForm = isBadFormOfBishop(pPos, turn, from, to, promotion)
 		case l03.PIECE_TYPE_G: // 金
 			isBadForm = isBadFormOfGold(pPos, turn, from, to)
 		case l03.PIECE_TYPE_S: // 銀
@@ -54,6 +58,70 @@ func isBadFormOfKing(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03
 			if piecetype == l03.PIECE_TYPE_N && turn2 != turn {
 				return true
 			}
+		}
+	}
+
+	return false
+}
+
+// isBadFormOfRook - 動かした駒が飛なら
+func isBadFormOfRook(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square, promotion bool) bool {
+	if promotion {
+		return false
+	}
+
+	// 敵陣で成らないのは悪形
+	{
+		var minRank l03.Square
+		var overRank l03.Square
+
+		switch turn {
+		case l03.FIRST:
+			minRank = 1
+			overRank = 4
+		case l03.SECOND:
+			minRank = 7
+			overRank = 10
+		default:
+			panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
+		}
+
+		var newRank = l03.Rank(to)
+
+		if minRank <= newRank && newRank < overRank {
+			return true
+		}
+	}
+
+	return false
+}
+
+// isBadFormOfBishop - 動かした駒が角なら
+func isBadFormOfBishop(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square, promotion bool) bool {
+	if promotion {
+		return false
+	}
+
+	// 敵陣で成らないのは悪形
+	{
+		var minRank l03.Square
+		var overRank l03.Square
+
+		switch turn {
+		case l03.FIRST:
+			minRank = 1
+			overRank = 4
+		case l03.SECOND:
+			minRank = 7
+			overRank = 10
+		default:
+			panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
+		}
+
+		var newRank = l03.Rank(to)
+
+		if minRank <= newRank && newRank < overRank {
+			return true
 		}
 	}
 

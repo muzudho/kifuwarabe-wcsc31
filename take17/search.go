@@ -177,10 +177,10 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 
 		// App.Out.Debug("move=%s\n", move.ToCode())
 
-		var pPosCopy *l15.Position
-		if App.IsDebug {
-			pPosCopy = subCopyBoard(pNerve)
-		}
+		//var pPosCopy *l15.Position
+		//if App.IsDebug {
+		//var pPosCopy = subCopyBoard(pNerve)
+		//}
 
 		// from, to, _ := move.Destructure()
 
@@ -257,9 +257,9 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			pNerve.UndoMove(pNerve.PPosSys.PPosition[POS_LAYER_MAIN])
 		}
 
-		if App.IsDebug {
-			subErrorBoardAfterUndoMove(pNerve, pPosCopy, move)
-		}
+		//if App.IsDebug {
+		//subErrorBoardAfterUndoMove(pNerve, pPosCopy, move)
+		//}
 
 		// ベーター・カット
 		if beta < alpha {
