@@ -155,6 +155,8 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 		return -VALUE_INFINITE_1, l03.RESIGN_MOVE // ステイルメート（指し手がない）されたら投了（＾～＾）
 	}
 
+	var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
+
 	// 同じ価値のベストムーブがいっぱいあるかも（＾～＾）
 	var someBestMoves []l03.Move
 
@@ -196,78 +198,9 @@ func search(pNerve *Nerve, alpha l15.Value, beta l15.Value, depth int, search_ty
 			}
 		}
 
-		var isSkip = false // 悪形はスキップします
-		var pPos = pNerve.PPosSys.PPosition[POS_LAYER_MAIN]
-		//* TODO ★
-		{
-			from, to, _ := move.Destructure()
-			// 自分の先後は？
-			var turn = pNerve.PPosSys.GetPhase()
+		var isBadForm = IsBadForm(pPos, pNerve, move) // 悪形はスキップします
 
-			// 打のケースがあることに注意
-			if 11 <= from && from < 100 {
-				// 動く駒は？
-				var movedPiece = pPos.GetPieceAtSq(from)
-				var movedPieceType = l03.What(movedPiece)
-				switch movedPieceType {
-				case l03.PIECE_TYPE_G:
-					// 動かした駒が金なら
-					if App.IsDebug {
-						App.Out.Print("# movePiece=%s\n", movedPiece.ToCodeOfPc())
-					}
-
-					// 自分から見て手前を南としたときの、移動先の１マス南の段
-					var southSq = GetSqSouthOf(turn, to)
-
-					if southSq != l03.SQ_EMPTY {
-						// 盤内
-						// その座標の駒は？
-						var southPiece = pPos.GetPieceAtSq(southSq)
-						// if App.IsDebug {
-						// 	App.Out.Print("# southSq=%d southPiece=%s\n", southSq, southPiece.ToCodeOfPc())
-						// }
-
-						// その駒の先後は？
-						var friendPhase = l03.Who(southPiece)
-						if turn == friendPhase {
-							// if App.IsDebug {
-							// 	App.Out.Print("# turn=%s friendPhase=%s\n", turn.ToCodeOfPh(), friendPhase.ToCodeOfPh())
-							// }
-
-							// その駒の種類は？
-							var friendPieceType = l03.What(southPiece)
-							// if App.IsDebug {
-							// 	App.Out.Print("# friendPieceType=%s\n", friendPieceType.ToCodeOfPt())
-							// }
-
-							switch friendPieceType {
-							case l03.PIECE_TYPE_S:
-								// 悪形
-								// +--+
-								// |金|
-								// +--+
-								// |銀|
-								// +--+
-								// 自金の１つ南に自銀がある形
-
-								isSkip = true // 悪形はスキップします
-								if App.IsDebug {
-									App.Out.Print("# Avoid Pattern 1: movedPiece=%s from=%d to=%d\n", movedPiece.ToCodeOfPc(), from, to)
-								}
-
-							}
-						}
-
-					}
-
-				}
-
-			}
-
-		}
-		// */
-
-		if isSkip {
+		if isBadForm {
 			// pass
 		} else {
 
