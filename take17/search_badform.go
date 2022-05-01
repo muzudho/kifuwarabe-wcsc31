@@ -7,7 +7,7 @@ import (
 
 // IsBadForm - 悪形なら真
 func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
-	from, to, _ := move.Destructure()
+	from, to, promotion := move.Destructure()
 	// 自分の先後は？
 	var turn = pNerve.PPosSys.GetPhase()
 
@@ -21,12 +21,13 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 		}
 
 		var isBadForm = false
-		switch movedPieceType {
-		case l03.PIECE_TYPE_G: // 動かした駒が金なら
+		switch movedPieceType { // 動かした駒が
+		case l03.PIECE_TYPE_G: // 金
 			isBadForm = isBadFormOfGold(pPos, turn, to)
-		case l03.PIECE_TYPE_S: // 動かした駒が銀なら
+		case l03.PIECE_TYPE_S: // 銀
 			isBadForm = isBadFormOfSilver(pPos, turn, to)
-
+		case l03.PIECE_TYPE_L: // 香
+			isBadForm = isBadFormOfLance(pPos, turn, to, promotion)
 		}
 
 		if isBadForm {
@@ -86,7 +87,7 @@ func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 	return false
 }
 
-// isBadFormOfGold - 動かした駒が銀なら
+// isBadFormOfSilver - 動かした駒が銀なら
 func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 	// 自分から見て手前を南としたときの、移動先の１つ南西と南東のマス。無ければ空マス
 	var squares = GetSqWestSouthAndEastSouthOf(turn, to)
@@ -130,4 +131,33 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 	}
 
 	return true
+}
+
+// isBadFormOfLance - 動かした駒が香なら
+func isBadFormOfLance(pPos *l15.Position, turn l03.Phase, to l03.Square, promotion bool) bool {
+	if promotion {
+		return false
+	}
+
+	var rank1 l03.Square
+	var rank2 l03.Square
+	switch turn {
+	case l03.FIRST:
+		rank1 = l03.Square(1)
+		rank2 = l03.Square(2)
+	case l03.SECOND:
+		rank1 = l03.Square(9)
+		rank2 = l03.Square(8)
+	default:
+		panic(App.LogNotEcho.Fatal("fatal: unknown turn=%d", turn))
+	}
+
+	var newRank = l03.Rank(to)
+
+	if newRank == rank1 || newRank == rank2 {
+		// 1段目、2段目で成らない香は省く
+		return true
+	}
+
+	return false
 }
