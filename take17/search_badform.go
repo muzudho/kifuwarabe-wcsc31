@@ -41,6 +41,16 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 
 // isBadFormOfGold - 動かした駒が金なら
 func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
+	// 駒を取る動きは、悪形とはしません
+	{
+		// 移動先に駒はあるか？
+		var captured = pPos.GetPieceAtSq(to)
+		if captured != l03.PIECE_EMPTY {
+			// 自駒は取らないので、相手の駒を取った
+			return false
+		}
+	}
+
 	// 自分から見て手前を南としたときの、移動先の１つ南のマス
 	var southSq = GetSqSouthOf(turn, to)
 
@@ -84,11 +94,31 @@ func isBadFormOfGold(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
 		}
 	}
 
+	/*TODO
+	// 玉に近い金が、玉から離れる動きは悪形とします
+	var kingSq l03.Square
+	if turn == l03.FIRST {
+		kingSq = pPos.PieceLocations[l15.PCLOC_K1]
+	} else {
+		kingSq = pPos.PieceLocations[l15.PCLOC_K2]
+	}
+	*/
+
 	return false
 }
 
 // isBadFormOfSilver - 動かした駒が銀なら
 func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, to l03.Square) bool {
+	// 駒を取る動きは、悪形とはしません
+	{
+		// 移動先に駒はあるか？
+		var captured = pPos.GetPieceAtSq(to)
+		if captured != l03.PIECE_EMPTY {
+			// 自駒は取らないので、相手の駒を取った
+			return false
+		}
+	}
+
 	// 自分から見て手前を南としたときの、移動先の１つ南西と南東のマス。無ければ空マス
 	var squares = GetSqWestSouthAndEastSouthOf(turn, to)
 

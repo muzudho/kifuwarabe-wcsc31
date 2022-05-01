@@ -2,7 +2,7 @@ package take14
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // 利きテーブル・インデックス型
@@ -206,7 +206,7 @@ func (pCtrlBrdSys *ControlBoardSystem) ClearControlDiff(buildType BuildT) {
 // AddControlLance - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func AddControlLance(pPos *Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom l03.Square) {
-	for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+	for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 香落ちも考えて 空マスは除外
@@ -225,7 +225,7 @@ func AddControlLance(pPos *Position,
 // AddControlBishop - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func AddControlBishop(pPos *Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom l03.Square) {
-	for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+	for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 角落ちも考えて 空マスは除外
@@ -243,7 +243,7 @@ func AddControlBishop(pPos *Position,
 // AddControlRook - 長い利きの駒の利きを調べて、利きの差分テーブルの値を増減させます
 func AddControlRook(pPos *Position,
 	pPh1_CB *ControlBoard, pPh2_CB *ControlBoard, sign int16, excludeFrom l03.Square) {
-	for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+	for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 		from := pPos.PieceLocations[i]
 		if !OnHands(from) && // 持ち駒は除外
 			!pPos.IsEmptySq(from) && // 飛落ちも考えて 空マスは除外

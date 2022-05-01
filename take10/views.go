@@ -6,6 +6,7 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // SprintControl - 利き数ボード出力（＾ｑ＾）
@@ -277,19 +278,19 @@ func (pPos *Position) Dump() string {
 	}
 	buffer.WriteString("\n")
 
-	king1 := pPos.PieceLocations[PCLOC_K1]
-	king2 := pPos.PieceLocations[PCLOC_K2]
+	king1 := pPos.PieceLocations[l07.PCLOC_K1]
+	king2 := pPos.PieceLocations[l07.PCLOC_K2]
 	buffer.WriteString(fmt.Sprintf("KingLocations:%d,%d,\n", king1, king2))
 
 	buffer.WriteString("BishopLocations:")
 	for i := 0; i < 2; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[PCLOC_B1:PCLOC_B2][i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[l07.PCLOC_B1:l07.PCLOC_B2][i]))
 	}
 	buffer.WriteString("\n")
 
 	buffer.WriteString("LanceLocations:")
 	for i := 0; i < 2; i += 1 {
-		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[PCLOC_L1:PCLOC_L4][i]))
+		buffer.WriteString(fmt.Sprintf("%d,", pPos.PieceLocations[l07.PCLOC_L1:l07.PCLOC_L4][i]))
 	}
 	buffer.WriteString("\n")
 

@@ -7,8 +7,8 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -182,11 +182,11 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.PieceLocations[l11.PCLOC_K1] = l03.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l07.PCLOC_K1] = l03.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.PieceLocations[l11.PCLOC_K2] = l03.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l07.PCLOC_K2] = l03.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
-				for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+				for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -194,7 +194,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 					}
 				}
 			case 'B', 'b':
-				for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+				for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -202,7 +202,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 					}
 				}
 			case 'L', 'l':
-				for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+				for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = SquareFrom(file+1, rank)
@@ -269,7 +269,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch handIndex {
 						case l03.HAND_R1, l03.HAND_R2:
-							for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+							for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -277,7 +277,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 								}
 							}
 						case l03.HAND_B1, l03.HAND_B2:
-							for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+							for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -285,7 +285,7 @@ func (pPosSys *PositionSystem) ReadPosition(pPos *Position, command string) {
 								}
 							}
 						case l03.HAND_L1, l03.HAND_L2:
-							for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+							for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -681,9 +681,9 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l03.Move) {
 			if j == 0 {
 				switch before_move_phase {
 				case l03.FIRST:
-					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K1] = dst_sq_list[j]
 				case l03.SECOND:
-					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("unknown before_move_phase=%d", before_move_phase))
 				}
@@ -692,15 +692,15 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l03.Move) {
 				switch before_move_phase {
 				case l03.FIRST:
 					// 相手玉
-					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K2] = dst_sq_list[j]
 				case l03.SECOND:
-					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-			for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+			for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -708,7 +708,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l03.Move) {
 				}
 			}
 		case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-			for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+			for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -716,7 +716,7 @@ func (pPosSys *PositionSystem) DoMove(pPos *Position, move l03.Move) {
 				}
 			}
 		case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-			for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+			for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -864,14 +864,14 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 		// 玉を動かした
 		switch pPosSys.phase { // next_phase
 		case l03.FIRST:
-			pPos.PieceLocations[l11.PCLOC_K1] = from
+			pPos.PieceLocations[l07.PCLOC_K1] = from
 		case l03.SECOND:
-			pPos.PieceLocations[l11.PCLOC_K2] = from
+			pPos.PieceLocations[l07.PCLOC_K2] = from
 		default:
 			panic(App.LogNotEcho.Fatal("unknown p_pos_sys.phase=%d", pPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+		for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -879,7 +879,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 			}
 		}
 	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+		for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -887,7 +887,7 @@ func (pPosSys *PositionSystem) UndoMove(pPos *Position) {
 			}
 		}
 	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+		for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -1037,15 +1037,15 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 		switch pPosSys.phase { // next_phase
 		case l03.FIRST:
 			// 後手の玉
-			pPos.PieceLocations[l11.PCLOC_K2] = to
+			pPos.PieceLocations[l07.PCLOC_K2] = to
 		case l03.SECOND:
 			// 先手の玉
-			pPos.PieceLocations[l11.PCLOC_K1] = to
+			pPos.PieceLocations[l07.PCLOC_K1] = to
 		default:
 			panic(App.LogNotEcho.Fatal("unknown p_pos_sys.phase=%d", pPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+		for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1053,7 +1053,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			}
 		}
 	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+		for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1061,7 +1061,7 @@ func (pPosSys *PositionSystem) undoCapture(pPos *Position) {
 			}
 		}
 	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+		for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to

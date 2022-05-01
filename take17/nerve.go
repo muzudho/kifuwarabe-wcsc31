@@ -7,8 +7,8 @@ import (
 	"unicode"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 	l09 "github.com/muzudho/kifuwarabe-wcsc31/take9"
 )
 
@@ -128,11 +128,11 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 			// 玉と、長い利きの駒は位置を覚えておくぜ（＾～＾）
 			switch command[i-1] {
 			case 'K':
-				pPos.PieceLocations[l11.PCLOC_K1] = l03.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l07.PCLOC_K1] = l03.Square((file+1)*10 + rank)
 			case 'k':
-				pPos.PieceLocations[l11.PCLOC_K2] = l03.Square((file+1)*10 + rank)
+				pPos.PieceLocations[l07.PCLOC_K2] = l03.Square((file+1)*10 + rank)
 			case 'R', 'r': // 成も兼ねてる（＾～＾）
-				for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+				for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
@@ -140,7 +140,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 					}
 				}
 			case 'B', 'b':
-				for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+				for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
@@ -148,7 +148,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 					}
 				}
 			case 'L', 'l':
-				for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+				for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 					sq := pPos.PieceLocations[i]
 					if sq == l03.SQ_EMPTY {
 						pPos.PieceLocations[i] = l15.SquareFrom(file+1, rank)
@@ -215,7 +215,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 						// 長い利きの駒は位置を覚えておくぜ（＾～＾）
 						switch handIndex {
 						case l03.HAND_R1, l03.HAND_R2:
-							for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+							for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -223,7 +223,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 								}
 							}
 						case l03.HAND_B1, l03.HAND_B2:
-							for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+							for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -231,7 +231,7 @@ func (pNerve *Nerve) ReadPosition(pPos *l15.Position, command string) {
 								}
 							}
 						case l03.HAND_L1, l03.HAND_L2:
-							for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+							for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 								sq := pPos.PieceLocations[i]
 								if sq == l03.SQ_EMPTY { // 空いているところから埋めていくぜ（＾～＾）
 									pPos.PieceLocations[i] = l03.Square(handIndex) + l03.SQ_HAND_START
@@ -388,7 +388,7 @@ func (pNerve *Nerve) IsCheckmate(phase l03.Phase) bool {
 	case l03.FIRST:
 		// 先手玉への王手を調べます
 		// 先手玉の位置を調べます
-		var k1 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K1]
+		var k1 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l07.PCLOC_K1]
 		// 後手の角の利きボードの、先手玉の位置のマスの数を調べます
 		var b2 = pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_ON].Board1[k1] + pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF2_BISHOP_OFF].Board1[k1]
 		if 0 < b2 {
@@ -408,7 +408,7 @@ func (pNerve *Nerve) IsCheckmate(phase l03.Phase) bool {
 	case l03.SECOND:
 		// 後手玉の王手を調べます
 		// 後手玉の位置を調べます
-		var k2 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l11.PCLOC_K2]
+		var k2 = pNerve.PPosSys.PPosition[POS_LAYER_MAIN].PieceLocations[l07.PCLOC_K2]
 		// 先手の角の利きボードの、先手玉の位置のマスの数を調べます
 		var b1 = pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_ON].Board1[k2] + pNerve.PCtrlBrdSys.PBoards[CONTROL_LAYER_DIFF1_BISHOP_OFF].Board1[k2]
 		if 0 < b1 {
@@ -675,9 +675,9 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
 			if j == 0 {
 				switch before_move_phase {
 				case l03.FIRST:
-					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K1] = dst_sq_list[j]
 				case l03.SECOND:
-					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K2] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
@@ -686,15 +686,15 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
 				switch before_move_phase {
 				case l03.FIRST:
 					// 相手玉
-					pPos.PieceLocations[l11.PCLOC_K2] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K2] = dst_sq_list[j]
 				case l03.SECOND:
-					pPos.PieceLocations[l11.PCLOC_K1] = dst_sq_list[j]
+					pPos.PieceLocations[l07.PCLOC_K1] = dst_sq_list[j]
 				default:
 					panic(App.LogNotEcho.Fatal("Unknown before_move_phase=%d", before_move_phase))
 				}
 			}
 		case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-			for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+			for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -702,7 +702,7 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
 				}
 			}
 		case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-			for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+			for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -710,7 +710,7 @@ func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
 				}
 			}
 		case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-			for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+			for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 				sq := pPos.PieceLocations[i]
 				if sq == src_sq_list[j] {
 					pPos.PieceLocations[i] = dst_sq_list[j]
@@ -858,14 +858,14 @@ func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 		// 玉を動かした
 		switch pNerve.PPosSys.phase { // next_phase
 		case l03.FIRST:
-			pPos.PieceLocations[l11.PCLOC_K1] = from
+			pPos.PieceLocations[l07.PCLOC_K1] = from
 		case l03.SECOND:
-			pPos.PieceLocations[l11.PCLOC_K2] = from
+			pPos.PieceLocations[l07.PCLOC_K2] = from
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pNerve.PPosSys.phase=%d", pNerve.PPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+		for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -873,7 +873,7 @@ func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 			}
 		}
 	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+		for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -881,7 +881,7 @@ func (pNerve *Nerve) UndoMove(pPos *l15.Position) {
 			}
 		}
 	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+		for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == to {
 				pPos.PieceLocations[i] = from
@@ -1036,15 +1036,15 @@ func (pNerve *Nerve) undoCapture(pPos *l15.Position) {
 		switch pNerve.PPosSys.phase { // next_phase
 		case l03.FIRST:
 			// 後手の玉
-			pPos.PieceLocations[l11.PCLOC_K2] = to
+			pPos.PieceLocations[l07.PCLOC_K2] = to
 		case l03.SECOND:
 			// 先手の玉
-			pPos.PieceLocations[l11.PCLOC_K1] = to
+			pPos.PieceLocations[l07.PCLOC_K1] = to
 		default:
 			panic(App.LogNotEcho.Fatal("Unknown pNerve.PPosSys.phase=%d", pNerve.PPosSys.phase))
 		}
 	case l03.PIECE_TYPE_R, l03.PIECE_TYPE_PR:
-		for i := l11.PCLOC_R1; i < l11.PCLOC_R2+1; i += 1 {
+		for i := l07.PCLOC_R1; i < l07.PCLOC_R2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1052,7 +1052,7 @@ func (pNerve *Nerve) undoCapture(pPos *l15.Position) {
 			}
 		}
 	case l03.PIECE_TYPE_B, l03.PIECE_TYPE_PB:
-		for i := l11.PCLOC_B1; i < l11.PCLOC_B2+1; i += 1 {
+		for i := l07.PCLOC_B1; i < l07.PCLOC_B2+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to
@@ -1060,7 +1060,7 @@ func (pNerve *Nerve) undoCapture(pPos *l15.Position) {
 			}
 		}
 	case l03.PIECE_TYPE_L, l03.PIECE_TYPE_PL: // 成香も一応、位置を覚えておかないと存在しない香を監視してしまうぜ（＾～＾）
-		for i := l11.PCLOC_L1; i < l11.PCLOC_L4+1; i += 1 {
+		for i := l07.PCLOC_L1; i < l07.PCLOC_L4+1; i += 1 {
 			sq := pPos.PieceLocations[i]
 			if sq == hand_sq {
 				pPos.PieceLocations[i] = to

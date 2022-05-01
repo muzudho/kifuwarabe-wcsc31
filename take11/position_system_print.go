@@ -6,6 +6,7 @@ import (
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -467,10 +468,10 @@ func (pPosSys *PositionSystem) Dump() string {
 			buffer.WriteString(fmt.Sprintf("%d,", pPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_K1], pPos.PieceLocations[PCLOC_K2]))
-		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_R1], pPos.PieceLocations[PCLOC_R2]))
-		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[PCLOC_B1], pPos.PieceLocations[PCLOC_B2]))
-		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[PCLOC_L1], pPos.PieceLocations[PCLOC_L2], pPos.PieceLocations[PCLOC_L3], pPos.PieceLocations[PCLOC_L4]))
+		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_K1], pPos.PieceLocations[l07.PCLOC_K2]))
+		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_R1], pPos.PieceLocations[l07.PCLOC_R2]))
+		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_B1], pPos.PieceLocations[l07.PCLOC_B2]))
+		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_L1], pPos.PieceLocations[l07.PCLOC_L2], pPos.PieceLocations[l07.PCLOC_L3], pPos.PieceLocations[l07.PCLOC_L4]))
 	}
 
 	for phase := 0; phase < 2; phase += 1 {

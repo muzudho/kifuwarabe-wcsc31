@@ -2,7 +2,7 @@ package take15
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
@@ -552,11 +552,11 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l03.Move {
 	// var opponentKingSq l03.Square
 	var pOpponentSumCB *ControlBoard
 	if friend == l03.FIRST {
-		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K1)
+		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K1)
 		hand_start = l03.HAND_IDX_START
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == l03.SECOND {
-		friendKingSq = pPos.GetPieceLocation(l11.PCLOC_K2)
+		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K2)
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {

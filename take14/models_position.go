@@ -2,7 +2,7 @@ package take14
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // Position - 局面
@@ -13,7 +13,7 @@ type Position struct {
 	Board [l03.BOARD_SIZE]l03.Piece
 	// 駒の場所
 	// [0]先手玉 [1]後手玉 [2:3]飛 [4:5]角 [6:9]香
-	PieceLocations [l11.PCLOC_SIZE]l03.Square
+	PieceLocations [l07.PCLOC_SIZE]l03.Square
 	// 持ち駒の数だぜ（＾～＾）玉もある（＾～＾） K, R, B, G, S, N, L, P, k, r, b, g, s, n, l, p
 	Hands1 [l03.HAND_SIZE]int
 
@@ -38,7 +38,7 @@ func NewPosition() *Position {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
+	pPos.PieceLocations = [l07.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l03.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -61,7 +61,7 @@ func (pPos *Position) setToStartpos() {
 		l03.PIECE_EMPTY, l03.PIECE_N2, l03.PIECE_R2, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_B1, l03.PIECE_N1,
 		l03.PIECE_EMPTY, l03.PIECE_L2, l03.PIECE_EMPTY, l03.PIECE_P2, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_EMPTY, l03.PIECE_P1, l03.PIECE_EMPTY, l03.PIECE_L1,
 	}
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
+	pPos.PieceLocations = [l07.PCLOC_SIZE]l03.Square{59, 51, 28, 82, 22, 88, 11, 19, 91, 99}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l03.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -87,7 +87,7 @@ func (pPos *Position) clearBoard() {
 	}
 
 	// 飛角香が存在しないので、仮に 0 を入れてるぜ（＾～＾）
-	pPos.PieceLocations = [l11.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
+	pPos.PieceLocations = [l07.PCLOC_SIZE]l03.Square{l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY, l03.SQ_EMPTY}
 
 	// 持ち駒の数
 	pPos.Hands1 = [l03.HAND_SIZE]int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}

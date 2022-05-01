@@ -2,6 +2,7 @@ package take10
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
@@ -285,10 +286,10 @@ func GenMoveList(pPos *Position) []l03.Move {
 	var hand_end l03.HandIdx
 	// var opponentKingSq l03.Square
 	if friend == l03.FIRST {
-		friendKingSq = pPos.PieceLocations[PCLOC_K1]
+		friendKingSq = pPos.PieceLocations[l07.PCLOC_K1]
 		hand_start = l03.HAND_IDX_START
 	} else if friend == l03.SECOND {
-		friendKingSq = pPos.PieceLocations[PCLOC_K2]
+		friendKingSq = pPos.PieceLocations[l07.PCLOC_K2]
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))

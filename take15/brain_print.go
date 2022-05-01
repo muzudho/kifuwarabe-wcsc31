@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l11 "github.com/muzudho/kifuwarabe-wcsc31/take11"
 	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // Dump - 内部状態を全部出力しようぜ（＾～＾）？
@@ -21,10 +21,10 @@ func (pBrain *Brain) Dump() string {
 			buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.PPosition[i].Board))
 		}
 		buffer.WriteString("\n")
-		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l11.PCLOC_K1], pPos.PieceLocations[l11.PCLOC_K2]))
-		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l11.PCLOC_R1], pPos.PieceLocations[l11.PCLOC_R2]))
-		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l11.PCLOC_B1], pPos.PieceLocations[l11.PCLOC_B2]))
-		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[l11.PCLOC_L1], pPos.PieceLocations[l11.PCLOC_L2], pPos.PieceLocations[l11.PCLOC_L3], pPos.PieceLocations[l11.PCLOC_L4]))
+		buffer.WriteString(fmt.Sprintf("KingLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_K1], pPos.PieceLocations[l07.PCLOC_K2]))
+		buffer.WriteString(fmt.Sprintf("RookLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_R1], pPos.PieceLocations[l07.PCLOC_R2]))
+		buffer.WriteString(fmt.Sprintf("BishopLocations[%d]:%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_B1], pPos.PieceLocations[l07.PCLOC_B2]))
+		buffer.WriteString(fmt.Sprintf("LanceLocations[%d]:%d,%d,%d,%d\n", b, pPos.PieceLocations[l07.PCLOC_L1], pPos.PieceLocations[l07.PCLOC_L2], pPos.PieceLocations[l07.PCLOC_L3], pPos.PieceLocations[l07.PCLOC_L4]))
 	}
 
 	// 利きボード全部

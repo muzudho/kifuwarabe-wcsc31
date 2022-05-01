@@ -2,6 +2,7 @@ package take11
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // マス番号が正常値でなければ強制終了させます
@@ -317,10 +318,10 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []l03.Move {
 	var hand_end l03.HandIdx
 	// var opponentKingSq l03.Square
 	if friend == l03.FIRST {
-		friendKingSq = pPos.GetPieceLocation(PCLOC_K1)
+		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K1)
 		hand_start = l03.HAND_IDX_START
 	} else if friend == l03.SECOND {
-		friendKingSq = pPos.GetPieceLocation(PCLOC_K2)
+		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K2)
 		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))

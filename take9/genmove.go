@@ -2,6 +2,7 @@ package take9
 
 import (
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
+	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
 // GenMoveEnd - 利いているマスの一覧を返します。動けるマスではありません。
@@ -278,7 +279,7 @@ func GenMoveList(pPos *Position) []l03.Move {
 	move_list := []l03.Move{}
 
 	// 王手をされているときは、自玉を逃がす必要があります
-	friendKingSq := pPos.PieceLocations[PCLOC_K1:PCLOC_K2][pPos.Phase-1]
+	friendKingSq := pPos.PieceLocations[l07.PCLOC_K1:l07.PCLOC_K2][pPos.Phase-1]
 	opponent := FlipPhase(pPos.Phase)
 
 	if pPos.ControlBoards[opponent-1][friendKingSq] > 0 {
