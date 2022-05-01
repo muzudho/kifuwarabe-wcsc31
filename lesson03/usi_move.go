@@ -110,3 +110,78 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 
 	return move, nil
 }
+
+// ToCodeOfM - SFEN の moves の後に続く指し手に使える文字列を返します
+func (move Move) ToCodeOfM() string {
+
+	// 投了（＾～＾）
+	if uint32(move) == 0 {
+		return "resign"
+	}
+
+	str := make([]byte, 0, 5)
+	count := 0
+
+	// 移動元マス、移動先マス、成りの有無
+	from, to, pro := move.Destructure()
+
+	// 移動元マス(Source square)
+	switch from {
+	case SQ_R1, SQ_R2:
+		str = append(str, 'R')
+		count = 1
+	case SQ_B1, SQ_B2:
+		str = append(str, 'B')
+		count = 1
+	case SQ_G1, SQ_G2:
+		str = append(str, 'G')
+		count = 1
+	case SQ_S1, SQ_S2:
+		str = append(str, 'S')
+		count = 1
+	case SQ_N1, SQ_N2:
+		str = append(str, 'N')
+		count = 1
+	case SQ_L1, SQ_L2:
+		str = append(str, 'L')
+		count = 1
+	case SQ_P1, SQ_P2:
+		str = append(str, 'P')
+		count = 1
+	default:
+		// Ignored
+	}
+
+	if count == 1 {
+		// 打
+		str = append(str, '*')
+	}
+
+	for count < 2 {
+		var sq Square // マス番号
+		if count == 0 {
+			// 移動元
+			sq = from
+		} else if count == 1 {
+			// 移動先
+			sq = to
+		} else {
+			panic(App.LogNotEcho.Fatal("LogicError: count=%d", count))
+		}
+		// 正常時は必ず２桁（＾～＾）
+		file := byte(sq / 10)
+		rank := byte(sq % 10)
+		// ASCII Code
+		// '0'=48, '9'=57, 'a'=97, 'i'=105
+		str = append(str, file+48)
+		str = append(str, rank+96)
+		// fmt.Printf("Debug: move=%d sq=%d count=%d file=%d rank=%d\n", uint32(move), sq, count, file, rank)
+		count += 1
+	}
+
+	if pro {
+		str = append(str, '+')
+	}
+
+	return string(str)
+}

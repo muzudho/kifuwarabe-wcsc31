@@ -23,6 +23,8 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 
 		var isBadForm = false
 		switch movedPieceType { // 動かした駒が
+		case l03.PIECE_TYPE_K: // 玉
+			isBadForm = isBadFormOfKing(pPos, turn, from, to)
 		case l03.PIECE_TYPE_G: // 金
 			isBadForm = isBadFormOfGold(pPos, turn, from, to)
 		case l03.PIECE_TYPE_S: // 銀
@@ -35,6 +37,24 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 			return true
 		}
 
+	}
+
+	return false
+}
+
+// isBadFormOfKing - 動かした駒が玉なら
+func isBadFormOfKing(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square) bool {
+	// 桂馬の利きに飛び込む動きは悪形
+	{
+		var squares = GetSqOfOpponentKnightFrom(turn, from)
+		for _, sq := range squares {
+			var piece = pPos.GetPieceAtSq(sq)
+			var piecetype = l03.What(piece)
+			var turn2 = l03.Who(piece)
+			if piecetype == l03.PIECE_TYPE_N && turn2 != turn {
+				return true
+			}
+		}
 	}
 
 	return false
