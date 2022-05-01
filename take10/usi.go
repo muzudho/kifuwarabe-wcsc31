@@ -120,7 +120,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = ParseMove(command, &i, pPos.GetPhase())
+			var move, err = l03.ParseMove(command, &i, pPos.GetPhase())
 			if err != nil {
 				fmt.Println(SprintBoard(pPos))
 				panic(err)

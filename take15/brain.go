@@ -285,7 +285,7 @@ func (pBrain *Brain) ReadPosition(pPos *Position, command string) {
 			i += 1
 
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
-			var move, err = ParseMove(command, &i, pBrain.PPosSys.GetPhase())
+			var move, err = l03.ParseMove(command, &i, pBrain.PPosSys.GetPhase())
 			if err != nil {
 				fmt.Println(err)
 				fmt.Println(SprintBoard(

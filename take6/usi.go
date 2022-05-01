@@ -10,6 +10,7 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 )
 
 // App - アプリケーション変数の宣言
@@ -116,7 +117,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = ParseMove(command, &i, pPos.Phase)
+			var move, err = l03.ParseMove(command, &i, pPos.Phase)
 			if err != nil {
 				fmt.Println(SprintBoard(pPos))
 				panic(err)

@@ -15,7 +15,7 @@ type Position struct {
 	// 持ち駒の数だぜ（＾～＾） R, B, G, S, N, L, P, r, b, g, s, n, l, p
 	Hands []int
 	// 先手が1、後手が2（＾～＾）
-	Phase int
+	Phase l03.Phase
 	// 何手目か（＾～＾）
 	MovesNum int
 	// 指し手のリスト（＾～＾）
@@ -217,7 +217,7 @@ MovesNumLoop:
 		i += 1
 
 		// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
-		var move, err = ParseMove(command, &i, pos.Phase)
+		var move, err = l03.ParseMove(command, &i, pos.Phase)
 		if err != nil {
 			fmt.Println(SprintBoard(pos))
 			panic(err)

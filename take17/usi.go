@@ -40,7 +40,7 @@ func MainLoop() {
 
 	// アプリケーション変数の生成
 	App = *new(l01.Lesson01App)
-	App.IsDebug = true
+	App.IsDebug = false
 
 	tracePath := filepath.Join(*workdir, "output/trace.log")
 	debugPath := filepath.Join(*workdir, "output/debug.log")
@@ -112,7 +112,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			App.Out.Print("id name %sB42\n", config.Profile.Name)
+			App.Out.Print("id name %sB43\n", config.Profile.Name)
 			App.Out.Print("id author %s\n", config.Profile.Author)
 			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
@@ -233,7 +233,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = l15.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
+			var move, err = l03.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
 				if App.IsDebug {
 					App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(

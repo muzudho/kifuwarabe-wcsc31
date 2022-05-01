@@ -222,7 +222,7 @@ MainLoop:
 			// １手指すぜ（＾～＾）
 			// 前の空白を読み飛ばしたところから、指し手文字列の終わりまで読み進めるぜ（＾～＾）
 			i := 3
-			var move, err = l15.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
+			var move, err = l03.ParseMove(command, &i, pNerve.PPosSys.GetPhase())
 			if err != nil {
 				App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(
 					pNerve.PPosSys.phase,
