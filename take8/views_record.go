@@ -3,8 +3,8 @@ package take8
 import (
 	"fmt"
 
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 type positionForRecord interface {
@@ -17,7 +17,7 @@ type positionForRecord interface {
 func SprintRecord(pPos positionForRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, l04.MOVES_SIZE*9)
+	record_text := make([]byte, 0, l02.MOVES_SIZE*9)
 	max := pPos.GetOffsetMoveIndex()
 	for i := 0; i < max; i += 1 {
 		record_text = append(record_text, pPos.GetMoveAtMovesIndex(i).ToCodeOfM()...)

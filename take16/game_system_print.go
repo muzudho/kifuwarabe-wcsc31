@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // Print - ２局面の比較用画面出力（＾ｑ＾）
@@ -373,7 +373,7 @@ func sprintSfenResignation(pPosSys *PositionSystem, pPos *l15.Position, pRecord 
 func sprintRecord(pRecord *DifferenceRecord) string {
 
 	// "8h2b+ b \n" 1行9byteぐらいを想定（＾～＾）
-	record_text := make([]byte, 0, l04.MOVES_SIZE*9)
+	record_text := make([]byte, 0, l02.MOVES_SIZE*9)
 	for i := 0; i < pRecord.OffsetMovesIndex; i += 1 {
 		record_text = append(record_text, pRecord.Moves[i].ToCodeOfM()...)
 		record_text = append(record_text, ' ')

@@ -1,6 +1,10 @@
 package lesson03
 
-import "fmt"
+import (
+	"fmt"
+
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
+)
 
 // Print - 局面出力（＾ｑ＾）
 func Sprint(pos *Position) string {
@@ -77,7 +81,7 @@ func Sprint(pos *Position) string {
 		//
 		"moves"
 
-	moves_list := make([]byte, 0, 512*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
+	moves_list := make([]byte, 0, l02.MOVES_SIZE*6) // 6文字 512手分で ほとんどの大会で大丈夫だろ（＾～＾）
 	for _, move := range pos.Moves {
 		moves_list = append(moves_list, ' ')
 		moves_list = append(moves_list, move.ToCodeOfM()...)

@@ -50,7 +50,7 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 func isBadFormOfKing(pPos *l15.Position, turn l03.Phase, from l03.Square, to l03.Square) bool {
 	// 桂馬の利きに飛び込む動きは悪形
 	{
-		var squares = GetSqOfOpponentKnightFrom(turn, from)
+		var squares = GetSqOfOpponentKnightFrom(turn, to)
 		for _, sq := range squares {
 			var piece = pPos.GetPieceAtSq(sq)
 			var piecetype = l03.What(piece)
@@ -242,7 +242,8 @@ func isBadFormOfSilver(pPos *l15.Position, turn l03.Phase, from l03.Square, to l
 
 	for _, xxstSouthSq := range squares {
 		if xxstSouthSq == l03.SQ_EMPTY {
-			return false
+			// 駒が無いが、盤外かもしれない。ループの次項へ
+			continue
 		}
 
 		// 盤内

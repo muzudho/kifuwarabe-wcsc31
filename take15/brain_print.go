@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
 )
 
@@ -48,13 +48,13 @@ func (pBrain *Brain) Dump() string {
 	buffer.WriteString(fmt.Sprintf("OffsetMovesIndex:%d,\n", pBrain.PPosSys.OffsetMovesIndex))
 
 	buffer.WriteString("Moves:")
-	for i := 0; i < l04.MOVES_SIZE; i += 1 {
+	for i := 0; i < l02.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.Moves[i]))
 	}
 	buffer.WriteString("\n")
 
 	buffer.WriteString("CapturedList:")
-	for i := 0; i < l04.MOVES_SIZE; i += 1 {
+	for i := 0; i < l02.MOVES_SIZE; i += 1 {
 		buffer.WriteString(fmt.Sprintf("%d,", pBrain.PPosSys.CapturedList[i]))
 	}
 	buffer.WriteString("\n")

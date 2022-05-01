@@ -13,9 +13,9 @@ import (
 
 	l "github.com/muzudho/go-logger"
 	l01 "github.com/muzudho/kifuwarabe-wcsc31/lesson01"
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 	l08 "github.com/muzudho/kifuwarabe-wcsc31/take8"
 )
 
@@ -112,7 +112,7 @@ MainLoop:
 		switch tokens[0] {
 		case "usi":
 			// With Build Number
-			App.Out.Print("id name %sB50\n", config.Profile.Name)
+			App.Out.Print("id name %sB52\n", config.Profile.Name)
 			App.Out.Print("id author %s\n", config.Profile.Author)
 			App.Out.Print("option name MaxDepth type spin default %d min 1 max 15\n", pNerve.MaxDepth)
 			// 大会モード
@@ -407,7 +407,7 @@ MainLoop:
 			// 棋譜を書き直してさらに多く続けるぜ（＾～＾）
 			for j := 0; j < 1000; j += 1 {
 				// 512手が最大だが（＾～＾）
-				for i := 0; i < l04.MOVES_SIZE; i += 1 {
+				for i := 0; i < l02.MOVES_SIZE; i += 1 {
 
 					if App.IsDebug {
 						App.Out.Debug(pNerve.PPosSys.PPosition[POS_LAYER_MAIN].SprintBoardHeader(

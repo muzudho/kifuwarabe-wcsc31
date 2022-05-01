@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	l02 "github.com/muzudho/kifuwarabe-wcsc31/lesson02"
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
-	l04 "github.com/muzudho/kifuwarabe-wcsc31/take4"
 )
 
 // Position - 局面
@@ -23,9 +23,9 @@ type Position struct {
 	OffsetMovesIndex int
 	// 指し手のリスト（＾～＾）
 	// 1手目は[0]へ、512手目は[511]へ入れろだぜ（＾～＾）
-	Moves [l04.MOVES_SIZE]l03.Move
+	Moves [l02.MOVES_SIZE]l03.Move
 	// 取った駒のリスト（＾～＾）アンドゥ ムーブするときに使うだけ（＾～＾）指し手のリストと同じ添え字を使うぜ（＾～＾）
-	CapturedList [l04.MOVES_SIZE]l03.Piece
+	CapturedList [l02.MOVES_SIZE]l03.Piece
 }
 
 func NewPosition() *Position {
@@ -59,9 +59,9 @@ func (pos *Position) ResetToStartpos() {
 	pos.StartMovesNum = 1
 	pos.OffsetMovesIndex = 0
 	// 指し手のリスト
-	pos.Moves = [l04.MOVES_SIZE]l03.Move{}
+	pos.Moves = [l02.MOVES_SIZE]l03.Move{}
 	// 取った駒のリスト
-	pos.CapturedList = [l04.MOVES_SIZE]l03.Piece{}
+	pos.CapturedList = [l02.MOVES_SIZE]l03.Piece{}
 }
 
 // ReadPosition - 局面を読み取ります。マルチバイト文字は含まれていないぜ（＾ｑ＾）
