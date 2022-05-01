@@ -217,7 +217,7 @@ func ShuffleBoard(pNerve *Nerve, pPos *l15.Position) {
 		}
 
 		// 駒台から盤の方向
-		for hand_index := l03.HAND_IDX_START; hand_index < l03.HAND_IDX_END; hand_index += 1 {
+		for hand_index := l03.HAND_IDX_BEGIN; hand_index < l03.HAND_IDX_END; hand_index += 1 {
 			num := pPos.Hands1[hand_index]
 			if num > 0 {
 				sq := l03.Square(rand.Intn(100))
@@ -490,7 +490,7 @@ func diffBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, pP
 	}
 
 	// 駒台
-	for i := l03.HAND_IDX_START; i < l03.HAND_IDX_END; i += 1 {
+	for i := l03.HAND_IDX_BEGIN; i < l03.HAND_IDX_END; i += 1 {
 		if pPos0.Hands1[i] == pPos1.Hands1[i] {
 			// 等しければゼロ
 			pPos2.Hands1[i] = 0
@@ -530,7 +530,7 @@ func errorBoard(pPos0 *l15.Position, pPos1 *l15.Position, pPos2 *l15.Position, p
 	}
 
 	// 駒台
-	for i := l03.HAND_IDX_START; i < l03.HAND_IDX_END; i += 1 {
+	for i := l03.HAND_IDX_BEGIN; i < l03.HAND_IDX_END; i += 1 {
 		if pPos2.Hands1[i] != pPos3.Hands1[i] {
 			errorNum += 1
 		}

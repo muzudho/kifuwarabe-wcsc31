@@ -7,7 +7,7 @@ import (
 )
 
 // GetSqNorthOf - 自分から見て手前を南としたときの、１つ北のマス。無ければ空マス
-func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
+func GetSqNorthOf(turn l03.Phase, srcSq l03.Square) l03.Square {
 	var latitude int8
 
 	switch turn {
@@ -19,11 +19,11 @@ func GetSqNorthOf(turn l03.Phase, src l03.Square) l03.Square {
 		panic(App.Log.Fatal(fmt.Sprintf("turn=[%d]", turn)))
 	}
 
-	var newRank = l03.Rank(src) + latitude
+	var newRank = l03.Rank(srcSq) + latitude
 
 	if 1 <= newRank && newRank < 10 {
 		// 盤内
-		var newFile = l03.File(src)
+		var newFile = l03.File(srcSq)
 		return l03.FromFileRankToSq(newFile, newRank)
 	}
 

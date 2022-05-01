@@ -4,9 +4,12 @@ package lesson03
 type Square int8
 
 const (
-	SQ_EMPTY Square = 0          // マス番号を指定しないことを意味するマス番号
-	SQ_K1    Square = 100 + iota // 持ち駒を打つ 100～115
-	SQ_R1                        // 先手飛打
+	SQ_EMPTY Square = 0 // マス番号を指定しないことを意味するマス番号
+)
+const (
+	// 途中から使う iota は 0スタートとは限らないことに注意
+	SQ_K1 Square = 100 + iota // 持ち駒を打つ 100～115
+	SQ_R1                     // 先手飛打
 	SQ_B1
 	SQ_G1
 	SQ_S1

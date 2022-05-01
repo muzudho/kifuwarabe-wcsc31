@@ -10,24 +10,26 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	var len = len(command)
 	var move = RESIGN_MOVE
 
-	var handSq = SQ_EMPTY
+	var sqOfHand Square
 
 	// file
 	switch ch := command[*i]; ch {
+	case 'K':
+		sqOfHand = SQ_K1
 	case 'R':
-		handSq = SQ_R1
+		sqOfHand = SQ_R1
 	case 'B':
-		handSq = SQ_B1
+		sqOfHand = SQ_B1
 	case 'G':
-		handSq = SQ_G1
+		sqOfHand = SQ_G1
 	case 'S':
-		handSq = SQ_S1
+		sqOfHand = SQ_S1
 	case 'N':
-		handSq = SQ_N1
+		sqOfHand = SQ_N1
 	case 'L':
-		handSq = SQ_L1
+		sqOfHand = SQ_L1
 	case 'P':
-		handSq = SQ_P1
+		sqOfHand = SQ_P1
 	default:
 		// Ignored
 	}
@@ -35,17 +37,22 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 	// 0=移動元 1=移動先
 	var count = 0
 
-	if handSq != SQ_EMPTY {
-		*i += 1
+	if sqOfHand != SQ_EMPTY {
 		switch phase {
 		case FIRST:
-			move = move.ReplaceSource(handSq)
+			//AssertSqOfHand(sqOfHand, command)
+			move = move.ReplaceSource(sqOfHand)
 		case SECOND:
-			move = move.ReplaceSource(handSq + HAND_TYPE_SIZE_SQ)
+			fmt.Printf("sqOfHand=%d, HAND_TYPE_SIZE_SQ=%d, 2p command [%d]='%c'\n", sqOfHand, HAND_TYPE_SIZE_SQ, *i, command[*i])
+			//AssertSqOfHand(sqOfHand, command)
+			sqOfHand += HAND_TYPE_SIZE_SQ
+			//AssertSqOfHand(sqOfHand, command)
+			move = move.ReplaceSource(sqOfHand)
 		default:
 			return *new(Move), fmt.Errorf("fatal: unknown phase=%d", phase)
 		}
 
+		*i += 1
 		if command[*i] != '*' {
 			return *new(Move), fmt.Errorf("fatal: not *")
 		}
@@ -108,6 +115,7 @@ func ParseMove(command string, i *int, phase Phase) (Move, error) {
 		move = move.ReplacePromotion(true)
 	}
 
+	//AssertMove(move)
 	return move, nil
 }
 

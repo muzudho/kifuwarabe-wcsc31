@@ -3,7 +3,7 @@ package lesson03
 type HandSq Square
 
 const (
-	// 持ち駒を打つ 100～113
+	// 持ち駒を打つ 100～115
 	// 先手飛打
 	HANDSQ_K1 HandSq = 100 + iota
 	HANDSQ_R1
@@ -38,3 +38,15 @@ func (h HandSq) ToSq() Square {
 func FromSqToHandSq(sq Square) HandSq {
 	return HandSq(sq)
 }
+
+// func AssertSqOfHand(sq Square, description string) {
+// 	if 116 <= sq {
+// 		fmt.Printf("assert sq of hand 1: abnormal sq=%d\n", sq)
+
+// 		fmt.Printf("assert sq of hand 2: description=%s\n", description)
+
+// 		fmt.Printf("assert sq of hand 3: abnormal sq=%d description=%s\n", sq, description)
+
+// 		panic(App.Log.Fatal(fmt.Sprintf("assert sq of hand 1: abnormal sq=%d description=%s\n", sq, description)))
+// 	}
+// }

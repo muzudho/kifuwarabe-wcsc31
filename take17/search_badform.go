@@ -1,6 +1,8 @@
 package take17
 
 import (
+	"fmt"
+
 	l03 "github.com/muzudho/kifuwarabe-wcsc31/lesson03"
 	l15 "github.com/muzudho/kifuwarabe-wcsc31/take15"
 	l07 "github.com/muzudho/kifuwarabe-wcsc31/take7"
@@ -9,17 +11,21 @@ import (
 // IsBadForm - 悪形なら真
 func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 	from, to, promotion := move.Destructure()
+	if 116 <= from {
+		panic(App.Log.Fatal(fmt.Sprintf("is bad form 1: abnormal from=%d\n", from)))
+	}
+
 	// 自分の先後は？
 	var turn = pNerve.PPosSys.GetPhase()
 
 	// 打のケースがあることに注意
-	if 11 <= from && from < 100 {
+	if 11 <= from && from < l03.HANDSQ_BEGIN.ToSq() {
 		// 動く駒は？
 		var movedPiece = pPos.GetPieceOnBoardAtSq(from)
 		var movedPieceType = l03.What(movedPiece)
-		if App.IsDebug {
-			App.Out.Print("# movePiece=%s\n", movedPiece.ToCodeOfPc())
-		}
+		// if App.IsDebug {
+		// 	App.Out.Print("# movePiece=%s\n", movedPiece.ToCodeOfPc())
+		// }
 
 		var isBadForm = false
 		switch movedPieceType { // 動かした駒が
@@ -42,20 +48,29 @@ func IsBadForm(pPos *l15.Position, pNerve *Nerve, move l03.Move) bool {
 		}
 
 	} else {
+
 		var fromHandSq = l03.FromSqToHandSq(from)
-		if l03.HANDSQ_BEGIN <= fromHandSq && fromHandSq < l03.HANDSQ_END {
-			// 打
-			var droppedPieceType = l03.WhatHandSq(fromHandSq)
+		if fromHandSq < l03.HANDSQ_BEGIN || l03.HANDSQ_END <= fromHandSq {
+			panic(App.Log.Fatal(fmt.Sprintf("is bad form: abnormal from hand sq=%d, from=%d\n", fromHandSq, from)))
+		}
 
-			var isBadForm = false
-			switch droppedPieceType { // 動かした駒が
-			case l03.PIECE_TYPE_P: // 歩
-				isBadForm = isBadFormOfDroppedPawn(pPos, turn, to)
-			}
+		// 打
+		if App.IsDebug {
+			App.Log.Debug("打判定1\n")
+		}
+		var droppedPieceType = l03.WhatHandSq(fromHandSq)
 
-			if isBadForm {
-				return true
+		var isBadForm = false
+		switch droppedPieceType { // 打った駒が
+		case l03.PIECE_TYPE_P: // 歩
+			if App.IsDebug {
+				App.Log.Debug("歩打判定1\n")
 			}
+			isBadForm = isBadFormOfDroppedPawn(pPos, turn, to)
+		}
+
+		if isBadForm {
+			return true
 		}
 	}
 
@@ -376,9 +391,16 @@ func isBadFormOfDroppedPawn(pPos *l15.Position, turn l03.Phase, to l03.Square) b
 		return false
 	}
 
+	if App.IsDebug {
+		App.Log.Debug("歩打判定2\n")
+	}
+
 	var northPiece = pPos.GetPieceOnBoardAtSq(northSq)
 
 	if l03.What(northPiece) == l03.PIECE_TYPE_K && l03.Who(northPiece) != turn {
+		if App.IsDebug {
+			App.Log.Debug("打ち歩詰め判定1\n")
+		}
 		// +---+
 		// |玉v|
 		// +---+

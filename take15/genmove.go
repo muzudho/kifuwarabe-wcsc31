@@ -553,11 +553,11 @@ func GenMoveList(pBrain *Brain, pPos *Position) []l03.Move {
 	var pOpponentSumCB *ControlBoard
 	if friend == l03.FIRST {
 		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K1)
-		hand_start = l03.HAND_IDX_START
+		hand_start = l03.HAND_IDX_BEGIN
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM2]
 	} else if friend == l03.SECOND {
 		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K2)
-		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
+		hand_start = l03.HAND_IDX_BEGIN + l03.HAND_TYPE_SIZE
 		pOpponentSumCB = pBrain.PCtrlBrdSys.PBoards[CONTROL_LAYER_SUM1]
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))

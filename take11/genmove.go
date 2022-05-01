@@ -319,10 +319,10 @@ func GenMoveList(pPosSys *PositionSystem, pPos *Position) []l03.Move {
 	// var opponentKingSq l03.Square
 	if friend == l03.FIRST {
 		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K1)
-		hand_start = l03.HAND_IDX_START
+		hand_start = l03.HAND_IDX_BEGIN
 	} else if friend == l03.SECOND {
 		friendKingSq = pPos.GetPieceLocation(l07.PCLOC_K2)
-		hand_start = l03.HAND_IDX_START + l03.HAND_TYPE_SIZE
+		hand_start = l03.HAND_IDX_BEGIN + l03.HAND_TYPE_SIZE
 	} else {
 		panic(App.LogNotEcho.Fatal("unknown phase=%d", friend))
 	}

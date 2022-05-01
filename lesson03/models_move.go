@@ -15,6 +15,16 @@ const RESIGN_MOVE = Move(0)
 
 // NewMove - 初期値として 移動元マス、移動先マス、成りの有無 を指定してください
 func NewMove(from Square, to Square, promotion bool) Move {
+	// if 116 <= from {
+	// 	panic(App.Log.Fatal(fmt.Sprintf("new.move 1: abnormal from=%d\n", from)))
+	// }
+	// if App.IsDebug {
+	// 	var fromHandSq = FromSqToHandSq(from)
+	// 	if 116 <= from || fromHandSq < HANDSQ_BEGIN || HANDSQ_END <= fromHandSq {
+	// 		panic(App.Log.Fatal(fmt.Sprintf("new move: abnormal from=%d, fromHandSq=%d, HANDSQ_BEGIN=%d, HANDSQ_END=%d\n", from, fromHandSq, HANDSQ_BEGIN, HANDSQ_END)))
+	// 	}
+	// }
+
 	move := RESIGN_MOVE
 
 	// Replace source square bits
@@ -24,7 +34,10 @@ func NewMove(from Square, to Square, promotion bool) Move {
 	move = move.ReplaceDestination(to)
 
 	// Replace promotion bit
-	return move.ReplacePromotion(promotion)
+	move = move.ReplacePromotion(promotion)
+
+	//AssertMove(move)
+	return move
 }
 
 // ReplaceSource - Replace 7 source square bits
@@ -67,8 +80,28 @@ func (move Move) ReplacePromotion(promotion bool) Move {
 // 0100 0000 0000 0000 (Mask) 0x4000
 // .pdd dddd dsss ssss
 func (move Move) Destructure() (Square, Square, bool) {
+	//AssertMove(move)
+
 	var from = Square(uint16(move) & 0x007f)
 	var to = Square((uint16(move) & 0x3f80) >> 7)
 	var pro = uint16(move)&0x4000 != 0
+
+	// if 116 <= from {
+	// 	panic(App.Log.Fatal(fmt.Sprintf("move.destructure 1: abnormal from=%d\n", from)))
+	// }
+	// if App.IsDebug {
+	// 	var fromHandSq = FromSqToHandSq(from)
+	// 	if 116 <= from || fromHandSq < HANDSQ_BEGIN || HANDSQ_END <= fromHandSq {
+	// 		panic(App.Log.Fatal(fmt.Sprintf("move.destructure: abnormal from=%d, fromHandSq=%d, HANDSQ_BEGIN=%d, HANDSQ_END=%d\n", from, fromHandSq, HANDSQ_BEGIN, HANDSQ_END)))
+	// 	}
+	// }
+
 	return from, to, pro
 }
+
+// func AssertMove(move Move) {
+// 	var from = Square(uint16(move) & 0x007f)
+// 	if 116 <= from {
+// 		panic(App.Log.Fatal(fmt.Sprintf("assert move 1: abnormal from=%d\n", from)))
+// 	}
+// }

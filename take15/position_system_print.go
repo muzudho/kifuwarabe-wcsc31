@@ -160,7 +160,7 @@ func (pPosSys *PositionSystem) SprintDiff(b1 PosLayerT, b2 PosLayerT) string {
 
 	buf.Reset()
 	buf.WriteString(" ")
-	for i := l03.HAND_IDX_START; i < l03.HAND_TYPE_SIZE; i++ {
+	for i := l03.HAND_IDX_BEGIN; i < l03.HAND_TYPE_SIZE; i++ {
 		buf.WriteString(fmt.Sprintf("|%2d%2d", pPosSys.PPosition[b1].Hands1[i], pPosSys.PPosition[b2].Hands1[i]))
 	}
 	buf.WriteString("|\n")

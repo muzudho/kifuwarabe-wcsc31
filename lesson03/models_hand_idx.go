@@ -26,7 +26,7 @@ const (
 	HAND_P2
 	HAND_SIZE
 	HAND_TYPE_SIZE = HAND_SIZE / 2 // 割り切れる
-	HAND_IDX_START = HAND_K1
+	HAND_IDX_BEGIN = HAND_K1
 	HAND_IDX_END   = HAND_SIZE // この数を含まない
 )
 

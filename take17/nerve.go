@@ -435,6 +435,7 @@ func (pNerve *Nerve) IsCheckmate(phase l03.Phase) bool {
 
 // DoMove - 一手指すぜ（＾～＾）
 func (pNerve *Nerve) DoMove(pPos *l15.Position, move l03.Move) {
+
 	before_move_phase := pNerve.PPosSys.GetPhase()
 
 	// １手指すと１～２の駒が動くことに着目してくれだぜ（＾～＾）
