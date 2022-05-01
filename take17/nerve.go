@@ -49,7 +49,7 @@ func NewNerve() *Nerve {
 	pNerve.OneMoveSec = 0
 	pNerve.IsStopSearch = false
 	pNerve.PStopwatchSearch = NewStopwatch()
-	pNerve.MaxDepth = 2
+	pNerve.MaxDepth = 2 // 2 で動作テスト。数字を増やすとバグる？
 	return pNerve
 }
 
